@@ -17,21 +17,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       
-    - name: check path
-      run: pwd
-
-    - name: list files
-      run: ls -la
-
     - name: set up node
       uses: actions/setup-node@v3
       with:
-        working-directory: ./frontend
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
 
     - name: Front End Lint
       run: npx eslint . --ext .js,.jsx,.ts,.tsx
+      working-directory: ./frontend
+
 
   backend-lint:
     runs-on: ubuntu-latest
@@ -39,11 +35,17 @@ jobs:
       matrix:
         node-version: [18.19.0]
     steps:
-    - uses: actions/checkout@v3
-    - name: Back End Lint
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: set up node
       uses: actions/setup-node@v3
       with:
-        working-directory: ./backend
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npx eslint . --ext .js,.jsx,.ts,.tsx
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Front End Lint
+      run: npx eslint . --ext .js,.jsx,.ts,.tsx
+      working-directory: ./backend
