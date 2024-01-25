@@ -16,6 +16,7 @@ module.exports = {
       }
     }
   ],
+  ignorePatterns: ["dist", ".eslintrc.js"],
   parserOptions: {
     ecmaVersion: "latest"
   },
