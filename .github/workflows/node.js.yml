@@ -14,7 +14,7 @@ jobs:
         node-version: [18.19.0]
     steps:
 
-    - name: Checkout repository
+    - name: checkout repository
       uses: actions/checkout@v2
       
     - name: set up node
@@ -24,7 +24,11 @@ jobs:
         cache: 'npm'
         cache-dependency-path: frontend/package-lock.json
 
-    - name: Front End Lint
+    - name: install dependencies
+      run: npm install
+      working-directory: ./frontend
+
+    - name: frontend Lint
       run: npx eslint . --ext .js,.jsx,.ts,.tsx
       working-directory: ./frontend
 
@@ -36,7 +40,7 @@ jobs:
         node-version: [18.19.0]
     steps:
 
-    - name: Checkout repository
+    - name: checkout repository
       uses: actions/checkout@v2
       
     - name: set up node
@@ -46,6 +50,10 @@ jobs:
         cache: 'npm'
         cache-dependency-path: backend/package-lock.json
 
-    - name: Front End Lint
+    - name: install dependencies
+      run: npm install
+      working-directory: ./backend
+
+    - name: backend Lint
       run: npx eslint . --ext .js,.jsx,.ts,.tsx
       working-directory: ./backend
