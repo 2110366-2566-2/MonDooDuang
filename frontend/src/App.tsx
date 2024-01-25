@@ -1,25 +1,17 @@
-import "./App.css";
+import "./App.css"
+import { BrowserRouter } from "react-router-dom"
+import Router from "./routes/router"
+import { Provider } from "react-redux"
+import store from "./redux/store"
 
-function App() {
+const App = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        height: "100vh",
-        width: "100vw",
-      }}
-    >
-      <h1>NongBuildSungPizzaJa Organization</h1>
-      <h2>Simple Frontend Page</h2>
-      <br />
-      <br />
-      <br />
-      <h1>MonDooDuang Project</h1>
-    </div>
-  );
+    <Provider store={store}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </Provider>
+  )
 }
 
-export default App;
+export default App
