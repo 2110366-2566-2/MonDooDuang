@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  local_postgres:
+    container_name: local_postgres
+    image: postgres:16.1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mondooduang_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./mock/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    depends_on:
+      - local_postgres
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  local_mongo:
+    image: mongo:6.0.13-jammy
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mock/init.js:/docker-entrypoint-initdb.d/init.js
+    command: ["mongod", "--smallfiles", "--bind_ip_all"]
+
+volumes:
+  pgadmin-data:
