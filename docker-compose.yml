@@ -13,7 +13,6 @@ services:
       POSTGRES_PASSWORD: root
     volumes:
       - ./mock/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres-data:/var/lib/postgresql/data
 
   pgadmin:
     container_name: pgadmin4_container
@@ -36,10 +35,7 @@ services:
       - "27018:27017"
     volumes:
       - ./mock/init.js:/docker-entrypoint-initdb.d/init.js
-      - mongo-data:/data/db
     command: ["mongod", "--bind_ip_all"]
 
 volumes:
   pgadmin-data:
-  mongo-data:
-  postgres-data:
