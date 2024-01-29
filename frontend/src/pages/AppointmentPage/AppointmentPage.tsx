@@ -1,7 +1,9 @@
+import AppointmentPanel from "./components/AppointmentPanel";
+
 export default function AppointmentPage() {
   return (
-    <div>
-      <h1>Appointment Page</h1>
+    <div className="flex justify-center">
+      <AppointmentPanel/>
     </div>
   )
 }
