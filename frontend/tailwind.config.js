@@ -7,6 +7,8 @@ export default {
         "example-color": "#ff0000"
       },
       fontFamily: {
+        "sans": ["Prompt", "sans-serif"],
+        "noto-sans": ["Noto Sans Thai", "sans-serif"],
         "example-font": ["Inter var", "sans-serif"]
       }
     }
