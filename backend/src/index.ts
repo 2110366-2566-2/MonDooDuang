@@ -1,22 +1,13 @@
 import express, { Request, Response, Application } from "express"
 import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
-import { Client } from "pg"
+import { connectToDatabase } from "./configs/pgdbConnnection"
 
 // For env File
 dotenv.config()
 
 const app: Application = express()
 const port = process.env.PORT ?? 8000
-const db = new Client({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  port: parseInt(process.env.PG_PORT ?? "5432"),
-  password: process.env.PG_PASSWORD
-})
-
-db.connect()
 
 app.get("/HelloWorld", (req: Request, res: Response) => {
   res.send("Hello World")
@@ -31,4 +22,8 @@ app.listen(port, () => {
 
 app.use("/example", exampleRouter)
 
-export { app, db }
+connectToDatabase().catch((error) => {
+  console.error("Error connecting to the database:", error)
+})
+
+export default app
