@@ -2,13 +2,16 @@
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    colors: {
-      "example-color": "#ff0000"
-    },
-    fontFamily: {
-      "example-font": ["Inter var", "sans-serif"]
-    },
-    extend: {}
+    extend: {
+      colors: {
+        "example-color": "#ff0000"
+      },
+      fontFamily: {
+        "sans": ["Prompt", "sans-serif"],
+        "noto-sans": ["Noto Sans Thai", "sans-serif"],
+        "example-font": ["Inter var", "sans-serif"]
+      }
+    }
   },
   plugins: []
 }
