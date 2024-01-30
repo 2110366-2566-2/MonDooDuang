@@ -1,7 +1,11 @@
+import Breadcrumb from "./components/Breadcrumb/Breadcrumb"
+import FortuneTellerDetails from "./components/FortuneTellerDetails/FortuneTellerDetails"
+
 export default function FortuneTellerDetailPage() {
   return (
     <div>
-      <h1>Fortune Teller Detail Page</h1>
+      <Breadcrumb></Breadcrumb>
+      <FortuneTellerDetails></FortuneTellerDetails>
     </div>
   )
 }
