@@ -41,7 +41,7 @@ CREATE TABLE FORTUNE_TELLER (
     FOREIGN KEY(FortuneTellerId) REFERENCES USER_TABLE(UserId)
 );
 
-CREATE TYPE speciality_enum AS ENUM('Tarot card', 'Thai', 'Number', 'Oracle', 'Runes');
+CREATE TYPE speciality_enum AS ENUM('TAROT_CARD', 'THAI', 'NUMBER', 'ORACLE', 'RUNES');
 
 CREATE TABLE PACKAGE(
     PackageId   CHAR(36) PRIMARY KEY,
