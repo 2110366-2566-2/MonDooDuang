@@ -4,10 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        "example-color": "#ff0000"
+        "example-color": "#ff0000",
+        "mdd-link-yellow": "#FFD233"
       },
       fontFamily: {
-        "sans": ["Prompt", "sans-serif"],
+        sans: ["Prompt", "sans-serif"],
         "noto-sans": ["Noto Sans Thai", "sans-serif"],
         "example-font": ["Inter var", "sans-serif"]
       }
