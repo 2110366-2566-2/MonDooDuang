@@ -1,17 +1,16 @@
 import Arrow from "./Arrow"
-import { Link } from 'react-router-dom'
 
 export default function Breadcrumb() {
     function refreshPage() {
       window.location.reload();
     }
     return (
-      <nav>
-      <Link className="breadcrumb-font" to="/">
+      <nav className = "flex content-center text-[24px] gap-[10px]">
+      <a className= "inline-flex items-center" href="/search">
         หน้าหลัก
-      </Link>
+      </a>
       <Arrow></Arrow>
-      <button className="breadcrumb-font" onClick={refreshPage}>
+      <button className="text-mdd-link-yellow flex items-center" onClick={refreshPage}>
         รายละเอียดเพิ่มเติม
       </button>
     </nav>
