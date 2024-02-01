@@ -1,4 +1,8 @@
-.title{
-    color: red;
-    font-family: "Libre Bodoni";
+
+.css-1eurbeq-MuiPickersToolbar-root-MuiDatePickerToolbar-root {
+    background-color: green;
+}
+
+.mui-datepicker {
+    --mui-datepicker-color: red;
 }
