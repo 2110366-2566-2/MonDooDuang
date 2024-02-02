@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-interface MessageProps {
+export interface MessageProps {
   username: string
   text: string
   sender: "SELF" | "OTHER"

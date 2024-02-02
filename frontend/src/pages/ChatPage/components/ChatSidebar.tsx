@@ -18,9 +18,6 @@ const mockData = [
 ]
 
 export default function ChatSidebar({ conversationIds }: ChatSidebarProps) {
-  // Receive all conversationId
-  // Get username + lastest msg
-  // Show
   return (
     <Container>
       {mockData.map((data) => (

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import io from "socket.io-client"
-import Message from "./Message"
+import MessageList from "./MessageList"
+import ChatFooter from "./ChatFooter"
 
 const socket = io("http://localhost:5002")
 
-interface Message {
+export interface MessageType {
   username: string
   text: string
   sender: "SELF" | "OTHER"
@@ -13,11 +14,11 @@ interface Message {
 }
 
 export default function ChatBox() {
-  const [messages, setMessages] = useState<Message[]>([])
+  const [messages, setMessages] = useState<MessageType[]>([])
   const [messageText, setMessageText] = useState<string>("")
 
   useEffect(() => {
-    socket.on("receiveMessage", (message: Message) => {
+    socket.on("receiveMessage", (message: MessageType) => {
       console.log("CHECK", message)
       setMessages((prevMessages) => [...prevMessages, message])
     })
@@ -42,29 +43,14 @@ export default function ChatBox() {
   }
 
   return (
-    <div className="App">
+    <>
       <h1>Real-Time Chat App</h1>
-      <div className="messages">
-        {messages.map((message, index) => (
-          <Message
-            key={index}
-            username={message.username}
-            text={message.text}
-            sender={message.sender}
-            isRead={message.isRead}
-            timeSent={message.timeSent}
-          />
-        ))}
-      </div>
-      <div className="input-box">
-        <input
-          type="text"
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
-    </div>
+      <MessageList messages={messages} />
+      <ChatFooter
+        messageText={messageText}
+        setMessageText={setMessageText}
+        sendMessage={sendMessage}
+      />
+    </>
   )
 }
