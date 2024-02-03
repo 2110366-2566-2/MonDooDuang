@@ -1,32 +1,9 @@
 import { useState, useEffect } from "react"
-import styled from "styled-components"
 import { ChatService } from "../services/ChatService"
 
 interface ChatListProps {
   conversationId: string
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 79px;
-  width: 339px;
-  background-color: rgba(217, 217, 217, 0.51);
-  border-radius: 10px;
-  margin-top: 10px;
-`
-
-const Picture = styled.div`
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
-  background-color: #000;
-`
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
@@ -45,12 +22,12 @@ export default function ChatList({ conversationId }: ChatListProps) {
     fetchNameWithLastMessage()
   }, [])
   return (
-    <Container>
-      <Picture />
-      <ContentContainer>
-        <p>{name}</p>
-        <p>{lastMessage}</p>
-      </ContentContainer>
-    </Container>
+    <div className="flex flex-row items-center h-[79px] w-[339px] bg-opacity-50 bg-gray-300 rounded-md mt-[10px]">
+      <div className="h-[60px] w-[60px] rounded-full bg-black mx-2"></div>
+      <div className="flex flex-col ml-4">
+        <p className="text-xl font-semibold">พอตเต้อ</p>
+        <p className="text-sm">อยากมีแฟน</p>
+      </div>
+    </div>
   )
 }

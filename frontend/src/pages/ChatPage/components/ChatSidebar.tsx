@@ -1,22 +1,19 @@
-import styled from "styled-components"
 import ChatList from "./ChatList"
 interface ChatSidebarProps {
   conversationIds: string[]
 }
 
-const Container = styled.div`
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  margin: 100px;
-`
-
 export default function ChatSidebar({ conversationIds }: ChatSidebarProps) {
   return (
-    <Container>
+    <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">
+      <input
+        type="text"
+        placeholder="ค้นหาข้อความและห้องแชท"
+        className="h-[32px] w-[307px] mt-[10px] p-2 rounded-3xl bg-gray-300 text-white placeholder-white"
+      />
       {conversationIds.map((conversationId) => (
         <ChatList conversationId={conversationId} key={conversationId} />
       ))}
-    </Container>
+    </div>
   )
 }
