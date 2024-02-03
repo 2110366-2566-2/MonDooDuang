@@ -48,7 +48,7 @@ export default function ChatBox() {
   }
 
   const joinRoom = () => {
-    socket.emit("join-room", room)
+    socket.emit("joinRoom", room)
   }
 
   return (
