@@ -31,6 +31,7 @@
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-misused-promises": "off",
     "no-empty-function": "off",
     "prettier/prettier": ["error", {}, { "usePrettierrc": true }]
   }
