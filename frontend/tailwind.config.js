@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        "example-color": "#ff0000"
+        "example-color": "#ff0000",
+        "text-field": "rgba(255, 255, 255, 0.54)",
+        "yellow-radio-button": "#FFD233"
       },
       fontFamily: {
         "sans": ["Prompt", "sans-serif"],
