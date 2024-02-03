@@ -1,3 +1,5 @@
+import ReportChoice from "./ReportChoice"
+
 export default function ReportModal(props: {
   isShowReport: boolean
   setIsShowReport: React.Dispatch<React.SetStateAction<boolean>>
@@ -14,47 +16,19 @@ export default function ReportModal(props: {
           <div className="font-normal text-sm text-mdd-grey">กรุณาเลือกปัญหาที่ต้องการรายงาน</div>
         </div>
         <form id="report-form" className="font-normal text-base">
-          <label>
-            <input type="radio" name="report-type" id="no-show" value="no-show" />
-            ไม่มาตามนัดหมาย
-          </label>
-          <br />
-          <label>
-            <input type="radio" name="report-type" id="spam" value="spam" />
-            สแปม
-          </label>
-          <br />
-          <label>
-            <input
-              type="radio"
-              name="report-type"
-              id="sexual-harassment"
-              value="sexual-harassment"
-            />
-            คุกคามทางเพศ
-          </label>
-          <br />
-          <label>
-            <input
-              type="radio"
-              name="report-type"
-              id="inappropriate-behavior"
-              value="inappropriate-behavior"
-            />
-            สร้างความรบกวน
-          </label>
-          <br />
-          <label>
-            <input type="radio" name="report-type" id="others" value="others" />
-            อื่น ๆ
-          </label>
-          <input
-            className="bg-transparent"
-            type="text"
-            id="description"
-            placeholder="โปรดระบุ................"
+          <ReportChoice id="no-show" value="no-show" description="ไม่มาตามนัดหมาย" />
+          <ReportChoice id="spam" value="spam" description="สแปม" />
+          <ReportChoice
+            id="sexual-harassment"
+            value="sexual-harassment"
+            description="คุกคามทางเพศ"
           />
-          <br />
+          <ReportChoice
+            id="inappropriate-behavior"
+            value="inappropriate-behavior"
+            description="สร้างความรบกวน"
+          />
+          <ReportChoice id="others" value="others" description="อื่น ๆ" />
         </form>
         <div className="w-full flex justify-evenly items-center">
           <button
