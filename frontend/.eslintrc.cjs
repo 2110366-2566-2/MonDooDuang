@@ -15,7 +15,7 @@ module.exports = {
     "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0 }],
     indent: ["error", 2],
     semi: ["error", "never"],
-    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/consistent-type-imports": "off"
   }
