@@ -10,6 +10,8 @@ export const chatService = {
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const data = await chatRepository.getNameWithLastMessage(conversationId, userId)
+    data.name = data.name[0].result
+    data.lastMessage = data.lastMessage[0].messagetext
     return data
   },
   // Socket service

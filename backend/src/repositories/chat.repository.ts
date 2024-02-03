@@ -39,8 +39,8 @@ export const chatRepository = {
       [conversationId]
     )
     return {
-      name: name.rows[0].result,
-      lastMessage: lastMessage.rows[0].messagetext
+      name: name.rows,
+      lastMessage: lastMessage.rows
     }
   }
 }
