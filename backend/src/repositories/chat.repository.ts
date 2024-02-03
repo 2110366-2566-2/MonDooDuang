@@ -42,5 +42,21 @@ export const chatRepository = {
       name: name.rows,
       lastMessage: lastMessage.rows
     }
+  },
+  getMessagesByConversationId: async (conversationId: string, userId: string) => {
+    const result = await db.query(
+      `
+        SELECT messagetext, created_at, isRead,
+        CASE 
+          WHEN senderid = $2 THEN 'SELF'
+          WHEN senderid <> $2 THEN 'OTHER'
+        END AS sender
+        FROM MESSAGE
+        WHERE conversationid = $1
+        ORDER BY created_at
+      `,
+      [conversationId, userId]
+    )
+    return result.rows
   }
 }

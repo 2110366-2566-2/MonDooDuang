@@ -1,5 +1,6 @@
 // Connect db -> + Join room with conver id
 // get all message
+// sendmessage -> stored in db
 
 import { Socket } from "socket.io"
 import { chatRepository } from "../../repositories/chat.repository"
@@ -13,6 +14,17 @@ export const chatService = {
     data.name = data.name[0].result
     data.lastMessage = data.lastMessage[0].messagetext
     return data
+  },
+  getMessagesByConversationId: async (conversationId: string, userId: string) => {
+    const messages = await chatRepository.getMessagesByConversationId(conversationId, userId)
+    return messages.map((message) => {
+      return {
+        message: message.messagetext,
+        timeSent: message.created_at,
+        sender: message.sender,
+        isRead: message.isread
+      }
+    })
   },
   // Socket service
   sendMessage: (socket: Socket) => {
@@ -32,7 +44,7 @@ export const chatService = {
   },
   disconnect: (socket: Socket) => {
     socket.on("disconnect", () => {
-      console.log("User disconnected")
+      //   console.log("User disconnected")
     })
   }
 }

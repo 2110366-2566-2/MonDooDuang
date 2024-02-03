@@ -13,8 +13,7 @@ export default function MessageList({ messages }: MessageListProps) {
         {messages.map((message, index) => (
           <Message
             key={index}
-            username={message.username}
-            text={message.text}
+            message={message.message}
             sender={message.sender}
             isRead={message.isRead}
             timeSent={message.timeSent}

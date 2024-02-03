@@ -2,8 +2,7 @@ import React from "react"
 import styled from "styled-components"
 
 export interface MessageProps {
-  username: string
-  text: string
+  message: string
   sender: "SELF" | "OTHER"
   isRead: boolean
   timeSent: number
@@ -11,12 +10,11 @@ export interface MessageProps {
 
 const Container = styled.div``
 
-const Message: React.FC<MessageProps> = ({ username, text, sender, isRead, timeSent }) => {
+const Message: React.FC<MessageProps> = ({ message, sender, isRead, timeSent }) => {
   return (
     <Container>
-      {/* <p>{username}</p> */}
       <p>{sender}</p>
-      <p>{text}</p>
+      <p>{message}</p>
       <p>{isRead}</p>
       <p>{timeSent}</p>
     </Container>

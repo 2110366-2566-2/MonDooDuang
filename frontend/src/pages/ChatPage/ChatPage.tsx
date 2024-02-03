@@ -29,7 +29,7 @@ export default function ChatPage() {
   return (
     <Container>
       <ChatSidebar conversationIds={conversationIds} />
-      <ChatBox />
+      <ChatBox conversationId={conversationIds[conversationIds.length - 1]} />
     </Container>
   )
 }
