@@ -1,7 +1,7 @@
 import express, { Request, Response, Application } from "express"
 import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
-import { connectToDatabase } from "./configs/pgdbConnnection"
+import { connectToDatabase } from "./configs/pgdbConnection"
 
 // For env File
 dotenv.config()
