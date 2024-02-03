@@ -7,5 +7,10 @@ export const reportService = {
 
     const isSuccess = await reportRepository.createReport(report)
     return isSuccess
+  },
+
+  getReporteeId: async (conversationId: string, reporterId: string) => {
+    const reporteeId = await reportRepository.getReporteeId(conversationId, reporterId)
+    return reporteeId
   }
 }

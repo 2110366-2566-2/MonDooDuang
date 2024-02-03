@@ -21,6 +21,19 @@ const createReport = async (req: Request, res: Response) => {
   res.status(201).json({ success: isSuccess })
 }
 
+const getReporteeId = async (req: Request, res:Response) =>{
+  const conversationId = req.params.conversationId
+  const reporterId = req.params.userId
+  
+  const reporteeId = await reportService.getReporteeId(conversationId, reporterId)
+
+  if (!reporteeId)  
+    return res.status(400).json({success: false})
+  
+  res.status(200).json({success:true, data: reporteeId})
+}
+
 export const reportController = {
-  createReport
+  createReport,
+  getReporteeId
 }

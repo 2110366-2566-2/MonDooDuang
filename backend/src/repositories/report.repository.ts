@@ -17,5 +17,19 @@ export const reportRepository = {
     } catch (err) {
       return false
     }
+  },
+  getReporteeId: async (conversationId: string, reporterId: string) => {
+    const result = await db.query(
+      `SELECT FortuneTellerId, CustomerId
+      FROM CONVERSATION
+      WHERE ConversationId = $1;`,
+      [conversationId]
+    )
+
+    if (result.rows.length == 0) return null
+
+    if (result.rows[0].fortunetellerid == reporterId) 
+      return result.rows[0].customerid
+    return result.rows[0].fortunetellerid
   }
 }
