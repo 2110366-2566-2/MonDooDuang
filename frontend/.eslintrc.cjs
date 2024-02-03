@@ -17,6 +17,7 @@ module.exports = {
     semi: ["error", "never"],
     "@typescript-eslint/explicit-function-return-type": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/consistent-type-imports": "off"
+    "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/no-misused-promises": "warn"
   }
 }
