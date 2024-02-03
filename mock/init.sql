@@ -1,11 +1,13 @@
 -- TEST MOUNT FILE
 -- TEST INIT
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TYPE gender_enum AS ENUM('MALE', 'FEMALE', 'LGBTQA+', 'NOT_TO_SAY');
 CREATE TYPE usertype_enum AS ENUM('CUSTOMER', 'FORTUNE_TELLER');
 
 CREATE TABLE ADMIN (
-    AdminId CHAR(36) PRIMARY KEY,
+    AdminId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Email VARCHAR(200) UNIQUE NOT NULL,
     Password VARCHAR(500) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -14,7 +16,7 @@ CREATE TABLE ADMIN (
 
 
 CREATE TABLE USER_TABLE (
-    UserId CHAR(36) PRIMARY KEY,
+    UserId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Fname VARCHAR(100) NOT NULL,
     Lname VARCHAR(100) NOT NULL,
     Gender gender_enum NOT NULL,
@@ -34,7 +36,7 @@ CREATE TABLE USER_TABLE (
 
 
 CREATE TABLE FORTUNE_TELLER (
-    FortuneTellerId CHAR(36) PRIMARY KEY,
+    FortuneTellerId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     IsVerified BOOLEAN NOT NULL,
     Description VARCHAR(300),
     IdentityCardNumber VARCHAR(30) NOT NULL,
@@ -50,7 +52,7 @@ CREATE TABLE FORTUNE_TELLER (
 CREATE TYPE speciality_enum AS ENUM('TAROT_CARD', 'THAI', 'NUMBER', 'ORACLE', 'RUNES');
 
 CREATE TABLE PACKAGE(
-    PackageId   CHAR(36) PRIMARY KEY,
+    PackageId   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Speciality  speciality_enum NOT NULL,
     Description VARCHAR(500),
     Duration    INTEGER  CHECK(Duration > 0),
@@ -63,7 +65,7 @@ CREATE TABLE PACKAGE(
 
 -- CONVERSATION (May be NoSQL)
 CREATE TABLE CONVERSATION(
-    ConversationId CHAR(36) PRIMARY KEY,
+    ConversationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     FortuneTellerID CHAR(36) NOT NULL,
     CustomerId CHAR(36) NOT NULL,
     FOREIGN KEY(FortuneTellerID) REFERENCES FORTUNE_TELLER(FortuneTellerId),
@@ -75,7 +77,7 @@ CREATE TABLE CONVERSATION(
 
 -- MESSAGE (May be NoSQL)
 CREATE TABLE MESSAGE(
-    MessageId CHAR(36) PRIMARY KEY,
+    MessageId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     SenderId CHAR(36) NOT NULL,
     MessageText VARCHAR(500) NOT NULL,
     IsRead  BOOLEAN NOT NULL DEFAULT FALSE,
@@ -89,7 +91,7 @@ CREATE TABLE MESSAGE(
 CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'CANCELED', 'SUSPENDED', 'REFUNDED');
 
 CREATE TABLE APPOINTMENT (
-    AppointmentId CHAR(36) PRIMARY KEY,
+    AppointmentId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Status appointment_status_enum NOT NULL,
     PackageId CHAR(36) NOT NULL,
     CustomerId CHAR(36) NOT NULL,
@@ -103,7 +105,7 @@ CREATE TABLE APPOINTMENT (
 );
 
 CREATE TABLE REVIEW (
-    ReviewId CHAR(36) PRIMARY KEY,
+    ReviewId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     ReviewMessage VARCHAR(500),
     Score INTEGER NOT NULL,
     CustomerId CHAR(36) NOT NULL,
@@ -120,7 +122,7 @@ CREATE TYPE payment_method_enum AS ENUM('BANK', 'CREDIT_CARD');
 CREATE TYPE payment_status_enum AS ENUM('FROM_CUSTOMER', 'TO_FORTUNE_TELLER', 'REFUND');
 
 CREATE TABLE PAYMENT(
-    PaymentId   CHAR(36) PRIMARY KEY,
+    PaymentId   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Method payment_method_enum NOT NULL,
     Status payment_status_enum NOT NULL,
     Amount INTEGER  CHECK(Amount BETWEEN 0 AND 1000000 ),
@@ -137,7 +139,7 @@ CREATE TYPE report_status_enum AS ENUM ('PENDING','COMPLETED');
 CREATE TYPE notification_type_enum AS ENUM ('VERIFICATION', 'CHAT', 'APPOINTMENT');
 CREATE TYPE appointment_notification_type_enum AS ENUM ('REMINDER', 'COMPLETE', 'CANCEL', 'NEW', 'ACCEPT');
 CREATE TABLE REPORT (
-    ReportId CHAR(36) PRIMARY KEY,
+    ReportId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Description VARCHAR(200) NOT NULL,
     ReportType report_type_enum NOT NULL,
     Status report_status_enum NOT NULL,
@@ -152,7 +154,7 @@ CREATE TABLE REPORT (
 );
 
 CREATE TABLE NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY,
+    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     UserId  CHAR(36) NOT NULL,
     Type notification_type_enum NOT NULL,
     FOREIGN KEY (UserId) REFERENCES USER_TABLE(UserId),
@@ -161,7 +163,7 @@ CREATE TABLE NOTIFICATION (
 );
 
 CREATE TABLE APPOINTMENT_NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY,
+    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Type appointment_notification_type_enum NOT NULL,
     AppointmentId CHAR(36) NOT NULL,
     FOREIGN KEY (AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
@@ -171,7 +173,7 @@ CREATE TABLE APPOINTMENT_NOTIFICATION (
 );
 
 CREATE TABLE CHAT_NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY,
+    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     ConversationId CHAR(36) NOT NULL,
     FOREIGN KEY (ConversationId) REFERENCES CONVERSATION(ConversationId),
     FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId),
