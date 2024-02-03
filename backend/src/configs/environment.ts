@@ -19,6 +19,7 @@ export const environment = {
     password: process.env.PG_PASSWORD ?? ""
   },
   stripe: {
+    secretKey: process.env.STRIPE_SECRET_KEY ?? "",
     publicKey: process.env.STRIPE_PUBLIC_KEY ?? "",
     apiVersion: "2020-08-27"
   }
