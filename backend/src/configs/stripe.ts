@@ -1,4 +1,4 @@
-import stripeConfig from "stripe"
+import StripeConfig from "stripe"
 import { environment } from "./environment"
 
-export const stripe = new stripeConfig(environment.stripe.publicKey)
+export const stripe = new StripeConfig(environment.stripe.publicKey)
