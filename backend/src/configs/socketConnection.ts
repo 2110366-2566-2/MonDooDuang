@@ -15,9 +15,17 @@ export const connectToSocket = (app: Application) => {
   io.on("connection", (socket) => {
     console.log("New user connected")
 
-    socket.on("sendMessage", (message) => {
+    socket.on("sendMessage", (message: string, room: string) => {
+      if (room === "") {
+        socket.broadcast.emit("receiveMessage", message)
+      } else {
+        socket.to(room).emit("receiveMessage", message)
+      }
       console.log(message)
-      socket.broadcast.emit("receiveMessage", message)
+    })
+
+    socket.on("join-room", async (room: string) => {
+      await socket.join(room)
     })
 
     socket.on("disconnect", () => {

@@ -16,6 +16,7 @@ export interface MessageType {
 export default function ChatBox() {
   const [messages, setMessages] = useState<MessageType[]>([])
   const [messageText, setMessageText] = useState<string>("")
+  const [room, setRoom] = useState<string>("")
 
   useEffect(() => {
     socket.on("receiveMessage", (message: MessageType) => {
@@ -28,18 +29,26 @@ export default function ChatBox() {
   }, [])
 
   const sendMessage = () => {
-    socket.emit("sendMessage", {
-      username: "Not You",
-      text: messageText,
-      sender: "OTHER",
-      isRead: false,
-      timeSent: Date.now()
-    })
+    socket.emit(
+      "sendMessage",
+      {
+        username: "Not You",
+        text: messageText,
+        sender: "OTHER",
+        isRead: false,
+        timeSent: Date.now()
+      },
+      room
+    )
     setMessages((prevMessages) => [
       ...prevMessages,
       { username: "You", text: messageText, sender: "SELF", isRead: true, timeSent: Date.now() }
     ])
     setMessageText("")
+  }
+
+  const joinRoom = () => {
+    socket.emit("join-room", room)
   }
 
   return (
@@ -50,6 +59,9 @@ export default function ChatBox() {
         messageText={messageText}
         setMessageText={setMessageText}
         sendMessage={sendMessage}
+        room={room}
+        setRoom={setRoom}
+        joinRoom={joinRoom}
       />
     </>
   )
