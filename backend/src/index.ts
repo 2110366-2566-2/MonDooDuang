@@ -2,6 +2,7 @@ import express, { Request, Response, Application } from "express"
 import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
 import { connectToDatabase } from "./configs/pgdbConnnection"
+import authRouter from "./routes/auth.routes"
 
 // For env File
 dotenv.config()
@@ -21,6 +22,8 @@ app.listen(port, () => {
 // please use app.use("/", someRouter) **not recommended**
 
 app.use("/example", exampleRouter)
+
+app.use("/auth", authRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
