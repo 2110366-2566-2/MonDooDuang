@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import ChatList from "./ChatList"
-
 interface ChatSidebarProps {
   conversationIds: string[]
 }
@@ -12,20 +11,11 @@ const Container = styled.div`
   margin: 100px;
 `
 
-const mockData = [
-  { pictureProfile: "APic", username: "A", message: "Hello" },
-  { pictureProfile: "BPic", username: "B", message: "Hi" }
-]
-
 export default function ChatSidebar({ conversationIds }: ChatSidebarProps) {
   return (
     <Container>
-      {mockData.map((data) => (
-        <ChatList
-          profilePicture={data.pictureProfile}
-          username={data.username}
-          message={data.message}
-        />
+      {conversationIds.map((conversationId) => (
+        <ChatList conversationId={conversationId} key={conversationId} />
       ))}
     </Container>
   )

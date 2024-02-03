@@ -7,5 +7,40 @@ export const chatRepository = {
       [userId]
     )
     return result.rows
+  },
+  getNameWithLastMessage: async (conversationId: string, userId: string) => {
+    const name = await db.query(
+      `
+        SELECT 
+        CASE 
+            WHEN fortunetellerid = $2 THEN (
+                SELECT CONCAT(fname,' ',lname) FROM USER_TABLE 
+                WHERE USER_TABLE.userid = CONVERSATION.customerid
+            )
+            WHEN customerid = $2 THEN (
+                SELECT stagename FROM FORTUNE_TELLER
+                WHERE FORTUNE_TELLER.fortunetellerid = CONVERSATION.fortunetellerid
+            )
+        END AS result
+        FROM 
+            CONVERSATION
+        WHERE conversationid = $1
+    `,
+      [conversationId, userId]
+    )
+    const lastMessage = await db.query(
+      `
+        SELECT MESSAGE.messagetext 
+        FROM MESSAGE
+        WHERE MESSAGE.conversationid = $1
+        ORDER BY created_at DESC
+        LIMIT 1
+    `,
+      [conversationId]
+    )
+    return {
+      name: name.rows[0].result,
+      lastMessage: lastMessage.rows[0].messagetext
+    }
   }
 }

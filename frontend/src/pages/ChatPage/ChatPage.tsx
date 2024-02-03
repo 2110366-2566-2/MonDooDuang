@@ -1,7 +1,7 @@
 import ChatSidebar from "./components/ChatSidebar"
 import ChatBox from "./components/ChatBox"
 import styled from "styled-components"
-import { ChatService } from "./services/chatService"
+import { ChatService } from "./services/ChatService"
 import { useEffect, useState } from "react"
 const Container = styled.div`
   display: flex;
@@ -9,17 +9,17 @@ const Container = styled.div`
   flex-direction: row;
 `
 
+const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
+
 export default function ChatPage() {
-  const [conver, setConver] = useState<string[]>([""])
+  const [conversationIds, setConversationIds] = useState<string[]>([""])
   useEffect(() => {
-    const fetchConversation = async () => {
-      const response = await ChatService.getConversationsByUserId(
-        "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
-      )
-      const data = await response.json()
-      setConver(data)
+    const fetchConversations = async () => {
+      const response = await ChatService.getConversationsByUserId(mockUserId)
+      const conversationIds = await response.json()
+      setConversationIds(conversationIds)
     }
-    fetchConversation()
+    fetchConversations()
   }, [])
 
   // TODO
@@ -28,11 +28,8 @@ export default function ChatPage() {
   // When click on sidebar -> Get all msg  + Joinroom
   return (
     <Container>
-      <ChatSidebar conversationIds={["1", "2", "3"]} />
+      <ChatSidebar conversationIds={conversationIds} />
       <ChatBox />
-      {conver.map((data) => {
-        return <div>{data}</div>
-      })}
     </Container>
   )
 }
