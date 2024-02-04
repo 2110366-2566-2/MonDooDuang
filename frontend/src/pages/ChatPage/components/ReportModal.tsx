@@ -14,6 +14,14 @@ export default function ReportModal(props: {
     setText("")
   }
 
+  const reportChoices = [
+    { id: "no-show", description: "ไม่มาตามนัดหมาย" },
+    { id: "spam", description: "สแปม" },
+    { id: "sexual-harassment", description: "คุกคามทางเพศ" },
+    { id: "inappropriate-behavior", description: "สร้างความรบกวน" },
+    { id: "others", description: "อื่น ๆ" }
+  ]
+
   return (
     <div
       className={`w-screen h-screen bg-mdd-overlay-grey bg-opacity-50 fixed top-0 left-0 z-[2] ${
@@ -26,51 +34,20 @@ export default function ReportModal(props: {
           <div className="font-normal text-sm text-mdd-grey">กรุณาเลือกปัญหาที่ต้องการรายงาน</div>
         </div>
         <form id="report-form" className="font-normal text-base">
-          <ReportChoice
-            id="no-show"
-            value="no-show"
-            description="ไม่มาตามนัดหมาย"
-            report={report}
-            setReport={setReport}
-            text={text}
-            setText={setText}
-          />
-          <ReportChoice
-            id="spam"
-            value="spam"
-            description="สแปม"
-            report={report}
-            setReport={setReport}
-            text={text}
-            setText={setText}
-          />
-          <ReportChoice
-            id="sexual-harassment"
-            value="sexual-harassment"
-            description="คุกคามทางเพศ"
-            report={report}
-            setReport={setReport}
-            text={text}
-            setText={setText}
-          />
-          <ReportChoice
-            id="inappropriate-behavior"
-            value="inappropriate-behavior"
-            description="สร้างความรบกวน"
-            report={report}
-            setReport={setReport}
-            text={text}
-            setText={setText}
-          />
-          <ReportChoice
-            id="others"
-            value="others"
-            description="อื่น ๆ"
-            report={report}
-            setReport={setReport}
-            text={text}
-            setText={setText}
-          />
+          {reportChoices.map((data) => {
+            return (
+              <ReportChoice
+                key={data.id}
+                id={data.id}
+                value={data.id}
+                description={data.description}
+                report={report}
+                setReport={setReport}
+                text={text}
+                setText={setText}
+              />
+            )
+          })}
         </form>
         <div className="w-full flex justify-evenly items-center">
           <button
