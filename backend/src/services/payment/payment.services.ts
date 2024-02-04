@@ -8,7 +8,8 @@ export const paymentService = {
     }
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: "thb"
+      currency: "thb",
+      payment_method_types: ["card"]
     })
     return paymentIntent
   },
