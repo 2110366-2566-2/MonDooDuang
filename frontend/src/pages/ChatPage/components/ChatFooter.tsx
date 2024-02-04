@@ -1,4 +1,5 @@
 import EventAvailableIcon from "@mui/icons-material/EventAvailable"
+import SendIcon from "@mui/icons-material/Send"
 interface ChatFooterProps {
   messageText: string
   setMessageText: (message: string) => void
@@ -7,18 +8,20 @@ interface ChatFooterProps {
 
 export default function ChatFooter({ messageText, setMessageText, sendMessage }: ChatFooterProps) {
   return (
-    <div className="w-[821px] h-[59px] bg-gray-300 p-4 flex justify-center items-center">
-      <EventAvailableIcon />
-      <input
-        type="text"
-        value={messageText}
-        onChange={(e) => setMessageText(e.target.value)}
-        placeholder="Type your message..."
-        className="flex-grow p-2 border border-gray-400 rounded-md mr-2"
-      />
-      <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-        Send
-      </button>
+    <div className="h-[59px] bg-gray-300 p-4 flex justify-center items-center">
+      <EventAvailableIcon fontSize="large" />
+      <div className="flex ml-2">
+        <input
+          type="text"
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+          placeholder="พิมพ์ข้อความ"
+          className="p-2 bg-gray-100 rounded-l-lg w-[821px]"
+        />
+        <button onClick={sendMessage} className="p-2 bg-gray-100 rounded-r-lg">
+          <SendIcon />
+        </button>
+      </div>
     </div>
   )
 }

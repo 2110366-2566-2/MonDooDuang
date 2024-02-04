@@ -4,6 +4,7 @@ import MessageList from "./MessageList"
 import ChatFooter from "./ChatFooter"
 import { ChatService } from "../services/ChatService"
 import { serviceConfig } from "../../../common/services/serviceConfig"
+import ChatHeader from "./ChatHeader"
 
 const socket = io(serviceConfig.backendBaseUrl)
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
@@ -64,14 +65,16 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
   }
 
   return (
-    <>
-      <h1>Real-Time Chat App</h1>
+    <div className="relative flex flex-col h-screen">
+      <ChatHeader name={"พอตเตอร์"} />
       <MessageList messages={messages} />
-      <ChatFooter
-        messageText={messageText}
-        setMessageText={setMessageText}
-        sendMessage={sendMessage}
-      />
-    </>
+      <div className="mt-auto">
+        <ChatFooter
+          messageText={messageText}
+          setMessageText={setMessageText}
+          sendMessage={sendMessage}
+        />
+      </div>
+    </div>
   )
 }

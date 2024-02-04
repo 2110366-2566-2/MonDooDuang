@@ -25,7 +25,7 @@ export default function ChatPage() {
       <div className="w-1/4 bg-gray-200">
         <ChatSidebar conversationIds={conversationIds} />
       </div>
-      <div className="w-3/4 bg-gray-300">
+      <div className="w-3/4 bg-gray-300 border border-white">
         <ChatBox conversationId={conversationIds[conversationIds.length - 1]} />
       </div>
     </div>
