@@ -6,6 +6,13 @@ export default function ReportModal(props: {
   setIsShowReport: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const [report, setReport] = useState(["", ""])
+  const [text, setText] = useState("")
+
+  const closeReportModal = () => {
+    props.setIsShowReport(false)
+    setReport(["", ""])
+    setText("")
+  }
 
   return (
     <div
@@ -25,6 +32,8 @@ export default function ReportModal(props: {
             description="ไม่มาตามนัดหมาย"
             report={report}
             setReport={setReport}
+            text={text}
+            setText={setText}
           />
           <ReportChoice
             id="spam"
@@ -32,6 +41,8 @@ export default function ReportModal(props: {
             description="สแปม"
             report={report}
             setReport={setReport}
+            text={text}
+            setText={setText}
           />
           <ReportChoice
             id="sexual-harassment"
@@ -39,6 +50,8 @@ export default function ReportModal(props: {
             description="คุกคามทางเพศ"
             report={report}
             setReport={setReport}
+            text={text}
+            setText={setText}
           />
           <ReportChoice
             id="inappropriate-behavior"
@@ -46,6 +59,8 @@ export default function ReportModal(props: {
             description="สร้างความรบกวน"
             report={report}
             setReport={setReport}
+            text={text}
+            setText={setText}
           />
           <ReportChoice
             id="others"
@@ -53,11 +68,13 @@ export default function ReportModal(props: {
             description="อื่น ๆ"
             report={report}
             setReport={setReport}
+            text={text}
+            setText={setText}
           />
         </form>
         <div className="w-full flex justify-evenly items-center">
           <button
-            onClick={() => props.setIsShowReport(false)}
+            onClick={closeReportModal}
             className="w-[30%] py-[0.5vw] bg-mdd-dark-grey text-white rounded-lg"
           >
             ยกเลิก

@@ -1,20 +1,19 @@
-import { useState } from "react"
-
 export default function ReportChoice(props: {
   id: string
   value: string
   description: string
   report: string[]
   setReport: React.Dispatch<React.SetStateAction<string[]>>
+  text: string
+  setText: React.Dispatch<React.SetStateAction<string>>
 }) {
-  const [text, setText] = useState("")
   const chooseThisChoice = () => {
-    if (props.value == "others") return props.setReport([props.value, text])
+    if (props.value == "others") return props.setReport([props.value, props.text])
     props.setReport([props.value, props.description])
   }
 
   const fillText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value)
+    props.setText(event.target.value)
     props.setReport([props.value, event.target.value])
   }
 
@@ -43,6 +42,7 @@ export default function ReportChoice(props: {
             type="text"
             id="description"
             placeholder="โปรดระบุ................"
+            value={props.text}
             required={props.report[0] == "others"}
             onChange={fillText}
           />
