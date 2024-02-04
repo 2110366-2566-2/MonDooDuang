@@ -23,10 +23,14 @@ export default function ChatList({ conversationId }: ChatListProps) {
   }, [])
   return (
     <div className="flex flex-row items-center h-[79px] w-[339px] bg-opacity-50 bg-gray-300 rounded-md mt-[10px]">
-      <div className="h-[60px] w-[60px] rounded-full bg-black mx-2"></div>
+      <img
+        src="https://media.licdn.com/dms/image/D5603AQHoVH_MPSIu3g/profile-displayphoto-shrink_800_800/0/1685943781433?e=2147483647&v=beta&t=D4ngFEsJ3_eqPW66rEZbf6-otKqeAA0h0hlOymqG3zs"
+        alt="Profile Picture"
+        className="h-[60px] w-[60px] rounded-full bg-black mx-2"
+      />
       <div className="flex flex-col ml-4">
-        <p className="text-xl font-semibold">พอตเต้อ</p>
-        <p className="text-sm">อยากมีแฟน</p>
+        <p className="text-xl font-semibold">บิว</p>
+        <p className="text-sm">จะแจกขนมให้ทุกคน</p>
       </div>
     </div>
   )

@@ -66,7 +66,7 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ChatHeader name={"พอตเตอร์"} />
+      <ChatHeader name={"บิว"} />
       <MessageList messages={messages} />
       <div className="mt-auto">
         <ChatFooter

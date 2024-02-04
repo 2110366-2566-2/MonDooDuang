@@ -7,19 +7,16 @@ interface MessageListProps {
 
 export default function MessageList({ messages }: MessageListProps) {
   return (
-    <>
-      <h1>Real-Time Chat App</h1>
-      <div className="messages">
-        {messages.map((message, index) => (
-          <Message
-            key={index}
-            message={message.message}
-            sender={message.sender}
-            isRead={message.isRead}
-            timeSent={message.timeSent}
-          />
-        ))}
-      </div>
-    </>
+    <div className="flex flex-col">
+      {messages.map((message, index) => (
+        <Message
+          key={index}
+          message={message.message}
+          sender="SELF"
+          isRead={message.isRead}
+          timeSent={message.timeSent}
+        />
+      ))}
+    </div>
   )
 }

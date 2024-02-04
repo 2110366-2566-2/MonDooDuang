@@ -22,10 +22,10 @@ export default function ChatPage() {
   // When click on sidebar -> Get all msg  + Joinroom
   return (
     <div className="flex h-screen">
-      <div className="w-1/4 bg-gray-200">
+      <div className="w-1/4 bg-white bg-opacity-20">
         <ChatSidebar conversationIds={conversationIds} />
       </div>
-      <div className="w-3/4 bg-gray-300 border border-white">
+      <div className="w-3/4 bg-black bg-opacity-40 border border-white">
         <ChatBox conversationId={conversationIds[conversationIds.length - 1]} />
       </div>
     </div>

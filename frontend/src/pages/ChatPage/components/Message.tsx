@@ -1,5 +1,4 @@
 import React from "react"
-import styled from "styled-components"
 
 export interface MessageProps {
   message: string
@@ -8,16 +7,18 @@ export interface MessageProps {
   timeSent: number
 }
 
-const Container = styled.div``
-
 const Message: React.FC<MessageProps> = ({ message, sender, isRead, timeSent }) => {
+  const isSelf = sender === "SELF"
   return (
-    <Container>
-      <p>{sender}</p>
-      <p>{message}</p>
-      <p>{isRead}</p>
-      <p>{timeSent}</p>
-    </Container>
+    <div className={`flex justify-${isSelf ? "end" : "start"} items-center m-1`}>
+      <div
+        className={`rounded-lg p-4 ${
+          isSelf ? "bg-white bg-opacity-84 text-black" : "bg-gray-300 bg-opacity-40 text-white"
+        } word-wrap break-words max-w-[939px]`}
+      >
+        {message}
+      </div>
+    </div>
   )
 }
 
