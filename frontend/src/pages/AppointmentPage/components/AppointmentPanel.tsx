@@ -3,21 +3,39 @@ import bg from "../../../assets/images/paper.png"
 import CancelButton from "./CancelButton"
 import ConfirmButton from "./ConfirmButton"
 import { EditButton } from "./EditButton"
-import { CoinIcon, DropDownButton, LeftArrow, RightArrow, UnderLine } from "./Icon"
 import DateTimeReserve from "./DateTimeReserve"
 import { useState } from "react"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
+import { TypeOfFortuneSelect } from "./TypeOfForTuneSelect"
+import { ThemeProvider, createTheme } from "@mui/material/styles"
+import { yellow } from "@mui/material/colors"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
-
+const newTheme = createTheme({
+  palette: {
+    primary: {
+      light: "#edbc41",
+      main: "#E9AC12",
+      dark: "#E9AC12",
+      contrastText: "#fff"
+    },
+    secondary: {
+      main: yellow[700],
+      dark: yellow[900]
+    }
+  }
+})
 export default function AppointmentPanel() {
-  const [reserveDate, setReserveDate] = useState(dayjs())
-  const [reserveTime, setReserveTime] = useState(dayjs())
   //mock data
   const fortuneTeller = "DaengDooDaung"
-  const typeOfFortune = "ดูดวงไพ่ทาโรต์"
-  const price = 300
-  const duration = 120
+  const typeOfFortunes = [
+    { id: "01", typeName: "ดูดวงไพ่ทาโรต์", price: 300, duration: 120 },
+    { id: "02", typeName: "ดูดวงไพ่ยิปซี", price: 250, duration: 120 }
+  ]
+  const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
+  const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
+  const [packageType, setPackageType] = useState(typeOfFortunes[0])
+
   //const date
   //const time
   const userInfo = {
@@ -31,66 +49,6 @@ export default function AppointmentPanel() {
       .minute(reserveTime.minute())
       .second(reserveTime.second())
     console.log(dayjs(datetime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"))
-  }
-
-  const PackageInfo = () => {
-    return (
-      <div className="space-y-5">
-        <div className="flex flex-col justify-items-center items-center space-y-3">
-          <div className="flex flex-row justify-items-center items-center space-x-3">
-            <LeftArrow />
-            <div
-              style={text_shadow}
-              className="text-white  text-[28px] font-normal font-['Libre Bodoni'] leading-[42px]"
-            >
-              หมอดู
-            </div>
-            <RightArrow />
-          </div>
-          <div className="text-center">
-            <span
-              style={text_shadow}
-              className="text-white text-[28px] font-bold font-['Libre Bodoni'] leading-[42px]"
-            >
-              {fortuneTeller}
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col justify-items-center items-center space-y-4">
-          <div className="flex flex-row justify-items-center items-center space-x-3">
-            <LeftArrow />
-            <div
-              style={text_shadow}
-              className="text-white  text-[28px] font-normal font-['Libre Bodoni'] leading-[42px]"
-            >
-              ศาสตร์การดูดวง
-            </div>
-            <RightArrow />
-          </div>
-          <div className="flex flex-col justify-items-center text-center items-center">
-            <div className="flex flex-row justify-items-center text-center items-center space-x-3">
-              <div
-                style={text_shadow}
-                className="text-white text-2xl font-medium font-['Libre Bodoni'] leading-9"
-              >
-                {typeOfFortune}
-              </div>
-              <DropDownButton />
-            </div>
-            <UnderLine />
-          </div>
-          <div className="flex flex-row justify-items-center text-center items-center space-x-2">
-            <CoinIcon />
-            <div
-              style={text_shadow}
-              className="text-center text-white text-2xl font-normal font-['Libre Bodoni'] leading-9"
-            >
-              ราคา : {price} บาท
-            </div>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   const CustomerInfo = () => {
@@ -136,8 +94,18 @@ export default function AppointmentPanel() {
           ใบจองการนัดหมายดูดวง
         </div>
       </div>
-      <PackageInfo />
-      <DateTimeReserve onDateChange={setReserveDate} onTimeChange={setReserveTime} duration={duration} />
+      <ThemeProvider theme={newTheme}>
+        <TypeOfFortuneSelect
+          typeJson={typeOfFortunes}
+          fortuneTeller={fortuneTeller}
+          onPackageChange={setPackageType}
+        />
+        <DateTimeReserve
+          onDateChange={setReserveDate}
+          onTimeChange={setReserveTime}
+          duration={packageType.duration}
+        />
+      </ThemeProvider>
       <CustomerInfo />
       <div className="w-auto flex flex-row space-x-4 justify-items-center items-center">
         <CancelButton />

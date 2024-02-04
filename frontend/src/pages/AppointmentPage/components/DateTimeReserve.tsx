@@ -4,29 +4,13 @@ import { DatePicker } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { TimePicker } from "@mui/x-date-pickers/TimePicker"
-import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { CalendarIcon, ClockIcon } from "./Icon"
-// import styles from "./stylesheet/AppointmentPanel.module.css"
-import { yellow } from "@mui/material/colors"
 import { useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
-const newTheme = createTheme({
-  palette: {
-    primary: {
-      light: "#edbc41",
-      main: "#E9AC12",
-      dark: "#E9AC12",
-      contrastText: "#fff"
-    },
-    secondary: {
-      main: yellow[700],
-      dark: yellow[900]
-    }
-  }
-})
+
 
 export default function DateTimeReserve({
   onDateChange,
@@ -150,10 +134,8 @@ export default function DateTimeReserve({
   }
   return (
     <div className="flex flex-row space-x-24">
-      <ThemeProvider theme={newTheme}>
-        {datePicker()}
-        {timePicker()}
-      </ThemeProvider>
+      {datePicker()}
+      {timePicker()}
     </div>
   )
 }
