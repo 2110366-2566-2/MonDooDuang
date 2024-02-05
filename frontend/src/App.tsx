@@ -13,7 +13,6 @@ const App = () => {
   useEffect(() => {
     const getPublicKey = async () => {
       const publishableKey = await StripeService.getPublishableKey()
-      console.log("pub key ", publishableKey)
       setStripePromise(loadStripe(publishableKey))
     }
     getPublicKey()

@@ -2,7 +2,6 @@ import { environment } from "../constants/environment"
 
 export const StripeService = {
   getPublishableKey: async (): Promise<string> => {
-    console.log("ENV, ", environment)
     const response = await fetch(`${environment.backend.url}/payment/public-key`)
     const { publishableKey } = await response.json()
     return publishableKey
