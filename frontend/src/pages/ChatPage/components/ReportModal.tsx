@@ -68,12 +68,12 @@ export default function ReportModal(props: {
         <div className="w-full flex justify-evenly items-center">
           <button
             onClick={closeReportModal}
-            className="w-[30%] py-[0.5vw] bg-mdd-dark-grey text-white rounded-lg"
+            className="w-[30%] py-[0.5vw] bg-mdd-dark-grey text-white rounded-lg hover:bg-mdd-grey"
           >
             ยกเลิก
           </button>
           <button
-            className="w-[30%] py-[0.5vw] bg-mdd-sand-yellow text-mdd-silver-grey rounded-lg"
+            className="w-[30%] py-[0.5vw] bg-mdd-sand-yellow text-mdd-silver-grey rounded-lg hover:bg-mdd-dark-sand"
             type="submit"
             form="report-form"
           >

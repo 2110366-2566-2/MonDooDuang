@@ -10,7 +10,8 @@ export default {
         "mdd-silver-grey": "#E8E8E8",
         "mdd-dark-grey": "#A1A1A1",
         "mdd-almost-black": "#3B3B3B",
-        "mdd-sand-yellow": "#E9AC12"
+        "mdd-sand-yellow": "#E9AC12",
+        "mdd-dark-sand": "#CC9403"
       },
       fontFamily: {
         "sans": ["Prompt", "sans-serif"],
