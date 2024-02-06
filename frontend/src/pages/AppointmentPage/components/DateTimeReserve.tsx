@@ -5,23 +5,30 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { TimePicker } from "@mui/x-date-pickers/TimePicker"
 import { CalendarIcon, ClockIcon } from "./Icon"
-import { useState } from "react"
+import React, { useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
 export default function DateTimeReserve({
   onDateChange,
+  isDateValid,
   onTimeChange,
+  isTimeValid,
   duration
 }: {
   onDateChange: Function
+  isDateValid: boolean
   onTimeChange: Function
+  isTimeValid: boolean
   duration: number
 }) {
   const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
   const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
   const [dateTime, setDateTime] = useState<Dayjs | null>(null)
+  const errorMessageDate = 'Please select Date'
+  const errorMessageTime = 'Please select Time'
+  
 
   const datePicker = () => {
     return (
@@ -41,6 +48,11 @@ export default function DateTimeReserve({
             onChange={(value) => {
               onDateChange(value)
               setReserveDate(value)
+            }}
+            slotProps={{
+              textField: {
+                helperText: isDateValid? "":errorMessageDate,
+              },
             }}
             disablePast={true}
             sx={{
@@ -73,6 +85,11 @@ export default function DateTimeReserve({
               <TimePicker
                 value={reserveTime}
                 disabled={reserveDate? false:true}
+                slotProps={{
+                  textField: {
+                    helperText: isTimeValid? "":errorMessageTime,
+                  },
+                }}
                 onChange={(value) => {
                   onTimeChange(value)
                   setReserveTime(value)

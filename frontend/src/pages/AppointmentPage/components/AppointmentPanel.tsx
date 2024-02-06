@@ -6,11 +6,14 @@ import { EditButton } from "./EditButton"
 import DateTimeReserve from "./DateTimeReserve"
 import { useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
-import { TypeOfFortuneSelect } from "./TypeOfForTuneSelect"
+import { TypeOfFortuneSelect } from "./TypeOfFortuneSelect"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { yellow } from "@mui/material/colors"
+import { ConfirmModal } from "./ConfirmModal"
+import { SuccessModal } from "./SuccessModal"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
+// format("YYYY-MM-DDTHH:mm:ssZ[Z]")
 const newTheme = createTheme({
   palette: {
     primary: {
@@ -32,8 +35,13 @@ export default function AppointmentPanel() {
     { id: "01", typeName: "ดูดวงไพ่ทาโรต์", price: 300, duration: 120 },
     { id: "02", typeName: "ดูดวงไพ่ยิปซี", price: 250, duration: 120 }
   ]
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+  const [isValidDate, setIsValidDate] = useState(true)
+  const [isValidTime, setIsValidTime] = useState(true)
   const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
   const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
+  // const [dateTime, setDateTime] = useState<Dayjs | null>(null)
   const [packageType, setPackageType] = useState(typeOfFortunes[0])
 
   //const date
@@ -43,13 +51,14 @@ export default function AppointmentPanel() {
     birthdate: "11 ตุลาคม 2545",
     tel: "081-234-5678"
   }
-  if (reserveDate && reserveTime) {
-    const datetime = reserveDate
-      .hour(reserveTime.hour())
-      .minute(reserveTime.minute())
-      .second(reserveTime.second())
-    console.log(dayjs(datetime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"))
-  }
+
+  // if (reserveDate && reserveTime) {
+  //   const datetime = reserveDate
+  //     .hour(reserveTime.hour())
+  //     .minute(reserveTime.minute())
+  //     .second(reserveTime.second())
+  //   // console.log(dayjs(datetime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"))
+  // }
 
   const CustomerInfo = () => {
     return (
@@ -102,16 +111,52 @@ export default function AppointmentPanel() {
           onPackageChange={setPackageType}
         />
         <DateTimeReserve
-          onDateChange={setReserveDate}
-          onTimeChange={setReserveTime}
+          onDateChange={(value: Dayjs) => {
+            setReserveDate(value)
+            setIsValidDate(true)
+            
+          }}
+          onTimeChange={(value: Dayjs) => {
+            setReserveTime(value)
+            setIsValidTime(true)
+            
+          }}
           duration={packageType.duration}
+          isDateValid={isValidDate}
+          isTimeValid={isValidTime}
         />
       </ThemeProvider>
       <CustomerInfo />
       <div className="w-auto flex flex-row space-x-4 justify-items-center items-center">
-        <CancelButton />
-        <ConfirmButton />
+        <CancelButton onClick={() => {}} />
+        <ConfirmButton
+          onClick={() => {
+            if (!reserveDate) {
+              setIsValidDate(false)
+            }
+            if (!reserveTime) {
+              setIsValidTime(false)
+            } else {
+              setIsConfirmModalOpen(true)
+            }
+          }}
+        />
       </div>
+      <ConfirmModal
+        fortuneTeller={fortuneTeller}
+        type={packageType.typeName}
+        price={packageType.price}
+        date={dayjs(reserveDate).format("DD MMM YYYY")}
+        starttime={dayjs(reserveTime).format("HH:mm")}
+        endtime={dayjs(reserveTime).add(packageType.duration, "minutes").format("HH:mm")}
+        isVisible={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={() => {
+          setIsConfirmModalOpen(false)
+          setIsSuccessModalOpen(true)
+        }}
+      />
+      <SuccessModal isVisible={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} />
     </div>
   )
 }
