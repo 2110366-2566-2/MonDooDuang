@@ -54,10 +54,10 @@ export default function AppointmentPanel() {
   const CustomerInfo = () => {
     return (
       <div className="rounded-xl border border-stone-800 border-opacity-50 px-24 py-4">
-        <div className="text-center text-stone-800 text-xl font-bold font-['Libre Bodoni'] underline leading-[30px] mb-3">
+        <div className="text-center text-stone-800 text-base xl:text-xl lg:text-lg md:text-md font-bold font-['Libre Bodoni'] underline mb-3">
           ข้อมูลผู้จอง
         </div>
-        <div className="flex flex-col text-white text-base text-lg justify-items-center items-start space-y-1">
+        <div className="flex flex-col text-white text-base xl:text-xl lg:text-lg md:text-md justify-items-center items-start space-y-1">
           <div style={text_shadow}>ชื่อผู้จอง : {userInfo.name}</div>
           <div style={text_shadow}>วันเกิด : {userInfo.birthdate}</div>
           <div style={text_shadow}>เบอร์โทรศัพท์ : {userInfo.tel}</div>
@@ -78,18 +78,19 @@ export default function AppointmentPanel() {
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "top",
-        width: "100%",
-        minHeight: "100vh"
+        WebkitBackgroundSize: "auto",
+        width: "942px",
+        height: "1180px"
       }}
-      className="mt-32 w-auto h-auto py-4 px-8 flex-col justify-center items-center gap-2.5 inline-flex space-y-5"
+      className="mt-32 w-auto h-auto py-4 px-8 flex-col justify-center items-center inline-flex space-y-5"
     >
-      <div className="relative w-auto h-auto">
-        <div className="z-3 absolute text-5xl text-white font-bold font-['Libre Bodoni'] leading-[72px]">
+      <div className="relative">
+        <div className="z-3 absolute text-2xl xl:text-4xl lg:text-4xl md:text-3xl  text-white font-bold font-['Libre Bodoni'] ">
           ใบจองการนัดหมายดูดวง
         </div>
         <div
           style={{ filter: "blur(10px)" }}
-          className="text-5xl relative text-white font-bold font-['Libre Bodoni'] leading-[72px]"
+          className="text-2xl xl:text-4xl lg:text-4xl md:text-3xl relative text-white font-bold font-['Libre Bodoni'] "
         >
           ใบจองการนัดหมายดูดวง
         </div>

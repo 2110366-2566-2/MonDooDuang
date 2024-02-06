@@ -10,8 +10,6 @@ import dayjs, { Dayjs } from "dayjs"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
-
-
 export default function DateTimeReserve({
   onDateChange,
   onTimeChange,
@@ -31,7 +29,7 @@ export default function DateTimeReserve({
         <div className="flex flex-row space-x-1 justify-items-center items-center">
           <div
             style={text_shadow}
-            className="text-center text-white text-[28px] font-normal font-['Libre Bodoni'] leading-[42px]"
+            className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni'] leading-[42px]"
           >
             วันที่จอง
           </div>
@@ -64,7 +62,7 @@ export default function DateTimeReserve({
           <div className="flex flex-row space-x-1 justify-items-center items-center">
             <div
               style={text_shadow}
-              className="text-center text-white text-[28px] font-normal font-['Libre Bodoni'] leading-[42px]"
+              className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni'] leading-[42px]"
             >
               เวลาที่จอง
             </div>
@@ -74,6 +72,7 @@ export default function DateTimeReserve({
             <div className="flex flex-row space-x-4 justify-items-center items-center">
               <TimePicker
                 value={reserveTime}
+                disabled={reserveDate? false:true}
                 onChange={(value) => {
                   onTimeChange(value)
                   setReserveTime(value)
@@ -122,18 +121,18 @@ export default function DateTimeReserve({
             </div>
           ) : null}
 
-          <div
+          {reserveTime ? (<div
             style={{ filter: "blur(20px)" }}
             className="relative text-[18px] text-yellow-200 font-bold font-['Libre Bodoni']"
           >
             * เวลาที่ใช้โดยประมาณ : {duration} นาที
-          </div>
+          </div>):null}
         </div>
       </div>
     )
   }
   return (
-    <div className="flex flex-row space-x-24">
+    <div className="max-w-[730px] flex flex-row space-x-24 px-2">
       {datePicker()}
       {timePicker()}
     </div>
