@@ -1,8 +1,10 @@
+import { environment } from "../../../common/constants/environment"
+
 export const ReportService = {
     createReport: async(description:string, reportType: ReportType, appointmentId:string, reporterId: string, reporteeId:string) => {
         const appointmentIdVal = (appointmentId == "" )? null:appointmentId
 
-        await fetch('http://localhost:5002/report/',{
+        await fetch(`${environment.backend.url}/report/`,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -19,7 +21,7 @@ export const ReportService = {
     },
 
     getReporteeId: async(conversationId: string, reporterId: string):Promise<string> => {
-        const res = await fetch(`http://localhost:5002/report/${conversationId}/${reporterId}`)
+        const res = await fetch(`${environment.backend.url}/report/${conversationId}/${reporterId}`)
         const data = await res.json()
         return data.data
     }

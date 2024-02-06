@@ -40,7 +40,7 @@ export default function ReportModal(props: {
 
   return (
     <div
-      className={`w-screen h-screen bg-mdd-overlay-grey bg-opacity-50 fixed top-0 left-0 z-[2] ${
+      className={`w-screen h-screen bg-mdd-overlay-grey bg-opacity-50 font-sans fixed top-0 left-0 z-[2] ${
         props.isShowReport ? "flex" : "hidden"
       } justify-center items-center`}
     >

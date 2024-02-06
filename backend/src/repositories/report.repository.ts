@@ -1,4 +1,4 @@
-import { db } from "../configs/pgdbConnnection"
+import { db } from "../configs/pgdbConnection"
 import { ReportSchema } from "../models/report/report.model"
 
 export const reportRepository = {
