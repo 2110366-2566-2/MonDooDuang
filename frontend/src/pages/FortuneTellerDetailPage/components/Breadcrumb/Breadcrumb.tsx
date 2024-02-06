@@ -5,7 +5,7 @@ export default function Breadcrumb() {
       window.location.reload();
     }
     return (
-      <nav className = "flex content-center text-[24px] gap-[10px]">
+      <nav className = "flex content-center text-[20px] gap-[10px]">
       <a className= "inline-flex items-center" href="/search">
         หน้าหลัก
       </a>
