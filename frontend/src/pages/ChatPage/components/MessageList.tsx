@@ -7,12 +7,12 @@ interface MessageListProps {
 
 export default function MessageList({ messages }: MessageListProps) {
   return (
-    <div className="flex flex-col">
+    <div className="overflow-y-auto h-screen flex flex-col">
       {messages.map((message, index) => (
         <Message
           key={index}
           message={message.message}
-          sender="SELF"
+          sender={message.sender}
           isRead={message.isRead}
           timeSent={message.timeSent}
         />

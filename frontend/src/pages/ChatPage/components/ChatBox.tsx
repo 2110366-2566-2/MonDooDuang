@@ -46,6 +46,9 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
   }, [room])
 
   const sendMessage = () => {
+    if (!messageText.trim()) {
+      return
+    }
     socket.emit(
       "sendMessage",
       {

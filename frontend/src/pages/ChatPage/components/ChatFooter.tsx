@@ -7,6 +7,12 @@ interface ChatFooterProps {
 }
 
 export default function ChatFooter({ messageText, setMessageText, sendMessage }: ChatFooterProps) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      sendMessage()
+    }
+  }
+
   return (
     <div className="h-[59px] bg-gray-300 p-4 flex justify-center items-center">
       <EventAvailableIcon fontSize="large" />
@@ -15,6 +21,7 @@ export default function ChatFooter({ messageText, setMessageText, sendMessage }:
           type="text"
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="พิมพ์ข้อความ"
           className="p-2 bg-gray-100 rounded-l-lg w-[821px]"
         />
