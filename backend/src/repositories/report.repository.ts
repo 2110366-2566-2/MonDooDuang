@@ -3,7 +3,6 @@ import { ReportSchema } from "../models/report/report.model"
 
 export const reportRepository = {
   createReport: async (report: ReportSchema) => {
-    const reportVal = Array.from(Object.entries(report), ([key, value]) => value)
 
     try {
       await db.query(
@@ -11,7 +10,7 @@ export const reportRepository = {
             INSERT INTO REPORT (Description, ReportType, Status, AppointmentId, ReporterId, ReporteeId)
             VALUES($1, $2, $3, $4, $5, $6);
         `,
-        reportVal
+        [report.description, report.reportType, report.status, report.appointmentId, report.reporterId, report.reporteeId]
       )
       return true
     } catch (err) {
@@ -28,8 +27,7 @@ export const reportRepository = {
 
     if (result.rows.length == 0) return null
 
-    if (result.rows[0].fortunetellerid == reporterId) 
-      return result.rows[0].customerid
+    if (result.rows[0].fortunetellerid == reporterId) { return result.rows[0].customerid }
     return result.rows[0].fortunetellerid
   }
 }
