@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom"
-import pagesData from "./pagesData"
+import { getPagesData } from "./getPagesData"
 
-const Router = () => {
+const Router = ({ stripePromise }: { stripePromise: any }) => {
+  const pagesData = getPagesData(stripePromise)
   const pageRoutes = pagesData.map((pageRoute) => {
     return <Route {...pageRoute} />
   })
