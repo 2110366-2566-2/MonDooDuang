@@ -2,19 +2,27 @@ export default function ReportChoice(props: {
   id: string
   value: string
   description: string
-  report: string[]
-  setReport: React.Dispatch<React.SetStateAction<string[]>>
+  reportId: string
+  setReportId: React.Dispatch<React.SetStateAction<string>>
+  reportDescription: string
+  setReportDescription: React.Dispatch<React.SetStateAction<string>>
   text: string
   setText: React.Dispatch<React.SetStateAction<string>>
 }) {
   const chooseThisChoice = () => {
-    if (props.value == "others") return props.setReport([props.value, props.text])
-    props.setReport([props.value, props.description])
+    if (props.value == "others") {
+      props.setReportId(props.value)
+      props.setReportDescription(props.text)
+      return
+    }
+    props.setReportId(props.value)
+    props.setReportDescription(props.description)
   }
 
   const fillText = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setText(event.target.value)
-    props.setReport([props.value, event.target.value])
+    props.setReportId(props.value)
+    props.setReportDescription(event.target.value)
   }
 
   return (
@@ -31,7 +39,7 @@ export default function ReportChoice(props: {
         <span className="absolute top-0 left-0 w-[1.5vw] h-[1.5vw] bg-transparent border-2 border-mdd-almost-black rounded-full flex justify-center items-center">
           <span
             className={`absolute w-[1vw] h-[1vw] rounded-full ${
-              props.report[0] == props.value ? "bg-mdd-sand-yellow" : "bg-transparent"
+              props.reportId == props.value ? "bg-mdd-sand-yellow" : "bg-transparent"
             }`}
           />
         </span>
@@ -43,7 +51,7 @@ export default function ReportChoice(props: {
             id="description"
             placeholder="โปรดระบุ................"
             value={props.text}
-            required={props.report[0] == "others"}
+            required={props.reportId == "others"}
             onChange={fillText}
           />
         )}

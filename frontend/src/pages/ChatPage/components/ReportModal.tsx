@@ -8,12 +8,14 @@ export default function ReportModal(props: {
   userId: string
   conversationId: string
 }) {
-  const [report, setReport] = useState(["", ""])
+  const [reportId, setReportId] = useState("")
+  const [reportDescription, setReportDescription] = useState("")
   const [text, setText] = useState("")
 
   const closeReportModal = () => {
     props.setIsShowReport(false)
-    setReport(["", ""])
+    setReportId("")
+    setReportDescription("")
     setText("")
   }
 
@@ -29,11 +31,11 @@ export default function ReportModal(props: {
     e.preventDefault()
 
     const reportType: ReportType =
-      report[0] == "no-show" ? "MONEY_SUSPENSION" : "INAPPROPRIATE_BEHAVIOR"
+      reportId == "no-show" ? "MONEY_SUSPENSION" : "INAPPROPRIATE_BEHAVIOR"
 
     const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
 
-    ReportService.createReport(report[1], reportType, "", props.userId, reporteeId)
+    ReportService.createReport(reportDescription, reportType, "", props.userId, reporteeId)
 
     closeReportModal()
   }
@@ -57,8 +59,10 @@ export default function ReportModal(props: {
                 id={data.id}
                 value={data.id}
                 description={data.description}
-                report={report}
-                setReport={setReport}
+                reportId={reportId}
+                setReportId={setReportId}
+                reportDescription={reportDescription}
+                setReportDescription={setReportDescription}
                 text={text}
                 setText={setText}
               />
