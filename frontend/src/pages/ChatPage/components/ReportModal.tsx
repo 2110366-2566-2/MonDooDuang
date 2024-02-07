@@ -39,7 +39,7 @@ export default function ReportModal(props: {
 
     const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
 
-    ReportService.createReport(reportDescription, reportType, "", props.userId, reporteeId)
+    ReportService.createReport(reportDescription, reportType, props.userId, reporteeId)
 
     closeReportModal()
   }
