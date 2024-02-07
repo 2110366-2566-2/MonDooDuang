@@ -18,8 +18,9 @@ export default function MessageList({ messages }: MessageListProps) {
   useEffect(() => {
     scrollToBottom() // Scroll to bottom when component first renders
   }, [messages])
+
   return (
-    <div className="overflow-y-auto h-screen flex flex-col">
+    <div className="overflow-y-auto h-screen flex flex-col justify-end">
       {messages.map((message, index) => (
         <Message
           key={index}

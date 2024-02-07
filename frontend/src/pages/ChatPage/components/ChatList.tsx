@@ -29,8 +29,8 @@ export default function ChatList({ conversationId }: ChatListProps) {
         className="h-[60px] w-[60px] rounded-full bg-black mx-2"
       />
       <div className="flex flex-col ml-4">
-        <p className="text-xl font-semibold">บิว</p>
-        <p className="text-sm">จะแจกขนมให้ทุกคน</p>
+        <p className="text-xl font-semibold">{name}</p>
+        <p className="text-sm">{lastMessage}</p>
       </div>
     </div>
   )

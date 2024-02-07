@@ -23,10 +23,6 @@ export default function ChatPage() {
     fetchConversations()
   }, [])
 
-  // TODO
-  // Receive all conversation related to this userId
-  // Get lastest msg + Username of other person and show in sidebar
-  // When click on sidebar -> Get all msg  + Joinroom
   return (
     <div className="flex h-screen">
       <div className="w-1/4 bg-white bg-opacity-20">
