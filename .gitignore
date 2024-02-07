@@ -28,3 +28,7 @@ frontend/*.sw?
 
 backend/node_modules
 backend/dist
+
+### Temp Files
+backend/.eslintrc-abandoned
+frontend/.eslintrc-abandoned
