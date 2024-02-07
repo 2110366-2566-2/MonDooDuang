@@ -2,6 +2,7 @@ import express, { Request, Response, Application } from "express"
 import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
+import appointmentRouter from "./routes/appointment.routes"
 import cors from "cors"
 import reportRouter from "./routes/report.routes"
 import { connectToDatabase } from "./configs/pgdbConnection"
@@ -36,6 +37,7 @@ app.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
+app.use("/appointment",appointmentRouter )
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
