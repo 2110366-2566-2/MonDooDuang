@@ -5,7 +5,7 @@ export const userRepository = {
   findUser: async (email: string) => {
     console.log(email)
     const user = await db.query(
-      `SELECT userId FROM user_table WHERE email = $1`,
+      "SELECT userId FROM user_table WHERE email = $1",
       [email]
     )
     return user.rows
@@ -17,9 +17,9 @@ export const userRepository = {
       [fName, lName, gender, phoneNumber, email, birthDate, profilePicture, isBanned, bankName, accountNumber, password, userType]
     )
     const newUser = await db.query(
-      `SELECT userId FROM user_table WHERE email = $1`,
+      "SELECT userId FROM user_table WHERE email = $1",
       [email]
     )
     return newUser.rows
-  },
+  }
 }
