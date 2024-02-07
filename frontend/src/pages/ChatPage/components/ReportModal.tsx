@@ -32,6 +32,7 @@ export default function ReportModal(props: {
     e.preventDefault()
 
     if (reportId === "") {
+      alert("Please fill in the report form")
       return
     }
 
