@@ -39,7 +39,16 @@ export default function ReportModal(props: {
 
     const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
 
-    ReportService.createReport(reportDescription, reportType, props.userId, reporteeId)
+    const response = await ReportService.createReport(
+      reportDescription,
+      reportType,
+      props.userId,
+      reporteeId
+    )
+
+    if (!response.isSuccess) {
+      return alert(response.message)
+    }
 
     closeReportModal()
   }
