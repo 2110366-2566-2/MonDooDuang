@@ -14,23 +14,21 @@ const createReport = async (req: Request, res: Response) => {
   }
 
   const isSuccess = await reportService.createReport(report)
-  
-  if (!isSuccess) 
-    return res.status(400).json({ success: isSuccess })
+
+  if (!isSuccess) { return res.status(400).json({ success: isSuccess }) }
 
   res.status(201).json({ success: isSuccess })
 }
 
-const getReporteeId = async (req: Request, res:Response) =>{
+const getReporteeId = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const reporterId = req.params.userId
-  
+
   const reporteeId = await reportService.getReporteeId(conversationId, reporterId)
 
-  if (!reporteeId)  
-    return res.status(400).json({success: false})
-  
-  res.status(200).json({success:true, data: reporteeId})
+  if (reporteeId === null) { return res.status(400).json({ success: false }) }
+
+  res.status(200).json({ success: true, data: reporteeId })
 }
 
 export const reportController = {

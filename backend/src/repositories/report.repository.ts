@@ -3,7 +3,6 @@ import { ReportSchema } from "../models/report/report.model"
 
 export const reportRepository = {
   createReport: async (report: ReportSchema) => {
-
     try {
       await db.query(
         `
@@ -25,9 +24,9 @@ export const reportRepository = {
       [conversationId]
     )
 
-    if (result.rows.length == 0) return null
+    if (result.rows.length === 0) return null
 
-    if (result.rows[0].fortunetellerid == reporterId) { return result.rows[0].customerid }
+    if (result.rows[0].fortunetellerid === reporterId) { return result.rows[0].customerid }
     return result.rows[0].fortunetellerid
   }
 }
