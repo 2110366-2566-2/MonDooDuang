@@ -57,7 +57,6 @@ export default function ReportModal(props: {
               <ReportChoice
                 key={data.id}
                 id={data.id}
-                value={data.id}
                 description={data.description}
                 reportId={reportId}
                 setReportId={setReportId}
