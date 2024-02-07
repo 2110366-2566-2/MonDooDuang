@@ -30,6 +30,10 @@ export default function ReportModal(props: {
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (reportId === "") {
+      return
+    }
+
     const reportType: ReportType =
       reportId == "no-show" ? "MONEY_SUSPENSION" : "INAPPROPRIATE_BEHAVIOR"
 
