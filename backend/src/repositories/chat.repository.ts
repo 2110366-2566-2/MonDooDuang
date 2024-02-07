@@ -1,4 +1,4 @@
-import { db } from "../configs/pgdbConnnection"
+import { db } from "../configs/pgdbConnection"
 
 export const chatRepository = {
   getConversationsByUserId: async (userId: string) => {
