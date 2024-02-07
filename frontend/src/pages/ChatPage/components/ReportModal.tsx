@@ -5,6 +5,7 @@ import { ReportService } from "../services/ReportService"
 export default function ReportModal(props: {
   isShowReport: boolean
   setIsShowReport: React.Dispatch<React.SetStateAction<boolean>>
+  isCustomer: boolean
   userId: string
   conversationId: string
 }) {
@@ -66,6 +67,10 @@ export default function ReportModal(props: {
         </div>
         <form id="report-form" onSubmit={submitForm} className="font-normal text-base">
           {reportChoices.map((data) => {
+            if (!props.isCustomer && data.id === "no-show") {
+              return
+            }
+
             return (
               <ReportChoice
                 key={data.id}
