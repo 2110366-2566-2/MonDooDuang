@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import cors from "cors"
+import reportRouter from "./routes/report.routes"
 import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
 
@@ -33,6 +34,7 @@ app.listen(port, () => {
 // please use app.use("/", someRouter) **not recommended**
 
 app.use("/example", exampleRouter)
+app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
 
 connectToDatabase().catch((error) => {
