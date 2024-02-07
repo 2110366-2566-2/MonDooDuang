@@ -16,6 +16,20 @@ export const reportRepository = {
       return false
     }
   },
+  createMoneySuspensionReport: async (report: ReportSchema) => {
+    const result = await db.query(
+      `
+        INSERT INTO REPORT (description, reporttype, status, appointmentid, reporterid, reporteeid)
+        SELECT $1, $2, $3, AppointmentId, $4, $5
+        FROM APPOINTMENT
+        WHERE FortuneTellerId = $5
+        AND CustomerId = $4
+        AND Status = 'EVENT_COMPLETED'`,
+      [report.description, report.reportType, report.status, report.reporterId, report.reporteeId]
+    )
+
+    return result.rowCount
+  },
   getReporteeId: async (conversationId: string, reporterId: string) => {
     const result = await db.query(
       `SELECT FortuneTellerId, CustomerId
@@ -28,5 +42,18 @@ export const reportRepository = {
 
     if (result.rows[0].fortunetellerid === reporterId) { return result.rows[0].customerid }
     return result.rows[0].fortunetellerid
+  },
+  updateAppointmentStatus: async (fortuneTellerId: string, customerId: string) => {
+    const result = await db.query(
+      `
+        UPDATE APPOINTMENT
+        SET Status= 'SUSPENDED'
+        WHERE FortuneTellerId = $1
+        AND CustomerId = $2
+        AND Status = 'EVENT_COMPLETED';
+      `,
+      [fortuneTellerId, customerId]
+    )
+    return
   }
 }
