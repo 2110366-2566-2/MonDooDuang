@@ -5,6 +5,7 @@ import { ReportService } from "../services/ReportService"
 export default function ReportModal(props: {
   isShowReport: boolean
   setIsShowReport: React.Dispatch<React.SetStateAction<boolean>>
+  isCustomer: boolean
   userId: string
   conversationId: string
 }) {
@@ -20,17 +21,18 @@ export default function ReportModal(props: {
   }
 
   const reportChoices = [
-    { id: "no-show", description: "ไม่มาตามนัดหมาย" },
-    { id: "spam", description: "สแปม" },
-    { id: "sexual-harassment", description: "คุกคามทางเพศ" },
-    { id: "inappropriate-behavior", description: "สร้างความรบกวน" },
-    { id: "others", description: "อื่น ๆ" }
+    { type: "no-show", description: "ไม่มาตามนัดหมาย" },
+    { type: "spam", description: "สแปม" },
+    { type: "sexual-harassment", description: "คุกคามทางเพศ" },
+    { type: "inappropriate-behavior", description: "สร้างความรบกวน" },
+    { type: "others", description: "อื่น ๆ" }
   ]
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (reportId === "") {
+      alert("Please fill in the report form")
       return
     }
 
@@ -39,7 +41,16 @@ export default function ReportModal(props: {
 
     const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
 
-    ReportService.createReport(reportDescription, reportType, "", props.userId, reporteeId)
+    const response = await ReportService.createReport(
+      reportDescription,
+      reportType,
+      props.userId,
+      reporteeId
+    )
+
+    if (!response.isSuccess) {
+      return alert(response.message)
+    }
 
     closeReportModal()
   }
@@ -56,11 +67,15 @@ export default function ReportModal(props: {
           <div className="font-normal text-sm text-mdd-grey">กรุณาเลือกปัญหาที่ต้องการรายงาน</div>
         </div>
         <form id="report-form" onSubmit={submitForm} className="font-normal text-base">
-          {reportChoices.map((data) => {
+          {reportChoices.map((data, index) => {
+            if (!props.isCustomer && data.type === "no-show") {
+              return
+            }
+
             return (
               <ReportChoice
-                key={data.id}
-                id={data.id}
+                key={index}
+                id={data.type}
                 description={data.description}
                 reportId={reportId}
                 setReportId={setReportId}
