@@ -6,18 +6,31 @@ export const reportService = {
     report.status = "PENDING"
 
     if (report.reportType === "MONEY_SUSPENSION") {
-      const rowCreateds = await reportRepository.createMoneySuspensionReport(report)
-
-      if (rowCreateds === 0) {
-        return { success: false, message: "No appointment to be reported" }
-      }
-
-      await reportRepository.updateAppointmentStatus(report.reporteeId, report.reporterId)
-      return { success: true, message: "success" }
+      return await reportService.createMoneySuspensionReport(report)
     }
 
     const isSuccess = await reportRepository.createReport(report)
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to submit report" }
+  },
+
+  createMoneySuspensionReport: async (report: ReportSchema) => {
+    // get appointment ids
+    const appointmentIds: string[] = await reportRepository.getAppointmentIds(report.reporterId, report.reporteeId)
+
+    if (appointmentIds.length === 0) {
+      return { success: false, message: "No appointment to be reported" }
+    }
+
+    // create report
+    const isSuccess = await reportRepository.createMoneySuspensionReport(report, appointmentIds)
+
+    if (!isSuccess) {
+      return { success: false, message: "error to submit report" }
+    }
+
+    // update appointment status
+    await reportRepository.updateAppointmentStatus(appointmentIds)
+    return { success: true, message: "success" }
   },
 
   getReporteeId: async (conversationId: string, reporterId: string) => {

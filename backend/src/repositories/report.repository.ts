@@ -16,19 +16,25 @@ export const reportRepository = {
       return false
     }
   },
-  createMoneySuspensionReport: async (report: ReportSchema) => {
-    const result = await db.query(
-      `
-        INSERT INTO REPORT (description, reporttype, status, appointmentid, reporterid, reporteeid)
-        SELECT $1, $2, $3, AppointmentId, $4, $5
-        FROM APPOINTMENT
-        WHERE FortuneTellerId = $5
-        AND CustomerId = $4
-        AND Status = 'EVENT_COMPLETED'`,
-      [report.description, report.reportType, report.status, report.reporterId, report.reporteeId]
-    )
+  createMoneySuspensionReport: async (report: ReportSchema, appointmentIds: string[]) => {
+    try {
+      // Create a string $6, $7, ... using in query
+      const query = appointmentIds.map((_, i) => `$${i + 6}`).join(", ")
 
-    return result.rowCount
+      await db.query(
+        `
+          INSERT INTO REPORT (description, reporttype, status, appointmentid, reporterid, reporteeid)
+          SELECT $1, $2, $3, AppointmentId, $4, $5
+          FROM APPOINTMENT
+          WHERE AppointmentId IN (${query});
+          `,
+        [report.description, report.reportType, report.status, report.reporterId, report.reporteeId, ...appointmentIds]
+      )
+      return true
+    } catch (err) {
+      console.log(err)
+      return false
+    }
   },
   getReporteeId: async (conversationId: string, reporterId: string) => {
     const result = await db.query(
@@ -43,17 +49,32 @@ export const reportRepository = {
     if (result.rows[0].fortunetellerid === reporterId) { return result.rows[0].customerid }
     return result.rows[0].fortunetellerid
   },
-  updateAppointmentStatus: async (fortuneTellerId: string, customerId: string) => {
+  getAppointmentIds: async (customerId: string, fortuneTellerId: string) => {
     const result = await db.query(
       `
-        UPDATE APPOINTMENT
-        SET Status= 'SUSPENDED'
-        WHERE FortuneTellerId = $1
-        AND CustomerId = $2
+        SELECT AppointmentId
+        FROM APPOINTMENT
+        WHERE CustomerId = $1
+        AND FortuneTellerId = $2
         AND Status = 'EVENT_COMPLETED';
       `,
-      [fortuneTellerId, customerId]
+      [customerId, fortuneTellerId]
     )
-    return
+
+    // Turn list of object to list of string
+    const appointmentIds = result.rows.map(row => row.appointmentid)
+
+    return appointmentIds
+  },
+  updateAppointmentStatus: async (appointmentIds: string[]) => {
+    const query = appointmentIds.map((_, i) => `$${i + 1}`).join(", ")
+    await db.query(
+      `
+        UPDATE APPOINTMENT
+        SET Status = 'SUSPENDED'
+        WHERE AppointmentId IN (${query});
+      `,
+      [...appointmentIds]
+    )
   }
 }
