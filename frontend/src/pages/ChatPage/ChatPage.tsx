@@ -11,15 +11,12 @@ export default function ChatPage() {
   const [isShowReport, setIsShowReport] = useState(false)
   const [conversationIds, setConversationIds] = useState<string[]>([""])
   const [selectedConversationId, setSelectedConversationId] = useState<string>("")
-
-  const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
-  const mockConversationId = "2389b0b-6929-4b18-8a50-c301a36b3e24"
-
   useEffect(() => {
     const fetchConversations = async () => {
       const response = await ChatService.getConversationsByUserId(mockUserId)
       const conversationIds = await response.json()
       setConversationIds(conversationIds)
+      setSelectedConversationId(conversationIds[0])
     }
     fetchConversations()
   }, [])
@@ -44,7 +41,7 @@ export default function ChatPage() {
         isShowReport={isShowReport}
         setIsShowReport={setIsShowReport}
         userId={mockUserId}
-        conversationId={mockConversationId}
+        conversationId={selectedConversationId}
       />
     </div>
   )
