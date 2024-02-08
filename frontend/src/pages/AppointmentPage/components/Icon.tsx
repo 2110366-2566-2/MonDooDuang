@@ -141,8 +141,8 @@ export const UnderLine = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(221.501 -39.2497) scale(146.499 64607.5)"
         >
-          <stop stop-color="#0C0000" />
-          <stop offset="0.712567" stop-color="#0C0000" stop-opacity="0" />
+          <stop stopColor="#0C0000" />
+          <stop offset="0.712567" stopColor="#0C0000" stopOpacity="0" />
         </radialGradient>
       </defs>
     </svg>
@@ -191,8 +191,8 @@ export const RightArrow = () => {
           y2="5.25028"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0C0000" />
-          <stop offset="1" stop-color="#0C0000" stop-opacity="0" />
+          <stop stopColor="#0C0000" />
+          <stop offset="1" stopColor="#0C0000" stop-opacity="0" />
         </linearGradient>
       </defs>
     </svg>
@@ -241,8 +241,8 @@ export const LeftArrow = () => {
           y2="5.00028"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0C0000" stop-opacity="0" />
-          <stop offset="1" stop-color="#0C0000" />
+          <stop stopColor="#0C0000" stop-opacity="0" />
+          <stop offset="1" stopColor="#0C0000" />
         </linearGradient>
       </defs>
     </svg>

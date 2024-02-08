@@ -1,6 +1,10 @@
-export function EditButton() {
+export function EditButton({ onClick }: { onClick: Function }) {
   return (
-    <div className="w-fit bg-white bg-opacity-75 rounded-[10px] px-3">
+    <div
+      style={{ transition: "background-color 0.3s" }}
+      className="w-fit bg-white bg-opacity-75 rounded-[10px] px-3 hover:bg-zinc-300"
+      onClick={() => onClick()}
+    >
       <div className="flex flex-row justify-center itmes-center space-x-1">
         <div className="text-end">แก้ไข</div>
         <EditIcon />

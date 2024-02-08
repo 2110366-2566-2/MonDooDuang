@@ -3,6 +3,7 @@ import { appointmentController } from "../controllers/appointment/appointment.co
 
 const router = express.Router()
 
+
 router.get("/find-user/:userId",appointmentController.getUserInfo)
 router.get("/find-fortunetellers",appointmentController.getAllFortuneTeller)
 router.get("/find-fortuneteller/:fortuneTellerId", appointmentController.getFortuneTeller)

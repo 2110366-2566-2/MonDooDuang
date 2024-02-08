@@ -1,19 +1,20 @@
-// import styles from './stylesheet/AppointmentPanel.module.css'
 import bg from "../../../assets/images/paper.png"
 import CancelButton from "./CancelButton"
 import ConfirmButton from "./ConfirmButton"
 import { EditButton } from "./EditButton"
 import DateTimeReserve from "./DateTimeReserve"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 import { TypeOfFortuneSelect } from "./TypeOfFortuneSelect"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { yellow } from "@mui/material/colors"
 import { ConfirmModal } from "./ConfirmModal"
 import { SuccessModal } from "./SuccessModal"
+import { AppointmentService } from "../services/AppointmentService"
+import { environment } from "../../../common/constants/environment"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
-// format("YYYY-MM-DDTHH:mm:ssZ[Z]")
+
 const newTheme = createTheme({
   palette: {
     primary: {
@@ -28,38 +29,140 @@ const newTheme = createTheme({
     }
   }
 })
+
 export default function AppointmentPanel() {
   //mock data
   const fortuneTeller = "DaengDooDaung"
-  const typeOfFortunes = [
-    { id: "01", typeName: "ดูดวงไพ่ทาโรต์", price: 300, duration: 120 },
-    { id: "02", typeName: "ดูดวงไพ่ยิปซี", price: 250, duration: 120 }
-  ]
+  const fortuneTellerId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
+  const user_id = "84885c07-43d7-42b8-8919-88263a33fc74"
+  //
+
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [isValidDate, setIsValidDate] = useState(true)
   const [isValidTime, setIsValidTime] = useState(true)
   const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
   const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
-  // const [dateTime, setDateTime] = useState<Dayjs | null>(null)
-  const [packageType, setPackageType] = useState(typeOfFortunes[0])
+  const [packageType, setPackageType] = useState<Package>({
+    packageid: "",
+    speciality: "",
+    price: 0,
+    duration: 0
+  })
+  const [packages, setPackages] = useState<Package[]>([])
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    userid: "",
+    fname: "",
+    lname: "",
+    phonenumber: "",
+    birthdate: ""
+  })
+  const [appointments, setAppointments] = useState<GroupedAppointments>({})
 
-  //const date
-  //const time
-  const userInfo = {
-    name: "ม๋าแดง หมาเด็กของพี่คนสวย",
-    birthdate: "11 ตุลาคม 2545",
-    tel: "081-234-5678"
+  const formatDate = (dateString: string): string => {
+    const thaiMonths = [
+      "มกราคม",
+      "กุมภาพันธ์",
+      "มีนาคม",
+      "เมษายน",
+      "พฤษภาคม",
+      "มิถุนายน",
+      "กรกฎาคม",
+      "สิงหาคม",
+      "กันยายน",
+      "ตุลาคม",
+      "พฤศจิกายน",
+      "ธันวาคม"
+    ]
+
+    const date = new Date(dateString)
+    const day = date.getUTCDate()
+    const month = thaiMonths[date.getUTCMonth()]
+    const year = date.getUTCFullYear() + 543 // Convert to Thai Buddhist calendar
+
+    return `${day} ${month} ${year}`
   }
 
-  // if (reserveDate && reserveTime) {
-  //   const datetime = reserveDate
-  //     .hour(reserveTime.hour())
-  //     .minute(reserveTime.minute())
-  //     .second(reserveTime.second())
-  //   // console.log(dayjs(datetime).format("YYYY-MM-DDTHH:mm:ssZ[Z]"))
-  // }
+  const formatPhoneNumber = (phoneNumber: string): string => {
+    if (!phoneNumber || phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
+      return "Invalid phone number"
+    }
 
+    const formattedNumber = `${phoneNumber.substr(0, 3)}-${phoneNumber.substr(
+      3,
+      3
+    )}-${phoneNumber.substr(6, 4)}`
+    return formattedNumber
+  }
+
+  const groupAppointmentsByDate = (data: FortuneTellerAppointments[]): GroupedAppointments => {
+    return data.reduce((acc, curr) => {
+      // Extracting the date from the appointmentdate string
+      const date = curr.appointmentdate.split("T")[0]
+      const time = curr.appointmentdate
+
+      // If the date is already in the accumulator, push the appointment to its array
+      if (acc[date]) {
+        acc[date].push({
+          time,
+          duration: curr.duration
+        })
+      } else {
+        // If the date is not in the accumulator, create a new array with the appointment
+        acc[date] = [
+          {
+            time,
+            duration: curr.duration
+          }
+        ]
+      }
+
+      return acc
+    }, {} as GroupedAppointments)
+  }
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const packages = await AppointmentService.getPackages(fortuneTellerId)
+        if (packages) {
+          setPackages(packages)
+          setPackageType(packages[0])
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchPackages()
+  }, [])
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const user_info = await AppointmentService.getUserInfo(user_id)
+        if (user_info) {
+          setUserInfo(user_info)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchUserInfo()
+  }, [])
+
+  useEffect(() => {
+    const fetchFortuneTellerAppointments = async () => {
+      try {
+        const appointments = await AppointmentService.getFortuneTellerAppointment(fortuneTellerId)
+        if (appointments) {
+          setAppointments(groupAppointmentsByDate(appointments))
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchFortuneTellerAppointments()
+  }, [])
   const CustomerInfo = () => {
     return (
       <div className="rounded-xl border border-stone-800 border-opacity-50 px-24 py-4">
@@ -67,19 +170,23 @@ export default function AppointmentPanel() {
           ข้อมูลผู้จอง
         </div>
         <div className="flex flex-col text-white text-base xl:text-xl lg:text-lg md:text-md justify-items-center items-start space-y-1">
-          <div style={text_shadow}>ชื่อผู้จอง : {userInfo.name}</div>
-          <div style={text_shadow}>วันเกิด : {userInfo.birthdate}</div>
-          <div style={text_shadow}>เบอร์โทรศัพท์ : {userInfo.tel}</div>
+          <div style={text_shadow}>
+            ชื่อผู้จอง : {userInfo.fname} {userInfo.lname}
+          </div>
+          <div style={text_shadow}>วันเกิด : {formatDate(userInfo.birthdate)}</div>
+          <div style={text_shadow}>เบอร์โทรศัพท์ : {formatPhoneNumber(userInfo.phonenumber)}</div>
         </div>
         <div className="w-full flex items-end justify-items-end mt-6">
           <div className="flex ml-auto">
-            <EditButton />
+            <EditButton
+              onClick={() => (window.location.href = environment.frontend.url + "/account")}
+            />
           </div>
         </div>
       </div>
     )
   }
-
+  console.log(appointments)
   return (
     <div
       style={{
@@ -106,7 +213,7 @@ export default function AppointmentPanel() {
       </div>
       <ThemeProvider theme={newTheme}>
         <TypeOfFortuneSelect
-          typeJson={typeOfFortunes}
+          typeJson={packages}
           fortuneTeller={fortuneTeller}
           onPackageChange={setPackageType}
         />
@@ -114,16 +221,15 @@ export default function AppointmentPanel() {
           onDateChange={(value: Dayjs) => {
             setReserveDate(value)
             setIsValidDate(true)
-            
           }}
           onTimeChange={(value: Dayjs) => {
             setReserveTime(value)
             setIsValidTime(true)
-            
           }}
           duration={packageType.duration}
           isDateValid={isValidDate}
           isTimeValid={isValidTime}
+          appointments={appointments}
         />
       </ThemeProvider>
       <CustomerInfo />
@@ -144,7 +250,7 @@ export default function AppointmentPanel() {
       </div>
       <ConfirmModal
         fortuneTeller={fortuneTeller}
-        type={packageType.typeName}
+        type={packageType.speciality}
         price={packageType.price}
         date={dayjs(reserveDate).format("DD MMM YYYY")}
         starttime={dayjs(reserveTime).format("HH:mm")}
@@ -152,11 +258,30 @@ export default function AppointmentPanel() {
         isVisible={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={() => {
+          if (reserveDate && reserveTime) {
+            const datetime = reserveDate
+              .hour(reserveTime.hour())
+              .minute(reserveTime.minute())
+              .second(reserveTime.second())
+            const appointmentDate = dayjs(datetime).format("YYYY-MM-DD HH:mm:ss")
+            AppointmentService.createAppointment(
+              packageType.packageid,
+              userInfo.userid,
+              fortuneTellerId,
+              appointmentDate
+            )
+          }
           setIsConfirmModalOpen(false)
           setIsSuccessModalOpen(true)
         }}
       />
-      <SuccessModal isVisible={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)} />
+      <SuccessModal
+        isVisible={isSuccessModalOpen}
+        onClose={() => {
+          setIsSuccessModalOpen(false)
+          window.location.href = environment.frontend.url + "/search"
+        }}
+      />
     </div>
   )
 }

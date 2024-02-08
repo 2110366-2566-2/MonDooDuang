@@ -29,7 +29,9 @@ export function SuccessModal(props: SuccessProps) {
         <button
           style={{ transition: "background-color 0.3s" }}
           className="text-white text-sm font-bold rounded-md py-2 px-4 bg-gray-400 hover:bg-gray-500"
-          onClick={() => {onClose()}}
+          onClick={() => {
+            onClose()
+          }}
         >
           ตกลง
         </button>

@@ -15,20 +15,52 @@ export default function DateTimeReserve({
   isDateValid,
   onTimeChange,
   isTimeValid,
-  duration
+  duration,
+  appointments
 }: {
   onDateChange: Function
   isDateValid: boolean
   onTimeChange: Function
   isTimeValid: boolean
   duration: number
+  appointments: GroupedAppointments
 }) {
   const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
   const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
   const [dateTime, setDateTime] = useState<Dayjs | null>(null)
-  const errorMessageDate = 'Please select Date'
-  const errorMessageTime = 'Please select Time'
-  
+  const errorMessageDate = "Please select Date"
+  const errorMessageTime = "Please select Time"
+
+  const checkAvailableTime = (value: dayjs.Dayjs): boolean => {
+    if (reserveDate) {
+      const day = dayjs(reserveDate).format("YYYY-MM-DD")
+      const myDateTime = reserveDate.hour(value.get("hour")).minute(value.get("minute"))
+
+      const myStartTime = myDateTime
+      const myStopTime = myDateTime.add(duration, "minutes")
+
+      for (const app of appointments[day] || []) {
+        const starttime = dayjs(app.time)
+        const stoptime = dayjs(app.time).add(app.duration, "minutes")
+        if (
+          !(
+            myStartTime.isBefore(starttime) &&
+            (myStopTime.isBefore(starttime) || myStopTime.isSame(starttime))
+          ) &&
+          !(
+            myStopTime.isAfter(stoptime) &&
+            (myStartTime.isAfter(stoptime) || myStartTime.isSame(stoptime))
+          )
+        ) {
+          return false
+        }
+      }
+
+      return true
+    } else {
+      return true
+    }
+  }
 
   const datePicker = () => {
     return (
@@ -51,8 +83,8 @@ export default function DateTimeReserve({
             }}
             slotProps={{
               textField: {
-                helperText: isDateValid? "":errorMessageDate,
-              },
+                helperText: isDateValid ? "" : errorMessageDate
+              }
             }}
             disablePast={true}
             sx={{
@@ -84,11 +116,11 @@ export default function DateTimeReserve({
             <div className="flex flex-row space-x-4 justify-items-center items-center">
               <TimePicker
                 value={reserveTime}
-                disabled={reserveDate? false:true}
+                disabled={reserveDate ? false : true}
                 slotProps={{
                   textField: {
-                    helperText: isTimeValid? "":errorMessageTime,
-                  },
+                    helperText: isTimeValid ? "" : errorMessageTime
+                  }
                 }}
                 onChange={(value) => {
                   onTimeChange(value)
@@ -101,6 +133,9 @@ export default function DateTimeReserve({
                     setDateTime(datetime)
                   }
                 }}
+                shouldDisableTime={(value, view) =>
+                  view === "minutes" && !checkAvailableTime(value)
+                }
                 sx={{
                   bgcolor: "#DEDEDE",
                   borderRadius: "4px ",
@@ -138,12 +173,14 @@ export default function DateTimeReserve({
             </div>
           ) : null}
 
-          {reserveTime ? (<div
-            style={{ filter: "blur(20px)" }}
-            className="relative text-[18px] text-yellow-200 font-bold font-['Libre Bodoni']"
-          >
-            * เวลาที่ใช้โดยประมาณ : {duration} นาที
-          </div>):null}
+          {reserveTime ? (
+            <div
+              style={{ filter: "blur(20px)" }}
+              className="relative text-[18px] text-yellow-200 font-bold font-['Libre Bodoni']"
+            >
+              * เวลาที่ใช้โดยประมาณ : {duration} นาที
+            </div>
+          ) : null}
         </div>
       </div>
     )

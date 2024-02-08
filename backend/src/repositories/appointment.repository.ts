@@ -42,9 +42,10 @@ export const appointmentRepository = {
   },
   getFortuneTellerAppointment: async (fortuneTellerId: string) => {
     const result = await db.query(
-      `SELECT appointmentdate
-      FROM appointment A
-      WHERE A.fortunetellerid = $1 and A.status = 'WAITING_FOR_EVENT';`,[fortuneTellerId]
+      `SELECT A.appointmentdate , P.duration
+      FROM appointment A,package P
+      WHERE A.packageId = P.packageId and A.fortunetellerid = $1 
+      and A.status = 'WAITING_FOR_EVENT';`,[fortuneTellerId]
     )
     return result
   },

@@ -59,6 +59,7 @@ const getUserInfo = async(req:Request, res:Response) => {
   res.status(200).json({success:true, data:user_info})
 }
 
+
 export const appointmentController = {
   createAppointment,
   getFortuneTeller,

@@ -1,13 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CoinIcon, LeftArrow, RightArrow, UnderLine } from "./Icon"
 import { Select, MenuItem } from "@mui/material"
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
-interface Fortune {
-  id: string
-  typeName: string
-  price: number
-  duration: number
-}
+
 export function TypeOfFortuneSelect({
   typeJson,
   fortuneTeller,
@@ -17,11 +12,24 @@ export function TypeOfFortuneSelect({
   fortuneTeller: string
   onPackageChange: Function
 }) {
-  //fetching
-  //const typeJsonReady = await typeJson
+  const [price, setPrice] = useState(0)
+  const [type, setType] = useState("") //setId
 
-  const [price, setPrice] = useState(typeJson[0].price)
-  const [type, setType] = useState(typeJson[0].id) //setId
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const packages = typeJson
+        if (packages) {
+          setPrice(packages[0].price)
+          setType(packages[0].packageid)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchPackages()
+  }, [typeJson])
+
   const dropdown = () => {
     return (
       <div className="flex flex-col justify-items-center text-center items-center">
@@ -35,24 +43,26 @@ export function TypeOfFortuneSelect({
           autoWidth
           onChange={(value) => {
             setType(value.target.value)
-            const selectedFortune = typeJson.find((type) => type.id === value.target.value) || null
-            setPrice(selectedFortune? selectedFortune.price:0)
+            const selectedFortune =
+              typeJson.find((type) => type.packageid === value.target.value) || null
+            setPrice(selectedFortune ? selectedFortune.price : 0)
             onPackageChange({
               id: value.target.value,
-              typeName: selectedFortune ? selectedFortune.typeName : "",
+              typeName: selectedFortune ? selectedFortune.speciality : "",
               price: selectedFortune ? selectedFortune.price : 0,
               duration: selectedFortune ? selectedFortune.duration : 0
             })
           }}
         >
           {typeJson.map((type: Fortune) => (
-            <MenuItem value={type.id}>{type.typeName}</MenuItem>
+            <MenuItem value={type.packageid}>{type.speciality}</MenuItem>
           ))}
         </Select>
         <UnderLine />
       </div>
     )
   }
+
   return (
     <div className="space-y-5">
       <div className="flex flex-col justify-items-center items-center space-y-3">
