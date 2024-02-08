@@ -67,14 +67,14 @@ export default function ReportModal(props: {
           <div className="font-normal text-sm text-mdd-grey">กรุณาเลือกปัญหาที่ต้องการรายงาน</div>
         </div>
         <form id="report-form" onSubmit={submitForm} className="font-normal text-base">
-          {reportChoices.map((data) => {
+          {reportChoices.map((data, index) => {
             if (!props.isCustomer && data.type === "no-show") {
               return
             }
 
             return (
               <ReportChoice
-                key={data.type}
+                key={index}
                 id={data.type}
                 description={data.description}
                 reportId={reportId}
