@@ -11,16 +11,27 @@ export interface MessageType {
 export const chatService = {
   getConversationsByUserId: async (userId: string) => {
     const data = await chatRepository.getConversationsByUserId(userId)
+    if (data === null) {
+      return []
+    }
+
     return data.map((conversation) => conversation.conversationid)
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const data = await chatRepository.getNameWithLastMessage(conversationId, userId)
+    if (data === null) {
+      return {
+        name: "",
+        lastMessage: ""
+      }
+    }
     data.name = data.name[0].result
-    data.lastMessage = data.lastMessage[0].messagetext
+    data.lastMessage = data.lastMessage.length === 0 ? "" : data.lastMessage[0].messagetext
     return data
   },
   getMessagesByConversationId: async (conversationId: string, userId: string) => {
     const messages = await chatRepository.getMessagesByConversationId(conversationId, userId)
+    if (messages === null) return []
     return messages.map((message) => {
       return {
         message: message.messagetext,
