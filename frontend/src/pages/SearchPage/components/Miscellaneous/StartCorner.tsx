@@ -1,4 +1,4 @@
-import StarCornerIcon from "../icons/starcorner-icon.svg"
+import StarCornerIcon from "../Icons/starcorner-icon.svg"
 
 export default function StarCorner() {
   return (

@@ -1,14 +1,14 @@
-import Star1 from "../icons/star-1-icon.svg"
-import Star2 from "../icons/star-2-icon.svg"
-import Star3 from "../icons/star-3-icon.svg"
-import Star4 from "../icons/star-4-icon.svg"
-import Star5 from "../icons/star-5-icon.svg"
+import Star1 from "../Icons/star-1-icon.svg"
+import Star2 from "../Icons/star-2-icon.svg"
+import Star3 from "../Icons/star-3-icon.svg"
+import Star4 from "../Icons/star-4-icon.svg"
+import Star5 from "../Icons/star-5-icon.svg"
 
-import Star1Empty from "../icons/star-1-empty-icon.svg"
-import Star2Empty from "../icons/star-2-empty-icon.svg"
-import Star3Empty from "../icons/star-3-empty-icon.svg"
-import Star4Empty from "../icons/star-4-empty-icon.svg"
-import Star5Empty from "../icons/star-5-empty-icon.svg"
+import Star1Empty from "../Icons/star-1-empty-icon.svg"
+import Star2Empty from "../Icons/star-2-empty-icon.svg"
+import Star3Empty from "../Icons/star-3-empty-icon.svg"
+import Star4Empty from "../Icons/star-4-empty-icon.svg"
+import Star5Empty from "../Icons/star-5-empty-icon.svg"
 
 interface RatingStarProps {
   rating: number

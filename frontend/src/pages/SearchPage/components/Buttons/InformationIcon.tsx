@@ -1,4 +1,4 @@
-import Icon from "../icons/moreinformation-icon.svg"
+import Icon from "../Icons/moreinformation-icon.svg"
 
 interface Information {
   moreInformation: () => void

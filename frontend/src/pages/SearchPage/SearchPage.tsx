@@ -3,7 +3,7 @@ import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/Fort
 export default function SearchPage() {
   const ft = {
     name: "DaengDooDuang",
-    rating: 4.3,
+    rating: 4.7,
     minPrice: 100,
     maxPrice: 300,
     image: "image",

@@ -1,10 +1,10 @@
-import PictureFrame from "../frames/picture-frame.svg"
-import CardFrame from "../frames/card-frame.svg"
-import LogoIcon from "../icons/logo-icon.svg"
-import ChatIcon from "../icons/chat-icon.svg"
-import StarCornerIcon from "../icons/starcorner-icon.svg"
+import PictureFrame from "../Frames/picture-frame.svg"
+import CardFrame from "../Frames/card-frame.svg"
+import LogoIcon from "../Icons/logo-icon.svg"
+import ChatIcon from "../Icons/chat-icon.svg"
+import StarCornerIcon from "../Icons/starcorner-icon.svg"
 
-import Bow from "../miscellaneous/bow.svg"
+import Bow from "../Miscellaneous/bow.svg"
 import StarCorner from "../Miscellaneous/StartCorner"
 
 import AppointmentIcon from "../Buttons/AppointmentIcon"

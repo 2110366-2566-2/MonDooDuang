@@ -1,4 +1,4 @@
-import Icon from "../icons/appointment-icon.svg"
+import Icon from "../Icons/appointment-icon.svg"
 
 interface Appointment {
   makeAppointment: () => void
