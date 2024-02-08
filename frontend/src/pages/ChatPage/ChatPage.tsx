@@ -40,6 +40,7 @@ export default function ChatPage() {
       <ReportModal
         isShowReport={isShowReport}
         setIsShowReport={setIsShowReport}
+        isCustomer={mockIsCustomer}
         userId={mockUserId}
         conversationId={selectedConversationId}
       />
