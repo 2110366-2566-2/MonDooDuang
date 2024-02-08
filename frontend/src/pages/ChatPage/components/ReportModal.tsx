@@ -21,11 +21,11 @@ export default function ReportModal(props: {
   }
 
   const reportChoices = [
-    { id: "no-show", description: "ไม่มาตามนัดหมาย" },
-    { id: "spam", description: "สแปม" },
-    { id: "sexual-harassment", description: "คุกคามทางเพศ" },
-    { id: "inappropriate-behavior", description: "สร้างความรบกวน" },
-    { id: "others", description: "อื่น ๆ" }
+    { type: "no-show", description: "ไม่มาตามนัดหมาย" },
+    { type: "spam", description: "สแปม" },
+    { type: "sexual-harassment", description: "คุกคามทางเพศ" },
+    { type: "inappropriate-behavior", description: "สร้างความรบกวน" },
+    { type: "others", description: "อื่น ๆ" }
   ]
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,14 +68,14 @@ export default function ReportModal(props: {
         </div>
         <form id="report-form" onSubmit={submitForm} className="font-normal text-base">
           {reportChoices.map((data) => {
-            if (!props.isCustomer && data.id === "no-show") {
+            if (!props.isCustomer && data.type === "no-show") {
               return
             }
 
             return (
               <ReportChoice
-                key={data.id}
-                id={data.id}
+                key={data.type}
+                id={data.type}
                 description={data.description}
                 reportId={reportId}
                 setReportId={setReportId}

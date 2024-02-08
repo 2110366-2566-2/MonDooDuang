@@ -5,8 +5,8 @@ export default function ChatPage() {
   const [isShowReport, setIsShowReport] = useState(false)
 
   const mockIsCustomer = false
-  const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
-  const mockConversationId = "2389b0b-6929-4b18-8a50-c301a36b3e24"
+  const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
+  const mockConversationId = "3456a1c-4321-4b8c-9d0e-a6b2c3d4e5f6"
 
   return (
     <div>
