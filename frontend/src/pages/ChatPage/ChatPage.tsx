@@ -10,6 +10,7 @@ const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 export default function ChatPage() {
   const [isShowReport, setIsShowReport] = useState(false)
   const [conversationIds, setConversationIds] = useState<string[]>([""])
+  const [selectedConversationId, setSelectedConversationId] = useState<string>("")
 
   const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
   const mockConversationId = "2389b0b-6929-4b18-8a50-c301a36b3e24"
@@ -23,13 +24,20 @@ export default function ChatPage() {
     fetchConversations()
   }, [])
 
+  const handleConversationSelect = (conversationId: string) => {
+    setSelectedConversationId(conversationId)
+  }
+
   return (
     <div className="flex h-screen">
       <div className="w-1/4 bg-white bg-opacity-20">
-        <ChatSidebar conversationIds={conversationIds} />
+        <ChatSidebar
+          conversationIds={conversationIds}
+          onConversationSelect={handleConversationSelect}
+        />
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ChatBox conversationId={conversationIds[conversationIds.length - 1]} />
+        <ChatBox conversationId={selectedConversationId} />
       </div>
       <button onClick={() => setIsShowReport(true)}>open</button>
       <ReportModal

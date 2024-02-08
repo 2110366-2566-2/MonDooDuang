@@ -2,9 +2,10 @@ import ChatList from "./ChatList"
 import SearchIcon from "@mui/icons-material/Search"
 interface ChatSidebarProps {
   conversationIds: string[]
+  onConversationSelect: (conversationId: string) => void
 }
 
-export default function ChatSidebar({ conversationIds }: ChatSidebarProps) {
+export default function ChatSidebar({ conversationIds, onConversationSelect }: ChatSidebarProps) {
   return (
     <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">
       <div className="relative">
@@ -16,7 +17,11 @@ export default function ChatSidebar({ conversationIds }: ChatSidebarProps) {
         />
       </div>
       {conversationIds.map((conversationId) => (
-        <ChatList conversationId={conversationId} key={conversationId} />
+        <ChatList
+          conversationId={conversationId}
+          key={conversationId}
+          onSelect={() => onConversationSelect(conversationId)}
+        />
       ))}
     </div>
   )
