@@ -26,6 +26,10 @@ export default function ChatPage() {
     setSelectedConversationId(conversationId)
   }
 
+  const showReport = () => {
+    setIsShowReport(true)
+  }
+
   return (
     <div className="flex h-screen">
       <div className="w-1/4 bg-white bg-opacity-20">
@@ -35,9 +39,9 @@ export default function ChatPage() {
         />
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ChatBox conversationId={selectedConversationId} />
+        <ChatBox conversationId={selectedConversationId} showReport={showReport} />
       </div>
-      <button onClick={() => setIsShowReport(true)}>open</button>
+      {/* <button onClick={() => setIsShowReport(true)}>open</button> */}
       <ReportModal
         isShowReport={isShowReport}
         setIsShowReport={setIsShowReport}

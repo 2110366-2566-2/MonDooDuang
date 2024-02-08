@@ -22,6 +22,10 @@ export default function ChatList({ conversationId, onSelect }: ChatListProps) {
     }
     fetchNameWithLastMessage()
   }, [])
+
+  const truncatedLastMessage =
+    lastMessage.length > 22 ? lastMessage.substring(0, 22) + "..." : lastMessage
+
   return (
     <div
       className="flex flex-row items-center h-[79px] w-[339px] bg-opacity-50 bg-gray-300 rounded-md mt-[10px]"
@@ -34,7 +38,7 @@ export default function ChatList({ conversationId, onSelect }: ChatListProps) {
       />
       <div className="flex flex-col ml-4">
         <p className="text-xl font-semibold">{name}</p>
-        <p className="text-sm">{lastMessage}</p>
+        <p className="text-sm">{truncatedLastMessage}</p>
       </div>
     </div>
   )

@@ -16,7 +16,13 @@ export interface MessageType {
   timeSent: number
 }
 
-export default function ChatBox({ conversationId }: { conversationId: string }) {
+export default function ChatBox({
+  conversationId,
+  showReport
+}: {
+  conversationId: string
+  showReport: () => void
+}) {
   const [messages, setMessages] = useState<MessageType[]>([])
   const [messageText, setMessageText] = useState<string>("")
   const room = conversationId
@@ -69,7 +75,7 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ChatHeader name={"บิว"} />
+      <ChatHeader name={"บิว"} showReport={showReport} />
       <MessageList messages={messages} />
       <div className="mt-auto">
         <ChatFooter

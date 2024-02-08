@@ -1,12 +1,13 @@
 import VolumeUpIcon from "@mui/icons-material/VolumeUp"
 import VolumeOffIcon from "@mui/icons-material/VolumeOff"
 import SearchIcon from "@mui/icons-material/Search"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
+import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred"
 import { useState } from "react"
 interface ChatHeaderProps {
   name: string
+  showReport: () => void
 }
-export default function ChatHeader({ name }: ChatHeaderProps) {
+export default function ChatHeader({ name, showReport }: ChatHeaderProps) {
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true)
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)
@@ -24,7 +25,11 @@ export default function ChatHeader({ name }: ChatHeaderProps) {
       </div>
       <div className="flex items-center">
         <SearchIcon className="mr-2" />
-        <MoreVertIcon />
+        <ReportGmailerrorredIcon
+          onClick={() => {
+            showReport()
+          }}
+        />
       </div>
     </div>
   )
