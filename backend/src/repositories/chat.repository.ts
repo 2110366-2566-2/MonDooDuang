@@ -3,7 +3,10 @@ import { db } from "../configs/pgdbConnection"
 export const chatRepository = {
   getConversationsByUserId: async (userId: string) => {
     const result = await db.query(
-      "SELECT conversationid FROM conversation WHERE fortunetellerid = $1 OR customerid = $1",
+      `
+      SELECT conversationid FROM conversation WHERE fortunetellerid = $1 OR customerid = $1
+      ORDER BY created_at DESC
+      `,
       [userId]
     )
     return result.rows
