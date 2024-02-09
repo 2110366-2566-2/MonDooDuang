@@ -3,7 +3,7 @@ import Timeago from "timeago-react"
 
 export interface MessageProps {
   message: string
-  sender: "SELF" | "OTHER"
+  sender: "SELF" | "OTHER" | "SYSTEM"
   isRead: boolean
   timeSent: number
 }

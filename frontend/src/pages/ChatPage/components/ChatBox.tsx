@@ -11,7 +11,7 @@ const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
 export interface MessageType {
   message: string
-  sender: "SELF" | "OTHER"
+  sender: "SELF" | "OTHER" | "SYSTEM"
   isRead: boolean
   timeSent: number
 }

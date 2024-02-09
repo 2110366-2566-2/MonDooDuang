@@ -3,7 +3,7 @@ import { chatRepository } from "../../repositories/chat.repository"
 
 export interface MessageType {
   message: string
-  sender: "SELF" | "OTHER"
+  sender: "SELF" | "OTHER" | "SYSTEM"
   isRead: boolean
   timeSent: number
 }
@@ -32,14 +32,36 @@ export const chatService = {
   getMessagesByConversationId: async (conversationId: string, userId: string) => {
     const messages = await chatRepository.getMessagesByConversationId(conversationId, userId)
     if (messages === null) return []
-    return messages.map((message) => {
-      return {
+
+    const formattedMessages: MessageType[] = []
+    let prevTimeSent: number
+
+    messages.forEach((message) => {
+      const currentTimeSent: number = message.created_at
+      const formattedDate: string = new Date(message.created_at * 1000).toLocaleDateString(
+        "th-TH",
+        { day: "numeric", month: "long" }
+      )
+      if (prevTimeSent !== 0 && !chatService.isSameDay(prevTimeSent, currentTimeSent)) {
+        formattedMessages.push({
+          message: formattedDate,
+          timeSent: currentTimeSent,
+          sender: "SYSTEM",
+          isRead: true
+        })
+      }
+
+      formattedMessages.push({
         message: message.messagetext,
-        timeSent: message.created_at,
+        timeSent: currentTimeSent,
         sender: message.sender,
         isRead: message.isread
-      }
+      })
+
+      prevTimeSent = currentTimeSent
     })
+
+    return formattedMessages
   },
   getNameByConversationId: async (conversationId: string, userId: string) => {
     const data = await chatRepository.getNameByConversationId(conversationId, userId)
@@ -66,5 +88,15 @@ export const chatService = {
     socket.on("disconnect", () => {
       // console.log("User disconnected")
     })
+  },
+  isSameDay: (timestamp1: number, timestamp2: number) => {
+    const date1 = new Date(timestamp1 * 1000) // Convert seconds to milliseconds
+    const date2 = new Date(timestamp2 * 1000) // Convert seconds to milliseconds
+
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    )
   }
 }
