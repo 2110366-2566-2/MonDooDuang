@@ -8,6 +8,7 @@ export default function ReportModal(props: {
   isCustomer: boolean
   userId: string
   conversationId: string
+  isSystemReport: boolean
 }) {
   const [reportId, setReportId] = useState("")
   const [reportDescription, setReportDescription] = useState("")
@@ -36,8 +37,13 @@ export default function ReportModal(props: {
       return
     }
 
+    // If no-show, type = MONEY_SUSPENSION, else depends on the type of report modal
     const reportType: ReportType =
-      reportId == "no-show" ? "MONEY_SUSPENSION" : "INAPPROPRIATE_BEHAVIOR"
+      reportId === "no-show"
+        ? "MONEY_SUSPENSION"
+        : props.isSystemReport
+        ? "SYSTEM_ERROR"
+        : "INAPPROPRIATE_BEHAVIOR"
 
     const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
 
@@ -61,7 +67,11 @@ export default function ReportModal(props: {
         props.isShowReport ? "flex" : "hidden"
       } justify-center items-center`}
     >
-      <div className="w-[28vw] h-[20vw] bg-mdd-silver-grey rounded-[2vw] py-1 flex flex-col justify-evenly items-center">
+      <div
+        className={`w-[28vw] ${
+          props.isSystemReport ? "h-[15vw]" : "h-[20vw]"
+        }  bg-mdd-silver-grey rounded-[2vw] py-1 flex flex-col justify-evenly items-center`}
+      >
         <div className="flex flex-col justify-center items-center">
           <div className="font-semibold text-2xl">รายงานปัญหา</div>
           <div className="font-normal text-sm text-mdd-grey">กรุณาเลือกปัญหาที่ต้องการรายงาน</div>
@@ -69,6 +79,11 @@ export default function ReportModal(props: {
         <form id="report-form" onSubmit={submitForm} className="font-normal text-base">
           {reportChoices.map((data, index) => {
             if (!props.isCustomer && data.type === "no-show") {
+              return
+            }
+
+            // In after reviewed report(called System report) has only 2 choices: no-show and others
+            if (props.isSystemReport && data.type != "no-show" && data.type != "others") {
               return
             }
 
