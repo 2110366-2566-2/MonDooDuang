@@ -39,8 +39,8 @@ export default function ChatBox({
     const fetchName = async () => {
       if (conversationId) {
         const response = await ChatService.getNameByConversationId(conversationId, mockUserId)
-        const name = await response.json()
-        setName(name)
+        const data = await response.json()
+        setName(data.name)
       }
     }
     fetchName()

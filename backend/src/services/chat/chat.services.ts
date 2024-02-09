@@ -70,7 +70,7 @@ export const chatService = {
         name: ""
       }
     }
-    return data[0].result
+    return { name: data[0].result }
   },
   // Socket service
   sendMessage: async (socket: Socket) => {
