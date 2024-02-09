@@ -10,7 +10,7 @@ export default function FortuneTellerRegisterPage() {
     >
       <div
         style={{ backgroundImage: `url(${FrameRegister})` }}
-        className=" bg-no-repeat w-11/12 mx-auto items-center justify-center"
+        className=" bg-no-repeat size-11/12 mx-auto"
       >
         <div className="flex flex-col pt-36">
           {/* <div> */}

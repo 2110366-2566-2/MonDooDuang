@@ -2,6 +2,7 @@ import { useState } from "react"
 import UploadFile from "../../../../assets/FortuneTellerRegisterAssets/UploadFile.png"
 // import FileIcon from "../../../../assets/FortuneTellerRegisterAssets/FileIcon.png"
 // import CrossIcon from "../../../../assets/FortuneTellerRegisterAssets/CrossIcon.png"
+import CompleteModal from "../Popup/CompleteModel"
 
 export default function FormRegister() {
   const [idNumber, setIdNumber] = useState("")
@@ -10,6 +11,7 @@ export default function FormRegister() {
   const [isIdNumberError, setIsIdNumberError] = useState(false)
   //   const [isFileError,setIsFileError] = useState(false)
   const [isPolicyError, setIsPolicyError] = useState(false)
+  const [isShowComplete, setIsShowComplete] = useState(false)
 
   // for validate information
   const validation = ({ idNumber }: { idNumber: string }): boolean => {
@@ -45,22 +47,28 @@ export default function FormRegister() {
         )}
       </div>
 
-      <div className="text-2xl pt-3 flex flex-col w-4/6 relative">
+      <div className="text-2xl pt-3 flex flex-col w-4/6 relative h-60">
         <form>
           <label htmlFor="fileForm">ภาพบัตรประจำตัวประชาชน(สามารถอัปโหลดได้ 1 ไฟล์เท่านั้น)</label>
-          <label className="flex flex-col items-center justify-center ">
-            <img src={UploadFile} className="size-32  justify-self-center" />
-            <span className="mx-auto  justify-self-center">
-              ลากไฟล์และวางที่นี่ หรือ <u className="font-semibold ">คลิก</u>
-              เพื่ออัพโหลดไฟล์
-            </span>
-          </label>
-          <input id="fileForm" name="fileForm" className="w-full h-60 rounded-lg bg-white/55  " />
+          <div className="relative flex flex-col items-center">
+            <input
+              id="fileForm"
+              name="fileForm"
+              className="absolute top-0 w-full h-60 rounded-lg bg-white/55  "
+            />
+            <label className="absolute top-10 flex flex-col items-center">
+              <img src={UploadFile} className="size-32" />
+              <span className="mx-auto  justify-self-center">
+                ลากไฟล์และวางที่นี่ หรือ <u className="font-semibold ">คลิก</u>
+                เพื่ออัพโหลดไฟล์
+              </span>
+            </label>
+          </div>
         </form>
       </div>
 
       <div>
-        <form className="text-2xl pt-11 ">
+        <form className="text-2xl pt-32 ">
           <input
             type="checkbox"
             className="size-7 align-middle border-2 border-white accent-gray-50/50"
@@ -84,14 +92,16 @@ export default function FormRegister() {
       <div className="font-semibold  text-right mr-32">
         <button
           type="submit"
-          className="text-xl rounded-xl bg-white text-gray-800 w-32 h-12 cursor-pointer font-semibold"
+          className="text-xl rounded-xl bg-white text-[#3B3B3B] w-32 h-12 cursor-pointer font-semibold"
           onClick={() => {
             if (validation({ idNumber }) && !isPolicyError) {
+              setIsShowComplete(true)
             }
           }}
         >
           เสร็จสิ้น
         </button>
+        <CompleteModal isShowComplete={isShowComplete} setIsShowComplete={setIsShowComplete} />
       </div>
     </div>
   )
