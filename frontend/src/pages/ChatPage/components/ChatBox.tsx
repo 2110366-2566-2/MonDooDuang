@@ -25,6 +25,7 @@ export default function ChatBox({
 }) {
   const [messages, setMessages] = useState<MessageType[]>([])
   const [messageText, setMessageText] = useState<string>("")
+  const [name, setName] = useState<string>("")
   const room = conversationId
 
   useEffect(() => {
@@ -35,6 +36,14 @@ export default function ChatBox({
         setMessages(messages)
       }
     }
+    const fetchName = async () => {
+      if (conversationId) {
+        const response = await ChatService.getNameByConversationId(conversationId, mockUserId)
+        const name = await response.json()
+        setName(name)
+      }
+    }
+    fetchName()
     fetchMessages()
   }, [conversationId])
 
@@ -75,7 +84,7 @@ export default function ChatBox({
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ChatHeader name={"บิว"} showReport={showReport} />
+      <ChatHeader name={name} showReport={showReport} />
       <MessageList messages={messages} />
       <div className="mt-auto">
         <ChatFooter

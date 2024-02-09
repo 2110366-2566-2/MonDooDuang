@@ -62,6 +62,28 @@ export const chatRepository = {
     )
     return result.rows
   },
+  getNameByConversationId: async (conversationId: string, userId: string) => {
+    const result = await db.query(
+      `
+        SELECT 
+        CASE 
+            WHEN fortunetellerid = $2 THEN (
+                SELECT CONCAT(fname,' ',lname) FROM USER_TABLE 
+                WHERE USER_TABLE.userid = CONVERSATION.customerid
+            )
+            WHEN customerid = $2 THEN (
+                SELECT stagename FROM FORTUNE_TELLER
+                WHERE FORTUNE_TELLER.fortunetellerid = CONVERSATION.fortunetellerid
+            )
+        END AS result
+        FROM 
+            CONVERSATION
+        WHERE conversationid = $1
+    `,
+      [conversationId, userId]
+    )
+    return result.rows
+  },
   addMessage: async (conversationId: string, senderId: string, message: string) => {
     await db.query(
       `

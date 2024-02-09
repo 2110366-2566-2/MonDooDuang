@@ -13,5 +13,10 @@ export const ChatService = {
     return await fetch(
       `${serviceConfig.backendBaseUrl}/conversations/messages/${conversationId}/${userId}`
     )
+  },
+  getNameByConversationId: async (conversationId: string, userId: string) => {
+    return await fetch(
+      `${serviceConfig.backendBaseUrl}/conversations/name/${conversationId}/${userId}`
+    )
   }
 }

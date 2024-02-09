@@ -21,8 +21,16 @@ const getMessagesByConversationId = async (req: Request, res: Response) => {
   res.send(data)
 }
 
+const getNameByConversationId = async (req: Request, res: Response) => {
+  const conversationId = req.params.conversationId
+  const userId = req.params.userId
+  const data = await chatService.getNameByConversationId(conversationId, userId)
+  res.send(data)
+}
+
 export const chatController = {
   getConversationsByUserId,
   getNameWithLastMessage,
-  getMessagesByConversationId
+  getMessagesByConversationId,
+  getNameByConversationId
 }
