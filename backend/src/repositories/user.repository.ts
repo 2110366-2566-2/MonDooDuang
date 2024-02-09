@@ -1,11 +1,12 @@
 import { db } from "../configs/pgdbConnection"
-import { Gender, UserType } from "../services/user/user.services"
+import { Gender, UserType } from "../models/user/user.model"
+
 
 export const userRepository = {
   findUser: async (email: string) => {
     console.log(email)
     const user = await db.query(
-      "SELECT userId FROM user_table WHERE email = $1",
+      "SELECT userid, password FROM user_table WHERE email = $1",
       [email]
     )
     return user.rows

@@ -22,25 +22,12 @@ app.use(
 
 app.use(logger("dev"))
 
-app.use(express.json())
-app.use(
-  cors({
-    origin: "*"
-  })
-)
-
-app.use(logger("dev"))
-
-// dont forget to delete this
-app.get("/HelloWorld", (req: Request, res: Response) => {
-  res.send("Hello World")
-})
+const cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 app.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`)
 })
-
-app.use(express.json())
 
 app.use("/user", userRouter)
 app.use("/report", reportRouter)

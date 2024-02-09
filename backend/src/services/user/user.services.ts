@@ -1,26 +1,9 @@
+import { Gender } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { assignToken } from "../../utils/jwt"
+const bcrypt = require("bcrypt")
 
 // Business logic here
-
-export type Gender = "MALE" | "FEMALE" | "LGBTQA+" | "NOT_TO_SAY"
-export type UserType = "CUSTOMER" | "FORTUNE_TELLER"
-
-export interface UserSchema {
-  userId: string
-  fName: string
-  lName: string
-  gender: Gender
-  phoneNumber: string
-  email: string
-  birthDate: Date
-  profilePicture: string
-  isBanned: boolean
-  bankName: string
-  accountNumber: string
-  password: string
-  userType: UserType
-}
 
 export const userService = {
   createNewUser: async (body: { email: string, fName: string, lName: string, gender: Gender, phoneNumber: string, birthDate: Date, profilePicture: string, bankName: string, accountNumber: string, password: string}) => {
@@ -47,7 +30,6 @@ export const userService = {
       return null
     }
 
-    const bcrypt = require("bcrypt")
     const salt = await bcrypt.genSalt(10)
     // const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT)
     const hashedPassword = await bcrypt.hash(password, salt)
@@ -60,6 +42,30 @@ export const userService = {
     }
 
     const token = assignToken(newUser[0].userid)
+    return token
+  },
+  login: async (body: { email: string, password: string}) => {
+    const email = body?.email
+    const password = body?.password
+
+    if (!(email && password)) {
+      console.log("incomplete info")
+      return null
+    }
+
+    const user = await userRepository.findUser(email)
+    if (user.length <= 0) {
+      console.log("this email hasn't registered")
+      return null
+    }
+
+    const isMatch = await bcrypt.compare(password, user[0].password)
+    if(!isMatch) {
+      console.log("invalid credentials")
+      return null
+    }
+
+    const token = assignToken(user[0].userid)
     return token
   }
 }
