@@ -6,7 +6,7 @@ export default {
       colors: {
         "example-color": "#ff0000",
         "text-field": "rgba(255, 255, 255, 0.54)",
-        "yellow-radio-button": "#FFD233"
+        "yellow-radio-button": "#FFD233",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",
