@@ -20,7 +20,7 @@ export default function MessageList({ messages }: MessageListProps) {
   }, [messages])
 
   return (
-    <div className="overflow-y-auto h-screen flex flex-col justify-end">
+    <div className="flex flex-col overflow-scroll h-screen ">
       {messages.map((message, index) => (
         <Message
           key={index}
