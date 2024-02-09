@@ -5,15 +5,17 @@ export default {
     extend: {
       colors: {
         "example-color": "#ff0000",
-        "text-field": "rgba(255, 255, 255, 0.54)",
-        "yellow-radio-button": "#FFD233",
+        "mdd-text-field": "rgba(255, 255, 255, 0.54)",
+        "mdd-yellow-radio-button": "#FFD233",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",
         "mdd-dark-grey": "#A1A1A1",
         "mdd-almost-black": "#3B3B3B",
         "mdd-sand-yellow": "#E9AC12",
-        "mdd-dark-sand": "#CC9403"
+        "mdd-dark-sand": "#CC9403",
+        "mdd-invalid-field": "#FF5656",
+        "mdd-invalid-label": "#FF7070",
       },
       fontFamily: {
         "sans": ["Prompt", "sans-serif"],

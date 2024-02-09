@@ -6,6 +6,7 @@ export const loginUser = (req: Request, res: Response) => {
 }
 
 export const registerUser = async (req: Request, res: Response) => {
+  console.log(req.body)
   const token = await userService.createNewUser(req.body)
   if (token === null) {
     res.status(400).json({

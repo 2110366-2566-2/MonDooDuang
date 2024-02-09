@@ -1,4 +1,4 @@
-import { db } from "../configs/pgdbConnnection"
+import { db } from "../configs/pgdbConnection"
 import { Gender, UserType } from "../services/user/user.services"
 
 export const userRepository = {

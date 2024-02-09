@@ -23,7 +23,7 @@ export interface UserSchema {
 }
 
 export const userService = {
-  createNewUser: async (body: { email: string, fName: string, lName: string, gender: Gender, phoneNumber: string, birthDate: Date, profilePicture: string, bankName: string, accountNumber: string, password: string, userType: UserType }) => {
+  createNewUser: async (body: { email: string, fName: string, lName: string, gender: Gender, phoneNumber: string, birthDate: Date, profilePicture: string, bankName: string, accountNumber: string, password: string}) => {
     const fName = body?.fName
     const lName = body?.lName
     const gender = body?.gender
@@ -34,9 +34,8 @@ export const userService = {
     const bankName = body?.bankName
     const accountNumber = body?.accountNumber
     const password = body?.password
-    const userType = body?.userType
 
-    if (!(fName && lName && gender && phoneNumber && email && birthDate && bankName && accountNumber && password && userType)) {
+    if (!(fName && lName && gender && phoneNumber && email && birthDate && bankName && accountNumber && password)) {
       console.log("incomplete info")
       return null
     }
@@ -49,9 +48,11 @@ export const userService = {
     }
 
     const bcrypt = require("bcrypt")
-    const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT)
+    const salt = await bcrypt.genSalt(10)
+    // const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT)
+    const hashedPassword = await bcrypt.hash(password, salt)
 
-    const newUser = await userRepository.createUser(fName, lName, gender, phoneNumber, email, birthDate, profilePicture, false, bankName, accountNumber, hashedPassword, userType)
+    const newUser = await userRepository.createUser(fName, lName, gender, phoneNumber, email, birthDate, profilePicture, false, bankName, accountNumber, hashedPassword, "CUSTOMER")
 
     if (!newUser) {
       console.log("cannot create new user")
