@@ -3,9 +3,14 @@ import SearchIcon from "@mui/icons-material/Search"
 interface ChatSidebarProps {
   conversationIds: string[]
   onConversationSelect: (conversationId: string) => void
+  selectedConversationId: string
 }
 
-export default function ChatSidebar({ conversationIds, onConversationSelect }: ChatSidebarProps) {
+export default function ChatSidebar({
+  conversationIds,
+  onConversationSelect,
+  selectedConversationId
+}: ChatSidebarProps) {
   return (
     <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">
       <div className="relative">
@@ -20,6 +25,7 @@ export default function ChatSidebar({ conversationIds, onConversationSelect }: C
         <ChatList
           conversationId={conversationId}
           key={conversationId}
+          isSelected={conversationId === selectedConversationId}
           onSelect={() => onConversationSelect(conversationId)}
         />
       ))}

@@ -4,13 +4,15 @@ import { ChatService } from "../services/ChatService"
 interface ChatListProps {
   conversationId: string
   onSelect: () => void
+  isSelected: boolean
 }
 
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
-export default function ChatList({ conversationId, onSelect }: ChatListProps) {
+export default function ChatList({ conversationId, onSelect, isSelected }: ChatListProps) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
+  console.log(conversationId, isSelected, "dkdd")
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
       if (conversationId && mockUserId) {
@@ -21,14 +23,16 @@ export default function ChatList({ conversationId, onSelect }: ChatListProps) {
       }
     }
     fetchNameWithLastMessage()
-  }, [])
+  }, [conversationId, isSelected])
 
   const truncatedLastMessage =
     lastMessage.length > 22 ? lastMessage.substring(0, 22) + "..." : lastMessage
 
   return (
     <div
-      className="flex flex-row items-center h-[79px] w-[339px] bg-opacity-50 bg-gray-300 rounded-md mt-[10px]"
+      className={`flex flex-row items-center h-[79px] w-[339px] rounded-md mt-[10px] ${
+        isSelected ? "bg-white bg-opacity-85" : "bg-gray-300 bg-opacity-51"
+      }`}
       onClick={onSelect}
     >
       <img
@@ -37,8 +41,12 @@ export default function ChatList({ conversationId, onSelect }: ChatListProps) {
         className="h-[60px] w-[60px] rounded-full bg-black mx-2"
       />
       <div className="flex flex-col ml-4">
-        <p className="text-xl font-semibold">{name}</p>
-        <p className="text-sm">{truncatedLastMessage}</p>
+        <p className={`text-xl font-semibold ${isSelected ? "text-black" : "text-white"}`}>
+          {name}
+        </p>
+        <p className={`text-sm ${isSelected ? "text-black" : "text-white"}`}>
+          {truncatedLastMessage}
+        </p>
       </div>
     </div>
   )

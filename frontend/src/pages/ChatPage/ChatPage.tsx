@@ -36,6 +36,7 @@ export default function ChatPage() {
         <ChatSidebar
           conversationIds={conversationIds}
           onConversationSelect={handleConversationSelect}
+          selectedConversationId={selectedConversationId}
         />
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
