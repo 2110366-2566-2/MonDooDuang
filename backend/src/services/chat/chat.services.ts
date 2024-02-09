@@ -41,6 +41,15 @@ export const chatService = {
       }
     })
   },
+  getNameByConversationId: async (conversationId: string, userId: string) => {
+    const data = await chatRepository.getNameByConversationId(conversationId, userId)
+    if (data === null) {
+      return {
+        name: ""
+      }
+    }
+    return data[0].result
+  },
   // Socket service
   sendMessage: async (socket: Socket) => {
     socket.on("sendMessage", async (message: MessageType, room: string, senderId: string) => {
