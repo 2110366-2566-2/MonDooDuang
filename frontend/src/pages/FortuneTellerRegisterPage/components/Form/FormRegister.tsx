@@ -45,17 +45,23 @@ export default function FormRegister() {
         )}
       </div>
 
-      <div className="text-2xl pt-3 flex flex-col w-4/6 relative">
+      <div className="text-2xl pt-3 flex flex-col w-4/6 relative h-60">
         <form>
           <label htmlFor="fileForm">ภาพบัตรประจำตัวประชาชน(สามารถอัปโหลดได้ 1 ไฟล์เท่านั้น)</label>
-          <label className="flex flex-col items-center justify-center ">
-            <img src={UploadFile} className="size-32  justify-self-center" />
-            <span className="mx-auto  justify-self-center">
-              ลากไฟล์และวางที่นี่ หรือ <u className="font-semibold ">คลิก</u>
-              เพื่ออัพโหลดไฟล์
-            </span>
-          </label>
-          <input id="fileForm" name="fileForm" className="w-full h-60 rounded-lg bg-white/55  " />
+          <div className="relative flex flex-col items-center">
+            <input
+              id="fileForm"
+              name="fileForm"
+              className="absolute top-0 w-full h-60 rounded-lg bg-white/55  "
+            />
+            <label className="absolute top-10 flex flex-col items-center">
+              <img src={UploadFile} className="size-32" />
+              <span className="mx-auto  justify-self-center">
+                ลากไฟล์และวางที่นี่ หรือ <u className="font-semibold ">คลิก</u>
+                เพื่ออัพโหลดไฟล์
+              </span>
+            </label>
+          </div>
         </form>
       </div>
 
