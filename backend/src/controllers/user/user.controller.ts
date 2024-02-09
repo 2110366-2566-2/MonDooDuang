@@ -6,14 +6,14 @@ export const loginUser = async (req: Request, res: Response) => {
   if (token === null) {
     res.status(400).json({
       message: "Cannot log in",
-      succuss: false
+      succuss: false,
     })
   } else {
     const options = {
       expires: new Date(Date.now()+ parseInt(process.env.JWT_COOKIE_EXPIRE || "30")*24*60*60*10000),
-      httpOnly: true
+      httpOnly: false
     }
-    res.status(201).cookie('token',token, options).json
+    res.status(201).cookie('token', token, options).json
     ({
       message: "Successfully logged in",
       success: true,
@@ -27,14 +27,15 @@ export const registerUser = async (req: Request, res: Response) => {
   if (token === null) {
     res.status(400).json({
       message: "Cannot register new user",
-      succuss: false
+      succuss: false,
     })
   } else {
+    console.log(token)
     const options = {
       expires: new Date(Date.now()+ parseInt(process.env.JWT_COOKIE_EXPIRE || "30")*24*60*60*10000),
-      httpOnly: true
+      httpOnly: false
     }
-    res.status(201).cookie('token',token, options).json
+    res.status(201).cookie('token', token, options).json
     ({
       message: "Successfully registered",
       success: true,

@@ -59,7 +59,6 @@ export default function RegisterPage() {
     const { name, value } = event.target
     setFormValues({
       ...formValues,
-      profilePicture: "no",
       [name]: value
     })
     if (name == "email") handleEmailChange(value)
@@ -116,8 +115,9 @@ export default function RegisterPage() {
       console.log("info not complete")
       return
     }
-    const newUser = await RegisterService.createUser(formValues)
-    console.log(newUser.body)
+    const res = await RegisterService.createUser(formValues)
+    const data = await res.json()
+    console.log(data.token)
   }
 
   useEffect(() => {
