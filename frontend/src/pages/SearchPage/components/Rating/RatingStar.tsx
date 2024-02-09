@@ -28,7 +28,7 @@ export default function RatingStar({ rating }: RatingStarProps) {
       <img
         src={rating >= 0.5 ? Star1 : Star1Empty}
         alt="Star 1"
-        className="w-5 h-5 ml-10 transform -translate-y-[2px]"
+        className="w-5 h-5 ml-10 -translate-y-[2px]"
       />
     </div>
   )
