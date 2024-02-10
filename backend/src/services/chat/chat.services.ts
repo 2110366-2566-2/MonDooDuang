@@ -25,8 +25,7 @@ export const chatService = {
         lastMessage: ""
       }
     }
-    data.name = data.name[0].result
-    data.lastMessage = data.lastMessage.length === 0 ? "" : data.lastMessage[0].messagetext
+    data.lastMessage = data.lastMessage === null ? "" : data.lastMessage
     return data
   },
   getMessagesByConversationId: async (conversationId: string, userId: string) => {

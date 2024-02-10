@@ -12,7 +12,6 @@ const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 export default function ChatList({ conversationId, onSelect, isSelected }: ChatListProps) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
-  console.log(conversationId, isSelected, "dkdd")
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
       if (conversationId && mockUserId) {
