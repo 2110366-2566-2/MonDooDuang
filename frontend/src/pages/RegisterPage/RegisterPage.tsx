@@ -9,6 +9,7 @@ import { useState } from "react"
 import { Gender, UserSchema } from "./types/RegisterType"
 import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
 import ConfirmAlert from "./components/ConfirmAlert"
+import FailedAlert from "./components/FailedAlert"
 
 const today = dayjs()
 const CustomizedDatePicker = styled(DatePicker)`
@@ -55,6 +56,7 @@ export default function RegisterPage() {
   const [emailError, setEmailError] = useState<boolean>(false)
   const [FTAlert, setFTAlert] = useState<boolean>(false)
   const [CFAlert, setCFAlert] = useState<boolean>(false)
+  const [FAlert, setFAlert] = useState<boolean>(false)
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -139,16 +141,6 @@ export default function RegisterPage() {
 
   const handleSubmitButton = async (event) => {
     event.preventDefault()
-    if (
-      Object.entries(formValues).find(([key]) => key === "birthDate") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "birthDate" && value === "") !==
-        undefined
-    ) {
-      setFormValues({
-        ...formValues,
-        birthDate: today.toDate()
-      })
-    }
     const sum = checkAllInput()
     if (!sum) {
       console.log("info not complete")
@@ -166,7 +158,7 @@ export default function RegisterPage() {
         </div>
         <div className="z-10 w-[30%] bg-gradient-to-r from-black" />
       </div>
-      <div className="flex mt-24 mb-6 pt-14 pb-10 flex-col items-center text-white w-[95%] border border-white rounded-[30px]">
+      <div className="flex mt-24 mb-8 pt-14 pb-10 flex-col items-center text-white w-[95%] border border-white rounded-[30px]">
         <p className="text-[38px] font-medium">สร้างบัญชีใหม่</p>
         <form className="flex flex-col w-[85%]">
           <div className="flex mt-5">
@@ -222,10 +214,17 @@ export default function RegisterPage() {
             </div>
           </div>
           <div className="flex mt-8 justify-between">
-            <div className="flex flex-col w-[24%] items-start">
-              <p className={`ml-3 text-2xl ${dateError ? "text-mdd-invalid-label" : "text-white"}`}>
+            <div className="relative flex flex-col w-[24%] items-start">
+              <p
+                className={`ml-3 text-2xl ${
+                  dateError || formError[5] ? "text-mdd-invalid-label" : "text-white"
+                }`}
+              >
                 วัน เดือน ปี เกิด*
               </p>
+              {formError[5] && (
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+              )}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CustomizedDatePicker
                   defaultValue={today}
@@ -239,12 +238,13 @@ export default function RegisterPage() {
                     }
                   }}
                   value={formValues?.birthDate}
-                  onChange={(d) =>
+                  onChange={(d) => {
+                    d?.$d.setHours(7, 0, 0)
                     setFormValues({
                       ...formValues,
                       birthDate: d?.$d
                     })
-                  }
+                  }}
                   onAccept={() => {
                     setDateError(false)
                   }}
@@ -513,9 +513,11 @@ export default function RegisterPage() {
           setFTAlert={setFTAlert}
           setCFAlert={setCFAlert}
           formValues={formValues}
+          setFAlert={setFAlert}
         />
       )}
       {CFAlert && <ConfirmAlert CFAlert={CFAlert} setCFAlert={setCFAlert} />}
+      {FAlert && <FailedAlert FAlert={FAlert} setFAlert={setFAlert} />}
     </div>
   )
 }

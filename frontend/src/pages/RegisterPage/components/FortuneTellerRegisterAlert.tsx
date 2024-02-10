@@ -14,13 +14,21 @@ export default function FortuneTellerRegisterAlert(props: {
   FTAlert: boolean
   setFTAlert: React.Dispatch<React.SetStateAction<boolean>>
   setCFAlert: React.Dispatch<React.SetStateAction<boolean>>
+  setFAlert: React.Dispatch<React.SetStateAction<boolean>>
   formValues: UserSchema
 }) {
   const handleSubmitData = async () => {
     props.setFTAlert(false)
-    props.setCFAlert(true)
+
     const res = await RegisterService.createUser(props.formValues)
     const data = await res.json()
+    console.log(data)
+    if (!data.success) {
+      props.setFAlert(true)
+      return
+    } else {
+      props.setCFAlert(true)
+    }
     console.log(data.token)
     localStorage.setItem("token", data.token)
     const decoded = jwtDecode(data.token)
