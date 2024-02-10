@@ -22,7 +22,7 @@ app.use(
 
 app.use(logger("dev"))
 
-const cookieParser = require('cookie-parser')
+import cookieParser from "cookie-parser"
 app.use(cookieParser())
 
 app.listen(port, () => {
