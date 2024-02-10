@@ -30,20 +30,21 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="bg-black relative">
-      <div className="h-[5rem]" />
-      <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 relative">
-        {[...Array(18)].map((_, i) => (
-          <FortuneTellerSearchModal key={i} {...ft} />
-        ))}
-      </div>
-      <div className="mt-[22px] absolute w-full top-0">
+    <div className="bg-black">
+      <div className="sticky pt-5 z-10 top-0">
         <SearchBar
           searchFortuneTeller={searchFortuneTeller}
           setSearchFortuneTeller={setSearchFortuneTeller}
           isSubmit={isSubmit}
           setIsSubmit={setIsSubmit}
         />
+      </div>
+      <div className="overflow-y-scroll h-screen w-full mt-3">
+        <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0">
+          {[...Array(18)].map((_, i) => (
+            <FortuneTellerSearchModal key={i} {...ft} />
+          ))}
+        </div>
       </div>
     </div>
   )
