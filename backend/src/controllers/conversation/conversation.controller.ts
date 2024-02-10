@@ -1,34 +1,34 @@
 import { Request, Response } from "express"
-import { chatService } from "../../services/chat/chat.services"
+import { conversationService } from "../../services/conversation/conversation.services"
 
 const getConversationsByUserId = async (req: Request, res: Response) => {
   const userId = req.params.userId
-  const conversations = await chatService.getConversationsByUserId(userId)
+  const conversations = await conversationService.getConversationsByUserId(userId)
   res.send(conversations)
 }
 
 const getNameWithLastMessage = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
-  const data = await chatService.getNameWithLastMessage(conversationId, userId)
+  const data = await conversationService.getNameWithLastMessage(conversationId, userId)
   res.send(data)
 }
 
 const getMessagesByConversationId = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
-  const data = await chatService.getMessagesByConversationId(conversationId, userId)
+  const data = await conversationService.getMessagesByConversationId(conversationId, userId)
   res.send(data)
 }
 
 const getNameByConversationId = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
-  const data = await chatService.getNameByConversationId(conversationId, userId)
+  const data = await conversationService.getNameByConversationId(conversationId, userId)
   res.send(data)
 }
 
-export const chatController = {
+export const conversationController = {
   getConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,

@@ -1,5 +1,5 @@
 import { Socket } from "socket.io"
-import { chatRepository } from "../../repositories/chat.repository"
+import { conversationRepository } from "../../repositories/conversation.repository"
 
 export interface MessageType {
   message: string
@@ -8,9 +8,9 @@ export interface MessageType {
   timeSent: number
 }
 
-export const chatService = {
+export const conversationService = {
   getConversationsByUserId: async (userId: string) => {
-    const data = await chatRepository.getConversationsByUserId(userId)
+    const data = await conversationRepository.getConversationsByUserId(userId)
     if (data === null) {
       return []
     }
@@ -18,7 +18,7 @@ export const chatService = {
     return data.map((conversation) => conversation.conversationid)
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
-    const data = await chatRepository.getNameWithLastMessage(conversationId, userId)
+    const data = await conversationRepository.getNameWithLastMessage(conversationId, userId)
     if (data === null) {
       return {
         name: "",
@@ -29,7 +29,10 @@ export const chatService = {
     return data
   },
   getMessagesByConversationId: async (conversationId: string, userId: string) => {
-    const messages = await chatRepository.getMessagesByConversationId(conversationId, userId)
+    const messages = await conversationRepository.getMessagesByConversationId(
+      conversationId,
+      userId
+    )
     if (messages === null) return []
 
     const formattedMessages: MessageType[] = []
@@ -44,7 +47,7 @@ export const chatService = {
         day: "numeric",
         month: "long"
       })
-      if (prevTimeSent !== 0 && !chatService.isSameDay(prevTimeSent, currentTimeSent)) {
+      if (prevTimeSent !== 0 && !conversationService.isSameDay(prevTimeSent, currentTimeSent)) {
         formattedMessages.push({
           message: formattedDate,
           timeSent: currentTimeSent,
@@ -66,7 +69,7 @@ export const chatService = {
     return formattedMessages
   },
   getNameByConversationId: async (conversationId: string, userId: string) => {
-    const data = await chatRepository.getNameByConversationId(conversationId, userId)
+    const data = await conversationRepository.getNameByConversationId(conversationId, userId)
     if (data === null) {
       return {
         name: ""
@@ -78,7 +81,7 @@ export const chatService = {
   sendMessage: async (socket: Socket) => {
     socket.on("sendMessage", async (message: MessageType, room: string, senderId: string) => {
       socket.to(room).emit("receiveMessage", message)
-      await chatRepository.addMessage(room, senderId, message.message)
+      await conversationRepository.addMessage(room, senderId, message.message)
     })
   },
   joinRoom: (socket: Socket) => {

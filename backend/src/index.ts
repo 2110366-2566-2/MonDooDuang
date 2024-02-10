@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
-import chatRouter from "./routes/chat.routes"
+import conversationRouter from "./routes/conversation.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
 import { connectToDatabase } from "./configs/pgdbConnection"
@@ -40,7 +40,7 @@ server.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
-app.use("/conversations", chatRouter)
+app.use("/conversations", conversationRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)

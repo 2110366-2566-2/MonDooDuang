@@ -1,6 +1,6 @@
 import { db } from "../configs/pgdbConnection"
 
-export const chatRepository = {
+export const conversationRepository = {
   getConversationsByUserId: async (userId: string) => {
     const result = await db.query(
       `
