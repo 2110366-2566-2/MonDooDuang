@@ -31,7 +31,6 @@ export const userService = {
     }
 
     const salt = await bcrypt.genSalt(10)
-    // const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT)
     const hashedPassword = await bcrypt.hash(password, salt)
 
     const newUser = await userRepository.createUser(fName, lName, gender, phoneNumber, email, birthDate, profilePicture, false, bankName, accountNumber, hashedPassword, "CUSTOMER")
