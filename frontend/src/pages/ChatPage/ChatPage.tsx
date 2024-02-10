@@ -4,9 +4,10 @@ import { useState } from "react"
 export default function ChatPage() {
   const [isShowReport, setIsShowReport] = useState(false)
 
-  const mockIsCustomer = false
+  const mockIsCustomer = true
   const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
   const mockConversationId = "3456a1c-4321-4b8c-9d0e-a6b2c3d4e5f6"
+  const mockIsSystemReport = true
 
   return (
     <div>
@@ -18,6 +19,7 @@ export default function ChatPage() {
         isCustomer={mockIsCustomer}
         userId={mockUserId}
         conversationId={mockConversationId}
+        isSystemReport={mockIsSystemReport}
       />
     </div>
   )
