@@ -23,6 +23,8 @@ export default function NavBar({
   const handleNotification = () => {}
   const handleLogout = () => {}
 
+  const isHavingNotification = true
+
   return (
     <div className="flex justify-between py-3 px-6 items-center">
       <div className="flex gap-6 items-center text-white font-noto-sans font-light">
@@ -37,8 +39,11 @@ export default function NavBar({
         ))}
       </div>
       <div className="flex items-center gap-5 text-sm">
-        <div className="cursor-pointer" onClick={() => handleNotification()}>
+        <div className="cursor-pointer relative" onClick={() => handleNotification()}>
           <NotificationIcon />
+          {isHavingNotification && (
+            <div className="absolute rounded-full w-3 h-3 right-0 top-0 bg-mdd-sand-yellow" />
+          )}
         </div>
         <div className="flex items-center justify-center gap-3">
           <div className="flex flex-col text-white">
