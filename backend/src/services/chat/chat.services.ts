@@ -36,11 +36,14 @@ export const chatService = {
     let prevTimeSent: number
 
     messages.forEach((message) => {
-      const currentTimeSent: number = message.created_at
-      const formattedDate: string = new Date(message.created_at * 1000).toLocaleDateString(
-        "th-TH",
-        { day: "numeric", month: "long" }
-      )
+      const messageDate = message.created_at
+      messageDate.setUTCHours(messageDate.getUTCHours() + 7)
+      const currentTimeSent: number = messageDate.getTime()
+
+      const formattedDate: string = new Date(currentTimeSent).toLocaleDateString("th-TH", {
+        day: "numeric",
+        month: "long"
+      })
       if (prevTimeSent !== 0 && !chatService.isSameDay(prevTimeSent, currentTimeSent)) {
         formattedMessages.push({
           message: formattedDate,
