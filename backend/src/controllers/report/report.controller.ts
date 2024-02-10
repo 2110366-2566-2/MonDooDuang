@@ -13,11 +13,12 @@ const createReport = async (req: Request, res: Response) => {
     reporteeId: req.body.reporteeId
   }
 
-  const isSuccess = await reportService.createReport(report)
+  const result = await reportService.createReport(report)
+  const isSuccess = result.success
 
-  if (!isSuccess) { return res.status(400).json({ success: isSuccess }) }
+  if (!isSuccess) { return res.status(400).json(result) }
 
-  res.status(201).json({ success: isSuccess })
+  res.status(201).json(result)
 }
 
 const getReporteeId = async (req: Request, res: Response) => {
