@@ -1,7 +1,7 @@
 import { environment } from "../../../common/constants/environment"
 
 export const ReportService = {
-  createReport: async (description: string, reportType: ReportType, reporterId: string, reporteeId: string) => {
+  createReport: async (description: string, reportType: ReportType, reporterId: string, reporteeId: string | null) => {
 
     const res = await fetch(`${environment.backend.url}/report/create-report`, {
       method: 'POST',

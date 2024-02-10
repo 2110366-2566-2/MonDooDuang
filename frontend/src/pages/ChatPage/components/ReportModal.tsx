@@ -45,7 +45,10 @@ export default function ReportModal(props: {
           ? "SYSTEM_ERROR"
           : "INAPPROPRIATE_BEHAVIOR"
 
-    const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
+    const reporteeId =
+      reportType === "SYSTEM_ERROR"
+        ? null
+        : await ReportService.getReporteeId(props.conversationId, props.userId)
 
     const response = await ReportService.createReport(
       reportDescription,
