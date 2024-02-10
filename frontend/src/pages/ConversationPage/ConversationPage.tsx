@@ -4,8 +4,9 @@ import ConversationBox from "./components/ConversationBox"
 import { ConversationService } from "./services/ConversationService"
 import { useEffect, useState } from "react"
 
-const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 const mockIsCustomer = true
+const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
+const mockIsSystemReport = true
 
 export default function ConversationPage() {
   const [isShowReport, setIsShowReport] = useState(false)
@@ -47,6 +48,7 @@ export default function ConversationPage() {
         isCustomer={mockIsCustomer}
         userId={mockUserId}
         conversationId={selectedConversationId}
+        isSystemReport={mockIsSystemReport}
       />
     </div>
   )
