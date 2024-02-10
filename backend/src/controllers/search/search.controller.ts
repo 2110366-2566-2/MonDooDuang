@@ -4,24 +4,24 @@ import { searchService } from "../../services/search/search.services"
 
 const searchFortuneteller = async (req: Request, res: Response) => {
   const searchOption: SearchSchema = {
-    name: req.body.name,
+    name: "%" + req.body.name.toLowerCase() + "%",
     speciality: req.body.speciality,
     minPrice: req.body.minPrice,
     maxPrice: req.body.maxPrice,
-    startDate: req.body.startDate + " " + req.body.startTime,
-    endDate: req.body.endDate + " " + req.body.endTime,
+    startDate:
+      req.body.startDate === ""
+        ? "1-1-1"
+        : req.body.startDate + req.body.startTime === ""
+          ? ""
+          : " " + req.body.startTime,
+    endDate:
+      req.body.endDate === ""
+        ? "5000-1-1"
+        : req.body.endDate + req.body.endTime === ""
+          ? ""
+          : " " + req.body.endTime,
     rating: req.body.rating
   }
-
-  // const searchOption: SearchSchema = {
-  //   name: "",
-  //   speciality: "THAI",
-  //   minPrice: 55,
-  //   maxPrice: 75,
-  //   startDate: "2024-02-20 14:00:00",
-  //   endDate: "2024-02-20 15:00:00",
-  //   rating: 0
-  // }
 
   const data = await searchService.searchFortuneteller(searchOption)
 

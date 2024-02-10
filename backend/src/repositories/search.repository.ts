@@ -1,4 +1,4 @@
-import { db } from "../configs/pgdbConnnection"
+import { db } from "../configs/pgdbConnection"
 import { SearchSchema } from "../models/search/search.model"
 
 export const searchRepository = {
@@ -6,8 +6,8 @@ export const searchRepository = {
     const { name, speciality, minPrice, maxPrice, startDate, endDate, rating } = searchOption
     const query = `WITH FILTER_PACKAGE AS (
                         SELECT * FROM package
-                        WHERE speciality = '${speciality}'
-                        AND price >= ${minPrice} AND price <= ${maxPrice}
+                        ${speciality === "" ? "" : `WHERE speciality = '${speciality}'`}
+                        ${maxPrice === -1 ? "" : `AND price >= ${minPrice} AND price <= ${maxPrice}`}
                     ), 
                     APPOINTMENT_DATE_RANGE AS(
                         SELECT A.appointmentdate AS startdate, A.appointmentdate + (FP.duration || ' minutes')::interval AS enddate, FP.packageid 
@@ -24,13 +24,13 @@ export const searchRepository = {
                             OR R.enddate <= ('${endDate}'::timestamp - (FP.duration || ' minutes')::interval)))
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
-                        SELECT DISTINCT FA.speciality, FA.fortunetellerid, FT.stagename, U.fname, U.profilepicture, FT.totalscore, FT.totalreview FROM FILTER_APPOINTMENT FA
+                        SELECT DISTINCT FA.speciality, FA.packageid, FA.fortunetellerid, FT.stagename, U.fname, U.profilepicture, FT.totalscore, FT.totalreview FROM FILTER_APPOINTMENT FA
                         JOIN fortune_teller FT ON FA.fortunetellerid = FT.fortunetellerid
                         JOIN user_table U ON FA.fortunetellerid = U.userid
                         WHERE (CASE
                             WHEN FT.stagename IS NULL THEN LOWER(U.fname)
                             ELSE LOWER(FT.stagename)
-                        END) LIKE '%${name}%'
+                        END) LIKE '${name}'
                         AND (CASE
                             WHEN FT.totalreview > 0 THEN (FT.totalscore / FT.totalreview)
                             ELSE 0
@@ -39,6 +39,7 @@ export const searchRepository = {
                     FORTUNETELLER_PACKAGE AS (
                         SELECT F.fortunetellerid, F.stagename, F.fname, F.profilepicture, 
                         F.totalscore, F.totalreview, 
+                        STRING_AGG(DISTINCT F.packageid, ',') AS current_packageid,
                         STRING_AGG(DISTINCT P.packageid, ',') AS packageid_list,
                         ARRAY_TO_STRING(ARRAY_AGG(DISTINCT F.speciality), ',') AS current_speciality,
                         ARRAY_TO_STRING(ARRAY_AGG(DISTINCT P.speciality), ',') AS speciality_list,
