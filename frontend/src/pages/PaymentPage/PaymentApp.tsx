@@ -5,7 +5,7 @@ import PaymentPage from "./PaymentPage"
 export default function PaymentApp({ stripePromise }: { stripePromise: any }) {
   return (
     <RootLayout>
-      <NavBar />
+      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
       <PaymentPage stripePromise={stripePromise} />
     </RootLayout>
   )
