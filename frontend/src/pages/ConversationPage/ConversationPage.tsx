@@ -1,20 +1,19 @@
 import ReportModal from "./components/ReportModal"
-
-import ChatSidebar from "./components/ChatSidebar"
-import ChatBox from "./components/ChatBox"
-import { ChatService } from "./services/ChatService"
+import ConversationSidebar from "./components/ConversationSidebar"
+import ConversationBox from "./components/ConversationBox"
+import { ConversationService } from "./services/ConversationService"
 import { useEffect, useState } from "react"
 
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 const mockIsCustomer = true
 
-export default function ChatPage() {
+export default function ConversationPage() {
   const [isShowReport, setIsShowReport] = useState(false)
   const [conversationIds, setConversationIds] = useState<string[]>([""])
   const [selectedConversationId, setSelectedConversationId] = useState<string>("")
   useEffect(() => {
     const fetchConversations = async () => {
-      const response = await ChatService.getConversationsByUserId(mockUserId)
+      const response = await ConversationService.getConversationsByUserId(mockUserId)
       const conversationIds = await response.json()
       setConversationIds(conversationIds)
       setSelectedConversationId(conversationIds[0])
@@ -33,14 +32,14 @@ export default function ChatPage() {
   return (
     <div className="flex h-screen">
       <div className="w-1/4 bg-white bg-opacity-20">
-        <ChatSidebar
+        <ConversationSidebar
           conversationIds={conversationIds}
           onConversationSelect={handleConversationSelect}
           selectedConversationId={selectedConversationId}
         />
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ChatBox conversationId={selectedConversationId} showReport={showReport} />
+        <ConversationBox conversationId={selectedConversationId} showReport={showReport} />
       </div>
       {/* <button onClick={() => setIsShowReport(true)}>open</button> */}
       <ReportModal

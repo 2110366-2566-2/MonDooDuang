@@ -1,6 +1,6 @@
 import { serviceConfig } from "../../../common/services/serviceConfig"
 
-export const ChatService = {
+export const ConversationService = {
   getConversationsByUserId: async (userId: string) => {
     return await fetch(`${serviceConfig.backendBaseUrl}/conversations/${userId}`)
   },

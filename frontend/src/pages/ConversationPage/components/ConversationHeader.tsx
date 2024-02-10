@@ -3,11 +3,11 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff"
 import SearchIcon from "@mui/icons-material/Search"
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred"
 import { useState } from "react"
-interface ChatHeaderProps {
+interface ConversationHeaderProps {
   name: string
   showReport: () => void
 }
-export default function ChatHeader({ name, showReport }: ChatHeaderProps) {
+export default function ConversationHeader({ name, showReport }: ConversationHeaderProps) {
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true)
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)

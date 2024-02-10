@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import io from "socket.io-client"
 import MessageList from "./MessageList"
-import ChatFooter from "./ChatFooter"
-import { ChatService } from "../services/ChatService"
+import ConversationFooter from "./ConversationFooter"
+import { ConversationService } from "../services/ConversationService"
 import { serviceConfig } from "../../../common/services/serviceConfig"
-import ChatHeader from "./ChatHeader"
+import ConversationHeader from "./ConversationHeader"
 
 const socket = io(serviceConfig.backendBaseUrl)
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
@@ -16,7 +16,7 @@ export interface MessageType {
   timeSent: number
 }
 
-export default function ChatBox({
+export default function ConversationBox({
   conversationId,
   showReport
 }: {
@@ -31,14 +31,20 @@ export default function ChatBox({
   useEffect(() => {
     const fetchMessages = async () => {
       if (conversationId) {
-        const response = await ChatService.getMessagesByConversationId(conversationId, mockUserId)
+        const response = await ConversationService.getMessagesByConversationId(
+          conversationId,
+          mockUserId
+        )
         const messages = await response.json()
         setMessages(messages)
       }
     }
     const fetchName = async () => {
       if (conversationId) {
-        const response = await ChatService.getNameByConversationId(conversationId, mockUserId)
+        const response = await ConversationService.getNameByConversationId(
+          conversationId,
+          mockUserId
+        )
         const data = await response.json()
         setName(data.name)
       }
@@ -84,10 +90,10 @@ export default function ChatBox({
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ChatHeader name={name} showReport={showReport} />
+      <ConversationHeader name={name} showReport={showReport} />
       <MessageList messages={messages} />
       <div className="mt-auto">
-        <ChatFooter
+        <ConversationFooter
           messageText={messageText}
           setMessageText={setMessageText}
           sendMessage={sendMessage}

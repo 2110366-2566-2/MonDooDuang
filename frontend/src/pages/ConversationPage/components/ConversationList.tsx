@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { ChatService } from "../services/ChatService"
+import { ConversationService } from "../services/ConversationService"
 
-interface ChatListProps {
+interface ConversationListProps {
   conversationId: string
   onSelect: () => void
   isSelected: boolean
@@ -9,13 +9,20 @@ interface ChatListProps {
 
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
-export default function ChatList({ conversationId, onSelect, isSelected }: ChatListProps) {
+export default function ConversationList({
+  conversationId,
+  onSelect,
+  isSelected
+}: ConversationListProps) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
       if (conversationId && mockUserId) {
-        const response = await ChatService.getNameWithLastMessage(conversationId, mockUserId)
+        const response = await ConversationService.getNameWithLastMessage(
+          conversationId,
+          mockUserId
+        )
         const { name, lastMessage } = await response.json()
         setName(name)
         setLastMessage(lastMessage)

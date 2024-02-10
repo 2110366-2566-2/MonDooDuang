@@ -1,5 +1,5 @@
 import Message from "./Message"
-import { MessageType } from "./ChatBox"
+import { MessageType } from "./ConversationBox"
 import { useEffect, useRef } from "react"
 
 interface MessageListProps {

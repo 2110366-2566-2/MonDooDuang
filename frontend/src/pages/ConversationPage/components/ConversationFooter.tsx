@@ -1,12 +1,16 @@
 import EventAvailableIcon from "@mui/icons-material/EventAvailable"
 import SendIcon from "@mui/icons-material/Send"
-interface ChatFooterProps {
+interface ConversationFooterProps {
   messageText: string
   setMessageText: (message: string) => void
   sendMessage: () => void
 }
 
-export default function ChatFooter({ messageText, setMessageText, sendMessage }: ChatFooterProps) {
+export default function ConversationFooter({
+  messageText,
+  setMessageText,
+  sendMessage
+}: ConversationFooterProps) {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       sendMessage()
