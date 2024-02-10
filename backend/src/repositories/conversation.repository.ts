@@ -95,5 +95,26 @@ export const conversationRepository = {
     } catch (err) {
       return false
     }
+  },
+  createConversation: async (fortunetellerId: string, customerId: string) => {
+    try {
+      await db.query(
+        `
+          INSERT INTO CONVERSATION(fortunetellerid, customerid)
+          VALUES($1, $2)
+        `,
+        [fortunetellerId, customerId]
+      )
+      const result = await db.query(
+        `
+          SELECT conversationid
+          FROM CONVERSATION
+          WHERE fortunetellerid = $1 AND customerid = $2`,
+        [fortunetellerId, customerId]
+      )
+      return { isSuccess: true, data: result.rows[0].conversationid }
+    } catch (err) {
+      return { isSuccess: false, data: null }
+    }
   }
 }

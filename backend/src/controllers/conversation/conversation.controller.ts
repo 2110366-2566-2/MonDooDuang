@@ -28,9 +28,21 @@ const getNameByConversationId = async (req: Request, res: Response) => {
   res.status(200).send(data)
 }
 
+const createConversation = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const fortunetellerId = req.params.fortunetellerId
+  const { isSuccess, data } = await conversationService.createConversation(fortunetellerId, userId)
+  if (isSuccess) {
+    res.status(200).send(data)
+  } else {
+    res.status(500).send("Error creating conversation")
+  }
+}
+
 export const conversationController = {
   getConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,
-  getNameByConversationId
+  getNameByConversationId,
+  createConversation
 }

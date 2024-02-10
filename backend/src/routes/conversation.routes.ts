@@ -10,4 +10,5 @@ router.get(
 )
 router.get("/messages/:conversationId/:userId", conversationController.getMessagesByConversationId)
 router.get("/name/:conversationId/:userId", conversationController.getNameByConversationId)
+router.post("/create/:userId/:fortunetellerId", conversationController.createConversation)
 export default router

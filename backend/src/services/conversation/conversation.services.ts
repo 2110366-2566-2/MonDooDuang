@@ -77,6 +77,10 @@ export const conversationService = {
     }
     return { name: data[0].result }
   },
+  createConversation: async (fortunetellerId: string, customerId: string) => {
+    const result = await conversationRepository.createConversation(fortunetellerId, customerId)
+    return result
+  },
   // Socket service
   sendMessage: async (socket: Socket) => {
     socket.on("sendMessage", async (message: MessageType, room: string, senderId: string) => {
