@@ -1,16 +1,15 @@
 import ConversationList from "./ConversationList"
 import SearchIcon from "@mui/icons-material/Search"
-interface ConversationSidebarProps {
-  conversationIds: string[]
-  onConversationSelect: (conversationId: string) => void
-  selectedConversationId: string
-}
 
 export default function ConversationSidebar({
   conversationIds,
   onConversationSelect,
   selectedConversationId
-}: ConversationSidebarProps) {
+}: {
+  conversationIds: string[]
+  onConversationSelect: (conversationId: string) => void
+  selectedConversationId: string
+}) {
   return (
     <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">
       <div className="relative">

@@ -1,12 +1,8 @@
 import Message from "./Message"
-import { MessageType } from "./ConversationBox"
 import { useEffect, useRef } from "react"
+import { MessageInformation } from "../types/MessageInformation"
 
-interface MessageListProps {
-  messages: MessageType[]
-}
-
-export default function MessageList({ messages }: MessageListProps) {
+export default function MessageList({ messages }: { messages: MessageInformation[] }) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {

@@ -83,12 +83,17 @@ export const conversationRepository = {
     return result.rows
   },
   addMessage: async (conversationId: string, senderId: string, message: string) => {
-    await db.query(
-      `
-        INSERT INTO MESSAGE(conversationid, senderid, messageText)
-        VALUES($1, $2, $3)
-      `,
-      [conversationId, senderId, message]
-    )
+    try {
+      await db.query(
+        `
+          INSERT INTO MESSAGE(conversationid, senderid, messageText)
+          VALUES($1, $2, $3)
+        `,
+        [conversationId, senderId, message]
+      )
+      return true
+    } catch (err) {
+      return false
+    }
   }
 }

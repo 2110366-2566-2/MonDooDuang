@@ -1,13 +1,6 @@
-import React from "react"
+import { MessageInformation } from "../types/MessageInformation"
 
-export interface MessageProps {
-  message: string
-  sender: "SELF" | "OTHER" | "SYSTEM"
-  isRead: boolean
-  timeSent: number
-}
-
-const Message: React.FC<MessageProps> = ({ message, sender, isRead, timeSent }) => {
+export default function Message({ message, sender, isRead, timeSent }: MessageInformation) {
   return sender === "SELF" ? (
     <div className="flex justify-end">
       <div className="flex items-end m-1">
@@ -46,5 +39,3 @@ const Message: React.FC<MessageProps> = ({ message, sender, isRead, timeSent }) 
     </div>
   )
 }
-
-export default Message

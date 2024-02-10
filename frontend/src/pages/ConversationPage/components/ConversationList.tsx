@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react"
 import { ConversationService } from "../services/ConversationService"
 
-interface ConversationListProps {
-  conversationId: string
-  onSelect: () => void
-  isSelected: boolean
-}
-
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
 export default function ConversationList({
   conversationId,
   onSelect,
   isSelected
-}: ConversationListProps) {
+}: {
+  conversationId: string
+  onSelect: () => void
+  isSelected: boolean
+}) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
   useEffect(() => {

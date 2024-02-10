@@ -41,7 +41,6 @@ export default function ConversationPage() {
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
         <ConversationBox conversationId={selectedConversationId} showReport={showReport} />
       </div>
-      {/* <button onClick={() => setIsShowReport(true)}>open</button> */}
       <ReportModal
         isShowReport={isShowReport}
         setIsShowReport={setIsShowReport}

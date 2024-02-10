@@ -5,16 +5,10 @@ import ConversationFooter from "./ConversationFooter"
 import { ConversationService } from "../services/ConversationService"
 import { serviceConfig } from "../../../common/services/serviceConfig"
 import ConversationHeader from "./ConversationHeader"
+import { MessageInformation } from "../types/MessageInformation"
 
 const socket = io(serviceConfig.backendBaseUrl)
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
-
-export interface MessageType {
-  message: string
-  sender: "SELF" | "OTHER" | "SYSTEM"
-  isRead: boolean
-  timeSent: number
-}
 
 export default function ConversationBox({
   conversationId,
@@ -23,7 +17,7 @@ export default function ConversationBox({
   conversationId: string
   showReport: () => void
 }) {
-  const [messages, setMessages] = useState<MessageType[]>([])
+  const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
   const [name, setName] = useState<string>("")
   const room = conversationId
@@ -54,7 +48,7 @@ export default function ConversationBox({
   }, [conversationId])
 
   useEffect(() => {
-    socket.on("receiveMessage", (message: MessageType) => {
+    socket.on("receiveMessage", (message: MessageInformation) => {
       setMessages((prevMessages) => [...prevMessages, message])
     })
     return () => {

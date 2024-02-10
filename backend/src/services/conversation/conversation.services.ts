@@ -36,7 +36,7 @@ export const conversationService = {
     if (messages === null) return []
 
     const formattedMessages: MessageType[] = []
-    let prevTimeSent: number
+    let prevTimeSent: number = 0
 
     messages.forEach((message) => {
       const messageDate = message.created_at
@@ -47,7 +47,7 @@ export const conversationService = {
         day: "numeric",
         month: "long"
       })
-      if (prevTimeSent !== 0 && !conversationService.isSameDay(prevTimeSent, currentTimeSent)) {
+      if (prevTimeSent === 0 || !conversationService.isSameDay(prevTimeSent, currentTimeSent)) {
         formattedMessages.push({
           message: formattedDate,
           timeSent: currentTimeSent,
@@ -81,7 +81,10 @@ export const conversationService = {
   sendMessage: async (socket: Socket) => {
     socket.on("sendMessage", async (message: MessageType, room: string, senderId: string) => {
       socket.to(room).emit("receiveMessage", message)
-      await conversationRepository.addMessage(room, senderId, message.message)
+      const isSuccess = await conversationRepository.addMessage(room, senderId, message.message)
+      if (!isSuccess) {
+        console.error("Error sending message")
+      }
     })
   },
   joinRoom: (socket: Socket) => {
@@ -91,13 +94,12 @@ export const conversationService = {
   },
   disconnect: (socket: Socket) => {
     socket.on("disconnect", () => {
-      // console.log("User disconnected")
+      console.log("User disconnected")
     })
   },
   isSameDay: (timestamp1: number, timestamp2: number) => {
-    const date1 = new Date(timestamp1 * 1000) // Convert seconds to milliseconds
-    const date2 = new Date(timestamp2 * 1000) // Convert seconds to milliseconds
-
+    const date1 = new Date(timestamp1) // Convert seconds to milliseconds
+    const date2 = new Date(timestamp2) // Convert seconds to milliseconds
     return (
       date1.getFullYear() === date2.getFullYear() &&
       date1.getMonth() === date2.getMonth() &&

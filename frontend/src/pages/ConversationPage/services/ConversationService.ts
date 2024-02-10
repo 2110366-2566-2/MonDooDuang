@@ -6,7 +6,7 @@ export const ConversationService = {
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     return await fetch(
-      `${serviceConfig.backendBaseUrl}/conversations/lastMessage/${conversationId}/${userId}`
+      `${serviceConfig.backendBaseUrl}/conversations/name-with-lastMessage/${conversationId}/${userId}`
     )
   },
   getMessagesByConversationId: async (conversationId: string, userId: string) => {

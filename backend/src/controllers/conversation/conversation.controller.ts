@@ -4,28 +4,28 @@ import { conversationService } from "../../services/conversation/conversation.se
 const getConversationsByUserId = async (req: Request, res: Response) => {
   const userId = req.params.userId
   const conversations = await conversationService.getConversationsByUserId(userId)
-  res.send(conversations)
+  res.status(200).send(conversations)
 }
 
 const getNameWithLastMessage = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
   const data = await conversationService.getNameWithLastMessage(conversationId, userId)
-  res.send(data)
+  res.status(200).send(data)
 }
 
 const getMessagesByConversationId = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
   const data = await conversationService.getMessagesByConversationId(conversationId, userId)
-  res.send(data)
+  res.status(200).send(data)
 }
 
 const getNameByConversationId = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
   const data = await conversationService.getNameByConversationId(conversationId, userId)
-  res.send(data)
+  res.status(200).send(data)
 }
 
 export const conversationController = {
