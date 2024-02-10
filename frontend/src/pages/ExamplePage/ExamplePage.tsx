@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ExampleModal from "../../common/components/ModalOverlay/ExampleModal"
+import ExampleModal from "./components/ExampleModal"
 
 export default function ExamplePage() {
   const [isExampleModalOpen, setIsExampleModalOpen] = useState(false)

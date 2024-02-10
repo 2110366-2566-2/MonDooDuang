@@ -1,4 +1,4 @@
-import ModalOverlay from "./ModalOverlay"
+import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 
 export default function ExampleModal({
   isVisible,
