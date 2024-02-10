@@ -8,18 +8,10 @@ const searchFortuneteller = async (req: Request, res: Response) => {
     speciality: req.body.speciality,
     minPrice: req.body.minPrice,
     maxPrice: req.body.maxPrice,
-    startDate:
-      req.body.startDate === ""
-        ? "1-1-1"
-        : req.body.startDate + req.body.startTime === ""
-          ? ""
-          : " " + req.body.startTime,
-    endDate:
-      req.body.endDate === ""
-        ? "5000-1-1"
-        : req.body.endDate + req.body.endTime === ""
-          ? ""
-          : " " + req.body.endTime,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
     rating: req.body.rating
   }
 

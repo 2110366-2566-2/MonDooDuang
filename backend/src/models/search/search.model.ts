@@ -5,6 +5,8 @@ export interface SearchSchema {
   speciality: SpecialityType
   minPrice: number
   maxPrice: number
+  startTime: string
+  endTime: string
   startDate: string
   endDate: string
   rating: number

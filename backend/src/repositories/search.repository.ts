@@ -3,7 +3,8 @@ import { SearchSchema } from "../models/search/search.model"
 
 export const searchRepository = {
   search: async (searchOption: SearchSchema) => {
-    const { name, speciality, minPrice, maxPrice, startDate, endDate, rating } = searchOption
+    const { name, speciality, minPrice, maxPrice, startTime, endTime, startDate, endDate, rating } =
+      searchOption
     const query = `WITH FILTER_PACKAGE AS (
                         SELECT * FROM package
                         ${speciality === "" ? "" : `WHERE speciality = '${speciality}'`}
@@ -19,9 +20,17 @@ export const searchRepository = {
                         LEFT OUTER JOIN appointment A ON FP.packageid = A.packageid
                         LEFT OUTER JOIN APPOINTMENT_DATE_RANGE R ON FP.packageid = R.packageid
                         WHERE A.status IN ('WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT')
-                        AND ( R.startdate IS NULL OR R.enddate IS NULL 
-                            OR (R.startdate >= ('${startDate}'::timestamp + (FP.duration || ' minutes')::interval)
-                            OR R.enddate <= ('${endDate}'::timestamp - (FP.duration || ' minutes')::interval)))
+                        ${
+                          startDate === ""
+                            ? startTime === ""
+                              ? ""
+                              : `AND ( R.startdate IS NULL OR R.enddate IS NULL 
+                            OR (R.startdate::time >= '${startTime}'::time + (FP.duration || ' minutes')::interval
+                            OR R.enddate::time <= '${endTime}'::time - (FP.duration || ' minutes')::interval))`
+                            : `AND ( R.startdate IS NULL OR R.enddate IS NULL 
+                            OR (R.startdate >= ('${startDate} ${startTime}'::timestamp + (FP.duration || ' minutes')::interval)
+                            OR R.enddate <= ('${endDate} ${endTime}'::timestamp - (FP.duration || ' minutes')::interval)))`
+                        }
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
                         SELECT DISTINCT FA.speciality, FA.packageid, FA.fortunetellerid, FT.stagename, U.fname, U.profilepicture, FT.totalscore, FT.totalreview FROM FILTER_APPOINTMENT FA
