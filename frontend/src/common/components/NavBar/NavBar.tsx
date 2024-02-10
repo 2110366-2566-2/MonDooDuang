@@ -25,7 +25,7 @@ export default function NavBar({
 
   return (
     <div className="flex justify-between py-3 px-6 items-center">
-      <div className="flex gap-6 items-center text-white font-sans font-light">
+      <div className="flex gap-6 items-center text-white font-noto-sans font-light">
         <LogoIcon />
         {menuList.map((menu, index) => (
           <p
