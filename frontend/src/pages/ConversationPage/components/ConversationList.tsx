@@ -34,7 +34,7 @@ export default function ConversationList({
 
   return (
     <div
-      className={`flex flex-row items-center h-[79px] w-[339px] rounded-md mt-[10px] ${
+      className={`flex flex-row items-center h-[79px] w-[339px] rounded-md mt-[10px] cursor-pointer ${
         isSelected ? "bg-white bg-opacity-85" : "bg-gray-300 bg-opacity-51"
       }`}
       onClick={onSelect}
