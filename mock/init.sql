@@ -1,18 +1,22 @@
 -- TEST MOUNT FILE
 -- TEST INIT
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TYPE gender_enum AS ENUM('MALE', 'FEMALE', 'LGBTQA+', 'NOT_TO_SAY');
 CREATE TYPE usertype_enum AS ENUM('CUSTOMER', 'FORTUNE_TELLER');
 
 CREATE TABLE ADMIN (
-    AdminId CHAR(36) PRIMARY KEY,
+    AdminId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Email VARCHAR(200) UNIQUE NOT NULL,
-    Password VARCHAR(500) NOT NULL
+    Password VARCHAR(500) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
 CREATE TABLE USER_TABLE (
-    UserId CHAR(36) PRIMARY KEY,
+    UserId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Fname VARCHAR(100) NOT NULL,
     Lname VARCHAR(100) NOT NULL,
     Gender gender_enum NOT NULL,
@@ -25,12 +29,14 @@ CREATE TABLE USER_TABLE (
     AccountNumber VARCHAR(100) NOT NULL,
     Password VARCHAR(500) NOT NULL,
     UserType usertype_enum NOT NULL,
-    CONSTRAINT unique_name_constraint UNIQUE (Fname, Lname)
+    CONSTRAINT unique_name_constraint UNIQUE (Fname, Lname),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
 CREATE TABLE FORTUNE_TELLER (
-    FortuneTellerId CHAR(36) PRIMARY KEY,
+    FortuneTellerId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     IsVerified BOOLEAN NOT NULL,
     Description VARCHAR(300),
     IdentityCardNumber VARCHAR(30) NOT NULL,
@@ -38,47 +44,54 @@ CREATE TABLE FORTUNE_TELLER (
     IdentityCardCopy VARCHAR(300) NOT NULL,
     TotalScore INTEGER NOT NULL DEFAULT 0,
     TotalReview INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY(FortuneTellerId) REFERENCES USER_TABLE(UserId)
+    FOREIGN KEY(FortuneTellerId) REFERENCES USER_TABLE(UserId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TYPE speciality_enum AS ENUM('TAROT_CARD', 'THAI', 'NUMBER', 'ORACLE', 'RUNES');
 
 CREATE TABLE PACKAGE(
-    PackageId   CHAR(36) PRIMARY KEY,
+    PackageId   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Speciality  speciality_enum NOT NULL,
     Description VARCHAR(500),
     Duration    INTEGER  CHECK(Duration > 0),
-    Price       INTEGER  CHECK(Price BETWEEN 0 AND 1000000 ),
+    Price       INTEGER  CHECK(Price BETWEEN 10 AND 1000000 ),
     FortuneTellerID CHAR(36) NOT NULL,
-    FOREIGN KEY(FortuneTellerID) REFERENCES FORTUNE_TELLER(FortuneTellerId)
+    FOREIGN KEY(FortuneTellerID) REFERENCES FORTUNE_TELLER(FortuneTellerId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CONVERSATION (May be NoSQL)
 CREATE TABLE CONVERSATION(
-    ConversationId CHAR(36) PRIMARY KEY,
+    ConversationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     FortuneTellerID CHAR(36) NOT NULL,
     CustomerId CHAR(36) NOT NULL,
     FOREIGN KEY(FortuneTellerID) REFERENCES FORTUNE_TELLER(FortuneTellerId),
     FOREIGN KEY(CustomerId) REFERENCES USER_TABLE(UserId),
-    CONSTRAINT unique_conversation_constraint UNIQUE (FortuneTellerID, CustomerId)
-
+    CONSTRAINT unique_conversation_constraint UNIQUE (FortuneTellerID, CustomerId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- MESSAGE (May be NoSQL)
 CREATE TABLE MESSAGE(
-    MessageId CHAR(36) PRIMARY KEY,
+    MessageId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     SenderId CHAR(36) NOT NULL,
     MessageText VARCHAR(500) NOT NULL,
     IsRead  BOOLEAN NOT NULL DEFAULT FALSE,
     ConversationId CHAR(36) NOT NULL,
     FOREIGN KEY(SenderId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(ConversationId) REFERENCES CONVERSATION(ConversationId)
+    FOREIGN KEY(ConversationId) REFERENCES CONVERSATION(ConversationId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'CANCELED', 'SUSPENDED', 'REFUNDED');
 
 CREATE TABLE APPOINTMENT (
-    AppointmentId CHAR(36) PRIMARY KEY,
+    AppointmentId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Status appointment_status_enum NOT NULL,
     PackageId CHAR(36) NOT NULL,
     CustomerId CHAR(36) NOT NULL,
@@ -86,11 +99,13 @@ CREATE TABLE APPOINTMENT (
     AppointmentDate TIMESTAMP NOT NULL,
     FOREIGN KEY(PackageId) REFERENCES PACKAGE(PackageId),
     FOREIGN KEY(CustomerId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(FortuneTellerId) REFERENCES FORTUNE_TELLER(FortuneTellerId)
+    FOREIGN KEY(FortuneTellerId) REFERENCES FORTUNE_TELLER(FortuneTellerId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE REVIEW (
-    ReviewId CHAR(36) PRIMARY KEY,
+    ReviewId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     ReviewMessage VARCHAR(500),
     Score INTEGER NOT NULL,
     CustomerId CHAR(36) NOT NULL,
@@ -98,29 +113,33 @@ CREATE TABLE REVIEW (
     AppointmentId CHAR(36) NOT NULL,
     FOREIGN KEY(CustomerId) REFERENCES USER_TABLE(UserId),
     FOREIGN KEY(FortuneTellerId) REFERENCES FORTUNE_TELLER(FortuneTellerId),
-    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId)
+    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TYPE payment_method_enum AS ENUM('BANK', 'CREDIT_CARD');
 CREATE TYPE payment_status_enum AS ENUM('FROM_CUSTOMER', 'TO_FORTUNE_TELLER', 'REFUND');
 
 CREATE TABLE PAYMENT(
-    PaymentId   CHAR(36) PRIMARY KEY,
+    PaymentId   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Method payment_method_enum NOT NULL,
     Status payment_status_enum NOT NULL,
-    Amount INTEGER  CHECK(Amount BETWEEN 0 AND 1000000 ),
+    Amount INTEGER  CHECK(Amount BETWEEN 10 AND 1000000 ),
     ReceiverId CHAR(36) NOT NULL,
     AppointmentId CHAR(36) NOT NULL,
     FOREIGN KEY(ReceiverId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId)
+    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TYPE report_type_enum AS ENUM ('INAPPROPRIATE_BEHAVIOR','MONEY_SUSPENSION','SYSTEM_ERROR');
 CREATE TYPE report_status_enum AS ENUM ('PENDING','COMPLETED');
-CREATE TYPE notification_type_enum AS ENUM ('VERIFICATION', 'CHAT', 'APPOINTMENT');
+CREATE TYPE notification_type_enum AS ENUM ('VERIFICATION', 'CANCELED_VERIFICATION', 'CHAT', 'APPOINTMENT');
 CREATE TYPE appointment_notification_type_enum AS ENUM ('REMINDER', 'COMPLETE', 'CANCEL', 'NEW', 'ACCEPT');
 CREATE TABLE REPORT (
-    ReportId CHAR(36) PRIMARY KEY,
+    ReportId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Description VARCHAR(200) NOT NULL,
     ReportType report_type_enum NOT NULL,
     Status report_status_enum NOT NULL,
@@ -129,30 +148,99 @@ CREATE TABLE REPORT (
     ReporteeId CHAR(36),
     FOREIGN KEY (ReporterId) REFERENCES USER_TABLE(UserId),
     FOREIGN KEY (ReporteeId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId)
+    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY,
+    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     UserId  CHAR(36) NOT NULL,
     Type notification_type_enum NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES USER_TABLE(UserId)
+    FOREIGN KEY (UserId) REFERENCES USER_TABLE(UserId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE APPOINTMENT_NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY,
+    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     Type appointment_notification_type_enum NOT NULL,
     AppointmentId CHAR(36) NOT NULL,
     FOREIGN KEY (AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
-    FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId)
+    FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE CHAT_NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY,
+    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     ConversationId CHAR(36) NOT NULL,
     FOREIGN KEY (ConversationId) REFERENCES CONVERSATION(ConversationId),
-    FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId)
+    FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Trigger
+CREATE OR REPLACE FUNCTION update_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER admin_updated_at
+BEFORE UPDATE ON ADMIN
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER user_updated_at
+BEFORE UPDATE ON USER_TABLE
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER fortune_teller_updated_at
+BEFORE UPDATE ON FORTUNE_TELLER
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER package_updated_at
+BEFORE UPDATE ON PACKAGE
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER conversation_updated_at
+BEFORE UPDATE ON CONVERSATION
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER message_updated_at
+BEFORE UPDATE ON MESSAGE
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER appointment_updated_at
+BEFORE UPDATE ON APPOINTMENT
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER review_updated_at
+BEFORE UPDATE ON REVIEW
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER payment_updated_at
+BEFORE UPDATE ON PAYMENT
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER report_updated_at
+BEFORE UPDATE ON REPORT
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER notification_updated_at
+BEFORE UPDATE ON NOTIFICATION
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER appointment_notification_updated_at
+BEFORE UPDATE ON APPOINTMENT_NOTIFICATION
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER chat_notification_updated_at
+BEFORE UPDATE ON CHAT_NOTIFICATION
+FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ADMIN
 INSERT INTO ADMIN (AdminId, Email, Password)
@@ -238,6 +326,7 @@ VALUES
 INSERT INTO NOTIFICATION (NotificationId, UserId, Type)
 VALUES
     ('9012ijkl-3456-78mn-opqr-stuv12345678', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'VERIFICATION'),
+    ('9012ijkl-3456-68mn-opqr-stuv12345678', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'CANCELED_VERIFICATION'),
     ('2345ijkl-6789-01mn-opqr-stuv23456789', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', 'APPOINTMENT'),
     ('3456mnop-7890-12st-uvwx-yzab34567890', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'APPOINTMENT'),
     ('4567qrst-9012-34uv-wxyz-abcd12345678', '5f0d68c8-7803-4d25-b80e-13d43a641791', 'APPOINTMENT'),
