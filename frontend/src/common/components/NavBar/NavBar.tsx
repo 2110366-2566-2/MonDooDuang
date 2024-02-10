@@ -14,10 +14,10 @@ export default function NavBar({
   username: string
 }) {
   const role = isFortuneTeller ? "หมอดู/ผู้ใช้บริการ" : "ผู้ใช้บริการ"
-  const menuList: { name: string; focus: MenuFocus }[] = [
-    { name: "ค้นหาหมอดู", focus: "search" },
-    { name: "เช็คตารางเวลา", focus: "schedule" },
-    { name: "ประวัติการสนทนา", focus: "history" }
+  const menuList: { name: string; focus: MenuFocus; href: string }[] = [
+    { name: "ค้นหาหมอดู", focus: "search", href: "" },
+    { name: "เช็คตารางเวลา", focus: "schedule", href: "" },
+    { name: "ประวัติการสนทนา", focus: "history", href: "" }
   ]
 
   const handleNotification = () => {}
@@ -30,12 +30,13 @@ export default function NavBar({
       <div className="flex gap-6 items-center text-white font-noto-sans font-light">
         <LogoIcon />
         {menuList.map((menu, index) => (
-          <p
+          <a
             key={index}
             className={`${menuFocus === menu.focus ? "text-mdd-focus-yellow" : ""} cursor-pointer`}
+            href={menu.href}
           >
             {menu.name}
-          </p>
+          </a>
         ))}
       </div>
       <div className="flex items-center gap-5 text-sm">
