@@ -5,9 +5,10 @@ import dayjs from "dayjs"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { styled } from "@mui/material/styles"
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { useEffect, useState } from "react"
-import { RegisterService } from "./services/RegisterService"
+import { useState } from "react"
 import { Gender, UserSchema } from "./types/RegisterType"
+import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
+import ConfirmAlert from "./components/ConfirmAlert"
 
 const today = dayjs()
 const CustomizedDatePicker = styled(DatePicker)`
@@ -52,6 +53,8 @@ export default function RegisterPage() {
   const [passwordError, setPasswordError] = useState<boolean>(false)
   const [dateError, setDateError] = useState<boolean>(false)
   const [emailError, setEmailError] = useState<boolean>(false)
+  const [FTAlert, setFTAlert] = useState<boolean>(false)
+  const [CFAlert, setCFAlert] = useState<boolean>(false)
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -94,49 +97,76 @@ export default function RegisterPage() {
 
   const checkAllInput = () => {
     const newArray = [...formError]
-    newArray[0] = Object.entries(formValues).find(([key]) => key === "fName") === undefined
-    newArray[1] = Object.entries(formValues).find(([key]) => key === "lName") === undefined
-    newArray[2] = Object.entries(formValues).find(([key]) => key === "gender") === undefined
-    newArray[3] = Object.entries(formValues).find(([key]) => key === "phoneNumber") === undefined
-    newArray[4] = Object.entries(formValues).find(([key]) => key === "email") === undefined
-    newArray[5] = Object.entries(formValues).find(([key]) => key === "birthDate") === undefined
-    newArray[6] = Object.entries(formValues).find(([key]) => key === "bankName") === undefined
-    newArray[7] = Object.entries(formValues).find(([key]) => key === "accountNumber") === undefined
-    newArray[8] = Object.entries(formValues).find(([key]) => key === "password") === undefined
+    newArray[0] =
+      Object.entries(formValues).find(([key]) => key === "fName") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "fName" && value === "") !==
+        undefined
+    newArray[1] =
+      Object.entries(formValues).find(([key]) => key === "lName") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "lName" && value === "") !==
+        undefined
+    newArray[2] =
+      Object.entries(formValues).find(([key]) => key === "gender") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "gender" && value === "") !==
+        undefined
+    newArray[3] =
+      Object.entries(formValues).find(([key]) => key === "phoneNumber") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "phoneNumber" && value === "") !==
+        undefined
+    newArray[4] =
+      Object.entries(formValues).find(([key]) => key === "email") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "email" && value === "") !==
+        undefined
+    newArray[5] =
+      Object.entries(formValues).find(([key]) => key === "birthDate") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "birthDate" && value === "") !==
+        undefined
+    newArray[6] =
+      Object.entries(formValues).find(([key]) => key === "bankName") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "bankName" && value === "") !==
+        undefined
+    newArray[7] =
+      Object.entries(formValues).find(([key]) => key === "accountNumber") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "accountNumber" && value === "") !==
+        undefined
+    newArray[8] =
+      Object.entries(formValues).find(([key]) => key === "password") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "password" && value === "") !==
+        undefined
     setFormError(newArray)
     return newArray.reduce((sum, bool) => sum && !bool, true)
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmitButton = async (event) => {
     event.preventDefault()
-    alert("clicked")
+    if (
+      Object.entries(formValues).find(([key]) => key === "birthDate") === undefined ||
+      Object.entries(formValues).find(([key, value]) => key === "birthDate" && value === "") !==
+        undefined
+    ) {
+      setFormValues({
+        ...formValues,
+        birthDate: today.toDate()
+      })
+    }
     const sum = checkAllInput()
     if (!sum) {
       console.log("info not complete")
       return
     }
-    const res = await RegisterService.createUser(formValues)
-    const data = await res.json()
-    console.log(data.token)
+    setFTAlert(true)
   }
 
-  useEffect(() => {
-    setFormValues({
-      ...formValues,
-      birthDate: today.toDate()
-    })
-  }, [])
-
   return (
-    <div className="h-[1000px] w-full bg-black flex flex-col items-center">
-      <div className="flex w-[30%]">
+    <div className="h-[100%] w-[100%] bg-black flex flex-col items-center">
+      <div className="absolute flex w-[30%]">
         <div className="z-10 w-[30%] bg-gradient-to-l from-black" />
         <div className="z-10 w-[40%] justify-center flex bg-black">
           <img className="mt-7" src="./img/logo.svg" />
         </div>
         <div className="z-10 w-[30%] bg-gradient-to-r from-black" />
       </div>
-      <div className="absolute flex mt-24 pt-14 pb-10 flex-col items-center text-white w-[95%] border border-white rounded-[30px]">
+      <div className="flex mt-24 mb-6 pt-14 pb-10 flex-col items-center text-white w-[95%] border border-white rounded-[30px]">
         <p className="text-[38px] font-medium">สร้างบัญชีใหม่</p>
         <form className="flex flex-col w-[85%]">
           <div className="flex mt-5">
@@ -148,7 +178,7 @@ export default function RegisterPage() {
                 <span className="text-2xl">รูปโปรไฟล์ </span>(ไม่จำเป็น)
               </p>
             </div>
-            <div className="flex w-[54%] flex-col items-start gap-1">
+            <div className="relative flex w-[54%] flex-col items-start gap-1">
               <p
                 className={`ml-3 text-2xl ${
                   formError[0] ? "text-mdd-invalid-label" : "text-white"
@@ -157,7 +187,7 @@ export default function RegisterPage() {
                 ชื่อจริง*
               </p>
               {formError[0] && (
-                <div className="absolute w-[46%] h-[50px] mt-9 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-9 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="text"
@@ -177,7 +207,7 @@ export default function RegisterPage() {
                 นามสกุล*
               </p>
               {formError[1] && (
-                <div className="absolute w-[46%] h-[50px] mt-[138px] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-[138px] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="text"
@@ -224,7 +254,7 @@ export default function RegisterPage() {
                 />
               </LocalizationProvider>
             </div>
-            <div className="flex w-[24%] flex-col items-start">
+            <div className="relative flex w-[24%] flex-col items-start">
               <p
                 className={`ml-3 text-2xl ${
                   formError[3] ? "text-mdd-invalid-label" : "text-white"
@@ -233,7 +263,7 @@ export default function RegisterPage() {
                 เบอร์โทรศัพท์*
               </p>
               {formError[3] && (
-                <div className="absolute w-[20.4%] h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="tel"
@@ -246,7 +276,7 @@ export default function RegisterPage() {
                 className="px-7 py-2 w-full text-[22px] h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
             </div>
-            <div className="flex w-[45%] flex-col items-start">
+            <div className="relative flex w-[45%] flex-col items-start">
               <p
                 className={`ml-3 text-2xl ${
                   formError[2] ? "text-mdd-invalid-label" : "text-white"
@@ -256,7 +286,7 @@ export default function RegisterPage() {
               </p>
               <div className="flex justify-between items-center h-[50px] w-full">
                 {formError[2] && (
-                  <div className="absolute w-[39%] h-[50px] right-[7.2%] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-[102%] h-[50px] right-[-1%] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <div className="flex items-center">
                   <input
@@ -312,7 +342,7 @@ export default function RegisterPage() {
                     className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-yellow-radio-button"
                   />
                   <label htmlFor="LGBTQA+" className="ml-2 text-2xl">
-                    LGBTQA+
+                    LGBTQIA+
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -338,7 +368,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <div className="flex mt-5 justify-between">
-            <div className="flex flex-col items-start w-[42%]">
+            <div className="relative flex flex-col items-start w-[42%]">
               <p
                 className={`ml-3 text-2xl ${
                   formError[4] ? "text-mdd-invalid-label" : "text-white"
@@ -347,7 +377,7 @@ export default function RegisterPage() {
                 อีเมล*
               </p>
               {(formError[4] || emailError) && (
-                <div className="absolute w-[35.7%] h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="email"
@@ -360,7 +390,7 @@ export default function RegisterPage() {
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
             </div>
-            <div className="flex flex-col items-start w-[25%]">
+            <div className="relative flex flex-col items-start w-[25%]">
               <p
                 className={`ml-3 text-2xl ${
                   formError[8] ? "text-mdd-invalid-label" : "text-white"
@@ -369,7 +399,7 @@ export default function RegisterPage() {
                 รหัสผ่าน*
               </p>
               {formError[8] && (
-                <div className="absolute w-[21.3%] h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="password"
@@ -381,7 +411,7 @@ export default function RegisterPage() {
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
             </div>
-            <div className="flex flex-col items-start w-[25%]">
+            <div className="relative flex flex-col items-start w-[25%]">
               <p
                 className={`ml-3 text-2xl ${
                   passwordError ? "text-mdd-invalid-label" : "text-white"
@@ -390,7 +420,7 @@ export default function RegisterPage() {
                 ยืนยันรหัสผ่าน*
               </p>
               {passwordError && (
-                <div className="absolute w-[21.3%] h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="password"
@@ -405,7 +435,7 @@ export default function RegisterPage() {
           </div>
           <p className="text-center tex text-[38px] mt-8 font-medium">กรอกข้อมูลบัตร</p>
           <div className="flex justify-between mt-2">
-            <div className="flex flex-col items-start w-[42%]">
+            <div className="relative flex flex-col items-start w-[42%]">
               <p
                 className={`ml-3 text-2xl ${
                   formError[7] ? "text-mdd-invalid-label" : "text-white"
@@ -414,7 +444,7 @@ export default function RegisterPage() {
                 เลขที่บัญชี*
               </p>
               {formError[7] && (
-                <div className="absolute w-[35.7%] h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <input
                 type="string"
@@ -427,7 +457,7 @@ export default function RegisterPage() {
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </div>
-            <div className="flex flex-col items-start w-[54%]">
+            <div className="relative flex flex-col items-start w-[54%]">
               <p
                 className={`ml-3 text-2xl ${
                   formError[6] ? "text-mdd-invalid-label" : "text-white"
@@ -436,7 +466,7 @@ export default function RegisterPage() {
                 ธนาคาร*
               </p>
               {formError[6] && (
-                <div className="absolute w-[46%] h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                <div className="absolute w-full h-[50px] mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
               )}
               <CustomizedSelect
                 name="select-bank"
@@ -469,7 +499,7 @@ export default function RegisterPage() {
             <button
               disabled={dateError || passwordError || emailError}
               type="submit"
-              onClick={(e) => handleSubmit(e)}
+              onClick={(e) => handleSubmitButton(e)}
               className="my-3 text-[#3B3B3B] text-2xl font-semibold"
             >
               เสร็จสิ้น
@@ -477,6 +507,15 @@ export default function RegisterPage() {
           </div>
         </form>
       </div>
+      {FTAlert && (
+        <FortuneTellerRegisterAlert
+          FTAlert={FTAlert}
+          setFTAlert={setFTAlert}
+          setCFAlert={setCFAlert}
+          formValues={formValues}
+        />
+      )}
+      {CFAlert && <ConfirmAlert CFAlert={CFAlert} setCFAlert={setCFAlert} />}
     </div>
   )
 }

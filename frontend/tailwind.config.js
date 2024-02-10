@@ -16,6 +16,9 @@ export default {
         "mdd-dark-sand": "#CC9403",
         "mdd-invalid-field": "#FF5656",
         "mdd-invalid-label": "#FF7070",
+        "mdd-dialog-orange": "#DEAA6B",
+        "mdd-dialog-green": "#76AA7B",
+        "mdd-dialog-gray": "#AEAEAE",
       },
       fontFamily: {
         "sans": ["Prompt", "sans-serif"],
