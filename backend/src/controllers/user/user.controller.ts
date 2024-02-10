@@ -30,7 +30,6 @@ export const registerUser = async (req: Request, res: Response) => {
       succuss: false,
     })
   } else {
-    console.log(token)
     const options = {
       expires: new Date(Date.now()+ parseInt(process.env.JWT_COOKIE_EXPIRE || "30")*24*60*60*10000),
       httpOnly: false

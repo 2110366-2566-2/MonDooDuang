@@ -25,7 +25,6 @@ export const userService = {
 
     const user = await userRepository.findUser(email)
     if (user.length > 0) {
-      console.log(user)
       console.log("email is used")
       return null
     }
