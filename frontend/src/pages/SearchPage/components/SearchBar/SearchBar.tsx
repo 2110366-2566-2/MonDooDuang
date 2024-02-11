@@ -20,7 +20,7 @@ export default function SearchBar({
   setIsSubmit
 }: Props) {
   return (
-    <div className="flex flex-row gap-[0.2%] justify-between mx-8">
+    <div className="flex flex-row gap-[0.2%] justify-between mx-6">
       <SearchBox
         searchFortuneTeller={searchFortuneTeller}
         setSearchFortuneTeller={setSearchFortuneTeller}

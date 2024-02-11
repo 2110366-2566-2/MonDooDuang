@@ -10,8 +10,10 @@ export default function SearchPage() {
     maxPrice: -1,
     startDate: "",
     endDate: "",
-    startTime: "",
-    endTime: "",
+    startHourTime: -1,
+    startMinuteTime: -1,
+    endHourTime: -1,
+    endMinuteTime: -1,
     rating: 0
   })
   const [isSubmit, setIsSubmit] = useState(false)
