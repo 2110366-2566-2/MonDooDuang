@@ -1,8 +1,13 @@
 import { Request, Response } from "express"
 import { userService } from "../../services/user/user.services"
+import { LoginUserSchema, RegisterUserSchema } from "../../models/user/user.model"
 
 export const loginUser = async (req: Request, res: Response) => {
-  const token = await userService.login(req.body)
+  const loginUser: LoginUserSchema = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  const token = await userService.login(loginUser)
   if (token === null) {
     res.status(400).json({
       message: "Cannot log in",
@@ -24,7 +29,19 @@ export const loginUser = async (req: Request, res: Response) => {
 }
 
 export const registerUser = async (req: Request, res: Response) => {
-  const token = await userService.createNewUser(req.body)
+  const registerUser: RegisterUserSchema = {
+    email: req.body.email,
+    password: req.body.password,
+    fName: req.body.fName,
+    lName: req.body.lName,
+    gender: req.body.gender,
+    phoneNumber: req.body.phoneNumber,
+    birthDate: req.body.birthDate,
+    profilePicture: req.body.profilePicture,
+    bankName: req.body.bankName,
+    accountNumber: req.body.accountNumber
+  }
+  const token = await userService.createNewUser(registerUser)
   if (token === null) {
     res.status(400).json({
       message: "Cannot register new user",

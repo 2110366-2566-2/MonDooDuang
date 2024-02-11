@@ -16,3 +16,21 @@ export interface UserSchema {
   password: string
   userType: UserType
 }
+
+export interface LoginUserSchema {
+  email: string
+  password: string
+}
+
+export interface RegisterUserSchema {
+  fName: string
+  lName: string
+  gender: Gender
+  phoneNumber: string
+  email: string
+  birthDate: Date
+  profilePicture: string
+  bankName: string
+  accountNumber: string
+  password: string
+}

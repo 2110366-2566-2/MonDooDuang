@@ -6,6 +6,7 @@ import reportRouter from "./routes/report.routes"
 import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
 import userRouter from "./routes/user.routes"
+import cookieParser from "cookie-parser"
 
 // For env File
 dotenv.config()
@@ -21,8 +22,6 @@ app.use(
 )
 
 app.use(logger("dev"))
-
-import cookieParser from "cookie-parser"
 app.use(cookieParser())
 
 app.listen(port, () => {

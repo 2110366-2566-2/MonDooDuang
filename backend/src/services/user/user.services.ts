@@ -1,4 +1,4 @@
-import { Gender, UserSchema } from "../../models/user/user.model"
+import { Gender } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
@@ -35,7 +35,7 @@ export const userService = {
       !gender ||
       !phoneNumber ||
       !email ||
-      !birthDate ||
+      birthDate === undefined ||
       !bankName ||
       !accountNumber ||
       !password
@@ -44,9 +44,9 @@ export const userService = {
       return null
     }
 
-    const user = await userRepository.findUser(email)
+    const user = await userRepository.findUser(email, fName, lName)
     if (user.length > 0) {
-      console.log("email is used")
+      console.log("this user has registered")
       return null
     }
 
@@ -68,7 +68,7 @@ export const userService = {
       "CUSTOMER"
     )
 
-    if (!newUser) {
+    if (newUser.length < 1) {
       console.log("cannot create new user")
       return
     }
@@ -76,7 +76,7 @@ export const userService = {
     const token = assignToken(newUser[0].userid)
     return token
   },
-  login: async (body: { email: string; password: string }) => {
+  login: async (body: { email: string, password: string }) => {
     const email = body?.email
     const password = body?.password
 
@@ -85,13 +85,15 @@ export const userService = {
       return
     }
 
-    const user = await userRepository.findUser(email)
+    const user = await userRepository.findUser(email, "", "")
     if (user.length <= 0) {
       console.log("this email hasn't registered")
       return
     }
 
-    const isMatch = await bcrypt.compare(password, user[0].password)
+    const collectPassword: string = user[0].password
+
+    const isMatch = await bcrypt.compare(password, collectPassword)
     if (!isMatch) {
       console.log("invalid credentials")
       return

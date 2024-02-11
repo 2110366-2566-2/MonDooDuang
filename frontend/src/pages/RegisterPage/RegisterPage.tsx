@@ -142,7 +142,7 @@ export default function RegisterPage() {
   const handleSubmitButton = async (event) => {
     event.preventDefault()
     const sum = checkAllInput()
-    if (!sum) {
+    if (!sum || dateError || passwordError || emailError) {
       console.log("info not complete")
       return
     }
@@ -371,7 +371,7 @@ export default function RegisterPage() {
             <div className="relative flex flex-col items-start w-[42%]">
               <p
                 className={`ml-3 text-2xl ${
-                  formError[4] ? "text-mdd-invalid-label" : "text-white"
+                  (formError[4] || emailError) ? "text-mdd-invalid-label" : "text-white"
                 }`}
               >
                 อีเมล*
@@ -497,7 +497,6 @@ export default function RegisterPage() {
           </div>
           <div className="mt-8 text-center self-end w-[11%] h-[50px] rounded-[10px] bg-white">
             <button
-              disabled={dateError || passwordError || emailError}
               type="submit"
               onClick={(e) => handleSubmitButton(e)}
               className="my-3 text-[#3B3B3B] text-2xl font-semibold"

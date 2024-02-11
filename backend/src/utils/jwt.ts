@@ -1,5 +1,6 @@
 import jsonwebtoken from "jsonwebtoken"
 
 export const assignToken = (payload: any) => {
-  return jsonwebtoken.sign({userid: payload}, process.env.JWT_SECRET!)
+  const jwtSecret = process.env.JWT_SECRET ?? ""
+  return jsonwebtoken.sign({ userid: payload }, jwtSecret)
 }
