@@ -26,7 +26,7 @@ export default function SpecialitySelector({ searchFortuneTeller, setSearchFortu
   return (
     <div
       ref={selectorRef}
-      className="w-[12.5%] px-3 rounded-full bg-[#D9D9D9]/[0.75] flex items-center justify-center"
+      className="h-[36px] w-[12.5%] px-3 rounded-full bg-[#D9D9D9]/[0.75] flex items-center justify-center"
       onClick={() => setOpenDropDown(!openDropDown)}
     >
       <div className="w-[88%] flex items-center justify-center">
