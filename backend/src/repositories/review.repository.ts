@@ -1,26 +1,26 @@
 import { db } from "../configs/pgdbConnection"
-import { ReviewSchema } from "../models/review/review.model";
+import { ShowedReviewSchema } from "../models/fortuneTellerDetail/showedReview.model";
 
-export const packageRepository = {
-    getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | ReviewSchema[] > =>{
+export const reviewRepository = {
+    getReviewByFortuneTellerId: async (fortuneTellerId: string): Promise< null | ShowedReviewSchema[] > =>{
         const result = await db.query(
-            `SELECT * FROM PACKAGE 
+            `SELECT reviewMessage, score, review.created_at, fname, lname  FROM REVIEW
+            JOIN USER_TABLE
+            ON REVIEW.customerId = USER_TABLE.userID
             WHERE FortuneTellerId = $1
-            ORDER BY speciality, price DESC;`,
+            ORDER BY review.created_at DESC;`,
             [fortuneTellerId]
         )
 
         if (result.rows.length === 0) return null
 
-        const reviews: ReviewSchema[] = result.rows.map(row => ({
+        const reviews: ShowedReviewSchema[] = result.rows.map(row => ({
 
-            reviewMessage : row.reviewMessage,
+            reviewMessage : row.reviewmessage,
             score : row.score,
-            customerId : row.customerId,
-            fortuneTellerId : row.fortuneTellerId,
-            appointmentId : row.appointmentId,
             created_at : row.created_at,
-            updated_at : row.updated_at
+            fName : row.fname,
+            lName : row.lname
 
         }));
 

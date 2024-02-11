@@ -1,6 +1,6 @@
-import { FortuneTellerSchema } from "../../models/fortuneTeller/fortuneTeller.model";
 import { fortuneTellerRepository } from "../../repositories/fortuneTeller.repository";
 import { packageRepository } from "../../repositories/package.repository";
+import { reviewRepository } from "../../repositories/review.repository";
 
 export const fortuneTellerService = {
     getFortuneTellerById: async (fortuneTellerId: string) => {
@@ -28,6 +28,24 @@ export const fortuneTellerService = {
                 duration: result.duration,
                 price: result.price,
                 fortuneTellerId: result.fortuneTellerId
+            }
+        })
+    },
+
+    getReviewByFortuneTellerId: async(fortuneTellerId: string) => {
+        const review = await reviewRepository.getReviewByFortuneTellerId(fortuneTellerId)
+
+        if(review === null) return null;
+
+        console.log(review)
+
+        return review.map((review) => {
+            return {
+                reviewMessage : review.reviewMessage,
+                score : review.score,
+                created_at : review.created_at,
+                fName : review.fName,
+                lName : review.lName
             }
         })
     }

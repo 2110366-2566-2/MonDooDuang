@@ -4,6 +4,7 @@ import Packages from "./components/Packages/Packages"
 import Background from "../../assets/background.png"
 import Reviews from "./components/Reviews/Reviews"
 import RecommendedFortuneTellers from "./components/RecommendedFortuneTeller/RecommendedFortuneTellers"
+import Footer from "./components/Footer/Footer"
 
 export default function FortuneTellerDetailPage() {
 
@@ -19,6 +20,7 @@ export default function FortuneTellerDetailPage() {
         <Reviews></Reviews>
         <RecommendedFortuneTellers></RecommendedFortuneTellers>
       </div>
+      <Footer></Footer>
     </div>
   )
 }

@@ -20,9 +20,20 @@ const getPackageByFortuneTellerId = async (req: Request, res: Response) => {
 
     res.status(200).json({ success: true, data: packageData })
   }
+
+const getReviewByFortuneTellerId = async (req: Request, res: Response) => {
+
+    const fortuneTellerId = req.params.fortuneTellerId
+    const reviewData = await fortuneTellerService.getReviewByFortuneTellerId(fortuneTellerId)
+  
+    if (reviewData === null) { return res.status(400).json({ success: false }) }
+
+    res.status(200).json({ success: true, data: reviewData })
+  }
   
   export const fortuneTellerController = {
     getFortuneTellerbyId,
-    getPackageByFortuneTellerId
+    getPackageByFortuneTellerId,
+    getReviewByFortuneTellerId
   }
   

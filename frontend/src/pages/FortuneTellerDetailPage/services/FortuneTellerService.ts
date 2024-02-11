@@ -1,6 +1,7 @@
 import { environment } from "../../../common/constants/environment"
 import { FortuneTellerDetailTypes } from "../types/FortuneTellerDetailTypes"
 import { PackageTypes } from "../types/PackageTypes"
+import { ShowedReviewTypes } from "../types/ShowedReviewTypes"
 
 export const FortuneTellerService = {
 
@@ -13,6 +14,13 @@ export const FortuneTellerService = {
 
   getPackagebyFortuneTellerId: async(fortuneTellerId: string):Promise<PackageTypes[]> => {
     const res = await fetch(`${environment.backend.url}/fortuneteller/package/${fortuneTellerId}`)
+    const data = await res.json()
+
+    return data.data
+  },
+
+  getReviewbyFortuneTellerId: async(fortuneTellerId: string):Promise<ShowedReviewTypes[]> => {
+    const res = await fetch(`${environment.backend.url}/fortuneteller/review/${fortuneTellerId}`)
     const data = await res.json()
 
     return data.data

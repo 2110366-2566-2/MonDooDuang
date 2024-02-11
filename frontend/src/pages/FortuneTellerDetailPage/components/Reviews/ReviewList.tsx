@@ -1,7 +1,28 @@
 import UserIcon from "./UserIcon"
 import RatedStar from "../FortuneTellerDetails/RatedStar"
+import { ShowedReviewTypes } from "../../types/ShowedReviewTypes"
 
-export default function ReviewList() {
+export default function ReviewList({ reviewItem }: { reviewItem: ShowedReviewTypes }) {
+
+    function timeAgo(timestamp: string): string {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffTime = Math.abs(now.getTime() - date.getTime());
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays < 1) {
+            const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+            if (diffHours < 1) {
+                const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                return `${diffMinutes} minutes ago`;
+            } else {
+                return `${diffHours} hours ago`;
+            }
+        } else {
+            return `${diffDays} days ago`;
+        }
+    }
+
     return (
         <div className="flex flex-row items-end min-w-[380px]">
             <UserIcon></UserIcon>
@@ -14,13 +35,13 @@ export default function ReviewList() {
                         <RatedStar></RatedStar>
                         <RatedStar></RatedStar>
                     </div>
-                    <div className="text-mdd-link-yellow">คะแนน : 4.9 / 5</div>
+                    <div className="text-mdd-link-yellow">คะแนน : {reviewItem.score} / 5</div>
                     <div className="text-wrap text-balance break-words leading-[1.5em] overflow-auto max-h-[3em]">
-                    จูเนียร์ สไตรค์ม็อบ ชัตเตอร์โก๊ะโอเคอยุติธรรม คอรัปชั่นม็อบสต๊อคซีอีโllllllอลิมิeeeeeต สัมนาพรีเมียมสปายเอ็นจีโอ เมาท์สเก็ตช์แบคโฮฮัม ซัพพลายเออร์รามาธิบดี ตุ๊ดมิลค์เคลียร์หลวงปู่คอมเมนต์ ทีวีเคลื่อนย้ายเดอะ เปเปอร์สเก็ตช์เฟรชถ่ายทำคอมเมนต์ แดนซ์ ศิรินทร์กู๋ล็อบบี้โนติสอะ ซิงน็อคสะเด่า จัมโบ้ ตุ๊ก ซิตี้โกะอุปสงค์อัลตรา
+                    {reviewItem.reviewMessage}
                     </div>
-                    <div>2 Days ago</div>
+                    <div>{timeAgo(reviewItem.created_at)}</div>
                 </div>
-                <div>Username : สาววายท่านนี้กำลังฟริน</div>
+                <div>{reviewItem.fName} {reviewItem.lName}</div>
             </div>
         </div>
     )

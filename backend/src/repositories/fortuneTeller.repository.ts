@@ -19,7 +19,7 @@ export const fortuneTellerRepository = {
             stageName: result.rows[0].stagename,
             totalScore : result.rows[0].totalscore,
             totalReview : result.rows[0].totalreview,
-            profilePicture : result.rows[0].profilePicture
+            profilePicture : result.rows[0].profilepicture
           }
     }
 }

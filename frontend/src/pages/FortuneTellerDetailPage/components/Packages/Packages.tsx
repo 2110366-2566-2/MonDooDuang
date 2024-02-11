@@ -28,7 +28,7 @@ export default function Packages() {
 
     return (
         <div className="border-white border-[1px] w-[50%] min-w-[500px] sm:rounded-lg flex justify-center">
-            <table className="flex flex-col w-[98%] h-[600px]">
+            <table className="w-[98%] max-h-[600px]">
                 <thead className="text-[40px] font-libre-bodoni text-center leading-loose border-b-[1px] border-white">Packages</thead>
                 <tbody className="overflow-x-auto overflow-y-auto">
                     {packageItems}
