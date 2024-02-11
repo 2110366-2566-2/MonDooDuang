@@ -5,7 +5,7 @@ export const ReportService = {
     description: string,
     reportType: ReportType,
     reporterId: string,
-    reporteeId: string
+    reporteeId: string | null
   ) => {
     const res = await fetch(`${environment.backend.url}/report/create-report`, {
       method: "POST",
