@@ -4,6 +4,7 @@ import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
 import chatRouter from "./routes/chat.routes"
+import fotuneTellerRouter from "./routes/fortuneTeller.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
 import { connectToDatabase } from "./configs/pgdbConnection"
@@ -40,6 +41,7 @@ server.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
+app.use("/fortuneteller", fotuneTellerRouter)
 app.use("/conversations", chatRouter)
 
 connectToDatabase().catch((error) => {

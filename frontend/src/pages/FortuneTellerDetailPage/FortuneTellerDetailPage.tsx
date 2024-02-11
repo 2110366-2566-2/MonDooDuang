@@ -5,6 +5,7 @@ import Background from "../../assets/background.png"
 import Reviews from "./components/Reviews/Reviews"
 
 export default function FortuneTellerDetailPage() {
+
   return (
     <div className="bg-black text-white bg-cover bg-no-repeat"
     style={{ backgroundImage: `url(${Background})` }} >
