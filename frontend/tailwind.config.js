@@ -11,11 +11,13 @@ export default {
         "mdd-dark-grey": "#A1A1A1",
         "mdd-almost-black": "#3B3B3B",
         "mdd-sand-yellow": "#E9AC12",
-        "mdd-dark-sand": "#CC9403"
+        "mdd-dark-sand": "#CC9403",
+        "mdd-focus-yellow": "#FFD233"
       },
       fontFamily: {
-        "sans": ["Prompt", "sans-serif"],
+        sans: ["Prompt", "sans-serif"],
         "noto-sans": ["Noto Sans Thai", "sans-serif"],
+        "noto-sans-eng": ["Noto Sans", "sans-serif"],
         "example-font": ["Inter var", "sans-serif"]
       }
     }
