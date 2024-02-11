@@ -34,7 +34,7 @@ export default function FortunePackage() {
           </div>
           <div className="flex flex-row ml-11">
             <p className="text-lg">รายละเอียด :&nbsp;</p>
-            <p className="text-lg"></p>
+            <p className="text-lg text-wrap"></p>
           </div>
         </div>
       </div>
