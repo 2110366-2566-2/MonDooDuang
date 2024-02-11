@@ -11,9 +11,9 @@ export default function FortuneTellerDetailPage() {
   return (
     <div className="bg-black text-white bg-cover bg-no-repeat"
     style={{ backgroundImage: `url(${Background})` }} >
-      <Breadcrumb></Breadcrumb>
-      <div className="px-16">
-        <div className="flex flex-row flex-wrap justify-center space-x-16 w-full">
+      <div className="px-16"><Breadcrumb></Breadcrumb></div>
+      <div className="px-16  text-[20px] font-light space-y-[64px] pt-4">
+        <div className="flex flex-row flex-wrap justify-center space-x-16 w-full items-center">
           <FortuneTellerDetails></FortuneTellerDetails>
           <Packages></Packages>
         </div>
