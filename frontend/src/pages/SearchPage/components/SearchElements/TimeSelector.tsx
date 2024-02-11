@@ -64,7 +64,7 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
   }
 
   useEffect(() => {
-    var adjust = adjustTime(
+    const adjust = adjustTime(
       searchFortuneTeller.startHourTime,
       searchFortuneTeller.startMinuteTime,
       searchFortuneTeller.endHourTime,
@@ -90,14 +90,14 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
           searchFortuneTeller.startMinuteTime === -1 &&
           searchFortuneTeller.endHourTime === -1 &&
           searchFortuneTeller.endMinuteTime === -1 ? (
-            <p className="text-white/70 text-base font-sans font-medium truncate">เลือกเวลา</p>
-          ) : (
-            <p className="text-white text-base font-sans font-medium truncate">
+              <p className="text-white/70 text-base font-sans font-medium truncate">เลือกเวลา</p>
+            ) : (
               <p className="text-white text-base font-sans font-medium truncate">
-                {searchFortuneTeller.startHourTime < searchFortuneTeller.endHourTime ||
+                <p className="text-white text-base font-sans font-medium truncate">
+                  {searchFortuneTeller.startHourTime < searchFortuneTeller.endHourTime ||
                 (searchFortuneTeller.startHourTime === searchFortuneTeller.endHourTime &&
                   searchFortuneTeller.startMinuteTime < searchFortuneTeller.endMinuteTime)
-                  ? `${
+                    ? `${
                       searchFortuneTeller.startHourTime < 10
                         ? `0${searchFortuneTeller.startHourTime}`
                         : searchFortuneTeller.startHourTime
@@ -114,7 +114,7 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
                         ? `0${searchFortuneTeller.endMinuteTime}`
                         : searchFortuneTeller.endMinuteTime
                     }`
-                  : `เวลา ${
+                    : `เวลา ${
                       searchFortuneTeller.startHourTime < 10
                         ? `0${searchFortuneTeller.startHourTime}`
                         : searchFortuneTeller.startHourTime
@@ -123,9 +123,9 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
                         ? `0${searchFortuneTeller.startMinuteTime}`
                         : searchFortuneTeller.startMinuteTime
                     }`}
+                </p>
               </p>
-            </p>
-          )}
+            )}
         </div>
         <div className="w-[20%] flex flex-row items-center">
           <img src={LineIcon} alt="line-icon" className="h-8 translate-y-1 mr-1" />

@@ -48,18 +48,18 @@ export default function PriceSelector({ searchFortuneTeller, setSearchFortuneTel
         <div className="w-[80%] flex items-center justify-center">
           {(searchFortuneTeller.minPrice <= 0 && searchFortuneTeller.maxPrice <= 0) ||
           searchFortuneTeller.minPrice > searchFortuneTeller.maxPrice ? (
-            <p className="text-white/70 text-base font-sans font-medium truncate">เลือกราคา</p>
-          ) : (
-            <p className="text-white text-base font-sans font-medium truncate">
+              <p className="text-white/70 text-base font-sans font-medium truncate">เลือกราคา</p>
+            ) : (
               <p className="text-white text-base font-sans font-medium truncate">
-                {searchFortuneTeller.minPrice < searchFortuneTeller.maxPrice
-                  ? `${searchFortuneTeller.minPrice < 0 ? 0 : searchFortuneTeller.minPrice} ถึง ${
+                <p className="text-white text-base font-sans font-medium truncate">
+                  {searchFortuneTeller.minPrice < searchFortuneTeller.maxPrice
+                    ? `${searchFortuneTeller.minPrice < 0 ? 0 : searchFortuneTeller.minPrice} ถึง ${
                       searchFortuneTeller.maxPrice
                     }`
-                  : searchFortuneTeller.maxPrice}
+                    : searchFortuneTeller.maxPrice}
+                </p>
               </p>
-            </p>
-          )}
+            )}
         </div>
         <div className="w-[20%] flex flex-row items-center">
           <img src={LineIcon} alt="line-icon" className="h-8 translate-y-1 mr-1" />

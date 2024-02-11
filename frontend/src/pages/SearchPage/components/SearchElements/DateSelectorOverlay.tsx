@@ -94,8 +94,8 @@ export default function DateSelectorOverlay({
             isSelectedStartDate || isSelectedEndDate
               ? "bg-yellow-400 text-white font-bold"
               : isCurrentDay
-              ? "bg-white border border-[#FBBF24] font-bold"
-              : ""
+                ? "bg-white border border-[#FBBF24] font-bold"
+                : ""
           } rounded-full h-full flex items-center justify-center ${
             isCurrentDay && isSelectedStartDate ? "border border-black" : ""
           }`}
@@ -132,10 +132,10 @@ export default function DateSelectorOverlay({
           {`เริ่มต้น : ${
             selectedStartDate
               ? `${selectedStartDate.getDate()} ${monthShortNames[selectedStartDate.getMonth()]} ${(
-                  selectedStartDate.getFullYear() + 543
-                )
-                  .toString()
-                  .slice(-2)}`
+                selectedStartDate.getFullYear() + 543
+              )
+                .toString()
+                .slice(-2)}`
               : ""
           }`}
         </div>
@@ -143,10 +143,10 @@ export default function DateSelectorOverlay({
           {`สิ้นสุด : ${
             selectedEndDate
               ? `${selectedEndDate.getDate()} ${monthShortNames[selectedEndDate.getMonth()]} ${(
-                  selectedEndDate.getFullYear() + 543
-                )
-                  .toString()
-                  .slice(-2)}`
+                selectedEndDate.getFullYear() + 543
+              )
+                .toString()
+                .slice(-2)}`
               : ""
           }`}
         </div>
