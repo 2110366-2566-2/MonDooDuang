@@ -7,8 +7,10 @@ export const searchRepository = {
       searchOption
     const query = `WITH FILTER_PACKAGE AS (
                         SELECT * FROM package
-                        ${speciality === "" ? "" : `WHERE speciality = '${speciality}'`}
-                        ${maxPrice === -1 ? "" : `AND price >= ${minPrice} AND price <= ${maxPrice}`}
+                        ${speciality !== "" || maxPrice !== -1 ? "WHERE" : ""}
+                        ${speciality === "" ? "" : `speciality = '${speciality}'`}
+                        ${speciality !== "" && maxPrice !== -1 ? "AND" : ""}
+                        ${maxPrice === -1 ? "" : `price >= ${minPrice} AND price <= ${maxPrice}`}
                     ), 
                     APPOINTMENT_DATE_RANGE AS(
                         SELECT A.appointmentdate AS startdate, A.appointmentdate + (FP.duration || ' minutes')::interval AS enddate, FP.packageid 
@@ -19,17 +21,28 @@ export const searchRepository = {
                         SELECT FP.packageid, FP.speciality, FP.price, FP.fortunetellerid FROM FILTER_PACKAGE FP
                         LEFT OUTER JOIN appointment A ON FP.packageid = A.packageid
                         LEFT OUTER JOIN APPOINTMENT_DATE_RANGE R ON FP.packageid = R.packageid
-                        WHERE A.status IN ('WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT')
                         ${
                           startDate === ""
                             ? startTime === ""
                               ? ""
-                              : `AND ( R.startdate IS NULL OR R.enddate IS NULL 
-                            OR (R.startdate::time >= '${startTime}'::time + (FP.duration || ' minutes')::interval
-                            OR R.enddate::time <= '${endTime}'::time - (FP.duration || ' minutes')::interval))`
-                            : `AND ( R.startdate IS NULL OR R.enddate IS NULL 
-                            OR (R.startdate >= ('${startDate} ${startTime}'::timestamp + (FP.duration || ' minutes')::interval)
-                            OR R.enddate <= ('${endDate} ${endTime}'::timestamp - (FP.duration || ' minutes')::interval)))`
+                              : `WHERE CASE
+                                  WHEN  R.startdate IS NULL OR R.enddate IS NULL 
+                                  OR (R.startdate::time >= '${startTime}'::time + (FP.duration || ' minutes')::interval
+                                  OR R.enddate::time <= '${endTime}'::time - (FP.duration || ' minutes')::interval)
+                                  THEN 1
+                                  WHEN A.status NOT IN ('WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT')
+                                  THEN 1
+                                  ELSE 0
+                                END > 0`
+                            : `WHERE CASE
+                                WHEN  R.startdate IS NULL OR R.enddate IS NULL 
+                                OR (R.startdate >= ('${startDate} ${startTime}'::timestamp + (FP.duration || ' minutes')::interval)
+                                OR R.enddate <= ('${endDate} ${endTime}'::timestamp - (FP.duration || ' minutes')::interval))
+                                THEN 1
+                                WHEN A.status NOT IN ('WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT')
+                                THEN 1
+                                ELSE 0
+                              END > 0`
                         }
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
