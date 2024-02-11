@@ -2,7 +2,7 @@ import LogoIcon from "./LogoIcon"
 import LogoutIcon from "./LogoutIcon"
 import NotificationIcon from "./NotificationIcon"
 
-type MenuFocus = "search" | "schedule" | "history" | "none"
+type MenuFocus = "search" | "schedule" | "conversation" | "none"
 
 export default function NavBar({
   isFortuneTeller,
@@ -17,7 +17,7 @@ export default function NavBar({
   const menuList: { name: string; focus: MenuFocus; href: string }[] = [
     { name: "ค้นหาหมอดู", focus: "search", href: "" },
     { name: "เช็คตารางเวลา", focus: "schedule", href: "" },
-    { name: "ประวัติการสนทนา", focus: "history", href: "" }
+    { name: "ประวัติการสนทนา", focus: "conversation", href: "" }
   ]
 
   const handleNotification = () => {}
