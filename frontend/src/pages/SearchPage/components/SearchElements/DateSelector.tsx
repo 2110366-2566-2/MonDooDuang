@@ -10,6 +10,20 @@ export default function DateSelector({ searchFortuneTeller, setSearchFortuneTell
   const [openDateSelector, setOpenDateSelector] = useState(false)
   const selectorRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const monthShortNames = [
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค."
+  ]
   const closeDateSelector = (event: MouseEvent) => {
     if (
       selectorRef.current &&
@@ -27,8 +41,10 @@ export default function DateSelector({ searchFortuneTeller, setSearchFortuneTell
     }
   }, [])
   useEffect(() => {
-    console.log(searchFortuneTeller)
-  }, [searchFortuneTeller.startDate, searchFortuneTeller.endDate])
+    if (!searchFortuneTeller.endDate && !openDateSelector) {
+      setSearchFortuneTeller({ ...searchFortuneTeller, endDate: searchFortuneTeller.startDate })
+    }
+  }, [searchFortuneTeller.startDate, searchFortuneTeller.endDate, openDateSelector])
   return (
     <div className="w-[13.5%] h-[36px]">
       <div
@@ -39,7 +55,20 @@ export default function DateSelector({ searchFortuneTeller, setSearchFortuneTell
         }}
       >
         <div className="w-[80%] flex items-center justify-center">
-          <p className="text-white/70 text-base font-sans font-medium truncate">เลือกวันที่</p>
+          {searchFortuneTeller.startDate && searchFortuneTeller.endDate ? (
+            <p className="text-white text-base font-sans font-medium truncate">
+              {`${searchFortuneTeller.startDate.getDate()} ${
+                monthShortNames[searchFortuneTeller.startDate.getMonth()]
+              } ${(searchFortuneTeller.startDate.getFullYear() + 543).toString().slice(-2)}`}
+              {searchFortuneTeller.startDate === searchFortuneTeller.endDate
+                ? ""
+                : ` ถึง ${searchFortuneTeller.endDate.getDate()} ${
+                    monthShortNames[searchFortuneTeller.endDate.getMonth()]
+                  } ${(searchFortuneTeller.endDate.getFullYear() + 543).toString().slice(-2)}`}
+            </p>
+          ) : (
+            <p className="text-white/70 text-base font-sans font-medium truncate">เลือกวันที่</p>
+          )}
         </div>
         <div className="w-[20%] flex flex-row items-center">
           <img src={LineIcon} alt="line-icon" className="h-8 translate-y-1 mr-1" />

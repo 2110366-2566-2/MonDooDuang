@@ -10,14 +10,12 @@ import TimeSelector from "../SearchElements/TimeSelector"
 interface Props {
   searchFortuneTeller: any
   setSearchFortuneTeller: (searchFortuneTeller: any) => void
-  isSubmit: boolean
   setIsSubmit: (isSubmit: boolean) => void
 }
 
 export default function SearchBar({
   searchFortuneTeller,
   setSearchFortuneTeller,
-  isSubmit,
   setIsSubmit
 }: Props) {
   return (

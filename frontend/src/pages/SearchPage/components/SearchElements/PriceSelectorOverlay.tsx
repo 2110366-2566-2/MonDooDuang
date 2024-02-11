@@ -14,8 +14,8 @@ export default function PriceSelectorOverlay({
   return (
     <div className="w-full bg-[#D9D9D9]/[0.75] rounded-lg shadow-lg">
       <div className="flex flex-row justify-evenly">
-        <PriceInput title="ราคาสูงสุด" value={minPrice} setValue={setMinPrice} />
-        <PriceInput title="ราคาต่ำสุด" value={maxPrice} setValue={setMaxPrice} />
+        <PriceInput title="ราคาต่ำสุด" value={minPrice} setValue={setMinPrice} />
+        <PriceInput title="ราคาสูงสุด" value={maxPrice} setValue={setMaxPrice} />
       </div>
       <p className="text-[#343434] font-normal text-xs px-3 pb-[10px]">
         **ราคาขั้นต่ำต้องน้อยกว่าราคาสูงสุด
