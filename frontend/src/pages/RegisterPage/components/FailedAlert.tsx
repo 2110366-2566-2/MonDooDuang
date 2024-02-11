@@ -6,7 +6,6 @@ import {
   DialogTitle,
   styled
 } from "@mui/material"
-import TickIcon from "./Icon/TickIcon"
 import NoIcon from "./Icon/NoIcon"
 
 export default function FailedAlert(props: {

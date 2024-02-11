@@ -10,6 +10,8 @@ import { Gender, UserSchema } from "./types/RegisterType"
 import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
 import ConfirmAlert from "./components/ConfirmAlert"
 import FailedAlert from "./components/FailedAlert"
+import { RegisterService } from "./services/RegisterService"
+import { setLocalStorage } from "../../common/services/LocalStorage"
 
 const today = dayjs()
 const CustomizedDatePicker = styled(DatePicker)`
@@ -146,6 +148,13 @@ export default function RegisterPage() {
       console.log("info not complete")
       return
     }
+    const res = await RegisterService.createUser(formValues)
+    const data = await res.json()
+    if (data.success === undefined) {
+      setFAlert(true)
+      return
+    }
+    setLocalStorage(data)
     setFTAlert(true)
   }
 
@@ -371,7 +380,7 @@ export default function RegisterPage() {
             <div className="relative flex flex-col items-start w-[42%]">
               <p
                 className={`ml-3 text-2xl ${
-                  (formError[4] || emailError) ? "text-mdd-invalid-label" : "text-white"
+                  formError[4] || emailError ? "text-mdd-invalid-label" : "text-white"
                 }`}
               >
                 อีเมล*
@@ -511,8 +520,6 @@ export default function RegisterPage() {
           FTAlert={FTAlert}
           setFTAlert={setFTAlert}
           setCFAlert={setCFAlert}
-          formValues={formValues}
-          setFAlert={setFAlert}
         />
       )}
       {CFAlert && <ConfirmAlert CFAlert={CFAlert} setCFAlert={setCFAlert} />}

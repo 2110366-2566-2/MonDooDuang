@@ -34,3 +34,8 @@ export interface RegisterUserSchema {
   accountNumber: string
   password: string
 }
+
+export interface TokenInfoSchema {
+  userId: string
+  userType: UserType
+}

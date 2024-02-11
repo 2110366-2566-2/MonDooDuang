@@ -1,4 +1,4 @@
-import { Gender } from "../../models/user/user.model"
+import { Gender, TokenInfoSchema } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
@@ -70,10 +70,15 @@ export const userService = {
 
     if (newUser.length < 1) {
       console.log("cannot create new user")
-      return
+      return null
     }
 
-    const token = assignToken(newUser[0].userid)
+    const tokenInfo: TokenInfoSchema = {
+      userId: newUser[0].userid,
+      userType: newUser[0].usertype
+    }
+
+    const token = assignToken(tokenInfo)
     return token
   },
   login: async (body: { email: string, password: string }) => {
@@ -82,13 +87,13 @@ export const userService = {
 
     if (!(email && password)) {
       console.log("incomplete info")
-      return
+      return null
     }
 
     const user = await userRepository.findUser(email, "", "")
     if (user.length <= 0) {
       console.log("this email hasn't registered")
-      return
+      return null
     }
 
     const collectPassword: string = user[0].password
@@ -96,10 +101,15 @@ export const userService = {
     const isMatch = await bcrypt.compare(password, collectPassword)
     if (!isMatch) {
       console.log("invalid credentials")
-      return
+      return null
     }
 
-    const token = assignToken(user[0].userid)
+    const tokenInfo: TokenInfoSchema = {
+      userId: user[0].userid,
+      userType: user[0].usertype
+    }
+
+    const token = assignToken(tokenInfo)
     return token
   }
 }
