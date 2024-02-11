@@ -4,6 +4,7 @@ import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import cors from "cors"
 import reportRouter from "./routes/report.routes"
+import requestRouter from "./routes/request.routes"
 import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
 
@@ -36,6 +37,7 @@ app.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
+app.use("/request", requestRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
