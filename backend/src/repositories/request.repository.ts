@@ -7,15 +7,23 @@ export const requestRepository = {
       await db.query(
         `
             UPDATE REQUEST
-            SET Status = $2
+            SET status = $2
             WHERE request_id = $1;
             `,
         [requestId, status]
       )
-      return true
+      const fortuneTellerId = await db.query(
+        `
+            SELECT fortune_teller_id
+            FROM REQUEST
+            WHERE request_id = $1;
+            `,
+        [requestId]
+      )
+      return { isSuccess: true, fortuneTellerId: fortuneTellerId.rows[0].fortune_teller_id }
     } catch (err) {
       console.error(err)
-      return false
+      return { isSuccess: false }
     }
   },
   getPendingRequest: async () => {

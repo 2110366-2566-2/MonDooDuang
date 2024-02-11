@@ -1,9 +1,9 @@
 import { environment } from "../../../common/constants/environment"
 
-type RequestStatus = "PENDING" | "ACCEPTED" | "REJECTED"
+type UpdatedStatus = "ACCEPTED" | "REJECTED"
 
 export const RequestService = {
-  updateRequestStatus: async (requestId: string, status: RequestStatus) => {
+  updateRequestStatus: async (requestId: string, status: UpdatedStatus) => {
     const res = await fetch(`${environment.backend.url}/request/update-status`, {
       method: 'POST',
       headers: {
