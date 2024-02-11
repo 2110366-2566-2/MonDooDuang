@@ -10,6 +10,7 @@ export default function FortuneTellerDetails() {
 
   const [fortuneTellerStageName, setFortuneTellerStageName] = useState<string>()
   const [fortuneTellerDescription, setFortuneTellerDescription] = useState<string>()
+  const [fortuneTellerAverageStar, setFortuneTellerAverageStar] = useState<number>()
 
   const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
 
@@ -18,9 +19,11 @@ export default function FortuneTellerDetails() {
       const response = await FortuneTellerService.getFortuneTellerbyId(mockUserId)
       const fortuneTellerStageName = await response.stageName
       const fortuneTellerDescription = await response.description
+      const fortuneTellerAverageStar = await response.averageStar
 
       setFortuneTellerStageName(fortuneTellerStageName)
       setFortuneTellerDescription(fortuneTellerDescription)
+      setFortuneTellerAverageStar(fortuneTellerAverageStar)
     }
     fetchFortuneTellerDetail()
   }, [])
@@ -44,7 +47,7 @@ export default function FortuneTellerDetails() {
               <RatedStar></RatedStar>
               <RatedStar></RatedStar>
               <RatedStar></RatedStar>
-              <div className="font-libre-bodoni text-[20px] mb-[-4px]">4.9 / 5</div>
+              <div className="font-libre-bodoni text-[20px] mb-[-4px]">{fortuneTellerAverageStar} / 5</div>
             </div>
             <div className="py-4">
               <div >รายละเอียด</div>

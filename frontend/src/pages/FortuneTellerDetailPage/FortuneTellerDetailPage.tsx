@@ -3,6 +3,7 @@ import FortuneTellerDetails from "./components/FortuneTellerDetails/FortuneTelle
 import Packages from "./components/Packages/Packages"
 import Background from "../../assets/background.png"
 import Reviews from "./components/Reviews/Reviews"
+import RecommendedFortuneTellers from "./components/RecommendedFortuneTeller/RecommendedFortuneTellers"
 
 export default function FortuneTellerDetailPage() {
 
@@ -16,6 +17,7 @@ export default function FortuneTellerDetailPage() {
           <Packages></Packages>
         </div>
         <Reviews></Reviews>
+        <RecommendedFortuneTellers></RecommendedFortuneTellers>
       </div>
     </div>
   )

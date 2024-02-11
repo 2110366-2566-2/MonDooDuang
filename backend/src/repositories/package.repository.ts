@@ -4,7 +4,9 @@ import { PackageSchema } from "../models/package/package.model"
 export const packageRepository = {
     getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageSchema[] > =>{
         const result = await db.query(
-            `SELECT * FROM PACKAGE WHERE FortuneTellerId = $1;`,
+            `SELECT * FROM PACKAGE 
+            WHERE FortuneTellerId = $1
+            ORDER BY speciality, price DESC;`,
             [fortuneTellerId]
         )
 
