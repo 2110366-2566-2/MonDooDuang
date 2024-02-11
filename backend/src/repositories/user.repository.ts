@@ -3,7 +3,10 @@ import { Gender, UserType } from "../models/user/user.model"
 
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
-    const user = await db.query("SELECT userid, password FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )", [email, fName, lName])
+    const user = await db.query(
+      "SELECT userid, password, usertype FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )",
+      [email, fName, lName]
+    )
     return user.rows
   },
   createUser: async (
@@ -38,7 +41,9 @@ export const userRepository = {
         userType
       ]
     )
-    const newUser = await db.query("SELECT userId FROM user_table WHERE email = $1", [email])
+    const newUser = await db.query("SELECT userId, usertype FROM user_table WHERE email = $1", [
+      email
+    ])
     return newUser.rows
   }
 }
