@@ -1,39 +1,47 @@
 import { useState, useEffect } from "react"
 import io from "socket.io-client"
 import MessageList from "./MessageList"
-import ChatFooter from "./ChatFooter"
-import { ChatService } from "../services/ChatService"
-import { serviceConfig } from "../../../common/services/serviceConfig"
-import ChatHeader from "./ChatHeader"
+import ConversationFooter from "./ConversationFooter"
+import { ConversationService } from "../services/ConversationService"
+import { environment } from "../../../common/constants/environment"
+import ConversationHeader from "./ConversationHeader"
+import { MessageInformation } from "../types/MessageInformation"
 
-const socket = io(serviceConfig.backendBaseUrl)
+const socket = io(environment.backend.url)
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
-export interface MessageType {
-  message: string
-  sender: "SELF" | "OTHER"
-  isRead: boolean
-  timeSent: number
-}
-
-export default function ChatBox({ conversationId }: { conversationId: string }) {
-  const [messages, setMessages] = useState<MessageType[]>([])
+export default function ConversationBox({
+  conversationId,
+  showReport
+}: {
+  conversationId: string | null
+  showReport: () => void
+}) {
+  const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
+  const [name, setName] = useState<string>("")
   const room = conversationId
 
   useEffect(() => {
     const fetchMessages = async () => {
+      const messages = await ConversationService.getMessagesByConversationId(
+        conversationId,
+        mockUserId
+      )
+      setMessages(messages)
+    }
+    const fetchName = async () => {
       if (conversationId) {
-        const response = await ChatService.getMessagesByConversationId(conversationId, mockUserId)
-        const messages = await response.json()
-        setMessages(messages)
+        const data = await ConversationService.getNameByConversationId(conversationId, mockUserId)
+        setName(data.name)
       }
     }
+    fetchName()
     fetchMessages()
   }, [conversationId])
 
   useEffect(() => {
-    socket.on("receiveMessage", (message: MessageType) => {
+    socket.on("receiveMessage", (message: MessageInformation) => {
       setMessages((prevMessages) => [...prevMessages, message])
     })
     return () => {
@@ -60,8 +68,8 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
       room,
       mockUserId
     )
-    setMessages((prevMessages) => [
-      ...prevMessages,
+    setMessages([
+      ...messages,
       { message: messageText, sender: "SELF", isRead: true, timeSent: Date.now() }
     ])
     setMessageText("")
@@ -69,10 +77,10 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ChatHeader name={"บิว"} />
+      <ConversationHeader name={name} showReport={showReport} />
       <MessageList messages={messages} />
       <div className="mt-auto">
-        <ChatFooter
+        <ConversationFooter
           messageText={messageText}
           setMessageText={setMessageText}
           sendMessage={sendMessage}

@@ -1,12 +1,8 @@
 import Message from "./Message"
-import { MessageType } from "./ChatBox"
 import { useEffect, useRef } from "react"
+import { MessageInformation } from "../types/MessageInformation"
 
-interface MessageListProps {
-  messages: MessageType[]
-}
-
-export default function MessageList({ messages }: MessageListProps) {
+export default function MessageList({ messages }: { messages: MessageInformation[] }) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -18,14 +14,14 @@ export default function MessageList({ messages }: MessageListProps) {
   useEffect(() => {
     scrollToBottom() // Scroll to bottom when component first renders
   }, [messages])
+
   return (
-    <div className="overflow-y-auto h-screen flex flex-col">
+    <div className="flex flex-col overflow-scroll h-screen">
       {messages.map((message, index) => (
         <Message
           key={index}
           message={message.message}
           sender={message.sender}
-          isRead={message.isRead}
           timeSent={message.timeSent}
         />
       ))}

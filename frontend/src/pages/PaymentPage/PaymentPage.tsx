@@ -13,7 +13,7 @@ export default function PaymentPage({ stripePromise }: { stripePromise: any }) {
   }
 
   return (
-    <div className="flex flex-col w-screen h-screen justify-center items-center">
+    <div className="flex flex-col w-full h-screen justify-center items-center">
       <h1>Payment Page</h1>
       <PriceInput setAmount={setAmount} amount={amount} />
       <button
