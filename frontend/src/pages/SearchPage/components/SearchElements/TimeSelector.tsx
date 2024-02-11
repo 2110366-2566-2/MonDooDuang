@@ -137,7 +137,7 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
         </div>
       </div>
       {openTimeSelector && (
-        <div ref={overlayRef} className="absolute">
+        <div ref={overlayRef} className="absolute -translate-x-8 translate-y-2">
           <TimeSelectorOverlay
             setOpenTimeSelector={setOpenTimeSelector}
             startHourTime={searchFortuneTeller.startHourTime}

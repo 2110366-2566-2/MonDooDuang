@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import DateSelector from "../SearchElements/DateSelector"
 import PriceSelector from "../SearchElements/PriceSelector"
 import RatingSelector from "../SearchElements/RatingSelector"
