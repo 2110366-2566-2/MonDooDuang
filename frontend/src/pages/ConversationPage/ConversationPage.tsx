@@ -6,18 +6,16 @@ import { useEffect, useState } from "react"
 
 const mockIsCustomer = true
 const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
-const mockIsSystemReport = true
 
 export default function ConversationPage() {
   const [isShowReport, setIsShowReport] = useState(false)
-  const [conversationIds, setConversationIds] = useState<string[]>([""])
-  const [selectedConversationId, setSelectedConversationId] = useState<string>("")
+  const [conversationIds, setConversationIds] = useState<string[]>([])
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
   useEffect(() => {
     const fetchConversations = async () => {
-      const response = await ConversationService.getConversationsByUserId(mockUserId)
-      const conversationIds = await response.json()
+      const conversationIds = await ConversationService.getConversationsByUserId(mockUserId)
       setConversationIds(conversationIds)
-      setSelectedConversationId(conversationIds[0])
+      if (conversationIds.length > 0) setSelectedConversationId(conversationIds[0])
     }
     fetchConversations()
   }, [])
@@ -48,7 +46,7 @@ export default function ConversationPage() {
         isCustomer={mockIsCustomer}
         userId={mockUserId}
         conversationId={selectedConversationId}
-        isSystemReport={mockIsSystemReport}
+        isSystemReport={true}
       />
     </div>
   )

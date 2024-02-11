@@ -1,22 +1,26 @@
-import { serviceConfig } from "../../../common/services/serviceConfig"
+import { environment } from "../../../common/constants/environment"
 
 export const ConversationService = {
   getConversationsByUserId: async (userId: string) => {
-    return await fetch(`${serviceConfig.backendBaseUrl}/conversations/${userId}`)
+    const response = await fetch(`${environment.backend.url}/conversations/${userId}`)
+    return await response.json()
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
-    return await fetch(
-      `${serviceConfig.backendBaseUrl}/conversations/name-with-lastMessage/${conversationId}/${userId}`
+    const response = await fetch(
+      `${environment.backend.url}/conversations/name-with-lastMessage/${conversationId}/${userId}`
     )
+    return await response.json()
   },
-  getMessagesByConversationId: async (conversationId: string, userId: string) => {
-    return await fetch(
-      `${serviceConfig.backendBaseUrl}/conversations/messages/${conversationId}/${userId}`
+  getMessagesByConversationId: async (conversationId: string | null, userId: string) => {
+    const response = await fetch(
+      `${environment.backend.url}/conversations/messages/${conversationId}/${userId}`
     )
+    return await response.json()
   },
   getNameByConversationId: async (conversationId: string, userId: string) => {
-    return await fetch(
-      `${serviceConfig.backendBaseUrl}/conversations/name/${conversationId}/${userId}`
+    const response = await fetch(
+      `${environment.backend.url}/conversations/name/${conversationId}/${userId}`
     )
+    return await response.json()
   }
 }

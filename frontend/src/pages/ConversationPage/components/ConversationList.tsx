@@ -17,11 +17,10 @@ export default function ConversationList({
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
       if (conversationId && mockUserId) {
-        const response = await ConversationService.getNameWithLastMessage(
+        const { name, lastMessage } = await ConversationService.getNameWithLastMessage(
           conversationId,
           mockUserId
         )
-        const { name, lastMessage } = await response.json()
         setName(name)
         setLastMessage(lastMessage)
       }
@@ -44,13 +43,9 @@ export default function ConversationList({
         alt="Profile Picture"
         className="h-[60px] w-[60px] rounded-full bg-black mx-2"
       />
-      <div className="flex flex-col ml-4">
-        <p className={`text-xl font-semibold ${isSelected ? "text-black" : "text-white"}`}>
-          {name}
-        </p>
-        <p className={`text-sm ${isSelected ? "text-black" : "text-white"}`}>
-          {truncatedLastMessage}
-        </p>
+      <div className={`flex flex-col ml-4 ${isSelected ? "text-black" : "text-white"}`}>
+        <p className="text-xl font-semibold">{name}</p>
+        <p className="text-sm">{truncatedLastMessage}</p>
       </div>
     </div>
   )

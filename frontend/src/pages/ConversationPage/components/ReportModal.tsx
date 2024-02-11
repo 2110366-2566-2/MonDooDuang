@@ -7,7 +7,7 @@ export default function ReportModal(props: {
   setIsShowReport: React.Dispatch<React.SetStateAction<boolean>>
   isCustomer: boolean
   userId: string
-  conversationId: string
+  conversationId: string | null
   isSystemReport: boolean
 }) {
   const [reportId, setReportId] = useState("")
@@ -42,8 +42,8 @@ export default function ReportModal(props: {
       reportId === "no-show"
         ? "MONEY_SUSPENSION"
         : props.isSystemReport
-          ? "SYSTEM_ERROR"
-          : "INAPPROPRIATE_BEHAVIOR"
+        ? "SYSTEM_ERROR"
+        : "INAPPROPRIATE_BEHAVIOR"
 
     const reporteeId = await ReportService.getReporteeId(props.conversationId, props.userId)
 

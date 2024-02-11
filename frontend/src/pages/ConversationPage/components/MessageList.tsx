@@ -22,7 +22,6 @@ export default function MessageList({ messages }: { messages: MessageInformation
           key={index}
           message={message.message}
           sender={message.sender}
-          isRead={message.isRead}
           timeSent={message.timeSent}
         />
       ))}

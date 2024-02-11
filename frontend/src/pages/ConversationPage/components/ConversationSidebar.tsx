@@ -8,7 +8,7 @@ export default function ConversationSidebar({
 }: {
   conversationIds: string[]
   onConversationSelect: (conversationId: string) => void
-  selectedConversationId: string
+  selectedConversationId: string | null
 }) {
   return (
     <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">

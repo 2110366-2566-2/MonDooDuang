@@ -3,18 +3,18 @@ import io from "socket.io-client"
 import MessageList from "./MessageList"
 import ConversationFooter from "./ConversationFooter"
 import { ConversationService } from "../services/ConversationService"
-import { serviceConfig } from "../../../common/services/serviceConfig"
+import { environment } from "../../../common/constants/environment"
 import ConversationHeader from "./ConversationHeader"
 import { MessageInformation } from "../types/MessageInformation"
 
-const socket = io(serviceConfig.backendBaseUrl)
+const socket = io(environment.backend.url)
 const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
 export default function ConversationBox({
   conversationId,
   showReport
 }: {
-  conversationId: string
+  conversationId: string | null
   showReport: () => void
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
@@ -24,22 +24,15 @@ export default function ConversationBox({
 
   useEffect(() => {
     const fetchMessages = async () => {
-      if (conversationId) {
-        const response = await ConversationService.getMessagesByConversationId(
-          conversationId,
-          mockUserId
-        )
-        const messages = await response.json()
-        setMessages(messages)
-      }
+      const messages = await ConversationService.getMessagesByConversationId(
+        conversationId,
+        mockUserId
+      )
+      setMessages(messages)
     }
     const fetchName = async () => {
       if (conversationId) {
-        const response = await ConversationService.getNameByConversationId(
-          conversationId,
-          mockUserId
-        )
-        const data = await response.json()
+        const data = await ConversationService.getNameByConversationId(conversationId, mockUserId)
         setName(data.name)
       }
     }
@@ -75,8 +68,8 @@ export default function ConversationBox({
       room,
       mockUserId
     )
-    setMessages((prevMessages) => [
-      ...prevMessages,
+    setMessages([
+      ...messages,
       { message: messageText, sender: "SELF", isRead: true, timeSent: Date.now() }
     ])
     setMessageText("")

@@ -114,7 +114,7 @@ export const conversationRepository = {
       )
       return { isSuccess: true, data: result.rows[0].conversationid }
     } catch (err) {
-      return { isSuccess: false, data: null }
+      return { isSuccess: false }
     }
   }
 }

@@ -1,6 +1,14 @@
-import { MessageInformation } from "../types/MessageInformation"
+import { senderType } from "../types/MessageInformation"
 
-export default function Message({ message, sender, isRead, timeSent }: MessageInformation) {
+export default function Message({
+  message,
+  sender,
+  timeSent
+}: {
+  message: string
+  sender: senderType
+  timeSent: number
+}) {
   return sender === "SYSTEM" ? (
     <>
       <div className="flex justify-center m-1">
