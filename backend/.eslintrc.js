@@ -28,6 +28,20 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/consistent-type-imports": "off",
     "@typescript-eslint/quotes": ["error", "double"],
-    "@typescript-eslint/no-misused-promises": "warn"
+    "@typescript-eslint/no-misused-promises": "warn",
+    "@typescript-eslint/strict-boolean-expressions": [
+      "error",
+      {
+        allowString: true,
+        allowNumber: true,
+        allowNullableObject: true,
+        allowNullableBoolean: false,
+        allowNullableString: false,
+        allowNullableNumber: false,
+        allowNullableEnum: false,
+        allowAny: false,
+        allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false
+      }
+    ]
   }
 }
