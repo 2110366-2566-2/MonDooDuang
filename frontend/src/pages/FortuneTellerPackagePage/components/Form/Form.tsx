@@ -1,4 +1,42 @@
+import { useState } from "react"
+
 export default function Form() {
+  const [fortune, setFortune] = useState("")
+  const [price, setPrice] = useState(-1)
+  const [time, setTime] = useState(-1)
+  const [unitTime, setUnitTime] = useState("")
+  const [description, setDescription] = useState("")
+
+  const [isFortuneError, setIsFortuneError] = useState(false)
+  const [isPriceError, setIsPriceError] = useState(false)
+  const [isTimeError, setIsTimeError] = useState(false)
+  const [isUnitTimeError, setIsUnitTimeError] = useState(false)
+
+  // for validate information
+  const validation = ({
+    fortune,
+    price,
+    time,
+    unitTime
+  }: {
+    fortune: string
+    price: number
+    time: number
+    unitTime: string
+  }): boolean => {
+    const checkFortune = fortune != ""
+    const checkPrice = Number(price) >= 0
+    const checkTime = Number(time) >= 0
+    const checkUnit = unitTime != ""
+
+    setIsFortuneError(!checkFortune)
+    setIsPriceError(!checkPrice)
+    setIsTimeError(!checkTime)
+    setIsUnitTimeError(!checkUnit)
+
+    return checkFortune && checkPrice && checkTime && checkUnit
+  }
+
   return (
     <div className="text-white">
       <div className="flex flex-col">
@@ -8,10 +46,18 @@ export default function Form() {
           <div className="h-full w-full grid grid-rows-3 grid-flow-col pt-11 gap-y-11 justify-center ">
             <div className="flex flex-col h-full">
               <label className="ml-2.5">ศาสตร์การดูดวง</label>
-              <select className="bg-white bg-opacity-[.54] rounded-lg w-5/6 pl-11 h-full text-white">
+              <select
+                id="fortune"
+                name="fortune"
+                className="bg-white bg-opacity-[.54] rounded-lg w-5/6 pl-11 h-full text-white"
+                onChange={(e) => setFortune(e.target.value)}
+              >
                 <option value=""></option>
                 <option value="ไพ่ทาโรต์">ไพ่ทาโรต์</option>
               </select>
+              {isFortuneError && (
+                <span className="text-red-500 text-xs">กรุณาระบุประเภทศาสตร์การดูดวง</span>
+              )}
             </div>
 
             <div className="flex flex-col row-span-2">
@@ -19,31 +65,51 @@ export default function Form() {
               <div>
                 <input
                   type="number"
+                  id="time"
+                  name="time"
                   className="bg-white bg-opacity-[.54] rounded-lg text-center  w-1/3 h-full"
+                  onChange={(e) => setTime(Number(e.target.value))}
                 ></input>
-                <select className="bg-white bg-opacity-[.54] rounded-lg transition-all cursor-pointer ml-2.5 h-full w-1/4 pl-5 ">
+                <select
+                  id="unitTime"
+                  name="unitTime"
+                  className="bg-white bg-opacity-[.54] rounded-lg transition-all cursor-pointer ml-2.5 h-full w-1/4 pl-5 "
+                  onChange={(e) => setUnitTime(e.target.value)}
+                >
                   <option value=""></option>
                   <option value="นาที">นาที</option>
                   <option value="ชั่วโมง">ชั่วโมง</option>
                   <option value="วัน">วัน</option>
                 </select>
               </div>
+              {(isTimeError || isUnitTimeError) && (
+                <span className="text-red-500 text-xs">กรุณาระบุเวลาและหน่วยเวลา</span>
+              )}
             </div>
 
             <div className="flex flex-col pb-0">
-              <label className="ml-2.5">อัตรการให้บริการ</label>
+              <label className="ml-2.5">อัตราการให้บริการ</label>
               <div className="flex flex-row h-full">
                 <input
                   type="number"
+                  id="price"
+                  name="price"
                   className="bg-white bg-opacity-[.54] rounded-lg text-center w-5/12"
+                  onChange={(e) => setPrice(Number(e.target.value))}
                 ></input>
                 <span className="ml-5">บาท</span>
               </div>
+              {isPriceError && <span className="text-red-500 text-xs">กรุณาระบุราคา</span>}
             </div>
 
             <div className="flex flex-col row-span-2">
               <label className="ml-2.5">รายละเอียด</label>
-              <textarea className="bg-white bg-opacity-[.54] rounded-lg pl-11 w-5/6 mb-12 text-xl"></textarea>
+              <textarea
+                id="description"
+                name="description"
+                className="bg-white bg-opacity-[.54] rounded-lg pl-11 w-5/6 mb-12 text-xl"
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
             </div>
           </div>
         </div>
@@ -54,7 +120,14 @@ export default function Form() {
           >
             ย้อนกลับ
           </button>
-          <button className="cursor-pointer float-right mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold">
+          <button
+            className="cursor-pointer float-right mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold"
+            onClick={() => {
+              if (validation({ fortune, price, time, unitTime })) {
+                window.location.href = "/account/fortuneteller"
+              }
+            }}
+          >
             เสร็จสิ้น
           </button>
         </div>
