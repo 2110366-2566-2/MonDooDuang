@@ -181,6 +181,16 @@ CREATE TABLE CHAT_NOTIFICATION (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TYPE request_status_enum AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');
+CREATE TABLE REQUEST (
+    request_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    fortune_teller_id CHAR(36) NOT NULL,
+    status request_status_enum NOT NULL,
+    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(FortuneTellerId),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Trigger
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
@@ -351,3 +361,11 @@ VALUES
     ('5678ijkl-9012-34mn-opqr-stuv12345678', '2389b0b-6929-4b18-8a50-c301a36b3e24'),
     ('6789mnop-0123-45st-uvwx-yzab23456789', '3456a1c-4321-4b8c-9d0e-a6b2c3d4e5f6'),
     ('7890qrst-1234-56uv-wxyz-abcd34567890', '7890b2a-4567-4b89-9c01-a2b3c4d5e6f7');
+
+-- REQUEST
+INSERT INTO REQUEST (request_id, fortune_teller_id, status)
+VALUES 
+    ('1234ijkl-5678-90mn-opqr-stuv12345678', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', 'PENDING'),
+    ('4123ijkl-5378-90mn-opqr-stuv12345678', '4e4894f4-6524-4937-8b7d-23d45b0e0c75', 'PENDING'),
+    ('3245mnop-6789-01st-uvwx-yzab23456789', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'ACCEPTED'),
+    ('1256qrst-7890-12uv-wxyz-abcd34567890', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', 'REJECTED');
