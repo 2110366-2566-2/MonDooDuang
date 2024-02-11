@@ -67,11 +67,11 @@ export default function ReportModal(props: {
   return (
     <div
       className={`w-screen h-screen bg-mdd-overlay-grey bg-opacity-50 font-sans fixed top-0 left-0 z-[2] ${props.isShowReport ? "flex" : "hidden"
-        } justify-center items-center`}
+      } justify-center items-center`}
     >
       <div
         className={`w-[28vw] ${props.isSystemReport ? "h-[15vw]" : "h-[20vw]"
-          }  bg-mdd-silver-grey rounded-[2vw] py-1 flex flex-col justify-evenly items-center`}
+        }  bg-mdd-silver-grey rounded-[2vw] py-1 flex flex-col justify-evenly items-center`}
       >
         <div className="flex flex-col justify-center items-center">
           <div className="font-semibold text-2xl">รายงานปัญหา</div>
