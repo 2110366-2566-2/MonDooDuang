@@ -19,7 +19,7 @@ export function TypeOfFortuneSelect({
     const fetchPackages = async () => {
       try {
         const packages = typeJson
-        if (packages) {
+        if (packages.length > 0) {
           setPrice(packages[0].price)
           setType(packages[0].packageid)
         }
@@ -55,7 +55,7 @@ export function TypeOfFortuneSelect({
           }}
         >
           {typeJson.map((type: Fortune) => (
-            <MenuItem value={type.packageid}>{type.speciality}</MenuItem>
+            <MenuItem value={type.packageid} key={type.packageid}>{type.speciality}</MenuItem>
           ))}
         </Select>
         <UnderLine />

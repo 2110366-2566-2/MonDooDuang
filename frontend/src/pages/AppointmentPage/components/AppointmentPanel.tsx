@@ -186,7 +186,7 @@ export default function AppointmentPanel() {
       </div>
     )
   }
-  console.log(appointments)
+
   return (
     <div
       style={{

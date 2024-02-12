@@ -6,8 +6,8 @@ export const SuccessIcon = () => {
         fill="#E9AC12"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M3.33398 39.9999C3.33398 19.7499 19.7507 3.33325 40.0007 3.33325C60.2507 3.33325 76.6673 19.7499 76.6673 39.9999C76.6673 60.2499 60.2507 76.6666 40.0007 76.6666C19.7507 76.6666 3.33398 60.2499 3.33398 39.9999ZM40.0007 69.9999C36.061 69.9999 32.1599 69.224 28.5201 67.7163C24.8804 66.2087 21.5732 63.9989 18.7874 61.2131C16.0017 58.4274 13.7919 55.1202 12.2843 51.4804C10.7766 47.8407 10.0007 43.9396 10.0007 39.9999C10.0007 36.0603 10.7766 32.1592 12.2843 28.5194C13.7919 24.8796 16.0017 21.5725 18.7874 18.7867C21.5732 16.001 24.8804 13.7912 28.5201 12.2835C32.1599 10.7759 36.061 9.99992 40.0007 9.99992C47.9571 9.99992 55.5878 13.1606 61.2139 18.7867C66.8399 24.4128 70.0007 32.0434 70.0007 39.9999C70.0007 47.9564 66.8399 55.587 61.2139 61.2131C55.5878 66.8392 47.9571 69.9999 40.0007 69.9999Z"
         fill="#E9AC12"
       />
@@ -17,7 +17,7 @@ export const SuccessIcon = () => {
 export const ClockIcon = () => {
   return (
     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_157_7824)">
+      <g clipPath="url(#clip0_157_7824)">
         <path
           d="M12.5007 2.08337C18.2538 2.08337 22.9173 6.74692 22.9173 12.5C22.9173 18.2532 18.2538 22.9167 12.5007 22.9167C6.74753 22.9167 2.08398 18.2532 2.08398 12.5C2.08398 6.74692 6.74753 2.08337 12.5007 2.08337ZM12.5007 4.16671C10.2905 4.16671 8.1709 5.04468 6.60809 6.60748C5.04529 8.17029 4.16732 10.2899 4.16732 12.5C4.16732 14.7102 5.04529 16.8298 6.60809 18.3926C8.1709 19.9554 10.2905 20.8334 12.5007 20.8334C14.7108 20.8334 16.8304 19.9554 18.3932 18.3926C19.956 16.8298 20.834 14.7102 20.834 12.5C20.834 10.2899 19.956 8.17029 18.3932 6.60748C16.8304 5.04468 14.7108 4.16671 12.5007 4.16671ZM12.5007 6.25004C12.7558 6.25007 13.002 6.34374 13.1927 6.51329C13.3834 6.68283 13.5052 6.91645 13.535 7.16983L13.5423 7.29171V12.0688L16.3621 14.8886C16.5489 15.076 16.6574 15.3276 16.6655 15.5921C16.6735 15.8566 16.5806 16.1143 16.4056 16.3128C16.2306 16.5113 15.9865 16.6358 15.7231 16.6609C15.4596 16.686 15.1965 16.6098 14.9871 16.448L14.8892 16.3615L11.7642 13.2365C11.6023 13.0745 11.4983 12.8636 11.4684 12.6365L11.459 12.5V7.29171C11.459 7.01544 11.5687 6.75049 11.7641 6.55514C11.9594 6.35979 12.2244 6.25004 12.5007 6.25004Z"
           fill="#E5E0E0"
@@ -35,7 +35,7 @@ export const ClockIcon = () => {
 export const CalendarIcon = () => {
   return (
     <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_157_7806)">
+      <g clipPath="url(#clip0_157_7806)">
         <path
           d="M24.1877 4.5H21.7502V6H24.0002V22.5H3.00019V6H5.25019V4.5H2.81269C2.63737 4.50293 2.46434 4.54037 2.30349 4.61018C2.14264 4.67999 1.99712 4.78081 1.87524 4.90687C1.75336 5.03293 1.6575 5.18176 1.59315 5.34488C1.5288 5.50799 1.49721 5.68218 1.50019 5.8575V22.6425C1.49721 22.8178 1.5288 22.992 1.59315 23.1551C1.6575 23.3182 1.75336 23.4671 1.87524 23.5931C1.99712 23.7192 2.14264 23.82 2.30349 23.8898C2.46434 23.9596 2.63737 23.9971 2.81269 24H24.1877C24.363 23.9971 24.536 23.9596 24.6969 23.8898C24.8577 23.82 25.0033 23.7192 25.1251 23.5931C25.247 23.4671 25.3429 23.3182 25.4072 23.1551C25.4716 22.992 25.5032 22.8178 25.5002 22.6425V5.8575C25.5032 5.68218 25.4716 5.50799 25.4072 5.34488C25.3429 5.18176 25.247 5.03293 25.1251 4.90687C25.0033 4.78081 24.8577 4.67999 24.6969 4.61018C24.536 4.54037 24.363 4.50293 24.1877 4.5Z"
           fill="#E5E0E0"
@@ -88,9 +88,9 @@ export const CoinIcon = () => {
           width="41"
           height="41"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -130,7 +130,7 @@ export const UnderLine = () => {
         x2="441.504"
         y2="3.44656"
         stroke="url(#paint0_radial_157_7926)"
-        stroke-opacity="0.5"
+        strokeOpacity="0.5"
       />
       <defs>
         <radialGradient
@@ -156,7 +156,7 @@ export const RightArrow = () => {
         <path
           d="M8 4.24999L0.5 0.669867L0.5 9.33012L8 5.74999L8 4.24999ZM70.5 4.25L7.25 4.24999L7.25 5.74999L70.5 5.75L70.5 4.25Z"
           fill="url(#paint0_linear_157_6561)"
-          fill-opacity="0.58"
+          fillOpacity="0.58"
         />
       </g>
       <defs>
@@ -167,9 +167,9 @@ export const RightArrow = () => {
           width="70"
           height="12.6603"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -192,7 +192,7 @@ export const RightArrow = () => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#0C0000" />
-          <stop offset="1" stopColor="#0C0000" stop-opacity="0" />
+          <stop offset="1" stopColor="#0C0000" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
@@ -206,7 +206,7 @@ export const LeftArrow = () => {
         <path
           d="M63 5.5L70.5 9.08013L70.5 0.419873L63 4L63 5.5ZM63.75 4L0.5 3.99999L0.5 5.49999L63.75 5.5L63.75 4Z"
           fill="url(#paint0_linear_157_6558)"
-          fill-opacity="0.58"
+          fillOpacity="0.58"
         />
       </g>
       <defs>
@@ -217,9 +217,9 @@ export const LeftArrow = () => {
           width="70"
           height="12.6603"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -241,7 +241,7 @@ export const LeftArrow = () => {
           y2="5.00028"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#0C0000" stop-opacity="0" />
+          <stop stopColor="#0C0000" stopOpacity="0" />
           <stop offset="1" stopColor="#0C0000" />
         </linearGradient>
       </defs>
