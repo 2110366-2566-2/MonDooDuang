@@ -7,9 +7,9 @@ export function FortuneTellerRequest({
   onReject
 }: {
   fortuneTellerRequest: FortuneTellerRequest
-  focusHandler: Function
-  onApprove: Function
-  onReject: Function
+  focusHandler: (value:FortuneTellerRequest) => void
+  onApprove: (value:FortuneTellerRequest) => void
+  onReject: (value:FortuneTellerRequest) => void
 }) {
   const formatPhoneNumber = (phoneNumber: string): string => {
     if (phoneNumber === null || phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
