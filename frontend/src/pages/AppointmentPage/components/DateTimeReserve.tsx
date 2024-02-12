@@ -7,6 +7,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker"
 import { CalendarIcon, ClockIcon } from "./Icon"
 import React, { useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
+import { GroupedAppointments } from "../types/AppointmentTypes"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 

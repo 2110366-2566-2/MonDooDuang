@@ -12,6 +12,7 @@ import { ConfirmModal } from "./ConfirmModal"
 import { SuccessModal } from "./SuccessModal"
 import { AppointmentService } from "../services/AppointmentService"
 import { environment } from "../../../common/constants/environment"
+import { FortuneTellerAppointments, GroupedAppointments, Package, UserInfo } from "../types/AppointmentTypes"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 

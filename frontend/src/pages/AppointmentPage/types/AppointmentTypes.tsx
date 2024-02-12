@@ -1,11 +1,11 @@
-type Package = {
+export type Package = {
   packageid: string
   speciality: string
   price: number
   duration: number
 }
 
-type UserInfo = {
+export type UserInfo = {
   userid: string
   fname: string
   lname: string
@@ -13,17 +13,29 @@ type UserInfo = {
   birthdate: string
 }
 
-type FortuneTellerAppointments = {
+export type FortuneTellerAppointments = {
   appointmentdate: string
   duration: number
 }
 
-interface Fortune {
+export interface Fortune {
   packageid: string
   speciality: string
   price: number
   duration: number
 }
-interface GroupedAppointments {
+export interface GroupedAppointments {
   [date: string]: { time: string; duration: number }[]
+}
+
+export type ConfirmProps = {
+  fortuneTeller: string
+  type: string
+  price: number
+  date: string
+  starttime: string
+  endtime: string
+  isVisible: boolean
+  onClose: () => void
+  onConfirm: () => void
 }
