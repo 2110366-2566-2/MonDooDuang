@@ -27,8 +27,8 @@ export const searchRepository = {
       ? ""
       : `WHERE CASE
                                   WHEN  R.startdate IS NULL OR R.enddate IS NULL 
-                                  OR (R.startdate::time >= '${startTime}'::time + (FP.duration || ' minutes')::interval
-                                  OR R.enddate::time <= '${endTime}'::time - (FP.duration || ' minutes')::interval)
+                                  OR (R.startdate::time >= '${startTime}'::time + (FP.duration || ' minutes')::interval - (7 || ' hours')::interval
+                                  OR R.enddate::time <= '${endTime}'::time - (FP.duration || ' minutes')::interval - (7 || ' hours')::interval)
                                   THEN 1
                                   WHEN A.status NOT IN ('WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT')
                                   THEN 1
@@ -36,8 +36,8 @@ export const searchRepository = {
                                 END > 0`
     : `WHERE CASE
                                 WHEN  R.startdate IS NULL OR R.enddate IS NULL 
-                                OR (R.startdate >= ('${startDate} ${startTime}'::timestamp + (FP.duration || ' minutes')::interval)
-                                OR R.enddate <= ('${endDate} ${endTime}'::timestamp - (FP.duration || ' minutes')::interval))
+                                OR (R.startdate >= ('${startDate} ${startTime}'::timestamp + (FP.duration || ' minutes')::interval - (7 || ' hours')::interval)
+                                OR R.enddate <= ('${endDate} ${endTime}'::timestamp - (FP.duration || ' minutes')::interval - (7 || ' hours')::interval))
                                 THEN 1
                                 WHEN A.status NOT IN ('WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT')
                                 THEN 1
