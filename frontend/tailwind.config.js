@@ -19,11 +19,14 @@ export default {
         "mdd-dialog-orange": "#DEAA6B",
         "mdd-dialog-green": "#76AA7B",
         "mdd-dialog-gray": "#AEAEAE",
+        "mdd-focus-yellow": "#FFD233",
       },
       fontFamily: {
-        "sans": ["Prompt", "sans-serif"],
+        sans: ["Prompt", "sans-serif"],
         "noto-sans": ["Noto Sans Thai", "sans-serif"],
-        "example-font": ["Inter var", "sans-serif"]
+        "example-font": ["Inter var", "sans-serif"],
+        "libre-bodoni": ["Libre Bodoni", "serif"],
+        "noto-sans-eng": ["Noto Sans", "sans-serif"],
       }
     }
   },
