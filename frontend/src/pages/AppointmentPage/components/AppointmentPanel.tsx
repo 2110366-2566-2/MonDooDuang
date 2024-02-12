@@ -162,7 +162,7 @@ export default function AppointmentPanel() {
   const CustomerInfo = () => {
     return (
       <div className="rounded-xl border border-stone-800 border-opacity-50 px-24 py-4">
-        <div className="text-center text-stone-800 text-base xl:text-xl lg:text-lg md:text-md font-bold font-['Libre Bodoni'] underline mb-3">
+        <div className="text-center text-stone-800 text-base xl:text-xl lg:text-lg md:text-md font-bold font-noto-sans underline mb-3">
           ข้อมูลผู้จอง
         </div>
         <div className="flex flex-col text-white text-base xl:text-xl lg:text-lg md:text-md justify-items-center items-start space-y-1">
@@ -197,12 +197,12 @@ export default function AppointmentPanel() {
       className="w-auto h-auto py-4 px-8 flex-col justify-center items-center inline-flex space-y-5"
     >
       <div className="relative">
-        <div className="z-3 absolute text-2xl xl:text-4xl lg:text-4xl md:text-3xl  text-white font-bold font-['Libre Bodoni'] ">
+        <div className="z-3 absolute text-2xl xl:text-4xl lg:text-4xl md:text-3xl  text-white font-bold font-noto-sans ">
           ใบจองการนัดหมายดูดวง
         </div>
         <div
           style={{ filter: "blur(10px)" }}
-          className="text-2xl xl:text-4xl lg:text-4xl md:text-3xl relative text-white font-bold font-['Libre Bodoni'] "
+          className="text-2xl xl:text-4xl lg:text-4xl md:text-3xl relative text-white font-bold font-noto-sans "
         >
           ใบจองการนัดหมายดูดวง
         </div>

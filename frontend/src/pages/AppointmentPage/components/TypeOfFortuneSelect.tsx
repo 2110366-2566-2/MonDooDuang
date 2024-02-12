@@ -72,7 +72,7 @@ export function TypeOfFortuneSelect({
           <LeftArrow />
           <div
             style={text_shadow}
-            className="text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni'] leading-[42px]"
+            className="text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-noto-sans leading-[42px]"
           >
             หมอดู
           </div>
@@ -81,7 +81,7 @@ export function TypeOfFortuneSelect({
         <div className="text-center">
           <span
             style={text_shadow}
-            className="text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-bold font-['Libre Bodoni']"
+            className="text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-bold font-noto-sans"
           >
             {fortuneTeller}
           </span>
@@ -92,7 +92,7 @@ export function TypeOfFortuneSelect({
           <LeftArrow />
           <div
             style={text_shadow}
-            className="text-white  text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni']"
+            className="text-white  text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-noto-sans"
           >
             ศาสตร์การดูดวง
           </div>
@@ -106,7 +106,7 @@ export function TypeOfFortuneSelect({
           <CoinIcon />
           <div
             style={text_shadow}
-            className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni'] "
+            className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-noto-sans "
           >
             ราคา : {price} บาท
           </div>

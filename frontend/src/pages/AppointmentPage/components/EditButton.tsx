@@ -6,7 +6,7 @@ export function EditButton({ onClick }: { onClick: Function }) {
       onClick={() => onClick()}
     >
       <div className="flex flex-row justify-center itmes-center space-x-1">
-        <div className="text-end">แก้ไข</div>
+        <div style={{color:"#3B3B3B"}} className="text-end font-noto-sans font-semibold">แก้ไข</div>
         <EditIcon />
       </div>
     </div>

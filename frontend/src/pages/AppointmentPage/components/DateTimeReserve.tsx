@@ -68,7 +68,7 @@ export default function DateTimeReserve({
         <div className="flex flex-row space-x-1 justify-items-center items-center">
           <div
             style={text_shadow}
-            className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni'] leading-[42px]"
+            className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-noto-sans leading-[42px]"
           >
             วันที่จอง
           </div>
@@ -106,7 +106,7 @@ export default function DateTimeReserve({
           <div className="flex flex-row space-x-1 justify-items-center items-center">
             <div
               style={text_shadow}
-              className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-['Libre Bodoni'] leading-[42px]"
+              className="text-center text-white text-[16px] xl:text-[24px] lg:text-[20px] md:text-[18px]  font-normal font-noto-sans leading-[42px]"
             >
               เวลาที่จอง
             </div>
@@ -146,7 +146,7 @@ export default function DateTimeReserve({
               {reserveTime ? (
                 <div
                   style={text_shadow}
-                  className="text-white text-[18px] font-bold font-['Libre Bodoni'] leading-[42px]"
+                  className="text-white text-[18px] font-bold font-noto-sans leading-[42px]"
                 >
                   ถึง
                 </div>
@@ -168,7 +168,7 @@ export default function DateTimeReserve({
         </div>
         <div className="relative w-auto h-auto">
           {reserveTime ? (
-            <div className="z-3 absolute  text-[18px] text-yellow-300 font-bold font-['Libre Bodoni'] ">
+            <div className="z-3 absolute  text-[18px] text-yellow-300 font-bold font-noto-sans ">
               * เวลาที่ใช้โดยประมาณ : {duration} นาที
             </div>
           ) : null}
@@ -176,7 +176,7 @@ export default function DateTimeReserve({
           {reserveTime ? (
             <div
               style={{ filter: "blur(20px)" }}
-              className="relative text-[18px] text-yellow-200 font-bold font-['Libre Bodoni']"
+              className="relative text-[18px] text-yellow-200 font-bold font-noto-sans"
             >
               * เวลาที่ใช้โดยประมาณ : {duration} นาที
             </div>

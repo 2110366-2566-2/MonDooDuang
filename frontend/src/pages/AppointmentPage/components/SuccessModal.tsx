@@ -12,7 +12,7 @@ export function SuccessModal(props: SuccessProps) {
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
       <div
         style={{ backgroundColor: "#E8E8E8", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-        className="rounded-md z-10 flex flex-col justify-items-center items-center py-4 px-12 space-y-1"
+        className="rounded-md z-10 flex flex-col justify-items-center items-center py-4 px-12 space-y-1 font-noto-sans"
       >
         <SuccessIcon />
         <div className="font-black">ส่งคำขอไปยังหมอดูสำเร็จ</div>
