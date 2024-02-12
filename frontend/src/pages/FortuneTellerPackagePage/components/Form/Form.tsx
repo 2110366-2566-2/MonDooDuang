@@ -53,7 +53,12 @@ export default function Form() {
                 onChange={(e) => setFortune(e.target.value)}
               >
                 <option value=""></option>
-                <option value="ไพ่ทาโรต์">ไพ่ทาโรต์</option>
+                <option value="TAROT">ไพ่ยิปซี</option>
+                <option value="NUMBER">โหราศาตร์ไทย</option>
+                <option value="THAI">ศาตร์ตัวเลข</option>
+                <option value="ORACLE">ไพ่ออราเคิล</option>
+                <option value="RUNE">รูนส์</option>
+                <option value="PHROMAYARN">ไพ่พรหมญาณ</option>
               </select>
               {isFortuneError && (
                 <span className="text-red-500 text-xs">กรุณาระบุประเภทศาสตร์การดูดวง</span>
@@ -63,24 +68,27 @@ export default function Form() {
             <div className="flex flex-col row-span-2">
               <label className="ml-2.5">เวลาที่ใช้โดยประมาณ</label>
               <div>
-                <input
-                  type="number"
-                  id="time"
-                  name="time"
-                  className="bg-white bg-opacity-[.54] rounded-lg text-center  w-1/3 h-full"
-                  onChange={(e) => setTime(Number(e.target.value))}
-                ></input>
-                <select
-                  id="unitTime"
-                  name="unitTime"
-                  className="bg-white bg-opacity-[.54] rounded-lg transition-all cursor-pointer ml-2.5 h-full w-1/4 pl-5 "
-                  onChange={(e) => setUnitTime(e.target.value)}
-                >
-                  <option value=""></option>
-                  <option value="นาที">นาที</option>
-                  <option value="ชั่วโมง">ชั่วโมง</option>
-                  <option value="วัน">วัน</option>
-                </select>
+                <form id="packageForm" onSubmit={SubmitPackage}>
+                  <input
+                    type="number"
+                    id="time"
+                    name="time"
+                    className="bg-white bg-opacity-[.54] rounded-lg text-center  w-1/3 h-full"
+                    onChange={(e) => setTime(Number(e.target.value))}
+                  />
+
+                  <select
+                    id="unitTime"
+                    name="unitTime"
+                    className="bg-white bg-opacity-[.54] rounded-lg transition-all cursor-pointer ml-2.5 h-full w-1/4 pl-5 "
+                    onChange={(e) => setUnitTime(e.target.value)}
+                  >
+                    <option value=""></option>
+                    <option value="minute">นาที</option>
+                    <option value="hour">ชั่วโมง</option>
+                    <option value="day">วัน</option>
+                  </select>
+                </form>
               </div>
               {(isTimeError || isUnitTimeError) && (
                 <span className="text-red-500 text-xs">กรุณาระบุเวลาและหน่วยเวลา</span>
@@ -122,6 +130,7 @@ export default function Form() {
           </button>
           <button
             className="cursor-pointer float-right mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold"
+            form="packageForm"
             onClick={() => {
               if (validation({ fortune, price, time, unitTime })) {
                 window.location.href = "/account/fortuneteller"

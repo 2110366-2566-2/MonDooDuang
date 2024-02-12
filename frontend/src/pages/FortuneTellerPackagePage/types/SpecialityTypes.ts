@@ -1,0 +1,1 @@
+type SpecialityType = "Thai" | "NUMBER" | "ORACLE" | "TAROT" | "RUNES" | "PHROMAYARN"
