@@ -24,8 +24,9 @@ export default {
       fontFamily: {
         sans: ["Prompt", "sans-serif"],
         "noto-sans": ["Noto Sans Thai", "sans-serif"],
+        "example-font": ["Inter var", "sans-serif"],
+        "libre-bodoni": ["Libre Bodoni", "serif"],
         "noto-sans-eng": ["Noto Sans", "sans-serif"],
-        "example-font": ["Inter var", "sans-serif"]
       }
     }
   },
