@@ -11,6 +11,7 @@ export default {
         "muted-yellow-hover" : "#C89456",
         "mango-yellow" : "#E9AC12",
         "mango-yellow-hover" : "#CC9403",
+        "nav-yellow" : "#FFD233",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",

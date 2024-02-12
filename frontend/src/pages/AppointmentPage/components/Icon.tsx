@@ -1,3 +1,51 @@
+
+
+export const NextPageIcon = () => {
+  return (
+    <svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clipPath="url(#clip0_157_7931)" filter="url(#filter0_i_157_7931)">
+        <path
+          d="M35.4671 24.0214L35.4671 25.881L42.177 23.0053L35.4671 20.1297L35.4671 21.9893L31.9779 21.9893C31.3549 12.49 22.3924 6.93995 22.0185 6.68114L20.8395 6.00056L19.4592 8.33944L20.4082 8.90498L20.4178 21.9893H14.3214L12.4618 20.1297H6.71043L7.66898 23.0053L6.71043 25.881L12.4618 25.881L14.3214 24.0214L20.4178 24.0214L20.4082 37.1057L19.4688 37.6808L20.8395 40.0101L22.0185 39.3295C22.3924 39.0707 31.3549 33.5207 31.9779 24.0214L35.4671 24.0214ZM21.7789 9.85395C24.0123 11.5506 28.7572 15.8737 29.2556 21.9893L21.7597 21.9893L21.7789 9.85395ZM21.7789 36.1567L21.7597 24.0214H29.2556C28.7572 30.137 24.0123 34.4601 21.7789 36.1567Z"
+          fill="#FFD233"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_i_157_7931"
+          x="0"
+          y="0"
+          width="49.0117"
+          height="49.0106"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dx="4" dy="4" />
+          <feGaussianBlur stdDeviation="1.5" />
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
+          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_157_7931" />
+        </filter>
+        <clipPath id="clip0_157_7931">
+          <rect
+            width="32.5344"
+            height="32.5344"
+            fill="white"
+            transform="translate(23.0059) rotate(45)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
+
 export const SuccessIcon = () => {
   return (
     <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
