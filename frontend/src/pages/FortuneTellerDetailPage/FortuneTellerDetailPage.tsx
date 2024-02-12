@@ -17,8 +17,8 @@ export default function FortuneTellerDetailPage() {
         </div>
         <Reviews></Reviews>
         <RecommendedFortuneTellers></RecommendedFortuneTellers>
+        <Footer></Footer>
       </div>
-      <Footer></Footer>
     </div>
   )
 }

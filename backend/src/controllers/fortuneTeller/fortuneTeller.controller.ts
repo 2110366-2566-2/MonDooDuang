@@ -30,10 +30,18 @@ const getReviewByFortuneTellerId = async (req: Request, res: Response) => {
 
     res.status(200).json({ success: true, data: reviewData })
   }
+
+  const getRecommendPackage = async (req: Request, res: Response) => {
+  
+    const data = await fortuneTellerService.getRecommendPackage()
+  
+    res.status(200).json({ success: true, data })
+  }
   
   export const fortuneTellerController = {
     getFortuneTellerbyId,
     getPackageByFortuneTellerId,
-    getReviewByFortuneTellerId
+    getReviewByFortuneTellerId,
+    getRecommendPackage
   }
   

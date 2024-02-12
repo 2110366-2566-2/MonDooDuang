@@ -24,5 +24,12 @@ export const FortuneTellerService = {
     const data = await res.json()
 
     return data.data
+  },
+
+  getRecommendPackage: async():Promise<Promise<FetchSearchData[] | null>> => {
+    const res = await fetch(`${environment.backend.url}/fortuneteller/recommend`)
+    const data = await res.json()
+
+    return data.data
   }
 }

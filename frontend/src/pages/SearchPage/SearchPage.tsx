@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import SearchBar from "./components/SearchBar/SearchBar"
-import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/FortuneTellerSerachModal"
+import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/FortuneTellerSeachModal"
 import { SearchService } from "./services/SearchService"
 import {
   Specialities,

@@ -23,7 +23,7 @@ interface FortuneTellerProps {
   makeAppointment: () => void
 }
 
-export default function FortuneTellerSerachModal({
+export default function FortuneTellerSeachModal({
   name,
   rating,
   minPrice,
@@ -35,7 +35,7 @@ export default function FortuneTellerSerachModal({
   makeAppointment
 }: FortuneTellerProps): JSX.Element {
   return (
-    <div className="w-[81%] bg-white/[0.52] rounded-[10px] flex flex-col relative my-4 cursor-pointer">
+    <div className="w-[280px] bg-white/[0.52] rounded-[10px] flex flex-col relative my-4 cursor-pointer">
       <img src={CardFrame} alt="Card Frame" className="bg-contain w-full p-3 absolute" />
       <StarCorner />
       <div className="relative">

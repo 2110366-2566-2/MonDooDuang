@@ -48,5 +48,10 @@ export const fortuneTellerService = {
                 lName : review.lName
             }
         })
+    },
+
+    getRecommendPackage: async () => {
+        const recommendData = await packageRepository.getRecommendPackage()
+        return recommendData
     }
 }
