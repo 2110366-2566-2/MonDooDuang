@@ -3,6 +3,8 @@ import dotenv from "dotenv"
 import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
+import searchRouter from "./routes/search.routes"
+
 import conversationRouter from "./routes/conversation.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
@@ -40,6 +42,7 @@ server.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
+app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 
 connectToDatabase().catch((error) => {
