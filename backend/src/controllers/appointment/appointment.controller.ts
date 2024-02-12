@@ -55,7 +55,7 @@ const getUserInfo = async (req: Request, res: Response) => {
 
   if (userInfo === null) { return res.status(400).json({ success: false }) }
 
-  res.status(200).json({ success: true, data: user_info })
+  res.status(200).json({ success: true, data: userInfo })
 }
 
 export const appointmentController = {
