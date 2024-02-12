@@ -10,7 +10,7 @@ export default function PackageList({ packageItem }: { packageItem: PackageTypes
         else if(specialty === "THAI") return "โหราศาสตร์ไทย"
         else if(specialty === "NUMBER") return "ศราตร์ตัวเลข"
         else if(specialty === "ORACLE") return "ไพ่ออราเคิล"
-        else return "อักษรรูน"
+        else return "ศาสตร์รูนส์"
     }
 
     return (
