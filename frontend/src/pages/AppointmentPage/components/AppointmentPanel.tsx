@@ -78,7 +78,7 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
     const date = new Date(dateString)
     const day = date.getUTCDate()
     const month = thaiMonths[date.getUTCMonth()]
-    const year = date.getUTCFullYear() + 543 // Convert to Thai Buddhist calendar
+    const year = date.getUTCFullYear() + 543
 
     return `${day} ${month} ${year}`
   }
@@ -123,7 +123,9 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
         const packages = await AppointmentService.getPackages(fortuneTellerId)
         if (packages) {
           setPackages(packages)
-          setPackageType(packages[0])
+          if (packages.length > 0) {
+            setPackageType(packages[0])
+          }
         }
       } catch (err) {
         console.log(err)
@@ -214,11 +216,11 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
           onPackageChange={setPackageType}
         />
         <DateTimeReserve
-          onDateChange={(value: Dayjs) => {
+          onDateChange={(value: Dayjs | null) => {
             setReserveDate(value)
             setIsValidDate(true)
           }}
-          onTimeChange={(value: Dayjs) => {
+          onTimeChange={(value: Dayjs | null) => {
             setReserveTime(value)
             setIsValidTime(true)
           }}
@@ -237,10 +239,10 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
         />
         <ConfirmButton
           onClick={() => {
-            if (!reserveDate) {
+            if (reserveDate === null) {
               setIsValidDate(false)
             }
-            if (!reserveTime) {
+            if (reserveTime === null) {
               setIsValidTime(false)
             } else {
               setIsConfirmModalOpen(true)

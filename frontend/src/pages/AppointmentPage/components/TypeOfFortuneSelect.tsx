@@ -10,7 +10,7 @@ export function TypeOfFortuneSelect({
 }: {
   typeJson: Fortune[]
   fortuneTeller: string
-  onPackageChange: Function
+  onPackageChange: (value: Package) => void
 }) {
   const [price, setPrice] = useState(0)
   const [type, setType] = useState("") //setId
@@ -47,8 +47,8 @@ export function TypeOfFortuneSelect({
               typeJson.find((type) => type.packageid === value.target.value) || null
             setPrice(selectedFortune ? selectedFortune.price : 0)
             onPackageChange({
-              id: value.target.value,
-              typeName: selectedFortune ? selectedFortune.speciality : "",
+              packageid: value.target.value,
+              speciality: selectedFortune ? selectedFortune.speciality : "",
               price: selectedFortune ? selectedFortune.price : 0,
               duration: selectedFortune ? selectedFortune.duration : 0
             })

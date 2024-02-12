@@ -1,4 +1,4 @@
-export default function ConfirmButton({ onClick }: { onClick: Function }) {
+export default function ConfirmButton({ onClick }: { onClick: () => void }) {
   return (
     <div
       style={{ transition: "background-color 0.3s" }}

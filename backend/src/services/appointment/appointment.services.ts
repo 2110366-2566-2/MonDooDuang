@@ -30,7 +30,7 @@ export const appointmentService = {
   },
 
   getUserInfo: async (userId: string) => {
-    const user_info = await appointmentRepository.getUserInfo(userId)
-    return user_info
+    const userInfo = await appointmentRepository.getUserInfo(userId)
+    return userInfo
   }
 }

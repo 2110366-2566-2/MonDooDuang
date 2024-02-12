@@ -27,4 +27,3 @@ interface Fortune {
 interface GroupedAppointments {
   [date: string]: { time: string; duration: number }[]
 }
-

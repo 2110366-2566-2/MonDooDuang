@@ -6,7 +6,7 @@ export default function AppointmentApp() {
   return (
     //Add providers as needed
     <RootLayout>
-       <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
+      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
       <AppointmentPage />
     </RootLayout>
   )

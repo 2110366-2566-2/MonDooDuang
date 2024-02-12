@@ -43,7 +43,7 @@ server.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
-app.use("/appointment",appointmentRouter )
+app.use("/appointment", appointmentRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 

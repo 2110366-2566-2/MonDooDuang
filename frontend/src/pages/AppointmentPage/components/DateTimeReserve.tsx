@@ -18,9 +18,9 @@ export default function DateTimeReserve({
   duration,
   appointments
 }: {
-  onDateChange: Function
+  onDateChange: (value: Dayjs | null) => void
   isDateValid: boolean
-  onTimeChange: Function
+  onTimeChange: (value: Dayjs | null) => void
   isTimeValid: boolean
   duration: number
   appointments: GroupedAppointments
