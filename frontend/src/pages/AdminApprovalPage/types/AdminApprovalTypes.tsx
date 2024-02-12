@@ -1,9 +1,9 @@
 type FortuneTellerRequest = {
-  id: string
-  username: string
+  requestId: string
+  fullName: string
   stagename: string
   phoneNumber: string
-  ssn: string
+  identityCardNumber: string
   profilePic: string
   approvalPic: string
 }

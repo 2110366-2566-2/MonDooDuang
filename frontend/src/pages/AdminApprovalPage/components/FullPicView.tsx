@@ -1,5 +1,5 @@
 import { CloseIcon } from "./Icon"
-import ModalOverlay from "./ModalOverlay"
+import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 
 export function FullPicView({
   approvalPic,

@@ -1,4 +1,4 @@
-import { CorrectIcon, WrongIcon } from "./Icon"
+import { CorrectIcon, DefaultProfilePic, WrongIcon } from "./Icon"
 
 export function FortuneTellerRequest({
   fortuneTellerRequest,
@@ -11,28 +11,56 @@ export function FortuneTellerRequest({
   onApprove: Function
   onReject: Function
 }) {
+  const formatPhoneNumber = (phoneNumber: string): string => {
+    if (phoneNumber === null || phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
+      return "Invalid phone number"
+    }
+
+    const formattedNumber = `${phoneNumber.substr(0, 3)}-${phoneNumber.substr(
+      3,
+      3
+    )}-${phoneNumber.substr(6, 4)}`
+    return formattedNumber
+  }
+  const formatCitizenId = (str: string): string => {
+    const substrings = [
+      str.slice(0, 1),
+      str.slice(1, 5),
+      str.slice(5, 10),
+      str.slice(10, 12),
+      str.slice(12)
+    ]
+
+    return substrings.join("-")
+  }
   return (
     <div
       style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
       className="flex flex-row justify-items-center items-center rounded-md space-x-12 py-2 px-10 bg-gray-boxbg bg-opacity-75"
     >
-      <div className="rounded-full w-[100px] h-[100px] bg-yellow-400">
-        <img
-          src={fortuneTellerRequest.profilePic}
-          alt="Profile"
-          style={{
-            objectFit: "cover",
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%"
-          }}
-        />
+      <div className="rounded-full w-[100px] h-[100px]">
+        {fortuneTellerRequest.profilePic ? (
+          <img
+            src={fortuneTellerRequest.profilePic}
+            alt="Profile"
+            style={{
+              objectFit: "cover",
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%"
+            }}
+          />
+        ) : (
+          <DefaultProfilePic />
+        )}
       </div>
-      <div className="flex flex-col justify-items-center items-start text-white text-md">
-        <div>Username : {fortuneTellerRequest.username}</div>
+      <div className="flex flex-col justify-items-center items-start text-white text-md font-noto-sans">
+        <div>Username : {fortuneTellerRequest.fullName}</div>
         <div>ชื่อหมอดู : {fortuneTellerRequest.stagename}</div>
-        <div>เบอร์โทรศัพท์ : {fortuneTellerRequest.phoneNumber}</div>
-        <div>เลขบัตรประจำตัวประชาชน : {fortuneTellerRequest.ssn}</div>
+        <div>เบอร์โทรศัพท์ : {formatPhoneNumber(fortuneTellerRequest.phoneNumber)}</div>
+        <div>
+          เลขบัตรประจำตัวประชาชน : <br /> {formatCitizenId(fortuneTellerRequest.identityCardNumber)}
+        </div>
       </div>
       <div className="flex flex-col justify-items-center items-start space-y-3">
         <div className="w-[240px] h-[150px] bg-yellow-400">
@@ -47,17 +75,21 @@ export function FortuneTellerRequest({
           />
         </div>
         <button
-          className="p-2 text-zinc-600 bg-zinc-300 bg-opacity-90 rounded-md hover:bg-opacity-100"
+          className="p-2 text-zinc-600 bg-zinc-300 bg-opacity-90 font-noto-sans rounded-md hover:bg-opacity-100 "
           onClick={() => {
-            focusHandler(fortuneTellerRequest)
+            if (fortuneTellerRequest.approvalPic) {
+              focusHandler(fortuneTellerRequest)
+            }
           }}
         >
           ดูรูปขนาดเต็ม
         </button>
       </div>
-      <div className="flex flex-col items-start justify-items-center space-y-6">
+      <div className="flex flex-col items-start justify-items-center space-y-6 font-noto-sans">
         <button
-          onClick={() => {onApprove(fortuneTellerRequest)}}
+          onClick={() => {
+            onApprove(fortuneTellerRequest)
+          }}
           style={{ transition: "background-color 0.3s" }}
           className="flex flex-row space-x-3 py-2 px-6 justify-items-center items-center rounded-[10px] p-2 text-gray-200 text-lg font-normal bg-mango-yellow hover:bg-mango-yellow-hover"
         >
@@ -66,7 +98,9 @@ export function FortuneTellerRequest({
         </button>
 
         <button
-         onClick={() => {onReject(fortuneTellerRequest)}}
+          onClick={() => {
+            onReject(fortuneTellerRequest)
+          }}
           style={{ transition: "background-color 0.3s" }}
           className="flex flex-row space-x-3 p-2 justify-items-center items-center rounded-[10px] p-2 text-gray-200 text-lg font-normal bg-cancel-red hover:bg-red-600"
         >

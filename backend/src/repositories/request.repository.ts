@@ -29,7 +29,7 @@ export const requestRepository = {
   getPendingRequest: async () => {
     const result = await db.query(
       `
-      SELECT r.request_id,r.fortune_teller_id, f.stagename, f.identitycardnumber, CONCAT(u.fname,' ',u.lname) as full_name, u.phonenumber
+      SELECT r.request_id,r.fortune_teller_id, f.stagename, f.identitycardnumber, CONCAT(u.fname,' ',u.lname) as full_name, u.phonenumber,f.identitycardcopy,u.profilepicture
       FROM REQUEST r
       JOIN FORTUNE_TELLER f ON r.fortune_teller_id = f.fortunetellerid
       JOIN USER_TABLE u ON r.fortune_teller_id = u.userid
@@ -44,7 +44,9 @@ export const requestRepository = {
         stagename: data.stagename,
         identityCardNumber: data.identitycardnumber,
         fullName: data.full_name,
-        phoneNumber: data.phonenumber
+        phoneNumber: data.phonenumber,
+        approvalPic: data.identitycardcopy,
+        profilePic: data.profilepic
       }
     })
   }
