@@ -29,6 +29,7 @@ export default {
         "cancel-red": "#FF5656",
         "gray-boxbg": "#D9D9D9",
         "mdd-focus-yellow": "#FFD233",
+        "mdd-login-frame": "rgba(191, 191, 191, 0.28)",
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],

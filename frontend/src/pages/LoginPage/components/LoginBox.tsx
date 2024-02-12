@@ -41,10 +41,10 @@ export default function LoginBox() {
 
   return (
     <div className="flex flex-col justify-center items-center w-2/4">
-      <p className="text-3xl">ยินดีต้อนรับกลับ!</p>
-      <div className="flex flex-col justify-center items-center bg-neutral-200 bg-opacity-28 p-8 mt-4 rounded-lg">
+      <p className="text-3xl text-white">ยินดีต้อนรับกลับ!</p>
+      <div className="flex flex-col justify-center items-center bg-mdd-login-frame p-8 mt-4 rounded-lg">
         <div>
-          <p>อีเมล</p>
+          <p className="text-white">อีเมล</p>
           <input
             type="email"
             value={email}
@@ -53,7 +53,7 @@ export default function LoginBox() {
           />
         </div>
         <div className="mt-4">
-          <p>รหัสผ่าน</p>
+          <p className="text-white">รหัสผ่าน</p>
           <input
             type="password"
             value={password}
@@ -70,7 +70,7 @@ export default function LoginBox() {
       </button>
       <div className="flex w-[100%] justify-center items-center gap-2 text-center">
         <div className="h-[1px] w-[25%] bg-gradient-to-l from-white border-none" />
-        <p className="my-1">หรือ</p>
+        <p className="my-1 text-white">หรือ</p>
         <div className="h-[1px] w-[25%] bg-gradient-to-r from-white border-none" />
       </div>
       <button
