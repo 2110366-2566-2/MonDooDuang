@@ -2,33 +2,30 @@ import { Request, Response } from "express"
 import { userService } from "../../services/user/user.services"
 import { LoginUserSchema, RegisterUserSchema } from "../../models/user/user.model"
 
-export const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response) => {
   const loginUser: LoginUserSchema = {
     email: req.body.email,
     password: req.body.password
   }
-  const token = await userService.login(loginUser)
-  if (token === null) {
-    res.status(400).json({
-      message: "Cannot log in",
-      succuss: false
+
+  if (req.body.email === undefined || req.body.password === undefined) {
+    return res.status(400).json({
+      message: "Cannot log in, email or password is missing",
+      success: false
     })
+  }
+
+  const result = await userService.login(loginUser)
+  const isSuccess = result.success
+
+  if (!isSuccess) {
+    return res.status(400).json(result)
   } else {
-    const options = {
-      expires: new Date(
-        Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRE ?? "30") * 24 * 60 * 60 * 10000
-      ),
-      httpOnly: false
-    }
-    res.status(201).cookie("token", token, options).json({
-      message: "Successfully logged in",
-      success: true,
-      token
-    })
+    return res.status(201).json(result)
   }
 }
 
-export const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response) => {
   const registerUser: RegisterUserSchema = {
     email: req.body.email,
     password: req.body.password,
@@ -41,24 +38,31 @@ export const registerUser = async (req: Request, res: Response) => {
     bankName: req.body.bankName,
     accountNumber: req.body.accountNumber
   }
-  const token = await userService.createNewUser(registerUser)
-  if (token === null) {
-    res.status(400).json({
-      message: "Cannot register new user",
-      succuss: false
+
+  if (
+    req.body.email === undefined ||
+    req.body.password === undefined ||
+    req.body.fName === undefined ||
+    req.body.lName === undefined ||
+    req.body.gender === undefined ||
+    req.body.phoneNumber === undefined ||
+    req.body.birthDate === undefined ||
+    req.body.bankName === undefined ||
+    req.body.accountNumber === undefined
+  ) {
+    return res.status(400).json({
+      message: "Cannot register, information is missing",
+      success: false
     })
+  }
+
+  const result = await userService.createNewUserAndGenerateToken(registerUser)
+  const isSuccess = result.success
+
+  if (!isSuccess) {
+    return res.status(400).json(result)
   } else {
-    const options = {
-      expires: new Date(
-        Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRE ?? "30") * 24 * 60 * 60 * 10000
-      ),
-      httpOnly: false
-    }
-    res.status(201).cookie("token", token, options).json({
-      message: "Successfully registered",
-      success: true,
-      token
-    })
+    return res.status(201).json(result)
   }
 }
 

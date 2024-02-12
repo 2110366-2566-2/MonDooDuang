@@ -1,115 +1,80 @@
-import { Gender, TokenInfoSchema } from "../../models/user/user.model"
+import { RegisterUserSchema, TokenInfoSchema, UserSchema } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
 
-// Business logic here
-
 export const userService = {
-  createNewUser: async (body: {
-    email: string
-    fName: string
-    lName: string
-    gender: Gender
-    phoneNumber: string
-    birthDate: Date
-    profilePicture: string
-    bankName: string
-    accountNumber: string
-    password: string
-  }) => {
-    const fName = body?.fName
-    const lName = body?.lName
-    const gender = body?.gender
-    const phoneNumber = body?.phoneNumber
-    const email = body?.email
-    const birthDate = body?.birthDate
-    const profilePicture = body?.profilePicture
-    const bankName = body?.bankName
-    const accountNumber = body?.accountNumber
-    const password = body?.password
-
-    if (
-      !fName ||
-      !lName ||
-      !gender ||
-      !phoneNumber ||
-      !email ||
-      birthDate === undefined ||
-      !bankName ||
-      !accountNumber ||
-      !password
-    ) {
-      console.log("incomplete info")
-      return null
-    }
+  createNewUserAndGenerateToken: async (body: RegisterUserSchema) => {
+    const fName = body.fName
+    const lName = body.lName
+    const gender = body.gender
+    const phoneNumber = body.phoneNumber
+    const email = body.email
+    const birthDate = body.birthDate
+    const profilePicture = body.profilePicture
+    const bankName = body.bankName
+    const accountNumber = body.accountNumber
+    const password = body.password
 
     const user = await userRepository.findUser(email, fName, lName)
-    if (user.length > 0) {
-      console.log("this user has registered")
-      return null
+    if (user !== undefined) {
+      return { success: false, message: "This user has registered" }
     }
 
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const newUser = await userRepository.createUser(
-      fName,
-      lName,
-      gender,
-      phoneNumber,
-      email,
-      birthDate,
-      profilePicture,
-      false,
-      bankName,
-      accountNumber,
-      hashedPassword,
-      "CUSTOMER"
-    )
+    const newUserInfo: UserSchema = {
+      fName: fName,
+      lName: lName,
+      gender: gender,
+      phoneNumber: phoneNumber,
+      email: email,
+      birthDate: birthDate,
+      profilePicture: profilePicture,
+      isBanned: false,
+      bankName: bankName,
+      accountNumber: accountNumber,
+      password: hashedPassword,
+      userType: "CUSTOMER"
+    }
 
-    if (newUser.length < 1) {
-      console.log("cannot create new user")
-      return null
+    const newUser = await userRepository.createUser(newUserInfo)
+
+    if (newUser === undefined) {
+      return { success: false, message: "Cannot create new user" }
     }
 
     const tokenInfo: TokenInfoSchema = {
-      userId: newUser[0].userid,
-      userType: newUser[0].usertype
+      userId: newUser.userid,
+      userType: newUser.usertype
     }
 
     const token = assignToken(tokenInfo)
-    return token
+    return { success: true, message: "Successfully create new user", data: token }
   },
   login: async (body: { email: string, password: string }) => {
-    const email = body?.email
-    const password = body?.password
-
-    if (!(email && password)) {
-      console.log("incomplete info")
-      return null
-    }
+    const email = body.email
+    const password = body.password
 
     const user = await userRepository.findUser(email, "", "")
-    if (user.length <= 0) {
-      console.log("this email hasn't registered")
-      return null
+    if (user === undefined) {
+      return { success: false, message: "This email hasn't registered" }
     }
 
-    const collectPassword: string = user[0].password
+    const collectPassword: string = user.password
 
     const isMatch = await bcrypt.compare(password, collectPassword)
     if (!isMatch) {
-      console.log("invalid credentials")
-      return null
+      return { success: false, message: "Invalid credentials" }
     }
 
     const tokenInfo: TokenInfoSchema = {
-      userId: user[0].userid,
-      userType: user[0].usertype
+      userId: user.userid,
+      userType: user.usertype
     }
 
     const token = assignToken(tokenInfo)
-    return token
+    return { success: true, message: "Successfully log in", data: token }
   }
 }
