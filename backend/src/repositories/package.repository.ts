@@ -3,32 +3,32 @@ import { PackageSchema } from "../models/package/package.model"
 import { SearchSchema } from "../models/search/search.model"
 
 export const packageRepository = {
-    getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageSchema[] > =>{
-        const result = await db.query(
-            `SELECT * FROM PACKAGE 
+  getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageSchema[] > => {
+    const result = await db.query(
+      `SELECT * FROM PACKAGE 
             WHERE FortuneTellerId = $1
             ORDER BY speciality, price DESC;`,
-            [fortuneTellerId]
-        )
+      [fortuneTellerId]
+    )
 
-        if (result.rows.length === 0) return null
+    if (result.rows.length === 0) return null
 
-        const packages: PackageSchema[] = result.rows.map(row => ({
+    const packages: PackageSchema[] = result.rows.map(row => ({
 
-            speciality: row.speciality,
-            description: row.description,
-            duration: row.duration,
-            price: row.price,
-            fortuneTellerId: row.fortunetellerid
+      speciality: row.speciality,
+      description: row.description,
+      duration: row.duration,
+      price: row.price,
+      fortuneTellerId: row.fortunetellerid
 
-        }));
+    }))
 
-        return packages;
-    },
+    return packages
+  },
 
-    getRecommendPackage: async () => {
-        const result = await db.query(
-            `WITH FILTER_PACKAGE AS (
+  getRecommendPackage: async () => {
+    const result = await db.query(
+      `WITH FILTER_PACKAGE AS (
                 SELECT * FROM package
             ), 
             APPOINTMENT_DATE_RANGE AS(
@@ -63,9 +63,9 @@ export const packageRepository = {
             )
 
             SELECT * FROM FORTUNETELLER_PACKAGE ORDER BY RANDOM() LIMIT 4`
-        )
+    )
 
-        if (result.rows.length === 0) return null
-        return result.rows
-    }
+    if (result.rows.length === 0) return null
+    return result.rows
+  }
 }

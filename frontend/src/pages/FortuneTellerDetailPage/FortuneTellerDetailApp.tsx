@@ -6,8 +6,8 @@ export default function FortuneTellerDetailApp() {
   return (
     //Add providers as needed
     <RootLayout>
-    <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
-    <FortuneTellerDetailPage />
-  </RootLayout>
+      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
+      <FortuneTellerDetailPage />
+    </RootLayout>
   )
 }

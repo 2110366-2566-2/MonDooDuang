@@ -1,11 +1,11 @@
 import Arrow from "./Arrow"
 
 export default function Breadcrumb() {
-    function refreshPage() {
-      window.location.reload();
-    }
-    return (
-      <nav className = "flex content-center text-[20px] font-light gap-[10px]">
+  function refreshPage() {
+    window.location.reload()
+  }
+  return (
+    <nav className = "flex content-center text-[20px] font-light gap-[10px]">
       <a className= "inline-flex items-center" href="/search">
         หน้าหลัก
       </a>
@@ -14,5 +14,5 @@ export default function Breadcrumb() {
         รายละเอียดเพิ่มเติม
       </button>
     </nav>
-    )
-  }
+  )
+}

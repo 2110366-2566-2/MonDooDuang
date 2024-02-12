@@ -4,6 +4,6 @@ export interface FortuneTellerSchema {
   identityCardNumber: string
   stageName: string
   identityCardCopy: string
-  totalScore : number
-  totalReview : number
+  totalScore: number
+  totalReview: number
 }
