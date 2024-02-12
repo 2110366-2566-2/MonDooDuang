@@ -1,40 +1,56 @@
 import { useState } from "react"
+import { SpecialityType } from "../../types/SpecialityTypes"
+import { PackageService } from "../../services/PackageService"
 
-export default function Form() {
-  const [fortune, setFortune] = useState("")
-  const [price, setPrice] = useState(-1)
-  const [time, setTime] = useState(-1)
-  const [unitTime, setUnitTime] = useState("")
+export default function Form(props: { fortuneTellerId: string }) {
+  const [fortune, setFortune] = useState<SpecialityType>("TAROT")
+  const [price, setPrice] = useState(0)
+  const [time, setTime] = useState(0)
+  const [unitTime, setUnitTime] = useState("minute")
   const [description, setDescription] = useState("")
 
-  const [isFortuneError, setIsFortuneError] = useState(false)
   const [isPriceError, setIsPriceError] = useState(false)
   const [isTimeError, setIsTimeError] = useState(false)
-  const [isUnitTimeError, setIsUnitTimeError] = useState(false)
 
   // for validate information
   const validation = ({
-    fortune,
     price,
-    time,
-    unitTime
+    time
   }: {
     fortune: string
     price: number
     time: number
     unitTime: string
   }): boolean => {
-    const checkFortune = fortune != ""
-    const checkPrice = Number(price) >= 0
-    const checkTime = Number(time) >= 0
-    const checkUnit = unitTime != ""
+    const checkPrice = Number(price) >= 1
+    const checkTime = Number(time) >= 1
 
-    setIsFortuneError(!checkFortune)
     setIsPriceError(!checkPrice)
     setIsTimeError(!checkTime)
-    setIsUnitTimeError(!checkUnit)
 
-    return checkFortune && checkPrice && checkTime && checkUnit
+    return checkPrice && checkTime
+  }
+
+  const SubmitPackage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (validation({ fortune, price, time, unitTime })) {
+      const duration = unitTime === "hour" ? time * 60 : unitTime === "day" ? time * 60 * 24 : time
+
+      const response = await PackageService.createPackage(
+        fortune,
+        description,
+        duration,
+        price,
+        props.fortuneTellerId
+      )
+
+      if (!response.isSuccess) {
+        return alert(response.message)
+      }
+
+      window.location.href = "/account/fortuneteller"
+    }
   }
 
   return (
@@ -49,20 +65,15 @@ export default function Form() {
               <select
                 id="fortune"
                 name="fortune"
-                className="bg-white bg-opacity-[.54] rounded-lg w-5/6 pl-11 h-full text-white"
-                onChange={(e) => setFortune(e.target.value)}
+                className="bg-[#C4C4C4] bg-opacity-[.6] rounded-lg w-5/6 pl-11 h-full text-white"
+                onChange={(e) => setFortune(e.target.value as SpecialityType)}
               >
-                <option value=""></option>
-                <option value="TAROT">ไพ่ยิปซี</option>
+                <option value="TAROT">ไพ่ทาโรต์</option>
                 <option value="NUMBER">โหราศาตร์ไทย</option>
                 <option value="THAI">ศาตร์ตัวเลข</option>
                 <option value="ORACLE">ไพ่ออราเคิล</option>
                 <option value="RUNE">รูนส์</option>
-                <option value="PHROMAYARN">ไพ่พรหมญาณ</option>
               </select>
-              {isFortuneError && (
-                <span className="text-red-500 text-xs">กรุณาระบุประเภทศาสตร์การดูดวง</span>
-              )}
             </div>
 
             <div className="flex flex-col row-span-2">
@@ -80,17 +91,16 @@ export default function Form() {
                   <select
                     id="unitTime"
                     name="unitTime"
-                    className="bg-white bg-opacity-[.54] rounded-lg transition-all cursor-pointer ml-2.5 h-full w-1/4 pl-5 "
+                    className="bg-[#C4C4C4] bg-opacity-[.6] rounded-lg cursor-pointer ml-2.5 h-full w-1/4 pl-5 "
                     onChange={(e) => setUnitTime(e.target.value)}
                   >
-                    <option value=""></option>
                     <option value="minute">นาที</option>
                     <option value="hour">ชั่วโมง</option>
                     <option value="day">วัน</option>
                   </select>
                 </form>
               </div>
-              {(isTimeError || isUnitTimeError) && (
+              {isTimeError && (
                 <span className="text-red-500 text-xs">กรุณาระบุเวลาและหน่วยเวลา</span>
               )}
             </div>
@@ -131,11 +141,6 @@ export default function Form() {
           <button
             className="cursor-pointer float-right mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold"
             form="packageForm"
-            onClick={() => {
-              if (validation({ fortune, price, time, unitTime })) {
-                window.location.href = "/account/fortuneteller"
-              }
-            }}
           >
             เสร็จสิ้น
           </button>

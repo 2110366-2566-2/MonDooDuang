@@ -4,13 +4,19 @@ import FortunePackage from "../FortunePackage/FortunePackage"
 export default function Form() {
   return (
     <div className="text-white">
-      <button className="cursor-pointer ml-9 mt-10 ">&lt; กลับสู่หน้าหลัก</button>
+      <button
+        className="cursor-pointer ml-9 mt-10 "
+        onClick={() => (window.location.href = "/search")}
+      >
+        &lt; กลับสู่หน้าหลัก
+      </button>
 
       <div className="flex flex-col">
-        <div className="flex-row ">
+        <div className="flex flex-row items-center justify-between w-full px-16">
+          <div className="w-32"></div>
           <span className="font-medium text-4xl ">ข้อมูลส่วนตัว</span>
 
-          <button className="cursor-pointer float-right bg-white bg-opacity-70 text-[#3B3B3B] rounded-xl w-32 h-12 font-semibold text-2xl mr-16">
+          <button className="cursor-pointer float-right bg-white bg-opacity-70 text-[#3B3B3B] rounded-xl w-32 h-12 font-semibold text-2xl ">
             <span className="align-middle inline-block mr-1">แก้ไข</span>
             <img src={EditIcon} className="size-7 align-middle inline-block" />
           </button>
@@ -22,7 +28,7 @@ export default function Form() {
             <br />
             <input
               type="text"
-              className="bg-white bg-opacity-50 rounded-xl w-full h-12 pl-8"
+              className="bg-white bg-opacity-50 rounded-xl w-full h-12 pl-8 cursor-pointer"
             ></input>
           </div>
           <div className="w-7/12">
@@ -30,7 +36,7 @@ export default function Form() {
             <br />
             <input
               type="text"
-              className="bg-white bg-opacity-50 rounded-xl w-full h-12 pl-8"
+              className="bg-white bg-opacity-50 rounded-xl w-full h-12 pl-8 cursor-pointer"
             ></input>
           </div>
         </div>
@@ -47,7 +53,10 @@ export default function Form() {
             <FortunePackage></FortunePackage>
           </div>
         </div>
-        <button className="cursor-pointer ml-14 mb-12 mt-8 bottom-0 left-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold">
+        <button
+          className="cursor-pointer ml-14 mb-12 mt-8 bottom-0 left-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold"
+          onClick={() => (window.location.href = "/account")}
+        >
           &lt; ย้อนกลับ
         </button>
       </div>

@@ -5,7 +5,7 @@ import paymentRouter from "./routes/payment.routes"
 import cors from "cors"
 import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
-
+import packageRouter from "./routes/package.routes"
 // For env File
 dotenv.config()
 
@@ -34,6 +34,7 @@ app.listen(port, () => {
 
 app.use("/example", exampleRouter)
 app.use("/payment", paymentRouter)
+app.use("/package",packageRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)

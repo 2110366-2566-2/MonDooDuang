@@ -1,1 +1,1 @@
-type SpecialityType = "Thai" | "NUMBER" | "ORACLE" | "TAROT" | "RUNES" | "PHROMAYARN"
+export type SpecialityType = "THAI" | "NUMBER" | "ORACLE" | "TAROT" | "RUNES" 
