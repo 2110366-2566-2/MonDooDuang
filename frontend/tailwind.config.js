@@ -20,7 +20,6 @@ export default {
         "example-font": ["Inter var", "sans-serif"],
         "libre-bodoni": ["Libre Bodoni", "serif"],
         "noto-sans-eng": ["Noto Sans", "sans-serif"],
-        "example-font": ["Inter var", "sans-serif"]
       }
     }
   },
