@@ -63,8 +63,8 @@ export default function DateSelector({ searchFortuneTeller, setSearchFortuneTell
               {searchFortuneTeller.startDate === searchFortuneTeller.endDate
                 ? ""
                 : ` ถึง ${searchFortuneTeller.endDate.getDate()} ${
-                    monthShortNames[searchFortuneTeller.endDate.getMonth()]
-                  } ${(searchFortuneTeller.endDate.getFullYear() + 543).toString().slice(-2)}`}
+                  monthShortNames[searchFortuneTeller.endDate.getMonth()]
+                } ${(searchFortuneTeller.endDate.getFullYear() + 543).toString().slice(-2)}`}
             </p>
           ) : (
             <p className="text-white/70 text-base font-sans font-medium truncate">เลือกวันที่</p>

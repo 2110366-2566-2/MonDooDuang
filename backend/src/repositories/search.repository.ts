@@ -22,10 +22,10 @@ export const searchRepository = {
                         LEFT OUTER JOIN appointment A ON FP.packageid = A.packageid
                         LEFT OUTER JOIN APPOINTMENT_DATE_RANGE R ON FP.packageid = R.packageid
                         ${
-                          startDate === ""
-                            ? startTime === ""
-                              ? ""
-                              : `WHERE CASE
+  startDate === ""
+    ? startTime === ""
+      ? ""
+      : `WHERE CASE
                                   WHEN  R.startdate IS NULL OR R.enddate IS NULL 
                                   OR (R.startdate::time >= '${startTime}'::time + (FP.duration || ' minutes')::interval
                                   OR R.enddate::time <= '${endTime}'::time - (FP.duration || ' minutes')::interval)
@@ -34,7 +34,7 @@ export const searchRepository = {
                                   THEN 1
                                   ELSE 0
                                 END > 0`
-                            : `WHERE CASE
+    : `WHERE CASE
                                 WHEN  R.startdate IS NULL OR R.enddate IS NULL 
                                 OR (R.startdate >= ('${startDate} ${startTime}'::timestamp + (FP.duration || ' minutes')::interval)
                                 OR R.enddate <= ('${endDate} ${endTime}'::timestamp - (FP.duration || ' minutes')::interval))
@@ -43,7 +43,7 @@ export const searchRepository = {
                                 THEN 1
                                 ELSE 0
                               END > 0`
-                        }
+}
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
                         SELECT DISTINCT FA.speciality, FA.packageid, FA.fortunetellerid, FT.stagename, U.fname, U.profilepicture, FT.totalscore, FT.totalreview FROM FILTER_APPOINTMENT FA

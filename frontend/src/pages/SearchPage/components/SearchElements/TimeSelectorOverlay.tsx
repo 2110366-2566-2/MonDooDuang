@@ -87,7 +87,7 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
 
   const onHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    let parsedValue = parseInt(value)
+    const parsedValue = parseInt(value)
     if (!isNaN(parsedValue)) {
       if (parsedValue < 0) {
         setHourTime(0)
@@ -103,7 +103,7 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
   }
   const onMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    let parsedValue = parseInt(value)
+    const parsedValue = parseInt(value)
     if (!isNaN(parsedValue)) {
       if (parsedValue < 0) {
         setMinuteTime(0)
@@ -153,8 +153,8 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
               hourTime === -1
                 ? ""
                 : hourTime < 10 && hourTime.toString().length < 2
-                ? "0" + hourTime
-                : hourTime
+                  ? "0" + hourTime
+                  : hourTime
             }
             onChange={onHourChange}
             onClick={() => setFocusHour(true)}
@@ -171,8 +171,8 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
               minuteTime === -1
                 ? ""
                 : minuteTime < 10 && minuteTime.toString().length < 2
-                ? "0" + minuteTime
-                : minuteTime
+                  ? "0" + minuteTime
+                  : minuteTime
             }
             onChange={onMinuteChange}
             onClick={() => setFocusMinute(true)}
