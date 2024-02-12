@@ -1,4 +1,5 @@
 import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
+import { ConfirmProps } from "../types/AdminApprovalTypes"
 
 export function ConfirmModal(props: ConfirmProps) {
   const { isVisible, onClose, onConfirm, fortuneTeller, type } = props

@@ -1,3 +1,5 @@
+import { formatCitizenId, formatPhoneNumber } from "../../../common/utils/FormatUtils"
+import { FortuneTellerRequestType } from "../types/AdminApprovalTypes"
 import { CorrectIcon, DefaultProfilePic, WrongIcon } from "./Icon"
 
 export function FortuneTellerRequest({
@@ -6,33 +8,11 @@ export function FortuneTellerRequest({
   onApprove,
   onReject
 }: {
-  fortuneTellerRequest: FortuneTellerRequest
-  focusHandler: (value:FortuneTellerRequest) => void
-  onApprove: (value:FortuneTellerRequest) => void
-  onReject: (value:FortuneTellerRequest) => void
+  fortuneTellerRequest: FortuneTellerRequestType
+  focusHandler: (value: FortuneTellerRequestType) => void
+  onApprove: (value: FortuneTellerRequestType) => void
+  onReject: (value: FortuneTellerRequestType) => void
 }) {
-  const formatPhoneNumber = (phoneNumber: string): string => {
-    if (phoneNumber === null || phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
-      return "Invalid phone number"
-    }
-
-    const formattedNumber = `${phoneNumber.substr(0, 3)}-${phoneNumber.substr(
-      3,
-      3
-    )}-${phoneNumber.substr(6, 4)}`
-    return formattedNumber
-  }
-  const formatCitizenId = (str: string): string => {
-    const substrings = [
-      str.slice(0, 1),
-      str.slice(1, 5),
-      str.slice(5, 10),
-      str.slice(10, 12),
-      str.slice(12)
-    ]
-
-    return substrings.join("-")
-  }
   return (
     <div
       style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}

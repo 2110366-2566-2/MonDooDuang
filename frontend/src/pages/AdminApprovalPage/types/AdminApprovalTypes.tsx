@@ -1,4 +1,4 @@
-type FortuneTellerRequest = {
+export type FortuneTellerRequestType = {
   requestId: string
   fullName: string
   stagename: string
@@ -8,8 +8,8 @@ type FortuneTellerRequest = {
   approvalPic: string
 }
 
-type ConfirmType = "APPROVE" | "REJECT"
-type ConfirmProps = {
+export type ConfirmType = "APPROVE" | "REJECT"
+export type ConfirmProps = {
   fortuneTeller: string
   type: ConfirmType
   isVisible: boolean

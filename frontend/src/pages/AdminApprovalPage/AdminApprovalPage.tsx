@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react"
-import { FortuneTellerRequest } from "./components/FortuneTellerRequest"
 import { FullPicView } from "./components/FullPicView"
 import { ConfirmModal } from "./components/ConfirmModal"
 import { RequestService } from "./services/RequestService"
 import { environment } from "../../common/constants/environment"
 import { NextPageIcon } from "./components/Icon"
+import { ConfirmType, FortuneTellerRequestType } from "./types/AdminApprovalTypes"
+import { FortuneTellerRequest } from "./components/FortuneTellerRequest"
 
 export default function AdminApprovalPage() {
   const [isFullPicOpen, setIsFullPicOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [confirmType, setConfirmType] = useState<ConfirmType>("APPROVE")
-  const [fortuneTellerRequests, setFortuneTellerRequests] = useState<FortuneTellerRequest[]>([])
-  const [focusRequest, setFocusRequest] = useState<FortuneTellerRequest>()
-  const [isUpdate, setIsupdate] = useState(false)
+  const [fortuneTellerRequests, setFortuneTellerRequests] = useState<FortuneTellerRequestType[]>([])
+  const [focusRequest, setFocusRequest] = useState<FortuneTellerRequestType>()
+  const [isUpdate, setIsUpdate] = useState(false)
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -58,21 +59,21 @@ export default function AdminApprovalPage() {
                 ' ไม่มีคำขออนุญาตเพิ่มเติมในขณะนี้ '
               </div>
             ) : null}
-            {fortuneTellerRequests.map((req: FortuneTellerRequest) => {
+            {fortuneTellerRequests.map((req: FortuneTellerRequestType) => {
               return (
                 <FortuneTellerRequest
                   key={req.requestId}
                   fortuneTellerRequest={req}
-                  focusHandler={(value: FortuneTellerRequest) => {
+                  focusHandler={(value: FortuneTellerRequestType) => {
                     setFocusRequest(value)
                     setIsFullPicOpen(true)
                   }}
-                  onApprove={(value: FortuneTellerRequest) => {
+                  onApprove={(value: FortuneTellerRequestType) => {
                     setFocusRequest(value)
                     setConfirmType("APPROVE")
                     setIsConfirmModalOpen(true)
                   }}
-                  onReject={(value: FortuneTellerRequest) => {
+                  onReject={(value: FortuneTellerRequestType) => {
                     setFocusRequest(value)
                     setConfirmType("REJECT")
                     setIsConfirmModalOpen(true)
@@ -106,7 +107,7 @@ export default function AdminApprovalPage() {
               }
             }
 
-            setIsupdate(!isUpdate)
+            setIsUpdate(!isUpdate)
           }}
         />
       </div>
