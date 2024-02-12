@@ -14,7 +14,7 @@ interface RatingStarProps {
   rating: number
 }
 
-export default function RatingStar({ rating }: RatingStarProps) {
+export default function RatingStar({ rating }: RatingStarProps): JSX.Element {
   return (
     <div>
       <img src={rating >= 4.5 ? Star5 : Star5Empty} alt="Star 5" className="w-5 h-5 ml-[2px]" />

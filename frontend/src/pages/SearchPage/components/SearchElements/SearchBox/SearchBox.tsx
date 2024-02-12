@@ -1,9 +1,9 @@
 import { useRef } from "react"
-import SearchIcon from "../Icons/search-icon.svg"
+import SearchIcon from "../../Icons/search-icon.svg"
 
-interface Props {
-  searchFortuneTeller: any
-  setSearchFortuneTeller: (searchFortuneTeller: any) => void
+interface SearchBoxProps {
+  searchFortuneTeller: SearchFortuneTeller
+  setSearchFortuneTeller: (searchFortuneTeller: SearchFortuneTeller) => void
   setIsSubmit: (isSubmit: boolean) => void
 }
 
@@ -11,18 +11,18 @@ export default function SearchBox({
   searchFortuneTeller,
   setSearchFortuneTeller,
   setIsSubmit
-}: Props) {
+}: SearchBoxProps): JSX.Element {
   const inputSearchBoxRef = useRef<HTMLInputElement>(null)
-  const handleInputClick = () => {
+  const handleInputClick = (): void => {
     setIsSubmit(false)
   }
 
-  const inputFocus = () => {
+  const inputFocus = (): void => {
     inputSearchBoxRef.current?.focus()
   }
 
   return (
-    <div className="w-[25%] relative">
+    <div className="w-[25%] relative cursor-pointer">
       <input
         type="text"
         ref={inputSearchBoxRef}

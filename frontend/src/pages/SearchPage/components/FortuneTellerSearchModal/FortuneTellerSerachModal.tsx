@@ -33,9 +33,9 @@ export default function FortuneTellerSerachModal({
   chat,
   moreInformation,
   makeAppointment
-}: FortuneTellerProps) {
+}: FortuneTellerProps): JSX.Element {
   return (
-    <div className="w-[81%] bg-white/[0.52] rounded-[10px] flex flex-col relative my-4">
+    <div className="w-[81%] bg-white/[0.52] rounded-[10px] flex flex-col relative my-4 cursor-pointer">
       <img src={CardFrame} alt="Card Frame" className="bg-contain w-full p-3 absolute" />
       <StarCorner />
       <div className="relative">

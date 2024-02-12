@@ -1,9 +1,9 @@
 import { environment } from "../../../common/constants/environment"
 
 export const SearchService = {
-  search: async (searchFortuneTeller: any) => {
-    const startDate = formatDate(new Date(searchFortuneTeller.startDate))
-    const endDate = formatDate(new Date(searchFortuneTeller.endDate))
+  searchFortuneteller: async (searchFortuneTeller: SearchFortuneTeller):Promise<FetchSearchData[] | null>  => {
+    const startDate = searchFortuneTeller.startDate?formatDate(new Date(searchFortuneTeller.startDate)):""
+    const endDate = searchFortuneTeller.endDate?formatDate(new Date(searchFortuneTeller.endDate)):""
 
     function formatDate(date: Date): string {
       const year = date.getFullYear()
@@ -18,7 +18,7 @@ export const SearchService = {
       return `${formattedHours}:${formattedMinutes}`
     }
 
-    const searchQuery = {
+    const searchQuery : SearchQuery = {
       name: searchFortuneTeller.name,
       speciality: searchFortuneTeller.speciality,
       minPrice: searchFortuneTeller.minPrice,
@@ -36,7 +36,7 @@ export const SearchService = {
       rating: searchFortuneTeller.rating
     }
 
-    async function fetchData(searchQuery: any) {
+    async function fetchData(searchQuery: SearchQuery): Promise<FetchSearchData[] | null> {
       try {
         const res = await fetch(`${environment.backend.url}/search`, {
           method: "POST",
@@ -50,8 +50,7 @@ export const SearchService = {
           throw new Error(`HTTP error! Status: ${res.status}`)
         }
         const data = await res.json()
-        const dataMap = new Map(Object.entries(data))
-        return dataMap.get("data")
+        return data["data"]
       } catch (error) {
         console.error("Error fetching data:", error)
         return null

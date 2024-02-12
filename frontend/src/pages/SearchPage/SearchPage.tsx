@@ -2,39 +2,13 @@ import { useEffect, useState } from "react"
 import SearchBar from "./components/SearchBar/SearchBar"
 import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/FortuneTellerSerachModal"
 import { SearchService } from "./services/SearchService"
-import { Specialities, specialitiesName } from "./components/SearchElements/SpecialityType"
-interface SearchValue {
-  name: string
-  rating: number
-  minPrice: number
-  maxPrice: number
-  image: string | null
-  speciality: string[]
-  chat: () => void
-  moreInformation: () => void
-  makeAppointment: () => void
-  current_packageid: string
-  packageid_list: string[]
-  current_speciality: string
-  speciality_list: string[]
-  fortunetellerid: string
-}
-interface FetchData {
-  current_packageid: string
-  current_speciality: string
-  fname: string
-  fortunetellerid: string
-  maxprice: number
-  minprice: number
-  packageid_list: string
-  profilepicture: string | null
-  speciality_list: string
-  stagename: string | null
-  totalreview: number
-  totalscore: number
-}
-export default function SearchPage() {
-  const defaultSearch = {
+import {
+  Specialities,
+  specialitiesName
+} from "./types/SpecialityType"
+
+export default function SearchPage() : JSX.Element {
+  const defaultSearch : SearchFortuneTeller = {
     name: "",
     speciality: "",
     minPrice: -1,
@@ -47,7 +21,7 @@ export default function SearchPage() {
     endMinuteTime: -1,
     rating: 0
   }
-  const [searchFortuneTeller, setSearchFortuneTeller] = useState(defaultSearch)
+  const [searchFortuneTeller, setSearchFortuneTeller] = useState<SearchFortuneTeller>(defaultSearch)
   const [isSubmit, setIsSubmit] = useState(false)
   const [searchFound, setSearchFound] = useState(true)
   const [initPage, setInitPage] = useState(true)
@@ -56,15 +30,15 @@ export default function SearchPage() {
   useEffect(() => {
     if (isSubmit || initPage) {
       const fetchData = async () => {
-        const data = await SearchService.search(searchFortuneTeller)
-        if (data && (data as FetchData[]).length > 0) {
-          setSearchValue((data as FetchData[]).map(transformFetchDataToSearchValue))
+        const data = await SearchService.searchFortuneteller(searchFortuneTeller)
+        if (data && (data as FetchSearchData[]).length > 0) {
+          setSearchValue((data as FetchSearchData[]).map(transformFetchDataToSearchValue))
           setSearchFound(true)
         } else {
           console.log("No data found")
           setSearchFound(false)
-          const allData = await SearchService.search(defaultSearch)
-          setSearchValue((allData as FetchData[]).map(transformFetchDataToSearchValue))
+          const allData = await SearchService.searchFortuneteller(defaultSearch)
+          setSearchValue((allData as FetchSearchData[]).map(transformFetchDataToSearchValue))
         }
         setIsSubmit(false)
         setInitPage(false)
@@ -73,24 +47,24 @@ export default function SearchPage() {
     }
   }, [isSubmit, initPage])
 
-  const transformFetchDataToSearchValue = (fetchData: FetchData): SearchValue => {
+  const transformFetchDataToSearchValue = (fetchSearchData: FetchSearchData): SearchValue => {
     return {
-      name: fetchData.stagename ?? fetchData.fname,
-      rating: fetchData.totalreview === 0 ? 0 : fetchData.totalscore / fetchData.totalreview,
-      minPrice: fetchData.minprice,
-      maxPrice: fetchData.maxprice,
-      image: fetchData.profilepicture,
-      speciality: fetchData.speciality_list
+      name: fetchSearchData.stagename ?? fetchSearchData.fname,
+      rating: fetchSearchData.totalreview === 0 ? 0 : fetchSearchData.totalscore / fetchSearchData.totalreview,
+      minPrice: fetchSearchData.minprice,
+      maxPrice: fetchSearchData.maxprice,
+      image: fetchSearchData.profilepicture,
+      speciality: fetchSearchData.speciality_list
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
       chat: () => {},
       moreInformation: () => {},
       makeAppointment: () => {},
-      current_packageid: fetchData.current_packageid.split(",")[0],
-      packageid_list: fetchData.packageid_list.split(","),
-      current_speciality: fetchData.current_speciality.split(",")[0],
-      speciality_list: fetchData.speciality_list.split(","),
-      fortunetellerid: fetchData.fortunetellerid
+      current_packageid: fetchSearchData.current_packageid.split(",")[0],
+      packageid_list: fetchSearchData.packageid_list.split(","),
+      current_speciality: fetchSearchData.current_speciality.split(",")[0],
+      speciality_list: fetchSearchData.speciality_list.split(","),
+      fortunetellerid: fetchSearchData.fortunetellerid
     }
   }
 

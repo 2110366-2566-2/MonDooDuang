@@ -1,7 +1,10 @@
-import SpecialityIcon from "../Icons/speciality-icon.svg"
-import { Specialities, specialitiesName } from "./SpecialityType"
-
-export default function SpecialityDropdown({ fortuneTellerSpeciality, onSelected }: any) {
+import SpecialityIcon from "../../Icons/speciality-icon.svg"
+import { Specialities, specialitiesName } from "../../../types/SpecialityType"
+interface SpecialityDropdownProps {
+  fortuneTellerSpeciality: string
+  onSelected: (speciality: string) => void
+}
+export default function SpecialityDropdown({ fortuneTellerSpeciality, onSelected }: SpecialityDropdownProps): JSX.Element{
   return (
     <div className="w-full flex flex-col">
       {Object.values(Specialities).map((speciality, index) => {

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react"
-import LineIcon from "../Icons/line.svg"
-import DateIcon from "../Icons/date-icon.svg"
+import LineIcon from "../../Icons/line.svg"
+import DateIcon from "../../Icons/date-icon.svg"
 import DateSelectorOverlay from "./DateSelectorOverlay"
-interface Props {
-  searchFortuneTeller: any
-  setSearchFortuneTeller: (searchFortuneTeller: any) => void
+interface DateSelectorProps {
+  searchFortuneTeller: SearchFortuneTeller
+  setSearchFortuneTeller: (searchFortuneTeller: SearchFortuneTeller) => void
 }
-export default function DateSelector({ searchFortuneTeller, setSearchFortuneTeller }: Props) {
+export default function DateSelector({ searchFortuneTeller, setSearchFortuneTeller }: DateSelectorProps): JSX.Element {
   const [openDateSelector, setOpenDateSelector] = useState(false)
   const selectorRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -24,7 +24,7 @@ export default function DateSelector({ searchFortuneTeller, setSearchFortuneTell
     "พ.ย.",
     "ธ.ค."
   ]
-  const closeDateSelector = (event: MouseEvent) => {
+  const closeDateSelector = (event: MouseEvent):void => {
     if (
       selectorRef.current &&
       !selectorRef.current.contains(event.target as Node) &&
@@ -46,7 +46,7 @@ export default function DateSelector({ searchFortuneTeller, setSearchFortuneTell
     }
   }, [searchFortuneTeller.startDate, searchFortuneTeller.endDate, openDateSelector])
   return (
-    <div className="w-[13.5%] h-[36px]">
+    <div className="w-[13.5%] h-[36px] cursor-pointer">
       <div
         ref={selectorRef}
         className="px-4 h-[36px] rounded-full bg-[#D9D9D9]/[0.75] flex items-center justify-center"

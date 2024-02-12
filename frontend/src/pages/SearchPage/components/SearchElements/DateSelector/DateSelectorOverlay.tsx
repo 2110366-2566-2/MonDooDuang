@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react"
-import NextIcon from "../Icons/next-icon.svg"
-import BackIcon from "../Icons/back-icon.svg"
-interface Props {
+import { useState, useEffect} from "react"
+import NextIcon from "../../Icons/next-icon.svg"
+import BackIcon from "../../Icons/back-icon.svg"
+interface DateSelectorOverlayProps {
   setOpenDateSelector: (openDateSelector: boolean) => void
   selectedStartDate: Date | null
   selectedEndDate: Date | null
@@ -17,7 +17,7 @@ export default function DateSelectorOverlay({
   setSelectedStartDate,
   setSelectedEndDate,
   clearDate
-}: Props) {
+}: DateSelectorOverlayProps): JSX.Element {
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"]
   const monthNames = [
     "มกราคม",
@@ -117,7 +117,7 @@ export default function DateSelectorOverlay({
     weeks.push(<tr key={weeks.length}>{week}</tr>)
   }
 
-  const handleDateClick = (date: Date) => {
+  const handleDateClick = (date: Date): void => {
     if (selectedStartDate === null) {
       setSelectedStartDate(date)
     } else if (selectedStartDate !== null && selectedEndDate === null && date > selectedStartDate) {

@@ -1,12 +1,12 @@
-import RatingStarIcon from "../Icons/rating-star-icon.svg"
-import TopIcon from "../Icons/top-icon.svg"
-import BottomIcon from "../Icons/bottom-icon.svg"
+import RatingStarIcon from "../../Icons/rating-star-icon.svg"
+import TopIcon from "../../Icons/top-icon.svg"
+import BottomIcon from "../../Icons/bottom-icon.svg"
 
-interface Props {
-  searchFortuneTeller: any
-  setSearchFortuneTeller: (searchFortuneTeller: any) => void
+interface RatingSelectorProps {
+  searchFortuneTeller: SearchFortuneTeller
+  setSearchFortuneTeller: (searchFortuneTeller: SearchFortuneTeller) => void
 }
-export default function RatingSelector({ searchFortuneTeller, setSearchFortuneTeller }: Props) {
+export default function RatingSelector({ searchFortuneTeller, setSearchFortuneTeller }: RatingSelectorProps): JSX.Element {
   interface Rating {
     [key: number]: string
   }
@@ -20,7 +20,7 @@ export default function RatingSelector({ searchFortuneTeller, setSearchFortuneTe
   }
 
   return (
-    <div className="w-[16%] h-[36px] pl-3 pr-1 rounded-full bg-[#D9D9D9]/[0.75] flex flex-row items-center justify-between">
+    <div className="w-[16%] h-[36px] pl-3 pr-1 rounded-full bg-[#D9D9D9]/[0.75] flex flex-row items-center justify-between cursor-pointer">
       <p className="text-white/70 text-base font-sans font-medium">ระดับดาว</p>
       <img src={RatingStarIcon} alt="rating-star-icon" className="w-[20px] h-[20px] mr-1" />
       <div className="w-[55%] h-[75%] flex flex-row items-center justify-between rounded-full bg-[#D9D9D9]/[0.6] pl-1 pr-2 shadow-lg ">

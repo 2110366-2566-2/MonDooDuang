@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 
-import LineIcon from "../Icons/line.svg"
-import PriceIcon from "../Icons/price-icon.svg"
+import LineIcon from "../../Icons/line.svg"
+import PriceIcon from "../../Icons/price-icon.svg"
 import PriceSelectorOverlay from "./PriceSelectorOverlay"
-interface Props {
-  searchFortuneTeller: any
-  setSearchFortuneTeller: (searchFortuneTeller: any) => void
+interface PriceSelectorProps {
+  searchFortuneTeller: SearchFortuneTeller
+  setSearchFortuneTeller: (searchFortuneTeller: SearchFortuneTeller) => void
 }
-export default function PriceSelector({ searchFortuneTeller, setSearchFortuneTeller }: Props) {
+export default function PriceSelector({ searchFortuneTeller, setSearchFortuneTeller }: PriceSelectorProps): JSX.Element{
   const [openPriceSelector, setOpenPriceSelector] = useState(false)
   const selectorRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  const closePriceSelector = (event: MouseEvent) => {
+  const closePriceSelector = (event: MouseEvent):void => {
     if (
       selectorRef.current &&
       !selectorRef.current.contains(event.target as Node) &&
@@ -43,7 +43,7 @@ export default function PriceSelector({ searchFortuneTeller, setSearchFortuneTel
       <div
         ref={selectorRef}
         onClick={() => setOpenPriceSelector(!openPriceSelector)}
-        className="w-full h-[36px] px-6 rounded-full bg-[#D9D9D9]/[0.75] flex items-center justify-between"
+        className="w-full h-[36px] px-6 rounded-full bg-[#D9D9D9]/[0.75] flex items-center justify-between cursor-pointer"
       >
         <div className="w-[80%] flex items-center justify-center">
           {(searchFortuneTeller.minPrice <= 0 && searchFortuneTeller.maxPrice <= 0) ||

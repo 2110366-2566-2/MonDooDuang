@@ -10,7 +10,7 @@ export default function PriceSelectorOverlay({
   maxPrice,
   setMinPrice,
   setMaxPrice
-}: PriceSelectorProps) {
+}: PriceSelectorProps): JSX.Element{
   return (
     <div className="w-full bg-[#D9D9D9]/[0.75] rounded-lg shadow-lg">
       <div className="flex flex-row justify-evenly">

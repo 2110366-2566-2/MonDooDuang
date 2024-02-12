@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef } from "react"
-import LineIcon from "../Icons/line.svg"
-import TimeIcon from "../Icons/time-icon.svg"
+import LineIcon from "../../Icons/line.svg"
+import TimeIcon from "../../Icons/time-icon.svg"
 import TimeSelectorOverlay from "./TimeSelectorOverlay"
-interface Props {
-  searchFortuneTeller: any
-  setSearchFortuneTeller: (searchFortuneTeller: any) => void
+interface TimeSelectorProps {
+  searchFortuneTeller: SearchFortuneTeller
+  setSearchFortuneTeller: (searchFortuneTeller: SearchFortuneTeller) => void
 }
-export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTeller }: Props) {
+export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTeller }: TimeSelectorProps): JSX.Element {
   const [openTimeSelector, setOpenTimeSelector] = useState(false)
   const selectorRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const closeTimeSelector = (event: MouseEvent) => {
+  const closeTimeSelector = (event: MouseEvent): void => {
     if (
       selectorRef.current &&
       !selectorRef.current.contains(event.target as Node) &&
@@ -31,7 +31,7 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
     startMinute: number,
     endHour: number,
     endMinute: number
-  ) => {
+  ): number[] => {
     if (startHour === -1 && startMinute === -1 && endHour === -1 && endMinute === -1) {
       return [-1, -1, -1, -1]
     }
@@ -79,7 +79,7 @@ export default function TimeSelector({ searchFortuneTeller, setSearchFortuneTell
     })
   }, [openTimeSelector])
   return (
-    <div className="w-[13%] h-[36px]">
+    <div className="w-[13%] h-[36px] cursor-pointer">
       <div
         ref={selectorRef}
         className="px-4 h-[36px] rounded-full bg-[#D9D9D9]/[0.75] flex items-center justify-center"

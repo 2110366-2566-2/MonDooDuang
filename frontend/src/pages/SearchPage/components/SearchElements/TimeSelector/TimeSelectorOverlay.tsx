@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 
-interface Props {
+interface TimeSelectorOverlayProps {
   setOpenTimeSelector: (openTimeSelector: boolean) => void
   startHourTime: number
   endHourTime: number
@@ -23,7 +23,7 @@ export default function TimeSelectorOverlay({
   setStartMinuteTime,
   setEndMinuteTime,
   clearTime
-}: Props) {
+}: TimeSelectorOverlayProps): JSX.Element {
   return (
     <div className="w-[80%] bg-white/[0.9] rounded-lg shadow-lg px-2">
       <div className="flex flex-row justify-between items-center">
@@ -66,7 +66,7 @@ interface TimeInputProps {
   setMinuteTime: (minuteTime: number) => void
 }
 
-function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: TimeInputProps) {
+function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: TimeInputProps): JSX.Element {
   const [focusHour, setFocusHour] = useState(false)
   const [focusMinute, setFocusMinute] = useState(false)
   const inputHourRef = useRef<HTMLInputElement>(null)
@@ -76,16 +76,16 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
   const currentMinute =
     (currentDate.getMinutes() < 10 ? "0" : "") + currentDate.getMinutes().toString()
 
-  const inputHourFocus = () => {
+  const inputHourFocus = ():void => {
     inputHourRef.current?.focus()
     setFocusHour(true)
   }
-  const inputMinuteFocus = () => {
+  const inputMinuteFocus = (): void => {
     inputMinuteRef.current?.focus()
     setFocusMinute(true)
   }
 
-  const onHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onHourChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value
     const parsedValue = parseInt(value)
     if (!isNaN(parsedValue)) {
@@ -101,7 +101,7 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
     }
     e.target.value = parsedValue < 10 ? `0${parsedValue}` : parsedValue.toString()
   }
-  const onMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onMinuteChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value
     const parsedValue = parseInt(value)
     if (!isNaN(parsedValue)) {
@@ -118,12 +118,12 @@ function TimeInput({ title, hourTime, minuteTime, setHourTime, setMinuteTime }: 
     e.target.value = parsedValue < 10 ? `0${parsedValue}` : parsedValue.toString()
   }
 
-  const closeHourTime = (event: MouseEvent) => {
+  const closeHourTime = (event: MouseEvent): void => {
     if (inputHourRef.current && !inputHourRef.current.contains(event.target as Node)) {
       setFocusHour(false)
     }
   }
-  const closeMinuteTime = (event: MouseEvent) => {
+  const closeMinuteTime = (event: MouseEvent): void => {
     if (inputMinuteRef.current && !inputMinuteRef.current.contains(event.target as Node)) {
       setFocusMinute(false)
     }

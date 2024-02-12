@@ -2,7 +2,7 @@ import { db } from "../configs/pgdbConnection"
 import { SearchSchema } from "../models/search/search.model"
 
 export const searchRepository = {
-  search: async (searchOption: SearchSchema) => {
+  searchFortuneteller: async (searchOption: SearchSchema) => {
     const { name, speciality, minPrice, maxPrice, startTime, endTime, startDate, endDate, rating } =
       searchOption
     const query = `WITH FILTER_PACKAGE AS (
