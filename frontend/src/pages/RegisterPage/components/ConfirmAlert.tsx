@@ -8,6 +8,31 @@ import {
 } from "@mui/material"
 import TickIcon from "./Icon/TickIcon"
 
+const CustomizedDialog = styled(Dialog)`
+div {
+  border-radius: 20px;
+  padding: 20px 60px;
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+}
+
+p {
+  font-family: "Prompt", "sans-serif";
+  color: #0C0000;
+  font-size: 32px;
+  font-weight: 700;
+}
+}
+`
+const CustomizedDialogActions = styled(DialogActions)`
+  display: flex;
+  justify-content: center;
+  padding: 0px;
+`
+
 export default function ConfirmAlert(props: {
   CFAlert: boolean
   setCFAlert: React.Dispatch<React.SetStateAction<boolean>>
@@ -15,31 +40,6 @@ export default function ConfirmAlert(props: {
   const handleClose = () => {
     props.setCFAlert(false)
   }
-
-  const CustomizedDialog = styled(Dialog)`
-  div {
-    border-radius: 20px;
-    padding: 20px 60px;
-  }
-
-  h2 {
-    display: flex;
-    justify-content: center;
-  }
-
-  p {
-    font-family: "Prompt", "sans-serif";
-    color: #0C0000;
-    font-size: 32px;
-    font-weight: 700;
-  }
-}
-`
-  const CustomizedDialogActions = styled(DialogActions)`
-    display: flex;
-    justify-content: center;
-    padding: 0px;
-  `
 
   return (
     <CustomizedDialog

@@ -8,6 +8,33 @@ import {
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 
+const CustomizedDialog = styled(Dialog)`
+div {
+  border-radius: 20px;
+  padding: 20px 20px;
+}
+
+h2 {
+  font-family: "Prompt", "sans-serif";
+  color: #0C0000;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+p {
+  font-family: "Prompt", "sans-serif";
+  color: #838383;
+  font-size: 18px;
+  font-weight: 500;
+}
+}
+`
+const CustomizedDialogActions = styled(DialogActions)`
+  display: flex;
+  justify-content: space-around;
+  padding: 0px;
+`
+
 export default function FortuneTellerRegisterAlert(props: {
   FTAlert: boolean
   setFTAlert: React.Dispatch<React.SetStateAction<boolean>>
@@ -26,33 +53,6 @@ export default function FortuneTellerRegisterAlert(props: {
     props.setCFAlert(true)
     navigate("/search")
   }
-
-  const CustomizedDialog = styled(Dialog)`
-  div {
-    border-radius: 20px;
-    padding: 20px 20px;
-  }
-
-  h2 {
-    font-family: "Prompt", "sans-serif";
-    color: #0C0000;
-    font-size: 30px;
-    font-weight: 700;
-  }
-
-  p {
-    font-family: "Prompt", "sans-serif";
-    color: #838383;
-    font-size: 18px;
-    font-weight: 500;
-  }
-}
-`
-  const CustomizedDialogActions = styled(DialogActions)`
-    display: flex;
-    justify-content: space-around;
-    padding: 0px;
-  `
 
   return (
     <CustomizedDialog

@@ -50,7 +50,7 @@ const CustomizedMenuItem = styled(MenuItem)`
 `
 
 export default function RegisterPage() {
-  const [formValues, setFormValues] = useState<UserSchema>({})
+  const [formValues, setFormValues] = useState<UserSchema>({} as UserSchema)
   const [formError, setFormError] = useState<boolean[]>(Array(9).fill(false))
   const [confirmPassword, setConfirmPassword] = useState<string>("")
   const [passwordError, setPasswordError] = useState<boolean>(false)
@@ -100,43 +100,16 @@ export default function RegisterPage() {
   }
 
   const checkAllInput = () => {
-    const newArray = [...formError]
-    newArray[0] =
-      Object.entries(formValues).find(([key]) => key === "fName") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "fName" && value === "") !==
-        undefined
-    newArray[1] =
-      Object.entries(formValues).find(([key]) => key === "lName") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "lName" && value === "") !==
-        undefined
-    newArray[2] =
-      Object.entries(formValues).find(([key]) => key === "gender") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "gender" && value === "") !==
-        undefined
-    newArray[3] =
-      Object.entries(formValues).find(([key]) => key === "phoneNumber") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "phoneNumber" && value === "") !==
-        undefined
-    newArray[4] =
-      Object.entries(formValues).find(([key]) => key === "email") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "email" && value === "") !==
-        undefined
-    newArray[5] =
-      Object.entries(formValues).find(([key]) => key === "birthDate") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "birthDate" && value === "") !==
-        undefined
-    newArray[6] =
-      Object.entries(formValues).find(([key]) => key === "bankName") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "bankName" && value === "") !==
-        undefined
-    newArray[7] =
-      Object.entries(formValues).find(([key]) => key === "accountNumber") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "accountNumber" && value === "") !==
-        undefined
-    newArray[8] =
-      Object.entries(formValues).find(([key]) => key === "password") === undefined ||
-      Object.entries(formValues).find(([key, value]) => key === "password" && value === "") !==
-        undefined
+    const newArray: boolean[] = []
+    newArray.push(formValues.fName === undefined || formValues.fName === "")
+    newArray.push(formValues.lName === undefined || formValues.lName === "")
+    newArray.push(formValues.gender === undefined)
+    newArray.push(formValues.phoneNumber === undefined || formValues.phoneNumber === "")
+    newArray.push(formValues.email === undefined || formValues.email === "")
+    newArray.push(formValues.birthDate === undefined)
+    newArray.push(formValues.bankName === undefined || formValues.bankName === "")
+    newArray.push(formValues.accountNumber === undefined || formValues.accountNumber === "")
+    newArray.push(formValues.password === undefined || formValues.password === "")
     setFormError(newArray)
     return newArray.reduce((sum, bool) => sum && !bool, true)
   }
@@ -145,16 +118,14 @@ export default function RegisterPage() {
     event.preventDefault()
     const sum = checkAllInput()
     if (!sum || dateError || passwordError || emailError) {
-      console.log("info not complete")
       return
     }
-    const res = await RegisterService.createUser(formValues)
-    const data = await res.json()
-    if (data.success === undefined) {
+    const data = await RegisterService.createUser(formValues)
+    if (data.success === false) {
       setFAlert(true)
       return
     }
-    setLocalStorage(data)
+    setLocalStorage(data.data)
     setFTAlert(true)
   }
 
@@ -196,7 +167,8 @@ export default function RegisterPage() {
                 name="fName"
                 required
                 maxLength={100}
-                value={formValues?.fName}
+
+                value={formValues.fName}
                 onChange={handleTextFieldChange}
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
@@ -216,7 +188,7 @@ export default function RegisterPage() {
                 name="lName"
                 required
                 maxLength={100}
-                value={formValues?.lName}
+                value={formValues.lName}
                 onChange={handleTextFieldChange}
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
@@ -246,7 +218,7 @@ export default function RegisterPage() {
                       required: true
                     }
                   }}
-                  value={formValues?.birthDate}
+                  value={formValues.birthDate}
                   onChange={(d) => {
                     d?.$d.setHours(7, 0, 0)
                     setFormValues({
@@ -280,7 +252,7 @@ export default function RegisterPage() {
                 name="phoneNumber"
                 required
                 maxLength={20}
-                value={formValues?.phoneNumber}
+                value={formValues.phoneNumber}
                 onChange={handleTextFieldChange}
                 className="px-7 py-2 w-full text-[22px] h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
@@ -394,7 +366,7 @@ export default function RegisterPage() {
                 name="email"
                 required
                 maxLength={200}
-                value={formValues?.email}
+                value={formValues.email}
                 onChange={handleTextFieldChange}
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
@@ -415,7 +387,7 @@ export default function RegisterPage() {
                 id="8"
                 name="password"
                 required
-                value={formValues?.password}
+                value={formValues.password}
                 onChange={(e) => handlePasswordChange(false, e.target.value)}
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field"
               />
@@ -461,7 +433,7 @@ export default function RegisterPage() {
                 name="accountNumber"
                 required
                 maxLength={100}
-                value={formValues?.accountNumber}
+                value={formValues.accountNumber}
                 onChange={handleTextFieldChange}
                 className="px-7 py-2 text-[22px] w-full h-[50px] rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
