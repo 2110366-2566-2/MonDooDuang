@@ -97,18 +97,14 @@ export default function AppointmentPanel() {
 
   const groupAppointmentsByDate = (data: FortuneTellerAppointments[]): GroupedAppointments => {
     return data.reduce((acc, curr) => {
-      // Extracting the date from the appointmentdate string
       const date = curr.appointmentdate.split("T")[0]
       const time = curr.appointmentdate
-
-      // If the date is already in the accumulator, push the appointment to its array
       if (acc[date]) {
         acc[date].push({
           time,
           duration: curr.duration
         })
       } else {
-        // If the date is not in the accumulator, create a new array with the appointment
         acc[date] = [
           {
             time,
@@ -198,7 +194,7 @@ export default function AppointmentPanel() {
         width: "942px",
         height: "1180px"
       }}
-      className="mt-32 w-auto h-auto py-4 px-8 flex-col justify-center items-center inline-flex space-y-5"
+      className="w-auto h-auto py-4 px-8 flex-col justify-center items-center inline-flex space-y-5"
     >
       <div className="relative">
         <div className="z-3 absolute text-2xl xl:text-4xl lg:text-4xl md:text-3xl  text-white font-bold font-['Libre Bodoni'] ">

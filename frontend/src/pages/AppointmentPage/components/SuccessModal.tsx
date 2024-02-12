@@ -1,5 +1,5 @@
 import { SuccessIcon } from "./Icon"
-import ModalOverlay from "./ModalOverlay"
+import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 
 type SuccessProps = {
   isVisible: boolean

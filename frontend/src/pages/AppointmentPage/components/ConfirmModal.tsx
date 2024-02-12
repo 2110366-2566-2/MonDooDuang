@@ -1,4 +1,4 @@
-import ModalOverlay from "./ModalOverlay"
+import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 
 type ConfirmProps = {
   fortuneTeller: string
@@ -14,12 +14,6 @@ type ConfirmProps = {
 export function ConfirmModal(props: ConfirmProps) {
   const { isVisible, onClose, onConfirm, fortuneTeller, type, price, date, starttime, endtime } =
     props
-  // const fortuneTeller = "DeangDooDunag"
-  // const type = "ไพ่ทาโรต์"
-  // const price = 300
-  // const date = "17/10/24"
-  // const starttime = "13.00"
-  // const endtime = "15.00"
   return (
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
       <div

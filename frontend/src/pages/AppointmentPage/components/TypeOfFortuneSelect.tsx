@@ -55,7 +55,9 @@ export function TypeOfFortuneSelect({
           }}
         >
           {typeJson.map((type: Fortune) => (
-            <MenuItem value={type.packageid} key={type.packageid}>{type.speciality}</MenuItem>
+            <MenuItem value={type.packageid} key={type.packageid}>
+              {type.speciality}
+            </MenuItem>
           ))}
         </Select>
         <UnderLine />
