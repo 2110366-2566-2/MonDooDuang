@@ -292,7 +292,10 @@ INSERT INTO CONVERSATION (ConversationId, FortuneTellerID, CustomerId)
 VALUES
     ('2389b0b-6929-4b18-8a50-c301a36b3e24', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1'),
     ('3456a1c-4321-4b8c-9d0e-a6b2c3d4e5f6', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da'),
-    ('7890b2a-4567-4b89-9c01-a2b3c4d5e6f7', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '5f0d68c8-7803-4d25-b80e-13d43a641791');
+    ('7890b2a-4567-4b89-9c01-a2b3c4d5e6f7', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '5f0d68c8-7803-4d25-b80e-13d43a641791'),
+    ('3256a1c-4321-4b8c-9d0e-a6b2c3d4e5f6', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1'),
+    ('3256b1c-4321-4b8c-9d0e-a8b2c3d4e5f6', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '5f0d68c8-7803-4d25-b80e-13d43a641791')
+    ;
 
 -- MESSAGE
 INSERT INTO MESSAGE (MessageId, SenderId, MessageText, IsRead, ConversationId)
