@@ -35,9 +35,17 @@ export default function AppointmentPage() {
   }
   return (
     <div className="px-20 py-8">
-      <PageNavigation/>
+      <PageNavigation />
       <div className="flex justify-center items-start">
-        <AppointmentPanel />
+        <AppointmentPanel
+          onCancel={() => {
+            if (previousPath) {
+              window.location.href = previousPath
+            } else {
+              window.location.href = environment.frontend.url + "/search"
+            }
+          }}
+        />
       </div>
     </div>
   )

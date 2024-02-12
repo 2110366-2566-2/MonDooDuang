@@ -30,7 +30,7 @@ const newTheme = createTheme({
   }
 })
 
-export default function AppointmentPanel() {
+export default function AppointmentPanel({ onCancel }: { onCancel: () => void }) {
   //mock data
   const fortuneTeller = "DaengDooDaung"
   const fortuneTellerId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
@@ -84,7 +84,7 @@ export default function AppointmentPanel() {
   }
 
   const formatPhoneNumber = (phoneNumber: string): string => {
-    if (!phoneNumber || phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
+    if (phoneNumber === null || phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
       return "Invalid phone number"
     }
 
@@ -230,7 +230,11 @@ export default function AppointmentPanel() {
       </ThemeProvider>
       <CustomerInfo />
       <div className="w-auto flex flex-row space-x-4 justify-items-center items-center">
-        <CancelButton onClick={() => {}} />
+        <CancelButton
+          onClick={() => {
+            onCancel()
+          }}
+        />
         <ConfirmButton
           onClick={() => {
             if (!reserveDate) {
