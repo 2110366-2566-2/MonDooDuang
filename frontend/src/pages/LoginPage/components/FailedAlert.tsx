@@ -8,15 +8,7 @@ import {
 } from "@mui/material"
 import NoIcon from "./Icons/NoIcon"
 
-export default function FailedAlert(props: {
-  FAlert: boolean
-  setFAlert: React.Dispatch<React.SetStateAction<boolean>>
-}) {
-  const handleClose = () => {
-    props.setFAlert(false)
-  }
-
-  const CustomizedDialog = styled(Dialog)`
+const CustomizedDialog = styled(Dialog)`
   div {
     border-radius: 20px;
     padding: 10px 40px;
@@ -29,17 +21,24 @@ export default function FailedAlert(props: {
 
   p {
     font-family: "Prompt", "sans-serif";
-    color: #0C0000;
+    color: #0c0000;
     font-size: 24px;
     font-weight: 700;
   }
-}
 `
-  const CustomizedDialogActions = styled(DialogActions)`
-    display: flex;
-    justify-content: center;
-    padding: 0px;
-  `
+const CustomizedDialogActions = styled(DialogActions)`
+  display: flex;
+  justify-content: center;
+  padding: 0px;
+`
+
+export default function FailedAlert(props: {
+  FAlert: boolean
+  setFAlert: React.Dispatch<React.SetStateAction<boolean>>
+}) {
+  const handleClose = () => {
+    props.setFAlert(false)
+  }
 
   return (
     <CustomizedDialog

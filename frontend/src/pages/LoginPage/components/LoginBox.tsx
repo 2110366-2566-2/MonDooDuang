@@ -3,6 +3,7 @@ import FailedAlert from "./FailedAlert"
 import { LoginService } from "../services/LoginService"
 import { useNavigate } from "react-router-dom"
 import { setLocalStorage } from "../../../common/services/LocalStorage"
+import { UserLoginSchema } from "../types/LoginType"
 
 export default function LoginBox() {
   const [email, setEmail] = useState<string>("")
@@ -21,17 +22,20 @@ export default function LoginBox() {
   const handleLogin = async () => {
     // Perform login logic here
     if (!email || !password) {
-      console.log("info not complete")
       return
     }
 
-    const res = await LoginService.loginUser({ email, password })
-    const data = await res.json()
-    if (!data.success) {
+    const loginInfo: UserLoginSchema = {
+      email: email,
+      password: password
+    }
+
+    const data = await LoginService.loginUser(loginInfo)
+    if (data.success === false) {
       setFAlert(true)
       return
     }
-    setLocalStorage(data)
+    setLocalStorage(data.data)
     navigate("/search")
   }
 

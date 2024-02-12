@@ -10,6 +10,6 @@ export const LoginService = {
         "Content-Type": "application/json"
       }
     })
-    return response
+    return response.json()
   }
 }
