@@ -12,7 +12,12 @@ import { ConfirmModal } from "./ConfirmModal"
 import { SuccessModal } from "./SuccessModal"
 import { AppointmentService } from "../services/AppointmentService"
 import { environment } from "../../../common/constants/environment"
-import { FortuneTellerAppointments, GroupedAppointments, Package, UserInfo } from "../types/AppointmentTypes"
+import {
+  FortuneTellerAppointments,
+  GroupedAppointments,
+  Package,
+  UserInfo
+} from "../types/AppointmentTypes"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
@@ -266,7 +271,9 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
               .hour(reserveTime.hour())
               .minute(reserveTime.minute())
               .second(reserveTime.second())
-            const appointmentDate = dayjs(datetime).format("YYYY-MM-DD HH:mm:ss")
+            const appointmentDate = dayjs(datetime)
+              .subtract(7, "hours")
+              .format("YYYY-MM-DD HH:mm:ss")
             AppointmentService.createAppointment(
               packageType.packageid,
               userInfo.userid,
