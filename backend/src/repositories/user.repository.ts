@@ -4,7 +4,7 @@ import { UserSchema } from "../models/user/user.model"
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
     const user = await db.query(
-      "SELECT userid, password, usertype FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )",
+      "SELECT userid, password, usertype, fname, lname FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )",
       [email, fName, lName]
     )
     return user.rows[0]
@@ -28,7 +28,7 @@ export const userRepository = {
         user.userType
       ]
     )
-    const newUser = await db.query("SELECT userId, usertype FROM user_table WHERE email = $1", [
+    const newUser = await db.query("SELECT userid, usertype, fname, lname FROM user_table WHERE email = $1", [
       user.email
     ])
     return newUser.rows[0]

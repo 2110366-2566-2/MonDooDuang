@@ -37,4 +37,5 @@ export interface RegisterUserSchema {
 export interface TokenInfoSchema {
   userId: string
   userType: UserType
+  userName: string
 }
