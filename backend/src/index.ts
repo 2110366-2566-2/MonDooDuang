@@ -2,6 +2,7 @@ import express, { Request, Response, Application } from "express"
 import dotenv from "dotenv"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
+import requestRouter from "./routes/request.routes"
 import searchRouter from "./routes/search.routes"
 
 import conversationRouter from "./routes/conversation.routes"
@@ -37,6 +38,7 @@ server.listen(port, () => {
 app.use("/user", userRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
+app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 
