@@ -5,13 +5,13 @@ export default {
     extend: {
       colors: {
         "example-color": "#ff0000",
-        "muted-green" : "#76AA7B",
-        "muted-green-hover" : "#5E8762",
-        "muted-yellow" : "#DEAA6B",
-        "muted-yellow-hover" : "#C89456",
-        "mango-yellow" : "#E9AC12",
-        "mango-yellow-hover" : "#CC9403",
-        "nav-yellow" : "#FFD233",
+        "muted-green": "#76AA7B",
+        "muted-green-hover": "#5E8762",
+        "muted-yellow": "#DEAA6B",
+        "muted-yellow-hover": "#C89456",
+        "mango-yellow": "#E9AC12",
+        "mango-yellow-hover": "#CC9403",
+        "nav-yellow": "#FFD233",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",
@@ -21,15 +21,15 @@ export default {
         "mdd-dark-sand": "#CC9403",
         "cancel-red": "#FF5656",
         "gray-boxbg": "#D9D9D9",
-        "mdd-focus-yellow": "#FFD233"
-
+        "mdd-focus-yellow": "#FFD233",
+        "mdd-link-yellow": "#FFD233"
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],
         "noto-sans": ["Noto Sans Thai", "sans-serif"],
         "example-font": ["Inter var", "sans-serif"],
         "libre-bodoni": ["Libre Bodoni", "serif"],
-        "noto-sans-eng": ["Noto Sans", "sans-serif"],
+        "noto-sans-eng": ["Noto Sans", "sans-serif"]
       }
     }
   },
