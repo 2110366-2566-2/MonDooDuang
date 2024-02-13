@@ -16,7 +16,7 @@ export function FortuneTellerRequest({
   return (
     <div
       style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-      className="flex flex-row justify-items-center items-center rounded-md space-x-12 py-2 px-10 bg-gray-boxbg bg-opacity-75"
+      className="flex flex-row justify-items-center items-center rounded-md space-x-12 py-2 px-10 bg-mdd-gray-boxbg bg-opacity-75"
     >
       <div className="rounded-full w-[100px] h-[100px]">
         {fortuneTellerRequest.profilePic ? (
@@ -71,7 +71,7 @@ export function FortuneTellerRequest({
             onApprove(fortuneTellerRequest)
           }}
           style={{ transition: "background-color 0.3s" }}
-          className="flex flex-row space-x-3 py-2 px-6 justify-items-center items-center rounded-[10px] p-2 text-gray-200 text-lg font-normal bg-mango-yellow hover:bg-mango-yellow-hover"
+          className="flex flex-row space-x-3 py-2 px-6 justify-items-center items-center rounded-[10px] text-gray-200 text-lg font-normal bg-mdd-sand-yellow hover:bg-mdd-sand-yellow-hover"
         >
           <CorrectIcon />
           <div>อนุญาต</div>
@@ -82,7 +82,7 @@ export function FortuneTellerRequest({
             onReject(fortuneTellerRequest)
           }}
           style={{ transition: "background-color 0.3s" }}
-          className="flex flex-row space-x-3 p-2 justify-items-center items-center rounded-[10px] p-2 text-gray-200 text-lg font-normal bg-cancel-red hover:bg-red-600"
+          className="flex flex-row space-x-3 p-2 justify-items-center items-center rounded-[10px] text-gray-200 text-lg font-normal bg-mdd-cancel-red hover:bg-red-600"
         >
           <WrongIcon />
           <div>ยกเลิกคำขอ</div>

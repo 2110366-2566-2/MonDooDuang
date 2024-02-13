@@ -5,9 +5,6 @@ export const environment = {
   server: {
     port: parseInt(process.env.PORT ?? "5002")
   },
-  bcrypt: {
-    salt: parseInt(process.env.BCRYPT_SALT ?? "10")
-  },
   jwt: {
     secret: process.env.JWT_SECRET ?? ""
   },
