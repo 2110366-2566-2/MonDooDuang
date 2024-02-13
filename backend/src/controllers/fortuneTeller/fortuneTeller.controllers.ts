@@ -13,19 +13,15 @@ const updateFortuneTellerDetail = async (req: Request, res: Response) => {
 
   if (!isSuccess) { return res.status(400).json(result) }
 
-  res.status(201).json(result)
+  res.status(200).json(result)
 }
 
 const getFortuneTellerDetail = async (req: Request, res: Response) => {
-  const fortuneTellerId = req.body.fortuneTellerId
+  const fortuneTellerId: string = req.params.fortuneTellerId
   const result = await fortuneTellerService.getFortuneTellerDetail(fortuneTellerId)
-  const isSuccess = result.success
-
-  if (!isSuccess) { return res.status(400).json(result) }
-
-  res.status(201).json(result)
+  if (!result) { return res.status(400).json({ message: "record not found", data: result }) }
+  return res.status(200).json({ data: result })
 }
-
 
 export const fortuneTelllerController = {
   updateFortuneTellerDetail,

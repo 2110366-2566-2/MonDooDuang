@@ -44,11 +44,10 @@ server.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
-app.use("fortuneTeller", fortuneTellerRouter)
+app.use("/fortuneTeller", fortuneTellerRouter)
 app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
-
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
