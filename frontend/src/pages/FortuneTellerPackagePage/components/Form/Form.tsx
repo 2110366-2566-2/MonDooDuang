@@ -3,7 +3,7 @@ import { SpecialityType } from "../../types/SpecialityTypes"
 import { PackageService } from "../../services/PackageService"
 
 export default function Form(props: { fortuneTellerId: string }) {
-  const [fortune, setFortune] = useState<SpecialityType>("TAROT")
+  const [fortune, setFortune] = useState<SpecialityType>("TAROT_CARD")
   const [price, setPrice] = useState(0)
   const [time, setTime] = useState(0)
   const [unitTime, setUnitTime] = useState("minute")
@@ -13,16 +13,8 @@ export default function Form(props: { fortuneTellerId: string }) {
   const [isTimeError, setIsTimeError] = useState(false)
 
   // for validate information
-  const validation = ({
-    price,
-    time
-  }: {
-    fortune: string
-    price: number
-    time: number
-    unitTime: string
-  }): boolean => {
-    const checkPrice = Number(price) >= 1
+  const validation = ({ price, time }: { price: number; time: number }): boolean => {
+    const checkPrice = Number(price) >= 10 && Number(price) <= 1000000
     const checkTime = Number(time) >= 1
 
     setIsPriceError(!checkPrice)
@@ -34,9 +26,8 @@ export default function Form(props: { fortuneTellerId: string }) {
   const SubmitPackage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (validation({ fortune, price, time, unitTime })) {
+    if (validation({ price, time })) {
       const duration = unitTime === "hour" ? time * 60 : unitTime === "day" ? time * 60 * 24 : time
-
       const response = await PackageService.createPackage(
         fortune,
         description,
@@ -48,7 +39,6 @@ export default function Form(props: { fortuneTellerId: string }) {
       if (!response.isSuccess) {
         return alert(response.message)
       }
-
       window.location.href = "/account/fortuneteller"
     }
   }
@@ -68,7 +58,7 @@ export default function Form(props: { fortuneTellerId: string }) {
                 className="bg-[#C4C4C4] bg-opacity-[.6] rounded-lg w-5/6 pl-11 h-full text-white"
                 onChange={(e) => setFortune(e.target.value as SpecialityType)}
               >
-                <option value="TAROT">ไพ่ทาโรต์</option>
+                <option value="TAROT_CARD">ไพ่ทาโรต์</option>
                 <option value="NUMBER">โหราศาตร์ไทย</option>
                 <option value="THAI">ศาตร์ตัวเลข</option>
                 <option value="ORACLE">ไพ่ออราเคิล</option>
@@ -117,7 +107,11 @@ export default function Form(props: { fortuneTellerId: string }) {
                 ></input>
                 <span className="ml-5">บาท</span>
               </div>
-              {isPriceError && <span className="text-red-500 text-xs">กรุณาระบุราคา</span>}
+              {isPriceError && (
+                <span className="text-red-500 text-xs">
+                  กรุณาระบุราคาที่อยู่ระหว่าง 10 ถึง 1,000,000 บาท
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col row-span-2">

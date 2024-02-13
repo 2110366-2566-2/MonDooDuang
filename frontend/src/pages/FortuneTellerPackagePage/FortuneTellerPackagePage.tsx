@@ -2,7 +2,7 @@ import Logo from "../../assets/FortuneTellerPackageAssets/Logo.svg"
 import Form from "./components/Form/Form"
 
 export default function FortuneTellerPackagePage() {
-  const mockFortuneTellerId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
+  const mockFortuneTellerId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
   return (
     <div className="bg-black h-full w-full">
       <div className="z-50 flex flex-col items-center relative">
