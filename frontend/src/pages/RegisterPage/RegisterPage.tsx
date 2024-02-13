@@ -458,6 +458,7 @@ export default function RegisterPage() {
                   name="select-bank"
                   value={formValues.bankName}
                   onChange={handleBankChange}
+                  inputProps={{ MenuProps: { disableScrollLock: true } }}
                   required
                   className="w-full h-10 bg-mdd-text-field"
                   MenuProps={{

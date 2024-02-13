@@ -11,7 +11,7 @@ import NoIcon from "./Icon/NoIcon"
 const CustomizedDialog = styled(Dialog)`
   div {
     border-radius: 20px;
-    padding: 20px 60px;
+    padding: 20px 50px;
   }
 
   h2 {
@@ -44,6 +44,7 @@ export default function FailedAlert(props: {
     <CustomizedDialog
       open={props.FAlert}
       onClose={handleClose}
+      disableScrollLock={true}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       className="text-center"
