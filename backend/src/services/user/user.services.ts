@@ -25,16 +25,16 @@ export const userService = {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     const newUserInfo: CreateUserSchema = {
-      fName: fName,
-      lName: lName,
-      gender: gender,
-      phoneNumber: phoneNumber,
-      email: email,
-      birthDate: birthDate,
-      profilePicture: profilePicture,
+      fName,
+      lName,
+      gender,
+      phoneNumber,
+      email,
+      birthDate,
+      profilePicture,
       isBanned: false,
-      bankName: bankName,
-      accountNumber: accountNumber,
+      bankName,
+      accountNumber,
       password: hashedPassword,
       userType: "CUSTOMER"
     }
