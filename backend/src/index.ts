@@ -11,7 +11,8 @@ import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
 import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
-import packageRouter from "./routes/package.routes"
+import fortuneTellerRouter from "./routes/fortuneTeller.routes"
+
 // For env File
 dotenv.config()
 
@@ -43,10 +44,11 @@ server.listen(port, () => {
 app.use("/example", exampleRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
-app.use("/package",packageRouter)
+app.use("fortuneTeller", fortuneTellerRouter)
 app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
+
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)

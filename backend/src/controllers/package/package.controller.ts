@@ -5,7 +5,7 @@ import { packageService } from "../../services/package/package.services"
 
 const createPackage = async (req: Request, res: Response) => {
   const packageFortune: PackageSchema = {
-    specialityType: req.body.SpecialityType,
+    specialityType: req.body.specialityType,
     description: req.body.description,
     duration: req.body.duration,
     price: req.body.price,
@@ -21,18 +21,6 @@ const createPackage = async (req: Request, res: Response) => {
   res.status(201).json(result)
 }
 
-// const getReporteeId = async (req: Request, res: Response) => {
-//   const conversationId = req.params.conversationId
-//   const reporterId = req.params.userId
-
-//   const reporteeId = await reportService.getReporteeId(conversationId, reporterId)
-
-//   if (reporteeId === null) { return res.status(400).json({ success: false }) }
-
-//   res.status(200).json({ success: true, data: reporteeId })
-// }
-
 export const packageController = {
   createPackage,
-//   getReporteeId
 }
