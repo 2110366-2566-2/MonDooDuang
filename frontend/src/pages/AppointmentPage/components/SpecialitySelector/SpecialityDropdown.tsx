@@ -1,5 +1,6 @@
 import SpecialityIcon from "../../../SearchPage/components/Icons/speciality-icon.svg"
 import { Fortune, Package } from "../../types/AppointmentTypes"
+import { specialitiesName } from "../../../SearchPage/types/SpecialityType"
 interface SpecialityDropdownProps {
   fortuneTellerSpeciality: Package
   typeJson: Fortune[]
@@ -41,7 +42,7 @@ export default function SpecialityDropdown({
               key={index}
               className="text-black text-base font-sans font-medium w-4/5 flex items-center justify-items-center justify-center"
             >
-              {type.speciality}
+              {specialitiesName[type.speciality]}
             </p>
             <img src={SpecialityIcon} alt="Speciality Icon" className="h-5 w-5 mb-1" />
           </div>

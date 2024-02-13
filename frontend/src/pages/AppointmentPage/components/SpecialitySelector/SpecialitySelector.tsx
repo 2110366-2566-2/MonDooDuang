@@ -4,7 +4,7 @@ import DropDownReverseIcon from "../../../SearchPage/components/Icons/dropdown-r
 import SpecialityDropdown from "./SpecialityDropdown"
 import { Fortune, Package } from "../../types/AppointmentTypes"
 import { UnderLine } from "../Icon"
-
+import { specialitiesName } from "../../../SearchPage/types/SpecialityType"
 interface SpecialitySelectorProps {
   selectedSpeciaty: Package
   typeJson: Fortune[]
@@ -41,7 +41,9 @@ export default function SpecialitySelector({
             selectedSpeciaty.speciality ? "text-white" : "text-white/70"
           } text-base font-sans font-medium truncate`}
         >
-          {selectedSpeciaty.speciality ? selectedSpeciaty.speciality : "ศาสตร์การดูดวง"}
+          {selectedSpeciaty.speciality
+            ? specialitiesName[selectedSpeciaty.speciality]
+            : "ศาสตร์การดูดวง"}
         </p>
         <UnderLine />
       </div>
