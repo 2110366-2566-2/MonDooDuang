@@ -209,7 +209,7 @@ export default function RegisterPage() {
                   วัน เดือน ปี เกิด*
                 </p>
                 {formError[5] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
+                  <div className="z-10 absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <CustomizedDatePicker
@@ -452,7 +452,7 @@ export default function RegisterPage() {
                   ธนาคาร*
                 </p>
                 {formError[6] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
+                  <div className="z-10 absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <CustomizedSelect
                   name="select-bank"
