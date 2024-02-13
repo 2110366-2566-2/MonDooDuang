@@ -1,7 +1,7 @@
 export type Gender = "MALE" | "FEMALE" | "LGBTQA+" | "NOT_TO_SAY"
 export type UserType = "CUSTOMER" | "FORTUNE_TELLER"
 
-export interface UserSchema {
+export interface CreateUserSchema {
   fName: string
   lName: string
   gender: Gender

@@ -1,4 +1,4 @@
-import { RegisterUserSchema, TokenInfoSchema, UserSchema } from "../../models/user/user.model"
+import { CreateUserSchema, RegisterUserSchema, TokenInfoSchema } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
@@ -24,7 +24,7 @@ export const userService = {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const newUserInfo: UserSchema = {
+    const newUserInfo: CreateUserSchema = {
       fName: fName,
       lName: lName,
       gender: gender,
@@ -62,9 +62,9 @@ export const userService = {
       return { success: false, message: "This email hasn't registered" }
     }
 
-    const collectPassword: string = user.password
+    const collectedPassword: string = user.password
 
-    const isMatch = await bcrypt.compare(password, collectPassword)
+    const isMatch = await bcrypt.compare(password, collectedPassword)
     if (!isMatch) {
       return { success: false, message: "Invalid credentials" }
     }

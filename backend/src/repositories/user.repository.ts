@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { UserSchema } from "../models/user/user.model"
+import { CreateUserSchema } from "../models/user/user.model"
 
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
@@ -9,7 +9,7 @@ export const userRepository = {
     )
     return user.rows[0]
   },
-  createUser: async (user: UserSchema) => {
+  createUser: async (user: CreateUserSchema) => {
     await db.query(
       `INSERT INTO user_table(fName, lName, gender, phoneNumber, email, birthDate, profilePicture, isBanned, bankName, accountNumber, password, userType)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,

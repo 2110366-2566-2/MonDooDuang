@@ -165,7 +165,7 @@ export default function RegisterPage() {
                   ชื่อจริง*
                 </p>
                 {formError[0] && (
-                  <div className="absolute w-full h-10 mt-9 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="text"
@@ -185,7 +185,7 @@ export default function RegisterPage() {
                   นามสกุล*
                 </p>
                 {formError[1] && (
-                  <div className="absolute w-full h-10 mt-[138px] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-[120px] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="text"
@@ -209,7 +209,7 @@ export default function RegisterPage() {
                   วัน เดือน ปี เกิด*
                 </p>
                 {formError[5] && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <CustomizedDatePicker
@@ -249,7 +249,7 @@ export default function RegisterPage() {
                   เบอร์โทรศัพท์*
                 </p>
                 {formError[3] && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="tel"
@@ -363,7 +363,7 @@ export default function RegisterPage() {
                   อีเมล*
                 </p>
                 {(formError[4] || emailError) && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="email"
@@ -385,7 +385,7 @@ export default function RegisterPage() {
                   รหัสผ่าน*
                 </p>
                 {formError[8] && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="password"
@@ -406,7 +406,7 @@ export default function RegisterPage() {
                   ยืนยันรหัสผ่าน*
                 </p>
                 {passwordError && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="password"
@@ -430,7 +430,7 @@ export default function RegisterPage() {
                   เลขที่บัญชี*
                 </p>
                 {formError[7] && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <input
                   type="string"
@@ -452,7 +452,7 @@ export default function RegisterPage() {
                   ธนาคาร*
                 </p>
                 {formError[6] && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
                 )}
                 <CustomizedSelect
                   name="select-bank"
