@@ -19,7 +19,10 @@ export default {
         "mdd-almost-black": "#3B3B3B",
         "mdd-sand-yellow": "#E9AC12",
         "mdd-dark-sand": "#CC9403",
+        "cancel-red": "#FF5656",
+        "gray-boxbg": "#D9D9D9",
         "mdd-focus-yellow": "#FFD233"
+
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],
