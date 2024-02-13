@@ -72,13 +72,13 @@ export default function FortuneTellerRegisterAlert(props: {
       </DialogContent>
       <CustomizedDialogActions>
         <button
-          className="w-[25%] h-[50px] bg-mdd-dialog-orange rounded-[10px] text-white text-2xl font-semibold text-center"
+          className="w-[25%] h-[50px] bg-mdd-muted-yellow rounded-[10px] text-white text-2xl font-semibold text-center"
           onClick={handleNoButton}
         >
           ไม่
         </button>
         <button
-          className="w-[25%] h-[50px] bg-mdd-dialog-green rounded-[10px] text-white text-2xl font-semibold text-center"
+          className="w-[25%] h-[50px] bg-mdd-muted-green rounded-[10px] text-white text-2xl font-semibold text-center"
           onClick={handleYesButton}
         >
           ใช่

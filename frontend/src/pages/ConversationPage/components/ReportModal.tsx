@@ -110,7 +110,7 @@ export default function ReportModal(props: {
             ยกเลิก
           </button>
           <button
-            className="w-[30%] py-[0.5vw] bg-mdd-sand-yellow text-mdd-silver-grey rounded-lg hover:bg-mdd-dark-sand"
+            className="w-[30%] py-[0.5vw] bg-mdd-sand-yellow text-mdd-silver-grey rounded-lg hover:bg-mdd-sand-yellow-hover"
             type="submit"
             form="report-form"
           >

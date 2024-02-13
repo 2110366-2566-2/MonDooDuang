@@ -165,7 +165,7 @@ export default function RegisterPage() {
                   ชื่อจริง*
                 </p>
                 {formError[0] && (
-                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-8 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="text"
@@ -185,7 +185,7 @@ export default function RegisterPage() {
                   นามสกุล*
                 </p>
                 {formError[1] && (
-                  <div className="absolute w-full h-10 mt-[120px] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-[120px] rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="text"
@@ -209,7 +209,7 @@ export default function RegisterPage() {
                   วัน เดือน ปี เกิด*
                 </p>
                 {formError[5] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <CustomizedDatePicker
@@ -249,7 +249,7 @@ export default function RegisterPage() {
                   เบอร์โทรศัพท์*
                 </p>
                 {formError[3] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="tel"
@@ -272,7 +272,7 @@ export default function RegisterPage() {
                 </p>
                 <div className="flex justify-between items-center h-10 w-full">
                   {formError[2] && (
-                    <div className="absolute w-[102%] h-10 right-[-1%] rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                    <div className="absolute w-[102%] h-10 right-[-1%] rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                   )}
                   <div className="flex items-center">
                     <input
@@ -287,7 +287,7 @@ export default function RegisterPage() {
                           gender: "MALE" as Gender
                         })
                       }}
-                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-yellow-radio-button"
+                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-focus-yellow"
                     />
                     <label htmlFor="male" className="ml-2 text-xl">
                       ชาย
@@ -306,7 +306,7 @@ export default function RegisterPage() {
                           gender: "FEMALE" as Gender
                         })
                       }}
-                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-yellow-radio-button"
+                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-focus-yellow"
                     />
                     <label htmlFor="female" className="ml-2 text-xl">
                       หญิง
@@ -325,7 +325,7 @@ export default function RegisterPage() {
                           gender: "LGBTQA+" as Gender
                         })
                       }}
-                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-yellow-radio-button"
+                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-focus-yellow"
                     />
                     <label htmlFor="LGBTQA+" className="ml-2 text-xl">
                       LGBTQIA+
@@ -344,7 +344,7 @@ export default function RegisterPage() {
                           gender: "NOT_TO_SAY" as Gender
                         })
                       }}
-                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-yellow-radio-button"
+                      className="w-[25px] h-[25px] appearance-none rounded-full border-2 border-white checked:bg-mdd-focus-yellow"
                     />
                     <label htmlFor="notToSay" className="ml-2 text-xl">
                       ไม่ระบุ
@@ -363,7 +363,7 @@ export default function RegisterPage() {
                   อีเมล*
                 </p>
                 {(formError[4] || emailError) && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="email"
@@ -385,7 +385,7 @@ export default function RegisterPage() {
                   รหัสผ่าน*
                 </p>
                 {formError[8] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="password"
@@ -406,7 +406,7 @@ export default function RegisterPage() {
                   ยืนยันรหัสผ่าน*
                 </p>
                 {passwordError && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="password"
@@ -430,7 +430,7 @@ export default function RegisterPage() {
                   เลขที่บัญชี*
                 </p>
                 {formError[7] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
                   type="string"
@@ -452,7 +452,7 @@ export default function RegisterPage() {
                   ธนาคาร*
                 </p>
                 {formError[6] && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-invalid-field pointer-events-none" />
+                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <CustomizedSelect
                   name="select-bank"
