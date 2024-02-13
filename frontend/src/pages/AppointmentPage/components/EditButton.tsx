@@ -1,14 +1,12 @@
-export function EditButton({ onClick }: { onClick: () => void }) {
+export function EditButton({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div
       style={{ transition: "background-color 0.3s" }}
-      className="w-fit bg-white bg-opacity-75 rounded-[10px] px-3 hover:bg-zinc-300"
-      onClick={() => onClick()}
+      className="w-fit cursor-pointer bg-white bg-opacity-75 rounded-[10px] px-3 hover:bg-zinc-300"
+      onClick={() => onNavigate()}
     >
       <div className="flex flex-row justify-center itmes-center space-x-1">
-        <div style={{ color: "#3B3B3B" }} className="text-end font-noto-sans font-semibold">
-          แก้ไข
-        </div>
+        <div className="text-end text-mdd-almost-black font-noto-sans font-semibold ">แก้ไข</div>
         <EditIcon />
       </div>
     </div>

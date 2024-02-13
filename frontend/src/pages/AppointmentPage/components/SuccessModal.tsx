@@ -17,18 +17,18 @@ export function SuccessModal(props: SuccessProps) {
         <SuccessIcon />
         <div className="font-black">ส่งคำขอไปยังหมอดูสำเร็จ</div>
         <div className="text-xs flex flex-col justify-items-center items-center">
-          <div style={{ color: "#838383" }} className="text-center">
+          <div className="text-center text-mdd-gray-success-text">
             หากหมอดูตกลงรับการจอง <br />
             ระบบจะแจ้งเตือนให้ท่านทราบ เพื่อดำเนินการชำระเงิน
           </div>
-          <div style={{ color: "#FF5656" }} className="text-center">
+          <div className="text-center text-mdd-red-success-text">
             โดยท่านต้องชำระเงินภายใน 1 วัน <br />
             หลังได้รับแจ้งเตือนตอบรับคำจอง
           </div>
         </div>
         <button
           style={{ transition: "background-color 0.3s" }}
-          className="text-white text-sm font-bold rounded-md py-2 px-4 bg-gray-400 hover:bg-gray-500"
+          className="text-white text-sm cursor-pointer font-bold rounded-md py-2 px-4 bg-gray-400 hover:bg-gray-500"
           onClick={() => {
             onClose()
           }}

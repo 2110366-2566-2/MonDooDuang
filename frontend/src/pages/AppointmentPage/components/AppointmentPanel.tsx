@@ -103,8 +103,11 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
 
   const groupAppointmentsByDate = (data: FortuneTellerAppointments[]): GroupedAppointments => {
     return data.reduce((acc, curr) => {
-      const date = curr.appointmentdate.split("T")[0]
-      const time = curr.appointmentdate
+      const plusdate = dayjs(curr.appointmentdate)
+        .add(7, "hours")
+        .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")
+      const date = plusdate.split("T")[0]
+      const time = plusdate
       if (acc[date]) {
         acc[date].push({
           time,
@@ -183,14 +186,13 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
         <div className="w-full flex items-end justify-items-end mt-6">
           <div className="flex ml-auto">
             <EditButton
-              onClick={() => (window.location.href = environment.frontend.url + "/account")}
+              onNavigate={() => (window.location.href = environment.frontend.url + "/account")}
             />
           </div>
         </div>
       </div>
     )
   }
-
   return (
     <div
       style={{
@@ -239,12 +241,12 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
       <CustomerInfo />
       <div className="w-auto flex flex-row space-x-4 justify-items-center items-center">
         <CancelButton
-          onClick={() => {
+          onCancel={() => {
             onCancel()
           }}
         />
         <ConfirmButton
-          onClick={() => {
+          onConfirm={() => {
             if (reserveDate === null) {
               setIsValidDate(false)
             }

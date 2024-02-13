@@ -1,5 +1,3 @@
-"use client"
-
 import { DatePicker } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
@@ -36,13 +34,11 @@ export default function DateTimeReserve({
     if (reserveDate) {
       const day = dayjs(reserveDate).format("YYYY-MM-DD")
       const myDateTime = reserveDate.hour(value.get("hour")).minute(value.get("minute"))
-
       const myStartTime = myDateTime
       const myStopTime = myDateTime.add(duration, "minutes")
-
       for (const app of appointments[day] || []) {
-        const starttime = dayjs(app.time)
-        const stoptime = dayjs(app.time).add(app.duration, "minutes")
+        const starttime = dayjs(app.time).subtract(7, "hours")
+        const stoptime = starttime.add(app.duration, "minutes")
         if (
           !(
             myStartTime.isBefore(starttime) &&

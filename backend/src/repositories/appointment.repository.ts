@@ -21,7 +21,8 @@ export const appointmentRepository = {
       FROM fortune_teller as F
       WHERE F.fortunetellerid = $1;`, [fortuneTellerId]
     )
-    return result
+    if (result.rows[0] === null) { return null }
+    return result.rows[0]
   },
   getAllFortuneTeller: async () => {
     const result = await db.query(
@@ -29,7 +30,7 @@ export const appointmentRepository = {
        FROM fortune_teller
       `
     )
-    return result
+    return result.rows
   },
   getPackages: async (fortuneTellerId: string) => {
     const result = await db.query(
@@ -37,7 +38,7 @@ export const appointmentRepository = {
       FROM package as P
       WHERE P.fortunetellerid = $1;`, [fortuneTellerId]
     )
-    return result
+    return result.rows
   },
   getFortuneTellerAppointment: async (fortuneTellerId: string) => {
     const result = await db.query(
@@ -46,7 +47,7 @@ export const appointmentRepository = {
       WHERE A.packageId = P.packageId and A.fortunetellerid = $1 
       and A.status = 'WAITING_FOR_EVENT';`, [fortuneTellerId]
     )
-    return result
+    return result.rows
   },
   getUserInfo: async (userId: string) => {
     const result = await db.query(
@@ -55,6 +56,6 @@ export const appointmentRepository = {
       WHERE userid = $1;`, [userId]
     )
 
-    return result
+    return result.rows[0]
   }
 }

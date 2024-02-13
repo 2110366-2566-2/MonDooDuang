@@ -24,7 +24,7 @@ const getFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller = await appointmentService.getFortuneTeller(fortuneTellerId)
   if (fortuneTeller === null) { return res.status(400).json({ success: false }) }
 
-  res.status(200).json({ succcess: true, data: fortuneTeller })
+  res.status(200).json({ success: true, data: fortuneTeller })
 }
 
 const getAllFortuneTeller = async (req: Request, res: Response) => {
@@ -44,7 +44,6 @@ const getPackages = async (req: Request, res: Response) => {
 
 const getFortuneTellerAppointment = async (req: Request, res: Response) => {
   const appointments = await appointmentService.getFortuneTellerAppointment(req.params.fortuneTellerId)
-
   if (appointments === null) { return res.status(400).json({ success: false }) }
 
   res.status(200).json({ success: true, data: appointments })

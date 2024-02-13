@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { CoinIcon, LeftArrow, RightArrow, UnderLine } from "./Icon"
-import { Select, MenuItem } from "@mui/material"
+import { CoinIcon, LeftArrow, RightArrow } from "./Icon"
+import { Fortune, Package } from "../types/AppointmentTypes"
+import SpecialitySelector from "./SpecialitySelector/SpecialitySelector"
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
 export function TypeOfFortuneSelect({
@@ -13,7 +14,12 @@ export function TypeOfFortuneSelect({
   onPackageChange: (value: Package) => void
 }) {
   const [price, setPrice] = useState(0)
-  const [type, setType] = useState("") //setId
+  const [packageType, setPackageType] = useState<Package>({
+    packageid: "",
+    speciality: "",
+    price: 0,
+    duration: 0
+  })
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -21,7 +27,7 @@ export function TypeOfFortuneSelect({
         const packages = typeJson
         if (packages.length > 0) {
           setPrice(packages[0].price)
-          setType(packages[0].packageid)
+          setPackageType(packages[0])
         }
       } catch (err) {
         console.log(err)
@@ -30,41 +36,19 @@ export function TypeOfFortuneSelect({
     fetchPackages()
   }, [typeJson])
 
-  const dropdown = () => {
+  const SpecialityDropdown = () => {
     return (
-      <div className="flex flex-col justify-items-center text-center items-center">
-        <Select
-          placeholder="เลือกประเภทของการดูดวง"
-          label="เลือกประเภทของการดูดวง"
-          value={type}
-          variant="standard"
-          name="typeOfFortune"
-          id="typeOfFortune"
-          autoWidth
-          onChange={(value) => {
-            setType(value.target.value)
-            const selectedFortune =
-              typeJson.find((type) => type.packageid === value.target.value) || null
-            setPrice(selectedFortune ? selectedFortune.price : 0)
-            onPackageChange({
-              packageid: value.target.value,
-              speciality: selectedFortune ? selectedFortune.speciality : "",
-              price: selectedFortune ? selectedFortune.price : 0,
-              duration: selectedFortune ? selectedFortune.duration : 0
-            })
-          }}
-        >
-          {typeJson.map((type: Fortune) => (
-            <MenuItem value={type.packageid} key={type.packageid}>
-              {type.speciality}
-            </MenuItem>
-          ))}
-        </Select>
-        <UnderLine />
-      </div>
+      <SpecialitySelector
+        selectedSpeciaty={packageType}
+        typeJson={typeJson}
+        setType={(value: Package) => {
+          setPackageType(value)
+          setPrice(value.price)
+          onPackageChange(value)
+        }}
+      />
     )
   }
-
   return (
     <div className="space-y-5">
       <div className="flex flex-col justify-items-center items-center space-y-3">
@@ -98,8 +82,7 @@ export function TypeOfFortuneSelect({
           </div>
           <RightArrow />
         </div>
-
-        {dropdown()}
+        {SpecialityDropdown()}
 
         {/* price */}
         <div className="flex flex-row justify-items-center text-center items-center space-x-2">

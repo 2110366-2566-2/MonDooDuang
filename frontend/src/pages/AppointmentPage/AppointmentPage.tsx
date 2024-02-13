@@ -29,7 +29,7 @@ export default function AppointmentPage() {
           </div>
         ) : null}
         <NextPageIcon />
-        <div className="text-nav-yellow">ใบจองการนัดหมอดู</div>
+        <div className="text-mdd-nav-yellow">ใบจองการนัดหมอดู</div>
       </div>
     )
   }
