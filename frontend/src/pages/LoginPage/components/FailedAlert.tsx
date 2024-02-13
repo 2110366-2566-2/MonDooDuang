@@ -7,6 +7,7 @@ import {
   styled
 } from "@mui/material"
 import NoIcon from "./Icons/NoIcon"
+import { FailedAlertProps } from "../types/LoginType"
 
 const CustomizedDialog = styled(Dialog)`
   div {
@@ -32,17 +33,15 @@ const CustomizedDialogActions = styled(DialogActions)`
   padding: 0px;
 `
 
-export default function FailedAlert(props: {
-  FAlert: boolean
-  setFAlert: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+export default function FailedAlert(props: FailedAlertProps) {
+  const { FAlert, setFAlert } = props
   const handleClose = () => {
-    props.setFAlert(false)
+    setFAlert(false)
   }
 
   return (
     <CustomizedDialog
-      open={props.FAlert}
+      open={FAlert}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
