@@ -10,9 +10,9 @@ export function ConfirmModal(props: ConfirmProps) {
         className="rounded-md z-10 flex flex-col justify-items-center items-center py-4 px-12 space-y-3 font-noto-sans"
       >
         {type == "APPROVE" ? (
-          <div className="font-bold text-mango-yellow text-2xl">อนุญาตให้</div>
+          <div className="font-bold text-mdd-sand-yellow text-2xl">อนุญาตให้</div>
         ) : (
-          <div className="font-bold text-cancel-red text-2xl">ยกเลิกคำขอให้</div>
+          <div className="font-bold text-mdd-cancel-red text-2xl">ยกเลิกคำขอให้</div>
         )}
 
         <div className="font-zinc-500 flex flex-col justify-items-center items-center">
@@ -22,14 +22,14 @@ export function ConfirmModal(props: ConfirmProps) {
         <div className="flex flex-row justify-items-center items-center space-x-16">
           <button
             style={{ transition: "background-color 0.3s" }}
-            className="text-white text-sm font-bold rounded-md py-2 px-4 bg-muted-yellow hover:bg-muted-yellow-hover"
+            className="text-white text-sm font-bold rounded-md py-2 px-4 bg-mdd-muted-yellow hover:bg-mdd-muted-yellow-hover"
             onClick={onClose}
           >
             ยกเลิก
           </button>
           <button
             style={{ transition: "background-color 0.3s" }}
-            className="text-white text-sm font-bold rounded-md py-2 px-4 bg-muted-green hover:bg-muted-green-hover"
+            className="text-white text-sm font-bold rounded-md py-2 px-4 bg-mdd-muted-green hover:bg-mdd-muted-green-hover"
             onClick={onConfirm}
           >
             ยืนยัน
