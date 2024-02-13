@@ -23,7 +23,6 @@ export default function PaymentPage({ stripePromise }: { stripePromise: any }) {
 
   return (
     <div className="flex flex-col w-full items-center pb-16">
-      <h1 className="text-white mb-12">Payment Page</h1>
       <PriceInput setAmount={setAmount} amount={amount} />
       <button
         onClick={() => handlePriceConfirm(amount)}
