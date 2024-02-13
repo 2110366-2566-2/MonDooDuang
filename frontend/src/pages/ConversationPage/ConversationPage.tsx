@@ -46,7 +46,7 @@ export default function ConversationPage() {
         isCustomer={mockIsCustomer}
         userId={mockUserId}
         conversationId={selectedConversationId}
-        isSystemReport={true}
+        isSystemReport={false}
       />
     </div>
   )
