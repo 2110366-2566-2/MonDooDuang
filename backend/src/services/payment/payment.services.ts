@@ -9,7 +9,7 @@ export const paymentService = {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "thb",
-      payment_method_types: ["card"]
+      payment_method_types: ["card", "promptpay"]
     })
     return paymentIntent
   },
