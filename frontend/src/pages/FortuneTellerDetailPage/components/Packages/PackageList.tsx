@@ -1,16 +1,20 @@
 import AppointmentButton from "./AppointmentButton"
 import packageListIcon from "../../../../assets/fortuneTellerDetailsAssets/packageListIcon.png"
 import priceIcon from "../../../../assets/fortuneTellerDetailsAssets/priceIcon.svg"
-import { PackageTypes } from "../../types/PackageTypes"
+import { PackageTypes, Speciality } from "../../types/PackageTypes"
+
+const specialityMapper: Record<Speciality,string> = {
+    TAROT_CARD : "ไพ่ทาโร่",
+    THAI : "โหราศาสตร์ไทย",
+    NUMBER : "ศราตร์ตัวเลข",
+    ORACLE :"ไพ่ออราเคิล",
+    RUNES : "ศาสตร์รูนส์"
+}
 
 export default function PackageList({ packageItem }: { packageItem: PackageTypes }) {
 
-  function translate(specialty :string){
-    if(specialty === "TAROT_CARD") return "ไพ่ทาโร่"
-    else if(specialty === "THAI") return "โหราศาสตร์ไทย"
-    else if(specialty === "NUMBER") return "ศราตร์ตัวเลข"
-    else if(specialty === "ORACLE") return "ไพ่ออราเคิล"
-    else return "ศาสตร์รูนส์"
+  function translate(specialty : Speciality){
+    return specialityMapper[specialty]
   }
 
   return (
