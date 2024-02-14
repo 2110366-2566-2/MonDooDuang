@@ -29,17 +29,7 @@ export const fortuneTellerService = {
 
     if (review === null) return null
 
-    console.log(review)
-
-    return review.map((review) => {
-      return {
-        reviewMessage: review.reviewMessage,
-        score: review.score,
-        created_at: review.created_at,
-        fName: review.fName,
-        lName: review.lName
-      }
-    })
+    return review
   },
 
   getRecommendPackage: async () => {
