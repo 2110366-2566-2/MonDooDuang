@@ -26,7 +26,7 @@ export default function PackageList({ packageItem }: { packageItem: PackageTypes
         </div>
         <div className="flex items-center space-x-2">
           <img src={priceIcon}></img>
-          <div className="font-medium text-mdd-link-yellow text-[24px]">{packageItem.price} บาท</div>
+          <div className="font-medium text-mdd-focus-yellow text-[24px]">{packageItem.price} บาท</div>
         </div>
         <div className="font-light text-[16px]">
           <div>เวลาที่ใช้โดยประมาณ : {packageItem.duration} นาที</div>

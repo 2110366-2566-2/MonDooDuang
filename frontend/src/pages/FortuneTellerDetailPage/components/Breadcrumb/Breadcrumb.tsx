@@ -10,7 +10,7 @@ export default function Breadcrumb() {
         หน้าหลัก
       </a>
       <Arrow></Arrow>
-      <button className="text-mdd-link-yellow flex items-center" onClick={refreshPage}>
+      <button className="text-mdd-focus-yellow flex items-center" onClick={refreshPage}>
         รายละเอียดเพิ่มเติม
       </button>
     </nav>

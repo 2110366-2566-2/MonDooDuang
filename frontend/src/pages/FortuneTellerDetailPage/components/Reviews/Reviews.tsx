@@ -38,7 +38,7 @@ export default function Reviews() {
       </div>
       <div className="flex flex-row space-x-2 items-center justify-end">
         <div className="text-[16px] font-libre-bodoni underline underline-offset-2">Swipe left to see more</div>
-        <div className="text-[36px] text-mdd-link-yellow">&gt;</div>
+        <div className="text-[36px] text-mdd-focus-yellow">&gt;</div>
       </div>
     </div>
   )

@@ -35,7 +35,7 @@ export default function ReviewList({ reviewItem }: { reviewItem: ShowedReviewTyp
             <RatedStar check = {reviewItem.score == undefined? false :reviewItem.score>3.5}></RatedStar>
             <RatedStar check = {reviewItem.score == undefined? false :reviewItem.score>4.5}></RatedStar>
           </div>
-          <div className="text-mdd-link-yellow font-normal">คะแนน : {reviewItem.score} / 5</div>
+          <div className="text-mdd-focus-yellow font-normal">คะแนน : {reviewItem.score} / 5</div>
           <div className="text-[16px] text-balance break-words leading-[1.5em] overflow-auto max-h-[5em]">
             {reviewItem.reviewMessage}
           </div>
