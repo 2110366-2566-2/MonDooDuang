@@ -5,7 +5,7 @@ import { ShowedReviewTypes } from "../types/ShowedReviewTypes"
 
 export const FortuneTellerService = {
 
-  getFortuneTellerbyId: async(fortuneTellerId: string):Promise<FortuneTellerDetailTypes> => {
+  getFortuneTellerDisplayInfoById: async(fortuneTellerId: string):Promise<FortuneTellerDetailTypes> => {
     const res = await fetch(`${environment.backend.url}/fortuneteller/detail-page/${fortuneTellerId}`)
     const data = await res.json()
 

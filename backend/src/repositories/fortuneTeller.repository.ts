@@ -3,7 +3,7 @@ import { FortuneTellerSchema } from "../models/fortuneTeller/fortuneTeller.model
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
 
 export const fortuneTellerRepository = {
-  getFortuneTellerById: async (fortuneTellerId: string): Promise<null | FortuneTellerDetailSchema> => {
+  getFortuneTellerDisplayInfoById: async (fortuneTellerId: string): Promise<null | FortuneTellerDetailSchema> => {
     const result = await db.query(
       `SELECT description, stageName, totalScore, totalReview, profilePicture
             FROM FORTUNE_TELLER

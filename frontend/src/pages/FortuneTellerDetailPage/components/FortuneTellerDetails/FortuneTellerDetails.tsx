@@ -19,7 +19,7 @@ export default function FortuneTellerDetails() {
 
   useEffect(() => {
     const fetchFortuneTellerDetail = async () => {
-      const response = await FortuneTellerService.getFortuneTellerbyId(mockUserId)
+      const response = await FortuneTellerService.getFortuneTellerDisplayInfoById(mockUserId)
       const fortuneTellerStageName = await response.stageName
       const fortuneTellerDescription = await response.description
       const fortuneTellerAverageStar = await response.averageStar

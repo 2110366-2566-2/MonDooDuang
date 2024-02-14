@@ -3,8 +3,8 @@ import { packageRepository } from "../../repositories/package.repository"
 import { reviewRepository } from "../../repositories/review.repository"
 
 export const fortuneTellerService = {
-  getFortuneTellerById: async (fortuneTellerId: string) => {
-    const fortuneTeller = await fortuneTellerRepository.getFortuneTellerById(fortuneTellerId)
+  getFortuneTellerDisplayInfoById: async (fortuneTellerId: string) => {
+    const fortuneTeller = await fortuneTellerRepository.getFortuneTellerDisplayInfoById(fortuneTellerId)
 
     if (fortuneTeller === null) return null
 

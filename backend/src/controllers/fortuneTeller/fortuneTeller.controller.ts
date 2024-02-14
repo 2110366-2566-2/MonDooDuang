@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
 
-const getFortuneTellerbyId = async (req: Request, res: Response) => {
+const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
   const fortuneTellerId = req.params.fortuneTellerId
-  const fortuneTellerData = await fortuneTellerService.getFortuneTellerById(fortuneTellerId)
+  const fortuneTellerData = await fortuneTellerService.getFortuneTellerDisplayInfoById(fortuneTellerId)
 
   if (fortuneTellerData === null) { return res.status(400).json({ success: false }) }
 
@@ -35,7 +35,7 @@ const getRecommendPackage = async (req: Request, res: Response) => {
 }
 
 export const fortuneTellerController = {
-  getFortuneTellerbyId,
+  getFortuneTellerDisplayInfoById,
   getPackageByFortuneTellerId,
   getReviewByFortuneTellerId,
   getRecommendPackage
