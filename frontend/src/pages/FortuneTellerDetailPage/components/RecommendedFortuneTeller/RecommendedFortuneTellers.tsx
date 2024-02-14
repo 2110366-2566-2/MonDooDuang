@@ -7,18 +7,18 @@ import { FortuneTellerService } from "../../services/FortuneTellerService"
 
 export default function RecommendedFortuneTellers() {
  
-  const [recommendPackage, setrecommendPackage] = useState<SearchValue[] | null>(null)
+  const [recommendPackage, setRecommendPackage] = useState<SearchValue[] | null>(null)
     
   useEffect(() => {
     const fetchData = async () => {
       const data = await FortuneTellerService.getRecommendPackage()
-      setrecommendPackage((data as FetchSearchData[]).map(transformFetchDataTorecommendPackage))
+      setRecommendPackage((data as FetchSearchData[]).map(transformFetchDataToRecommendPackage))
     }
     fetchData()
         
   },[])
     
-  const transformFetchDataTorecommendPackage = (fetchSearchData: FetchSearchData): SearchValue => {
+  const transformFetchDataToRecommendPackage = (fetchSearchData: FetchSearchData): SearchValue => {
     return {
       name: fetchSearchData.stagename ?? fetchSearchData.fname,
       rating: fetchSearchData.totalreview === 0 ? 0 : fetchSearchData.totalscore / fetchSearchData.totalreview,
