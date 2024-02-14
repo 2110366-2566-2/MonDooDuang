@@ -1,4 +1,4 @@
-import footer from "../../../../assets/fortunTellerDetailsAsssets/footer.png"
+import footer from "../../../../assets/fortuneTellerDetailsAssets/footer.png"
 
 export default function Footer(){
   return (

@@ -1,6 +1,6 @@
 import AppointmentButton from "./AppointmentButton"
-import packageListIcon from "../../../../assets/fortunTellerDetailsAsssets/packageListIcon.png"
-import priceIcon from "../../../../assets/fortunTellerDetailsAsssets/priceIcon.svg"
+import packageListIcon from "../../../../assets/fortuneTellerDetailsAssets/packageListIcon.png"
+import priceIcon from "../../../../assets/fortuneTellerDetailsAssets/priceIcon.svg"
 import { PackageTypes } from "../../types/PackageTypes"
 
 export default function PackageList({ packageItem }: { packageItem: PackageTypes }) {

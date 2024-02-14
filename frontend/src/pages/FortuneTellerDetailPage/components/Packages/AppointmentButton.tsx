@@ -1,4 +1,4 @@
-import appointmentIcon from "../../../../assets/fortunTellerDetailsAsssets/appointmentIcon.svg"
+import appointmentIcon from "../../../../assets/fortuneTellerDetailsAssets/appointmentIcon.svg"
 
 export default function AppointmentButton() {
 

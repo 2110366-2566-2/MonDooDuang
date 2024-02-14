@@ -1,4 +1,4 @@
-import ShadowEffect from "../../../../assets/fortunTellerDetailsAsssets/shadowEffect.png"
+import ShadowEffect from "../../../../assets/fortuneTellerDetailsAssets/shadowEffect.png"
 
 export default function FortuneTellerPicture({ profile }: { profile: string }) {
   return (
