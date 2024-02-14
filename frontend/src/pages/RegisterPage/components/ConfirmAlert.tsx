@@ -7,6 +7,7 @@ import {
   styled
 } from "@mui/material"
 import TickIcon from "./Icon/TickIcon"
+import { useNavigate } from "react-router-dom"
 
 const CustomizedDialog = styled(Dialog)`
 div {
@@ -37,14 +38,18 @@ export default function ConfirmAlert(props: {
   CFAlert: boolean
   setCFAlert: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const navigate = useNavigate()
+  
   const handleClose = () => {
     props.setCFAlert(false)
+    navigate("/search")
   }
 
   return (
     <CustomizedDialog
       open={props.CFAlert}
       onClose={handleClose}
+      disableScrollLock={true}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       className="text-center"

@@ -44,20 +44,20 @@ export default function FortuneTellerRegisterAlert(props: {
 
   const handleYesButton = () => {
     props.setFTAlert(false)
-    props.setCFAlert(true)
+    props.setCFAlert(false)
     navigate("/register/fortuneteller")
   }
 
   const handleNoButton = () => {
     props.setFTAlert(false)
     props.setCFAlert(true)
-    navigate("/search")
   }
 
   return (
     <CustomizedDialog
       open={props.FTAlert}
-      onClose={() => props.setFTAlert(false)}
+      onClose={handleNoButton}
+      disableScrollLock={true}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       className="text-center"

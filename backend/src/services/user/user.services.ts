@@ -64,6 +64,7 @@ export const userService = {
     }
 
     const collectedPassword: string = user.password
+
     const isMatch = await bcrypt.compare(password, collectedPassword)
     if (!isMatch) {
       return { success: false, message: "Invalid credentials" }
