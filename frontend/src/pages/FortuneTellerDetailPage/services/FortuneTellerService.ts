@@ -12,14 +12,14 @@ export const FortuneTellerService = {
     return data.data
   },
 
-  getPackagebyFortuneTellerId: async(fortuneTellerId: string):Promise<PackageTypes[]> => {
+  getPackageByFortuneTellerId: async(fortuneTellerId: string):Promise<PackageTypes[]> => {
     const res = await fetch(`${environment.backend.url}/fortuneteller/package/${fortuneTellerId}`)
     const data = await res.json()
 
     return data.data
   },
 
-  getReviewbyFortuneTellerId: async(fortuneTellerId: string):Promise<ShowedReviewTypes[]> => {
+  getReviewByFortuneTellerId: async(fortuneTellerId: string):Promise<ShowedReviewTypes[]> => {
     const res = await fetch(`${environment.backend.url}/fortuneteller/review/${fortuneTellerId}`)
     const data = await res.json()
 

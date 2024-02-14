@@ -13,7 +13,7 @@ export default function Reviews() {
   
   useEffect(() => {
     const fetchFortuneTellerReview = async () => {
-      const response = await FortuneTellerService.getReviewbyFortuneTellerId(mockUserId)
+      const response = await FortuneTellerService.getReviewByFortuneTellerId(mockUserId)
       const fortuneTellerReview = await response
 
       setFortuneTellerReview(fortuneTellerReview)

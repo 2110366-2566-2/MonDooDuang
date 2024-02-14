@@ -12,7 +12,7 @@ export default function Packages() {
   
   useEffect(() => {
     const fetchFortuneTellerPackage = async () => {
-      const response = await FortuneTellerService.getPackagebyFortuneTellerId(mockUserId)
+      const response = await FortuneTellerService.getPackageByFortuneTellerId(mockUserId)
       const fortuneTellerPackage = await response
 
       setFortuneTellerPackage(fortuneTellerPackage)
