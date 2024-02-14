@@ -29,6 +29,7 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/quotes": ["error", "double"],
+    "@typescript-eslint/no-misused-promises": "warn",
     "@typescript-eslint/strict-boolean-expressions": [
       "error",
       {

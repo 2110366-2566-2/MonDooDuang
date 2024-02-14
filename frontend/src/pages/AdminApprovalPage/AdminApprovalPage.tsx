@@ -42,7 +42,7 @@ export default function AdminApprovalPage() {
           หน้าหลัก
         </div>
         <NextPageIcon />
-        <div className="text-nav-yellow">คำร้องขออนุญาตเป็นหมอดู</div>
+        <div className="text-mdd-focus-yellow">คำร้องขออนุญาตเป็นหมอดู</div>
       </div>
     )
   }

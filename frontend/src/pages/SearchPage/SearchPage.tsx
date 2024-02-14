@@ -2,13 +2,10 @@ import { useEffect, useState } from "react"
 import SearchBar from "./components/SearchBar/SearchBar"
 import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/FortuneTellerSerachModal"
 import { SearchService } from "./services/SearchService"
-import {
-  Specialities,
-  specialitiesName
-} from "./types/SpecialityType"
+import { Specialities, specialitiesName } from "./types/SpecialityType"
 
-export default function SearchPage() : JSX.Element {
-  const defaultSearch : SearchFortuneTeller = {
+export default function SearchPage(): JSX.Element {
+  const defaultSearch: SearchFortuneTeller = {
     name: "",
     speciality: "",
     minPrice: -1,
@@ -50,7 +47,10 @@ export default function SearchPage() : JSX.Element {
   const transformFetchDataToSearchValue = (fetchSearchData: FetchSearchData): SearchValue => {
     return {
       name: fetchSearchData.stagename ?? fetchSearchData.fname,
-      rating: fetchSearchData.totalreview === 0 ? 0 : fetchSearchData.totalscore / fetchSearchData.totalreview,
+      rating:
+        fetchSearchData.totalreview === 0
+          ? 0
+          : fetchSearchData.totalscore / fetchSearchData.totalreview,
       minPrice: fetchSearchData.minprice,
       maxPrice: fetchSearchData.maxprice,
       image: fetchSearchData.profilepicture,
@@ -67,7 +67,6 @@ export default function SearchPage() : JSX.Element {
       fortunetellerid: fetchSearchData.fortunetellerid
     }
   }
-
   return (
     <div className="bg-black">
       <div className="sticky pt-5 z-10 top-0">
