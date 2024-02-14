@@ -56,7 +56,7 @@ export default function FortuneTellerRegisterAlert(props: {
   return (
     <CustomizedDialog
       open={props.FTAlert}
-      onClose={() => props.setFTAlert(false)}
+      onClose={handleNoButton}
       disableScrollLock={true}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
