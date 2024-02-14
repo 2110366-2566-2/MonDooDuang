@@ -4,11 +4,11 @@ import priceIcon from "../../../../assets/fortuneTellerDetailsAssets/priceIcon.s
 import { PackageTypes, Speciality } from "../../types/PackageTypes"
 
 const specialityMapper: Record<Speciality,string> = {
-    TAROT_CARD : "ไพ่ทาโร่",
-    THAI : "โหราศาสตร์ไทย",
-    NUMBER : "ศราตร์ตัวเลข",
-    ORACLE :"ไพ่ออราเคิล",
-    RUNES : "ศาสตร์รูนส์"
+  TAROT_CARD : "ไพ่ทาโร่",
+  THAI : "โหราศาสตร์ไทย",
+  NUMBER : "ศราตร์ตัวเลข",
+  ORACLE :"ไพ่ออราเคิล",
+  RUNES : "ศาสตร์รูนส์"
 }
 
 export default function PackageList({ packageItem }: { packageItem: PackageTypes }) {
