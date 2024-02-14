@@ -4,6 +4,7 @@ import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
 import requestRouter from "./routes/request.routes"
 import searchRouter from "./routes/search.routes"
+import fortuneTellerRouter from "./routes/fortuneTeller.routes"
 
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
@@ -43,6 +44,7 @@ app.use("/appointment", appointmentRouter)
 app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
+app.use("/fortuneteller", fortuneTellerRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)

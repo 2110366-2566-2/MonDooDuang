@@ -6,12 +6,12 @@ export default {
       colors: {
         "example-color": "#ff0000",
         "mdd-text-field": "rgba(255, 255, 255, 0.54)",
-        "mdd-muted-green" : "#76AA7B",
-        "mdd-muted-green-hover" : "#5E8762",
-        "mdd-muted-yellow" : "#DEAA6B",
-        "mdd-muted-yellow-hover" : "#C89456",
-        "mdd-sand-yellow" : "#E9AC12",
-        "mdd-sand-yellow-hover" : "#CC9403",
+        "mdd-muted-green": "#76AA7B",
+        "mdd-muted-green-hover": "#5E8762",
+        "mdd-muted-yellow": "#DEAA6B",
+        "mdd-muted-yellow-hover": "#C89456",
+        "mdd-sand-yellow": "#E9AC12",
+        "mdd-sand-yellow-hover": "#CC9403",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",
@@ -21,7 +21,7 @@ export default {
         "mdd-dialog-gray": "#AEAEAE",
         "mdd-focus-yellow": "#FFD233",
         "mdd-cancel-red": "#FF5656",
-        "mdd-gray-boxbg": "#D9D9D9",
+        "mdd-gray-boxbg": "#D9D9D9"
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],
