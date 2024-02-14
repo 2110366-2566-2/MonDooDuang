@@ -21,15 +21,7 @@ export const fortuneTellerService = {
 
     if (result === null) return null
 
-    return result.map((result) => {
-      return {
-        speciality: result.speciality,
-        description: result.description,
-        duration: result.duration,
-        price: result.price,
-        fortuneTellerId: result.fortuneTellerId
-      }
-    })
+    return result
   },
 
   getReviewByFortuneTellerId: async (fortuneTellerId: string) => {
