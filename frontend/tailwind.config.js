@@ -21,7 +21,10 @@ export default {
         "mdd-dialog-gray": "#AEAEAE",
         "mdd-focus-yellow": "#FFD233",
         "mdd-cancel-red": "#FF5656",
-        "mdd-gray-boxbg": "#D9D9D9"
+        "mdd-gray-boxbg": "#D9D9D9",
+        "mdd-gray-success-text": "#838383",
+        "mdd-red-success-text": "#FF5656",
+        "mdd-login-frame": "rgba(191, 191, 191, 0.28)",
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],
