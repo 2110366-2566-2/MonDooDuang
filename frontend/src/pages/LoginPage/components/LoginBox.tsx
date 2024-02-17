@@ -45,7 +45,7 @@ export default function LoginBox() {
       setFAlert(true)
       return
     }
-    setLocalStorage(data.data)
+    setLocalStorage("token", data.data)
     navigate("/search")
   }
 

@@ -130,7 +130,7 @@ export default function RegisterPage() {
       setFAlert(true)
       return
     }
-    setLocalStorage(data.data)
+    setLocalStorage("token", data.data)
     setFTAlert(true)
   }
 
