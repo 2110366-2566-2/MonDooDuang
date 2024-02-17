@@ -1,10 +1,10 @@
+import { AuthProvider } from "../../common/providers/AuthProvider"
 import AccountPage from "./AccountPage"
 
 export default function AccountApp() {
   return (
-    //Add providers as needed
-    <>
+    <AuthProvider>
       <AccountPage />
-    </>
+    </AuthProvider>
   )
 }
