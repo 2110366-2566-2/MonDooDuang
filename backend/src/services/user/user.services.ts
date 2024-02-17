@@ -49,7 +49,7 @@ export const userService = {
     const tokenInfo: TokenInfoSchema = {
       userId: newUser.userid,
       userType: newUser.usertype,
-      userName: newUser.fname + " " + newUser.lname[0] + "."
+      username: newUser.fname + " " + newUser.lname[0] + "."
     }
 
     const token = assignToken(tokenInfo)
@@ -74,7 +74,7 @@ export const userService = {
     const tokenInfo: TokenInfoSchema = {
       userId: user.userid,
       userType: user.usertype,
-      userName: user.fname + " " + user.lname[0] + "."
+      username: user.fname + " " + user.lname[0] + "."
     }
 
     const token = assignToken(tokenInfo)
