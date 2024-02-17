@@ -1,5 +1,6 @@
-import { CreateUserSchema, RegisterUserSchema, TokenInfoSchema } from "../../models/user/user.model"
+import { CreateUserSchema, RegisterUserSchema } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
+import { TokenInfoSchema } from "../../types/jwtToken"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
 
@@ -54,7 +55,7 @@ export const userService = {
     const token = assignToken(tokenInfo)
     return { success: true, message: "Successfully create new user", data: token }
   },
-  login: async (body: { email: string, password: string }) => {
+  login: async (body: { email: string; password: string }) => {
     const email = body.email
     const password = body.password
 

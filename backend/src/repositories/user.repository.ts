@@ -1,9 +1,9 @@
 import { db } from "../configs/pgdbConnection"
-import { CreateUserSchema } from "../models/user/user.model"
+import { CreateUserSchema, UserDBSchema } from "../models/user/user.model"
 
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
-    const user = await db.query(
+    const user = await db.query<UserDBSchema>(
       "SELECT userid, password, usertype, fname, lname FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )",
       [email, fName, lName]
     )
@@ -28,9 +28,10 @@ export const userRepository = {
         user.userType
       ]
     )
-    const newUser = await db.query("SELECT userid, usertype, fname, lname FROM user_table WHERE email = $1", [
-      user.email
-    ])
+    const newUser = await db.query<UserDBSchema>(
+      "SELECT userid, usertype, fname, lname FROM user_table WHERE email = $1",
+      [user.email]
+    )
     return newUser.rows[0]
   }
 }
