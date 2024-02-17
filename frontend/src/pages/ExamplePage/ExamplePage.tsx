@@ -5,14 +5,14 @@ import NavBar from "../../common/components/NavBar/NavBar"
 
 export default function ExamplePage() {
   const [isExampleModalOpen, setIsExampleModalOpen] = useState(false)
-  const userData = useContext(AuthContext)
+  const { userId, userType, username } = useContext(AuthContext)
 
   return (
     <>
       <NavBar
-        isFortuneTeller={userData.userType === "FORTUNE_TELLER"}
+        isFortuneTeller={userType === "FORTUNE_TELLER"}
         menuFocus={"search"}
-        username={userData.username}
+        username={username}
       />
       <button
         onClick={() => setIsExampleModalOpen(true)}
