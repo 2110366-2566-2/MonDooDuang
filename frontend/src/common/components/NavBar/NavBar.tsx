@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom"
+import { LocalStorageUtils } from "../../utils/LocalStorageUtils"
 import LogoIcon from "./LogoIcon"
 import LogoutIcon from "./LogoutIcon"
 import NotificationIcon from "./NotificationIcon"
@@ -13,6 +15,8 @@ export default function NavBar({
   menuFocus: MenuFocus
   username: string
 }) {
+  const navigate = useNavigate()
+
   const role = isFortuneTeller ? "หมอดู/ผู้ใช้บริการ" : "ผู้ใช้บริการ"
   const menuList: { name: string; focus: MenuFocus; href: string }[] = [
     { name: "ค้นหาหมอดู", focus: "search", href: "" },
@@ -21,7 +25,10 @@ export default function NavBar({
   ]
 
   const handleNotification = () => {}
-  const handleLogout = () => {}
+  const handleLogout = () => {
+    LocalStorageUtils.removeData("token")
+    navigate("/login")
+  }
 
   const isHavingNotification = true
 
