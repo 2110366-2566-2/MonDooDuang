@@ -5,34 +5,32 @@ import { FortuneTellerRegisterSchema, RequestSchema } from "../../models/fortune
 
 export const fortuneTellerService = {
 
-  createFortuneTellerRegister: async(fortuneTeller: FortuneTellerRegisterSchema)=>{
-
+  createFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
     const isSuccess = await fortuneTellerRepository.createFortuneTellerRegister(fortuneTeller)
-    
+
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to create register" }
-}, 
+  },
 
-updateFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
-  const isSuccess = await fortuneTellerRepository.updateFortuneTellerRegister(fortuneTeller)
-  return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller register" }
-},
+  updateFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+    const isSuccess = await fortuneTellerRepository.updateFortuneTellerRegister(fortuneTeller)
+    return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller register" }
+  },
 
-createRequest: async(request: RequestSchema) => {
+  createRequest: async (request: RequestSchema) => {
+    const isSuccess = await fortuneTellerRepository.createFortuneTellerRequest(request)
 
-  const isSuccess = await fortuneTellerRepository.createFortuneTellerRequest(request)
+    return { success: isSuccess, message: (isSuccess) ? "success" : "error to create request" }
+  },
 
-  return { success: isSuccess, message: (isSuccess) ? "success" : "error to create request" }
-},
+  updateFortuneTellerRequest: async (request: RequestSchema) => {
+    const isSuccess = await fortuneTellerRepository.updateFortuneTellerRequest(request)
+    return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller request" }
+  },
 
-updateFortuneTellerRequest: async (request: RequestSchema) => {
-  const isSuccess = await fortuneTellerRepository.updateFortuneTellerRequest(request)
-  return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller request" }
-},
-
-getFortuneTellerValid: async (fortunetellerid: string) => {
-  const data = await fortuneTellerRepository.getFortuneTellerValid(fortunetellerid)
-  return data
-},
+  getFortuneTellerValid: async (fortunetellerid: string) => {
+    const data = await fortuneTellerRepository.getFortuneTellerValid(fortunetellerid)
+    return data
+  },
 
   getFortuneTellerDisplayInfoById: async (fortuneTellerId: string) => {
     const fortuneTeller = await fortuneTellerRepository.getFortuneTellerDisplayInfoById(fortuneTellerId)

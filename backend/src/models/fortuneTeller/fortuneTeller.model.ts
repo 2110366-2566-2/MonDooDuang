@@ -8,16 +8,15 @@ export interface FortuneTellerSchema {
   totalReview: number
 }
 
+export type status = "PENDING" | "ACCEPTED" | "REJECTED"
 
-export type status = "PENDING" | "ACCEPTED" | "REJECTED" 
-
-export interface FortuneTellerRegisterSchema{
-    fortunetellerid: string,
-    identitycardnumber: string,
-    identitycardcopy: string,
+export interface FortuneTellerRegisterSchema {
+  fortunetellerid: string
+  identitycardnumber: string
+  identitycardcopy: string
 }
 
-export interface RequestSchema  {
-    fortune_teller_id: string,
-    status: status
+export interface RequestSchema {
+  fortune_teller_id: string
+  status: status
 }
