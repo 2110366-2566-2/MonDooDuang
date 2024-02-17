@@ -4,5 +4,8 @@ export const LocalStorageUtils = {
   },
   removeData: (key: string) => {
     localStorage.removeItem(key)
+  },
+  getData: (key: string) => {
+    return localStorage.getItem(key)
   }
 }
