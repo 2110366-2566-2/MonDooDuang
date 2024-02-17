@@ -11,7 +11,7 @@ import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
 import ConfirmAlert from "./components/ConfirmAlert"
 import FailedAlert from "./components/FailedAlert"
 import { RegisterService } from "./services/RegisterService"
-import { setLocalStorage } from "../../common/services/LocalStorage"
+import { LocalStorageUtils } from "../../common/utils/LocalStorageUtils"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
 
 const today = dayjs()
@@ -130,7 +130,7 @@ export default function RegisterPage() {
       setFAlert(true)
       return
     }
-    setLocalStorage("token", data.data)
+    LocalStorageUtils.setData("token", data.data)
     setFTAlert(true)
   }
 
