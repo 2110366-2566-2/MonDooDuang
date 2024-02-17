@@ -16,7 +16,7 @@ export default function ExamplePage() {
       />
       <button
         onClick={() => setIsExampleModalOpen(true)}
-        className="text-white text-2xl font-noto-sans-eng bg-slate-500 rounded-lg p-8"
+        className="text-white text-2xl font-noto-sans-eng bg-slate-500 rounded-full p-8 mb-10"
       >
         Example Modal Here!
       </button>
