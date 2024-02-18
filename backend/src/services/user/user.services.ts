@@ -46,8 +46,8 @@ export const userService = {
     }
 
     const tokenInfo: TokenInfoSchema = {
-      userId: newUser.userid,
-      userType: newUser.usertype,
+      userId: newUser.user_id,
+      userType: newUser.user_type,
       userName: newUser.fname + " " + newUser.lname[0] + "."
     }
 
@@ -71,8 +71,8 @@ export const userService = {
     }
 
     const tokenInfo: TokenInfoSchema = {
-      userId: user.userid,
-      userType: user.usertype,
+      userId: user.user_id,
+      userType: user.user_type,
       userName: user.fname + " " + user.lname[0] + "."
     }
 
