@@ -11,7 +11,7 @@ export const userRepository = {
   },
   createUser: async (user: CreateUserSchema) => {
     await db.query(
-      `INSERT INTO user_table(fName, lName, gender, phone_number, email, birth_date, profile_picture, is_banned, bank_name, account_number, password, user_type)
+      `INSERT INTO user_table(fname, lname, gender, phone_number, email, birth_date, profile_picture, is_banned, bank_name, account_number, password, user_type)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
       [
         user.fName,
