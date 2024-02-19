@@ -21,7 +21,7 @@ const loginUser = async (req: Request, res: Response) => {
   if (!isSuccess) {
     return res.status(400).json(result)
   } else {
-    return res.status(201).json(result)
+    return res.status(200).json(result)
   }
 }
 

@@ -1,14 +1,22 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import ExampleModal from "./components/ExampleModal"
+import { AuthContext } from "../../common/providers/AuthProvider"
+import NavBar from "../../common/components/NavBar/NavBar"
 
 export default function ExamplePage() {
   const [isExampleModalOpen, setIsExampleModalOpen] = useState(false)
+  const { userId, userType, username } = useContext(AuthContext)
 
   return (
     <>
+      <NavBar
+        isFortuneTeller={userType === "FORTUNE_TELLER"}
+        menuFocus={"search"}
+        username={username}
+      />
       <button
         onClick={() => setIsExampleModalOpen(true)}
-        className="text-white text-2xl font-noto-sans-eng"
+        className="text-white text-2xl font-noto-sans-eng bg-slate-500 rounded-full p-8 mb-10"
       >
         Example Modal Here!
       </button>

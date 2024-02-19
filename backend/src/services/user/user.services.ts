@@ -1,5 +1,6 @@
-import { CreateUserSchema, RegisterUserSchema, TokenInfoSchema } from "../../models/user/user.model"
+import { CreateUserSchema, RegisterUserSchema } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
+import { TokenInfoSchema } from "../../types/jwtToken"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
 
@@ -48,13 +49,13 @@ export const userService = {
     const tokenInfo: TokenInfoSchema = {
       userId: newUser.user_id,
       userType: newUser.user_type,
-      userName: newUser.fname + " " + newUser.lname[0] + "."
+      username: newUser.fname + " " + newUser.lname[0] + "."
     }
 
     const token = assignToken(tokenInfo)
     return { success: true, message: "Successfully create new user", data: token }
   },
-  login: async (body: { email: string, password: string }) => {
+  login: async (body: { email: string; password: string }) => {
     const email = body.email
     const password = body.password
 
@@ -73,7 +74,7 @@ export const userService = {
     const tokenInfo: TokenInfoSchema = {
       userId: user.user_id,
       userType: user.user_type,
-      userName: user.fname + " " + user.lname[0] + "."
+      username: user.fname + " " + user.lname[0] + "."
     }
 
     const token = assignToken(tokenInfo)

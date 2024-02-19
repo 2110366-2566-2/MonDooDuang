@@ -34,8 +34,20 @@ export interface RegisterUserSchema {
   password: string
 }
 
-export interface TokenInfoSchema {
-  userId: string
-  userType: UserType
-  userName: string
+export interface UserDBSchema {
+  user_id: string
+  fname: string
+  lname: string
+  gender: Gender
+  phone_number: string
+  email: string
+  birth_date: Date
+  profile_picture: string | null
+  is_banned: boolean
+  bank_name: string
+  account_number: string
+  password: string
+  user_type: UserType
+  created_at: Date
+  updated_at: Date
 }
