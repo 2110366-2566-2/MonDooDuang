@@ -1,9 +1,9 @@
 import SpecialityIcon from "../../../SearchPage/components/Icons/speciality-icon.svg"
-import { Fortune, Package } from "../../types/AppointmentTypes"
+import { Package } from "../../types/AppointmentTypes"
 import { specialitiesName } from "../../../SearchPage/types/SpecialityType"
 interface SpecialityDropdownProps {
   fortuneTellerSpeciality: Package
-  typeJson: Fortune[]
+  typeJson: Package[]
   onSelected: (value: Package) => void
 }
 export default function SpecialityDropdown({
@@ -16,7 +16,7 @@ export default function SpecialityDropdown({
       {typeJson.map((type, index) => {
         return (
           <div
-            key={type.packageid}
+            key={type.package_id}
             className={`flex flex-row ${
               fortuneTellerSpeciality.speciality == type.speciality
                 ? "bg-[#B9B9B9]/90"
@@ -27,8 +27,8 @@ export default function SpecialityDropdown({
               index === 0
                 ? "rounded-t-xl"
                 : index === Object.keys(typeJson).length - 1
-                  ? "rounded-b-xl"
-                  : ""
+                ? "rounded-b-xl"
+                : ""
             } hover:${
               fortuneTellerSpeciality.speciality == type.speciality
                 ? "bg-[#B9B9B9]/90"

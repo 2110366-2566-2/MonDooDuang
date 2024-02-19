@@ -6,7 +6,7 @@ export const appointmentRepository = {
     try {
       await db.query(
         `
-          INSERT INTO APPOINTMENT (status, packageid, customerid, fortunetellerid, appointmentdate) 
+          INSERT INTO APPOINTMENT (status, package_id, customer_id, fortune_teller_id, appointment_date) 
           VALUES($1, $2, $3, $4, $5);
         `, [appointment.status, appointment.packageId, appointment.customerId, appointment.fortuneTellerId, appointment.appointmentDate]
       )
@@ -17,16 +17,16 @@ export const appointmentRepository = {
   },
   getFortuneTeller: async (fortuneTellerId: string) => {
     const result = await db.query(
-      `SELECT FortuneTellerId, StageName
+      `SELECT fortune_teller_id, stage_name
       FROM fortune_teller as F
-      WHERE F.fortunetellerid = $1;`, [fortuneTellerId]
+      WHERE F.fortune_teller_id = $1;`, [fortuneTellerId]
     )
     if (result.rows[0] === null) { return null }
     return result.rows[0]
   },
   getAllFortuneTeller: async () => {
     const result = await db.query(
-      `SELECT FortuneTellerId, StageName
+      `SELECT fortune_teller_id, stage_name
        FROM fortune_teller
       `
     )
@@ -34,26 +34,26 @@ export const appointmentRepository = {
   },
   getPackages: async (fortuneTellerId: string) => {
     const result = await db.query(
-      `SELECT P.packageid,P.speciality,P.duration,P.price
+      `SELECT P.package_id,P.speciality,P.duration,P.price
       FROM package as P
-      WHERE P.fortunetellerid = $1;`, [fortuneTellerId]
+      WHERE P.fortune_teller_id = $1;`, [fortuneTellerId]
     )
     return result.rows
   },
   getFortuneTellerAppointment: async (fortuneTellerId: string) => {
     const result = await db.query(
-      `SELECT A.appointmentdate , P.duration
+      `SELECT A.appointment_date , P.duration
       FROM appointment A,package P
-      WHERE A.packageId = P.packageId and A.fortunetellerid = $1 
+      WHERE A.package_id = P.package_id and A.fortune_teller_id = $1 
       and A.status = 'WAITING_FOR_EVENT';`, [fortuneTellerId]
     )
     return result.rows
   },
   getUserInfo: async (userId: string) => {
     const result = await db.query(
-      `SELECT userid,fname,lname,phonenumber,birthdate
+      `SELECT user_id,fname,lname,phone_number,birth_date
       FROM user_table
-      WHERE userid = $1;`, [userId]
+      WHERE user_id = $1;`, [userId]
     )
 
     return result.rows[0]
