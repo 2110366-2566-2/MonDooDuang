@@ -1,5 +1,10 @@
 import { environment } from "../../../common/constants/environment"
-import { FortuneTellerAppointments, Package, UserInfo } from "../types/AppointmentTypes"
+import {
+  FortuneTellerAppointments,
+  Package,
+  UserInfo,
+  fortuneTellerInfo
+} from "../types/AppointmentTypes"
 
 export const AppointmentService = {
   createAppointment: async (
@@ -42,6 +47,14 @@ export const AppointmentService = {
   ): Promise<FortuneTellerAppointments[]> => {
     const res = await fetch(
       `${environment.backend.url}/appointment/find-appointments/${fortuneTellerId}`
+    )
+    const data = await res.json()
+    return data.data
+  },
+
+  getFortuneTeller: async (fortuneTellerId: string): Promise<fortuneTellerInfo> => {
+    const res = await fetch(
+      `${environment.backend.url}/appointment/find-fortuneteller/${fortuneTellerId}`
     )
     const data = await res.json()
     return data.data

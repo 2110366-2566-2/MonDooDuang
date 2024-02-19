@@ -39,3 +39,8 @@ export type ConfirmProps = {
   onClose: () => void
   onConfirm: () => void
 }
+
+export type fortuneTellerInfo = {
+  fortuneTellerId: string
+  stagename: string
+}

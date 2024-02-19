@@ -57,7 +57,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <ConversationApp />
     },
     {
-      path: "/appointment",
+      path: "/appointment/:fid/:pid",
       element: <AppointmentApp />
     },
     {
