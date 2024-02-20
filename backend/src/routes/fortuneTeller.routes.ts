@@ -3,7 +3,6 @@ import { fortuneTelllerController } from "../controllers/fortuneTeller/fortuneTe
 
 const router = express.Router()
 
-router.patch("/update-detail", fortuneTelllerController.updateFortuneTellerDetail)
 router.get("/detail/:fortuneTellerId", fortuneTelllerController.getFortuneTellerDetail)
 
 export default router
