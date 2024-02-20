@@ -29,10 +29,10 @@ export const requestRepository = {
   getPendingRequest: async () => {
     const result = await db.query(
       `
-      SELECT r.request_id,r.fortune_teller_id, f.stagename, f.identitycardnumber, CONCAT(u.fname,' ',u.lname) as full_name, u.phonenumber,f.identitycardcopy,u.profilepicture
+      SELECT r.request_id,r.fortune_teller_id, f.stage_name, f.identity_card_number, CONCAT(u.fname,' ',u.lname) as full_name, u.phone_number,f.identity_card_copy,u.profile_picture
       FROM REQUEST r
-      JOIN FORTUNE_TELLER f ON r.fortune_teller_id = f.fortunetellerid
-      JOIN USER_TABLE u ON r.fortune_teller_id = u.userid
+      JOIN FORTUNE_TELLER f ON r.fortune_teller_id = f.fortune_teller_id
+      JOIN USER_TABLE u ON r.fortune_teller_id = u.user_id
       WHERE Status = 'PENDING'
       ORDER BY r.created_at 
     `
@@ -41,12 +41,12 @@ export const requestRepository = {
       return {
         requestId: data.request_id,
         fortuneTellerId: data.fortune_teller_id,
-        stagename: data.stagename,
-        identityCardNumber: data.identitycardnumber,
+        stagename: data.stage_name,
+        identityCardNumber: data.identity_card_number,
         fullName: data.full_name,
-        phoneNumber: data.phonenumber,
-        approvalPic: data.identitycardcopy,
-        profilePic: data.profilepic
+        phoneNumber: data.phone_number,
+        approvalPic: data.identity_card_copy,
+        profilePic: data.profile_pic
       }
     })
   }

@@ -35,19 +35,19 @@ export interface RegisterUserSchema {
 }
 
 export interface UserDBSchema {
-  userid: string
+  user_id: string
   fname: string
   lname: string
   gender: Gender
-  phonenumber: string
+  phone_number: string
   email: string
-  birthdate: Date
-  profilepicture: string | null
-  isbanned: boolean
-  bankname: string
-  accountnumber: string
+  birth_date: Date
+  profile_picture: string | null
+  is_banned: boolean
+  bank_name: string
+  account_number: string
   password: string
-  usertype: UserType
+  user_type: UserType
   created_at: Date
   updated_at: Date
 }

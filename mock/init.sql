@@ -7,44 +7,44 @@ CREATE TYPE gender_enum AS ENUM('MALE', 'FEMALE', 'LGBTQA+', 'NOT_TO_SAY');
 CREATE TYPE usertype_enum AS ENUM('CUSTOMER', 'FORTUNE_TELLER');
 
 CREATE TABLE ADMIN (
-    AdminId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Email VARCHAR(200) UNIQUE NOT NULL,
-    Password VARCHAR(500) NOT NULL,
+    admin_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(200) UNIQUE NOT NULL,
+    password VARCHAR(500) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
 CREATE TABLE USER_TABLE (
-    UserId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Fname VARCHAR(100) NOT NULL,
-    Lname VARCHAR(100) NOT NULL,
-    Gender gender_enum NOT NULL,
-    PhoneNumber VARCHAR(20) NOT NULL,
-    Email VARCHAR(200) UNIQUE NOT NULL,
-    BirthDate TIMESTAMP NOT NULL,
-    ProfilePicture VARCHAR(300),
-    IsBanned BOOLEAN NOT NULL DEFAULT FALSE,
-    BankName VARCHAR(100) NOT NULL,
-    AccountNumber VARCHAR(100) NOT NULL,
-    Password VARCHAR(500) NOT NULL,
-    UserType usertype_enum NOT NULL,
-    CONSTRAINT unique_name_constraint UNIQUE (Fname, Lname),
+    user_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    fname VARCHAR(100) NOT NULL,
+    lname VARCHAR(100) NOT NULL,
+    gender gender_enum NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    email VARCHAR(200) UNIQUE NOT NULL,
+    birth_date TIMESTAMP NOT NULL,
+    profile_picture VARCHAR(300),
+    is_banned BOOLEAN NOT NULL DEFAULT FALSE,
+    bank_name VARCHAR(100) NOT NULL,
+    account_number VARCHAR(100) NOT NULL,
+    password VARCHAR(500) NOT NULL,
+    user_type usertype_enum NOT NULL,
+    CONSTRAINT unique_name_constraint UNIQUE (fname, lname),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
 CREATE TABLE FORTUNE_TELLER (
-    FortuneTellerId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    IsVerified BOOLEAN NOT NULL,
-    Description VARCHAR(300),
-    IdentityCardNumber VARCHAR(30) NOT NULL,
-    StageName VARCHAR(100) UNIQUE NOT NULL,
-    IdentityCardCopy VARCHAR(300) NOT NULL,
-    TotalScore INTEGER NOT NULL DEFAULT 0,
-    TotalReview INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY(FortuneTellerId) REFERENCES USER_TABLE(UserId),
+    fortune_teller_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    is_verified BOOLEAN NOT NULL,
+    description VARCHAR(300),
+    identity_card_number VARCHAR(30) NOT NULL,
+    stage_name VARCHAR(100) UNIQUE NOT NULL,
+    identity_card_copy VARCHAR(300) NOT NULL,
+    total_score INTEGER NOT NULL DEFAULT 0,
+    total_review INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY(fortune_teller_id) REFERENCES USER_TABLE(user_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -52,38 +52,38 @@ CREATE TABLE FORTUNE_TELLER (
 CREATE TYPE speciality_enum AS ENUM('TAROT_CARD', 'THAI', 'NUMBER', 'ORACLE', 'RUNES');
 
 CREATE TABLE PACKAGE(
-    PackageId   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Speciality  speciality_enum NOT NULL,
-    Description VARCHAR(500),
-    Duration    INTEGER  CHECK(Duration > 0),
-    Price       INTEGER  CHECK(Price BETWEEN 10 AND 1000000 ),
-    FortuneTellerID CHAR(36) NOT NULL,
-    FOREIGN KEY(FortuneTellerID) REFERENCES FORTUNE_TELLER(FortuneTellerId),
+    package_id   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    speciality  speciality_enum NOT NULL,
+    description VARCHAR(500),
+    duration    INTEGER  CHECK(duration > 0),
+    price       INTEGER  CHECK(price BETWEEN 10 AND 1000000 ),
+    fortune_teller_id CHAR(36) NOT NULL,
+    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(fortune_teller_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CONVERSATION (May be NoSQL)
 CREATE TABLE CONVERSATION(
-    ConversationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    FortuneTellerID CHAR(36) NOT NULL,
-    CustomerId CHAR(36) NOT NULL,
-    FOREIGN KEY(FortuneTellerID) REFERENCES FORTUNE_TELLER(FortuneTellerId),
-    FOREIGN KEY(CustomerId) REFERENCES USER_TABLE(UserId),
-    CONSTRAINT unique_conversation_constraint UNIQUE (FortuneTellerID, CustomerId),
+    conversation_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    fortune_teller_id CHAR(36) NOT NULL,
+    customer_id CHAR(36) NOT NULL,
+    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(fortune_teller_id),
+    FOREIGN KEY(customer_id) REFERENCES USER_TABLE(user_id),
+    CONSTRAINT unique_conversation_constraint UNIQUE (fortune_teller_id, customer_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- MESSAGE (May be NoSQL)
 CREATE TABLE MESSAGE(
-    MessageId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    SenderId CHAR(36) NOT NULL,
-    MessageText VARCHAR(500) NOT NULL,
-    IsRead  BOOLEAN NOT NULL DEFAULT FALSE,
-    ConversationId CHAR(36) NOT NULL,
-    FOREIGN KEY(SenderId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(ConversationId) REFERENCES CONVERSATION(ConversationId),
+    message_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    sender_id CHAR(36) NOT NULL,
+    message_text VARCHAR(500) NOT NULL,
+    is_read  BOOLEAN NOT NULL DEFAULT FALSE,
+    conversation_id CHAR(36) NOT NULL,
+    FOREIGN KEY(sender_id) REFERENCES USER_TABLE(user_id),
+    FOREIGN KEY(conversation_id) REFERENCES CONVERSATION(conversation_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -91,29 +91,29 @@ CREATE TABLE MESSAGE(
 CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'CANCELED', 'SUSPENDED', 'REFUNDED');
 
 CREATE TABLE APPOINTMENT (
-    AppointmentId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Status appointment_status_enum NOT NULL,
-    PackageId CHAR(36) NOT NULL,
-    CustomerId CHAR(36) NOT NULL,
-    FortuneTellerId CHAR(36) NOT NULL,
-    AppointmentDate TIMESTAMP NOT NULL,
-    FOREIGN KEY(PackageId) REFERENCES PACKAGE(PackageId),
-    FOREIGN KEY(CustomerId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(FortuneTellerId) REFERENCES FORTUNE_TELLER(FortuneTellerId),
+    appointment_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    status appointment_status_enum NOT NULL,
+    package_id CHAR(36) NOT NULL,
+    customer_id CHAR(36) NOT NULL,
+    fortune_teller_id CHAR(36) NOT NULL,
+    appointment_date TIMESTAMP NOT NULL,
+    FOREIGN KEY(package_id) REFERENCES PACKAGE(package_id),
+    FOREIGN KEY(customer_id) REFERENCES USER_TABLE(user_id),
+    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(fortune_teller_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE REVIEW (
-    ReviewId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    ReviewMessage VARCHAR(500),
-    Score INTEGER NOT NULL,
-    CustomerId CHAR(36) NOT NULL,
-    FortuneTellerId CHAR(36) NOT NULL,
-    AppointmentId CHAR(36) NOT NULL,
-    FOREIGN KEY(CustomerId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(FortuneTellerId) REFERENCES FORTUNE_TELLER(FortuneTellerId),
-    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
+    review_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    review_message VARCHAR(500),
+    score INTEGER NOT NULL,
+    customer_id CHAR(36) NOT NULL,
+    fortune_teller_id CHAR(36) NOT NULL,
+    appointment_id CHAR(36) NOT NULL,
+    FOREIGN KEY(customer_id) REFERENCES USER_TABLE(user_id),
+    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(fortune_teller_id),
+    FOREIGN KEY(appointment_id) REFERENCES APPOINTMENT(appointment_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -122,14 +122,14 @@ CREATE TYPE payment_method_enum AS ENUM('BANK', 'CREDIT_CARD');
 CREATE TYPE payment_status_enum AS ENUM('FROM_CUSTOMER', 'TO_FORTUNE_TELLER', 'REFUND');
 
 CREATE TABLE PAYMENT(
-    PaymentId   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Method payment_method_enum NOT NULL,
-    Status payment_status_enum NOT NULL,
-    Amount INTEGER  CHECK(Amount BETWEEN 10 AND 1000000 ),
-    ReceiverId CHAR(36) NOT NULL,
-    AppointmentId CHAR(36) NOT NULL,
-    FOREIGN KEY(ReceiverId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
+    payment_id   CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    method payment_method_enum NOT NULL,
+    status payment_status_enum NOT NULL,
+    amount INTEGER  CHECK(amount BETWEEN 10 AND 1000000 ),
+    receiver_id CHAR(36) NOT NULL,
+    appointment_id CHAR(36) NOT NULL,
+    FOREIGN KEY(receiver_id) REFERENCES USER_TABLE(user_id),
+    FOREIGN KEY(appointment_id) REFERENCES APPOINTMENT(appointment_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -139,44 +139,44 @@ CREATE TYPE report_status_enum AS ENUM ('PENDING','COMPLETED');
 CREATE TYPE notification_type_enum AS ENUM ('VERIFICATION', 'CANCELED_VERIFICATION', 'CHAT', 'APPOINTMENT');
 CREATE TYPE appointment_notification_type_enum AS ENUM ('REMINDER', 'COMPLETE', 'CANCEL', 'NEW', 'ACCEPT');
 CREATE TABLE REPORT (
-    ReportId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Description VARCHAR(200) NOT NULL,
-    ReportType report_type_enum NOT NULL,
-    Status report_status_enum NOT NULL,
-    AppointmentId CHAR(36) ,
-    ReporterId CHAR(36) NOT NULL,
-    ReporteeId CHAR(36),
-    FOREIGN KEY (ReporterId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY (ReporteeId) REFERENCES USER_TABLE(UserId),
-    FOREIGN KEY(AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
+    report_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    description VARCHAR(200) NOT NULL,
+    report_type report_type_enum NOT NULL,
+    status report_status_enum NOT NULL,
+    appointment_id CHAR(36) ,
+    reporter_id CHAR(36) NOT NULL,
+    reportee_id CHAR(36),
+    FOREIGN KEY (reporter_id) REFERENCES USER_TABLE(user_id),
+    FOREIGN KEY (reportee_id) REFERENCES USER_TABLE(user_id),
+    FOREIGN KEY(appointment_id) REFERENCES APPOINTMENT(appointment_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    UserId  CHAR(36) NOT NULL,
-    Type notification_type_enum NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES USER_TABLE(UserId),
+    notification_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id  CHAR(36) NOT NULL,
+    type notification_type_enum NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES USER_TABLE(user_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE APPOINTMENT_NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    Type appointment_notification_type_enum NOT NULL,
-    AppointmentId CHAR(36) NOT NULL,
-    FOREIGN KEY (AppointmentId) REFERENCES APPOINTMENT(AppointmentId),
-    FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId),
+    notification_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    type appointment_notification_type_enum NOT NULL,
+    appointment_id CHAR(36) NOT NULL,
+    FOREIGN KEY (appointment_id) REFERENCES APPOINTMENT(appointment_id),
+    FOREIGN KEY (notification_id) REFERENCES NOTIFICATION(notification_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE CHAT_NOTIFICATION (
-    NotificationId CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
-    ConversationId CHAR(36) NOT NULL,
-    FOREIGN KEY (ConversationId) REFERENCES CONVERSATION(ConversationId),
-    FOREIGN KEY (NotificationId) REFERENCES NOTIFICATION(NotificationId),
+    notification_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+    conversation_id CHAR(36) NOT NULL,
+    FOREIGN KEY (conversation_id) REFERENCES CONVERSATION(conversation_id),
+    FOREIGN KEY (notification_id) REFERENCES NOTIFICATION(notification_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -186,7 +186,7 @@ CREATE TABLE REQUEST (
     request_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     fortune_teller_id CHAR(36) NOT NULL,
     status request_status_enum NOT NULL,
-    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(FortuneTellerId),
+    FOREIGN KEY(fortune_teller_id) REFERENCES FORTUNE_TELLER(fortune_teller_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -253,14 +253,14 @@ BEFORE UPDATE ON CHAT_NOTIFICATION
 FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ADMIN
-INSERT INTO ADMIN (AdminId, Email, Password)
+INSERT INTO ADMIN (admin_id, email, password)
 VALUES
     ('1a32b89f67f245648ad812f5473d98c7', 'admin1@example.com', 'admin_password1'),
     ('2c89e0bd16e84a43891f97e7d50d3c4a', 'admin2@example.com', 'admin_password2'),
     ('3d4b45f1-d4d7-4b9c-8baa-95e933ac9b5b', 'admin3@example.com', 'admin_password3');
 
 -- USER_TABLE
-INSERT INTO USER_TABLE (UserId, Fname, Lname, Gender, PhoneNumber, Email, BirthDate, ProfilePicture, IsBanned, BankName, AccountNumber, Password, UserType)
+INSERT INTO USER_TABLE (user_id, fname, lname, gender, phone_number, email, birth_date, profile_picture, is_banned, bank_name, account_number, password, user_type)
 VALUES
     ('84885c07-43d7-42b8-8919-88263a33fc74', 'John', 'Doe', 'MALE', '1234567890', 'john.doe@example.com', '1990-01-15', NULL, FALSE, 'ABC Bank', '123456789', 'user_password1', 'CUSTOMER'),
     ('aad3b8fc-bb5f-46a5-b2c5-541f1f4c6a5b', 'Jane', 'Smith', 'FEMALE', '9876543210', 'jane.smith@example.com', '1985-05-20', NULL, FALSE, 'XYZ Bank', '987654321', 'user_password2', 'CUSTOMER'),
@@ -272,7 +272,7 @@ VALUES
     ('5f0d68c8-7803-4d25-b80e-13d43a641791', 'Olivia', 'Moore', 'FEMALE', '9990001111', 'olivia.moore@example.com', '1998-06-22', NULL, FALSE, 'PQR Bank', '543210987', 'user_password8', 'CUSTOMER');
 
 -- FORTUNE_TELLER
-INSERT INTO FORTUNE_TELLER (FortuneTellerId, IsVerified, Description, IdentityCardNumber, StageName, IdentityCardCopy, TotalScore, TotalReview)
+INSERT INTO FORTUNE_TELLER (fortune_teller_id, is_verified, description, identity_card_number, stage_name, identity_card_copy, total_score, total_review)
 VALUES
     ('0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', TRUE, 'Experienced tarot card reader', '01234567891012', 'Mystic Bob', 'IDCopy1.png', 4, 20),
     ('2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', TRUE, 'Specialized in Thai astrology', '01234567891013', 'Astro Alice', 'IDCopy2.png', 4.5, 15),
@@ -280,7 +280,7 @@ VALUES
     ('4e4894f4-6524-4937-8b7d-23d45b0e0c75', FALSE, NULL, '012345678910125', 'Novice Fortune Teller', 'IDCopy4.png', 0, 0);
 
 -- PACKAGE
-INSERT INTO PACKAGE (PackageId, Speciality, Description, Duration, Price, FortuneTellerID)
+INSERT INTO PACKAGE (package_id, speciality, description, duration, price, fortune_teller_id)
 VALUES
     ('5da3c188-7f9a-44f0-8641-4f64d1e92f51', 'RUNES', 'Detailed Rune Reading', 30, 50, '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da'),
     ('6b648537-13cc-4ce0-a1ae-7b6b7ccbc152', 'THAI', 'Thai Astrology Session', 45, 75, '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1'),
@@ -288,7 +288,7 @@ VALUES
     ('a70d65c3-ff8f-44d9-a06b-32e3abda4db7', 'TAROT_CARD', 'Tarot Card Session', 45, 80, '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d');
 
 -- CONVERSATION
-INSERT INTO CONVERSATION (ConversationId, FortuneTellerID, CustomerId)
+INSERT INTO CONVERSATION (conversation_id, fortune_teller_id, customer_id)
 VALUES
     ('2389b0b-6929-4b18-8a50-c301a36b3e24', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1'),
     ('3456a1c-4321-4b8c-9d0e-a6b2c3d4e5f6', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da'),
@@ -298,7 +298,7 @@ VALUES
     ;
 
 -- MESSAGE
-INSERT INTO MESSAGE (MessageId, SenderId, MessageText, IsRead, ConversationId)
+INSERT INTO MESSAGE (message_id, sender_id, message_text, is_read, conversation_id)
 VALUES
     ('1234abcd-5678-90ef-ghij-klmn12345678', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'Hello there!', FALSE, '2389b0b-6929-4b18-8a50-c301a36b3e24'),
     ('2345bcde-6789-01fg-hijk-lmno23456789', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', 'Hi! How can I help you?', FALSE, '2389b0b-6929-4b18-8a50-c301a36b3e24'),
@@ -307,7 +307,7 @@ VALUES
 
 
 -- APPOINTMENT
-INSERT INTO APPOINTMENT (AppointmentId, Status, PackageId, CustomerId, FortuneTellerId, AppointmentDate)
+INSERT INTO APPOINTMENT (appointment_id, status, package_id, customer_id, fortune_teller_id, appointment_date)
 VALUES
     ('5678ghij-9012-34kl-mnop-qrst12345678', 'CREATED',             '5da3c188-7f9a-44f0-8641-4f64d1e92f51', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '2024-02-15 10:00:00'),
     ('6789ijkl-0123-45mn-opqr-stuv23456789', 'WAITING_FOR_PAYMENT', '6b648537-13cc-4ce0-a1ae-7b6b7ccbc152', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '2024-02-20 15:30:00'),
@@ -315,28 +315,28 @@ VALUES
 
 
 -- REVIEW
-INSERT INTO REVIEW (ReviewId, ReviewMessage, Score, CustomerId, FortuneTellerId, AppointmentId)
+INSERT INTO REVIEW (review_id, review_message, score, customer_id, fortune_teller_id, appointment_id)
 VALUES
     ('9012ijkl-3456-78mn-opqr-stuv12345678', 'Great experience! Highly recommended.', 5,    '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '5678ghij-9012-34kl-mnop-qrst12345678'),
     ('0123mnop-4567-89qr-uvwx-yzab23456789', 'Very insightful reading. Thank you!', 4,      '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '6789ijkl-0123-45mn-opqr-stuv23456789'),
     ('1234qrst-5678-90uv-wxyz-abcd34567890', 'Professional and accurate predictions.', 4.5, '5f0d68c8-7803-4d25-b80e-13d43a641791', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '7890mnop-1234-5rst-uvwx-yzab34567890');
 
 -- PAYMENT
-INSERT INTO PAYMENT (PaymentId, Method, Status, Amount, ReceiverId, AppointmentId)
+INSERT INTO PAYMENT (payment_id, method, status, amount, receiver_id, appointment_id)
 VALUES
     ('2345ijkl-6789-01mn-opqr-stuv23456789', 'BANK', 'FROM_CUSTOMER', 50, '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '5678ghij-9012-34kl-mnop-qrst12345678'),
     ('3456mnop-7890-12st-uvwx-yzab34567890', 'CREDIT_CARD', 'TO_FORTUNE_TELLER', 75, '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '6789ijkl-0123-45mn-opqr-stuv23456789'),
     ('4567qrst-9012-34uv-wxyz-abcd12345678', 'BANK', 'REFUND', 100, '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '7890mnop-1234-5rst-uvwx-yzab34567890');
 
 -- REPORT
-INSERT INTO REPORT (ReportId, Description, ReportType, Status, AppointmentId, ReporterId, ReporteeId)
+INSERT INTO REPORT (report_id, description, report_type, status, appointment_id, reporter_id, reportee_id)
 VALUES
     ('5678ijkl-9012-34mn-opqr-stuv12345678', 'Inappropriate behavior during the session.', 'INAPPROPRIATE_BEHAVIOR', 'PENDING', '5678ghij-9012-34kl-mnop-qrst12345678', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d'),
     ('6789mnop-0123-45qr-uvwx-yzab23456789', 'Money dispute with the fortune teller.', 'MONEY_SUSPENSION', 'PENDING', '6789ijkl-0123-45mn-opqr-stuv23456789', '5f0d68c8-7803-4d25-b80e-13d43a641791', '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da'),
     ('7890qrst-1234-56uv-wxyz-abcd34567890', 'System error during the appointment.', 'SYSTEM_ERROR', 'PENDING', '7890mnop-1234-5rst-uvwx-yzab34567890', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', NULL);
 
 -- NOTIFICATION
-INSERT INTO NOTIFICATION (NotificationId, UserId, Type)
+INSERT INTO NOTIFICATION (notification_id, user_id, type)
 VALUES
     ('9012ijkl-3456-78mn-opqr-stuv12345678', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'VERIFICATION'),
     ('9012ijkl-3456-68mn-opqr-stuv12345678', '2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'CANCELED_VERIFICATION'),
@@ -349,14 +349,14 @@ VALUES
     ;
 
 -- APPOINTMENT_NOTIFICATION
-INSERT INTO APPOINTMENT_NOTIFICATION (NotificationId, Type, AppointmentId)
+INSERT INTO APPOINTMENT_NOTIFICATION (notification_id, type, appointment_id)
 VALUES
     ('2345ijkl-6789-01mn-opqr-stuv23456789', 'REMINDER', '5678ghij-9012-34kl-mnop-qrst12345678'),
     ('3456mnop-7890-12st-uvwx-yzab34567890', 'COMPLETE', '6789ijkl-0123-45mn-opqr-stuv23456789'),
     ('4567qrst-9012-34uv-wxyz-abcd12345678', 'CANCEL', '7890mnop-1234-5rst-uvwx-yzab34567890');
 
 -- CHAT_NOTIFICATION
-INSERT INTO CHAT_NOTIFICATION (NotificationId, ConversationId)
+INSERT INTO CHAT_NOTIFICATION (notification_id, conversation_id)
 VALUES
     ('5678ijkl-9012-34mn-opqr-stuv12345678', '2389b0b-6929-4b18-8a50-c301a36b3e24'),
     ('6789mnop-0123-45st-uvwx-yzab23456789', '3456a1c-4321-4b8c-9d0e-a6b2c3d4e5f6'),
