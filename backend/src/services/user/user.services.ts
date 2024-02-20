@@ -55,7 +55,7 @@ export const userService = {
     const token = assignToken(tokenInfo)
     return { success: true, message: "Successfully create new user", data: token }
   },
-  login: async (body: { email: string; password: string }) => {
+  login: async (body: { email: string, password: string }) => {
     const email = body.email
     const password = body.password
 

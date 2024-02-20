@@ -27,8 +27,8 @@ export default function SpecialityDropdown({
               index === 0
                 ? "rounded-t-xl"
                 : index === Object.keys(typeJson).length - 1
-                ? "rounded-b-xl"
-                : ""
+                  ? "rounded-b-xl"
+                  : ""
             } hover:${
               fortuneTellerSpeciality.speciality == type.speciality
                 ? "bg-[#B9B9B9]/90"

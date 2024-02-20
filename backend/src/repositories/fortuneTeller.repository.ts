@@ -14,7 +14,7 @@ export const fortuneTellerRepository = {
     )
 
     if (result.rows.length === 0) return null
-    
+
     return {
       description: result.rows[0].description,
       stageName: result.rows[0].stage_name,
