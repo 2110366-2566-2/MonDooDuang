@@ -5,14 +5,14 @@ import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortune
 export const fortuneTellerRepository = {
 
   // create fortuneTeller
-  createFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+  createFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
     try {
       await db.query(
         `
             INSERT INTO FORTUNE_TELLER (fortunetellerid, identitycardnumber, identitycardcopy)
             VALUES($1, $2, $3);
         `,
-        [fortuneTeller.fortunetellerid, fortuneTeller.identitycardnumber, fortuneTeller.identitycardcopy]
+        [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
       )
       return true
     } catch (err) {
@@ -28,7 +28,7 @@ export const fortuneTellerRepository = {
                 INSERT INTO REQUEST (fortune_teller_id, status)
                 VALUES($1, $2);
             `,
-        [request.fortune_teller_id, request.status]
+        [request.fortuneTellerId, request.status]
       )
       return true
     } catch (err) {
@@ -36,17 +36,16 @@ export const fortuneTellerRepository = {
     }
   },
 
-  updateFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+  updateFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
     try {
-      const re = await db.query(
+      await db.query(
         `
               UPDATE fortune_teller
               SET identitycardnumber = $2, identitycardcopy = $3
               WHERE fortunetellerid = $1
           `,
-        [fortuneTeller.fortunetellerid, fortuneTeller.identitycardnumber, fortuneTeller.identitycardcopy]
+        [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
       )
-      console.log(fortuneTeller)
       return true
     } catch (err) {
       return false
@@ -59,7 +58,7 @@ export const fortuneTellerRepository = {
         `
                 UPDATE request
                 SET status =  'PENDING'
-                WHERE fortune_teller_id = '${request.fortune_teller_id}';
+                WHERE fortune_teller_id = '${request.fortuneTellerId}';
             `
       )
 
@@ -69,17 +68,17 @@ export const fortuneTellerRepository = {
     }
   },
 
-  getFortuneTellerValid: async (fortunetellerid: string) => {
+  getFortuneTellerValid: async (fortuneTellerId: string) => {
     try {
       const query = await db.query(
         `SELECT isverified 
       FROM fortune_teller
-      WHERE fortunetellerid = '${fortunetellerid}' `
+      WHERE fortunetellerid = '${fortuneTellerId}' `
       )
       if (query.rowCount === 0) return false
       return true
     } catch (err) {
-      return err
+      return null
     }
   },
 

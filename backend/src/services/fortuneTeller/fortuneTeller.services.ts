@@ -5,18 +5,18 @@ import { FortuneTellerRegisterSchema, RequestSchema } from "../../models/fortune
 
 export const fortuneTellerService = {
 
-  createFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
-    const isSuccess = await fortuneTellerRepository.createFortuneTellerRegister(fortuneTeller)
+  createFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+    const isSuccess = await fortuneTellerRepository.createFortuneTeller(fortuneTeller)
 
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to create register" }
   },
 
-  updateFortuneTellerRegister: async (fortuneTeller: FortuneTellerRegisterSchema) => {
-    const isSuccess = await fortuneTellerRepository.updateFortuneTellerRegister(fortuneTeller)
+  updateFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+    const isSuccess = await fortuneTellerRepository.updateFortuneTeller(fortuneTeller)
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller register" }
   },
 
-  createRequest: async (request: RequestSchema) => {
+  createFortuneTellerRequest: async (request: RequestSchema) => {
     const isSuccess = await fortuneTellerRepository.createFortuneTellerRequest(request)
 
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to create request" }
@@ -27,8 +27,8 @@ export const fortuneTellerService = {
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller request" }
   },
 
-  getFortuneTellerValid: async (fortunetellerid: string) => {
-    const data = await fortuneTellerRepository.getFortuneTellerValid(fortunetellerid)
+  getFortuneTellerValid: async (fortuneTellerId: string) => {
+    const data = await fortuneTellerRepository.getFortuneTellerValid(fortuneTellerId)
     return data
   },
 

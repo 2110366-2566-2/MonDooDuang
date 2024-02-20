@@ -3,7 +3,7 @@ import Logo from "../../assets/FortuneTellerRegisterAssets/Logo.svg"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
 
 export default function FortuneTellerRegisterPage() {
-  const mockUserId = "aad3b8fc-bb5f-46a5-b2c5-541f1f4c6a5b"
+  const mockUserId = "84885c07-43d7-42b8-8919-88263a33fc74"
   return (
     <RootLayout>
       <div className="z-50 flex flex-col items-center relative text-white font-noto-sans">

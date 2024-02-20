@@ -20,7 +20,7 @@ export default function FormRegister(props: { userId: string }) {
     const isCheck = checkbox?.checked ? true : false
     const checkFile = file != ""
 
-    setIsIdNumberError(!checkNumber && !checkLength)
+    setIsIdNumberError(!checkNumber || !checkLength)
     setIsPolicyError(!isCheck)
     setIsFileError(!checkFile)
 
@@ -31,7 +31,7 @@ export default function FormRegister(props: { userId: string }) {
   const SubmitRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (validation({ idNumber, file }) && !isPolicyError) {
-      setIsShowComplete(true)
+      // setIsShowComplete(true)
       // check is userId is exist in fortune_teller before
       const isIdExist = await FortuneTellerRegisterService.getFortuneTellerValid(props.userId)
       if (isIdExist) {
@@ -44,7 +44,7 @@ export default function FormRegister(props: { userId: string }) {
           return alert(response.message)
         }
       } else {
-        const response = await FortuneTellerRegisterService.createFortuneTellerRegister(
+        const response = await FortuneTellerRegisterService.createFortuneTeller(
           props.userId,
           idNumber,
           file

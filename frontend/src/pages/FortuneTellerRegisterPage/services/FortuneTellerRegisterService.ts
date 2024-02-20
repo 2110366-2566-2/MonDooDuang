@@ -1,10 +1,10 @@
 import { environment } from "../../../common/constants/environment"
 
 export const FortuneTellerRegisterService = {
-  createFortuneTellerRegister: async (
-    fortunetellerid: string,
-    identitycardnumber: string,
-    identitycardcopy: string
+  createFortuneTeller: async (
+    fortuneTellerId: string,
+    identityCardNumber: string,
+    identityCardCopy: string
   ) => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/create-fortuneTeller`, {
       method: "POST",
@@ -12,16 +12,16 @@ export const FortuneTellerRegisterService = {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        fortunetellerid,
-        identitycardnumber,
-        identitycardcopy
+        fortuneTellerId,
+        identityCardNumber,
+        identityCardCopy
       })
     })
     const data = await res.json()
     return { isSuccess: data.success, message: data.message }
   },
 
-  createFortuneTellerRequest: async (fortunetellerid: string) => {
+  createFortuneTellerRequest: async (fortuneTellerId: string) => {
     const res = await fetch(
       `${environment.backend.url}/fortuneTeller/create-fortuneTeller-request`,
       {
@@ -30,7 +30,7 @@ export const FortuneTellerRegisterService = {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          fortunetellerid
+          fortuneTellerId
         })
       }
     )
@@ -39,9 +39,9 @@ export const FortuneTellerRegisterService = {
   },
 
   updateFortuneTeller: async (
-    fortunetellerid: string,
-    identitycardnumber: string,
-    identitycardcopy: string
+    fortuneTellerId: string,
+    identityCardNumber: string,
+    identityCardCopy: string
   ) => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/update-fortuneTeller`, {
       method: "PATCH",
@@ -49,26 +49,26 @@ export const FortuneTellerRegisterService = {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        fortunetellerid,
-        identitycardnumber,
-        identitycardcopy
+        fortuneTellerId,
+        identityCardNumber,
+        identityCardCopy
       })
     })
     const data = await res.json()
     return { isSuccess: data.success, message: data.message }
   },
 
-  getFortuneTellerValid: async (fortunetellerid: string): Promise<boolean> => {
+  getFortuneTellerValid: async (fortuneTellerId: string): Promise<boolean> => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/checkValid`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        fortunetellerid
+        fortuneTellerId
       })
     })
     const data = await res.json()
-    return data
+    return data.data
   }
 }

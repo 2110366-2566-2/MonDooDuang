@@ -11,12 +11,12 @@ export interface FortuneTellerSchema {
 export type status = "PENDING" | "ACCEPTED" | "REJECTED"
 
 export interface FortuneTellerRegisterSchema {
-  fortunetellerid: string
-  identitycardnumber: string
-  identitycardcopy: string
+  fortuneTellerId: string
+  identityCardNumber: string
+  identityCardCopy: string
 }
 
 export interface RequestSchema {
-  fortune_teller_id: string
+  fortuneTellerId: string
   status: status
 }

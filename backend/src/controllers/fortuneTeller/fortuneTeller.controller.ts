@@ -2,14 +2,14 @@ import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
 import { FortuneTellerRegisterSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
 
-const createFortuneTellerRegister = async (req: Request, res: Response) => {
+const createFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerRegisterSchema = {
-    fortunetellerid: req.body.fortunetellerid,
-    identitycardnumber: req.body.identitycardnumber,
-    identitycardcopy: req.body.identitycardcopy
+    fortuneTellerId: req.body.fortuneTellerId,
+    identityCardNumber: req.body.identityCardNumber,
+    identityCardCopy: req.body.identityCardCopy
   }
 
-  const result = await fortuneTellerService.createFortuneTellerRegister(fortuneTeller)
+  const result = await fortuneTellerService.createFortuneTeller(fortuneTeller)
 
   if (!result.success) return res.status(400).json(result)
   res.status(201).json({ success: true })
@@ -17,28 +17,28 @@ const createFortuneTellerRegister = async (req: Request, res: Response) => {
 
 const createFortuneTellerRequest = async (req: Request, res: Response) => {
   const request: RequestSchema = {
-    fortune_teller_id: req.body.fortunetellerid,
+    fortuneTellerId: req.body.fortuneTellerId,
     status: "PENDING"
   }
 
-  const result = await fortuneTellerService.createRequest(request)
+  const result = await fortuneTellerService.createFortuneTellerRequest(request)
 
   if (!result.success) return res.status(400).json(result)
   res.status(201).json(result)
 }
 
-const updateFortuneTellerRegister = async (req: Request, res: Response) => {
+const updateFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerRegisterSchema = {
-    fortunetellerid: req.body.fortunetellerid,
-    identitycardnumber: req.body.identitycardnumber,
-    identitycardcopy: req.body.identitycardcopy
+    fortuneTellerId: req.body.fortuneTellerId,
+    identityCardNumber: req.body.identityCardNumber,
+    identityCardCopy: req.body.identityCardCopy
   }
-  const resultOne = await fortuneTellerService.updateFortuneTellerRegister(fortuneTeller)
+  const resultOne = await fortuneTellerService.updateFortuneTeller(fortuneTeller)
 
   if (!resultOne.success) return res.status(400).json(resultOne)
 
   const request: RequestSchema = {
-    fortune_teller_id: req.body.fortunetellerid,
+    fortuneTellerId: req.body.fortuneTellerId,
     status: "PENDING"
   }
 
@@ -49,11 +49,11 @@ const updateFortuneTellerRegister = async (req: Request, res: Response) => {
 }
 
 const getFortuneTellerValid = async (req: Request, res: Response) => {
-  const fortunetellerid: string = req.body.fortunetellerid
+  const fortuneTellerId: string = req.body.fortuneTellerId
 
-  const result = await fortuneTellerService.getFortuneTellerValid(fortunetellerid)
+  const result = await fortuneTellerService.getFortuneTellerValid(fortuneTellerId)
 
-  return res.status(200).json(result)
+  return res.status(200).json({succes : true, data : result})
 }
 
 const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
@@ -90,9 +90,9 @@ const getRecommendPackage = async (req: Request, res: Response) => {
 }
 
 export const fortuneTellerController = {
-  createFortuneTellerRegister,
+  createFortuneTeller,
   createFortuneTellerRequest,
-  updateFortuneTellerRegister,
+  updateFortuneTeller,
   getFortuneTellerValid,
   getFortuneTellerDisplayInfoById,
   getPackageByFortuneTellerId,
