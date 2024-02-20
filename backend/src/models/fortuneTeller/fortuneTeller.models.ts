@@ -16,3 +16,9 @@ export interface fortuneTellerSchema{
     created_at: Date,
     updated_at: Date
 }
+
+export interface FortuneTellerDetailSchema{
+    fortuneTellerId: string,
+    description: string,
+    stageName: string
+}

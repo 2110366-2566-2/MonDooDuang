@@ -4,20 +4,35 @@ import { FortuneTellerService } from "../../services/FortuneTellerService"
 
 export default function Form(props: { fortuneTellerId: string }) {
   const [editState, setEditState] = useState(false)
-  const [fortuneTellerStageName, setFortuneTellerStageName] = useState<string>()
-  const [fortuneTellerDescription, setFortuneTellerDescription] = useState<string>()
+  const [stageName, setStageName] = useState("")
+  const [description, setDescription] = useState("")
 
+  //get fortune teller's detail at the beginning
   useEffect(() => {
     const fetchFortuneTellerDetail = async () => {
       const response = await FortuneTellerService.getFortuneTellerDetail(props.fortuneTellerId)
-      const fortuneTellerStageName = response.stageName
-      const fortuneTellerDescription = response.description
+      const stageName = response.stageName
+      const description = response.description
 
-      setFortuneTellerStageName(fortuneTellerStageName)
-      setFortuneTellerDescription(fortuneTellerDescription)
+      setStageName(stageName)
+      setDescription(description)
     }
     fetchFortuneTellerDetail()
   }, [])
+
+  //update fortune teller's detail after click 'เสร็จสิ้น'
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const response = await FortuneTellerService.updateFortuneTellerDetail(
+      props.fortuneTellerId,
+      description,
+      stageName
+    )
+    if (!response.isSuccess) {
+      return alert(response.message)
+    }
+    window.location.href = "/account/fortuneteller"
+  }
 
   // useEffect(() => {
   //   const fetchPackage = async () => {
@@ -33,19 +48,6 @@ export default function Form(props: { fortuneTellerId: string }) {
   //   }
   //   fetchPackage()
   // }, [])
-
-  // const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   const response = await FortuneTellerService.updateFortuneTellerDetail(
-  //     props.fortuneTellerId,
-  //     stageName,
-  //     description
-  //   )
-
-  //   if (!response.isSuccess) {
-  //     return alert(response.message)
-  //   }
-  // }
 
   return (
     <div className="text-white">
@@ -78,19 +80,18 @@ export default function Form(props: { fortuneTellerId: string }) {
 
         <div className="font-regular flex flex-row mt-10 w-3/4 mx-auto">
           <div className="mr-20 w-1/3">
-            {/* onSubmit={submitForm} */}
-            <form id="completeSubmit">
+            <form id="completeSubmit" onSubmit={submitForm}>
               <label className="pl-2.5">ชื่อในวงการ</label>
               <br />
 
               <input
                 type="text"
-                placeholder={fortuneTellerStageName}
+                placeholder={stageName}
                 className={`bg-white bg-opacity-50 placeholder-white rounded-xl w-full h-12 pl-8 ${
-                  editState ? "cursor-pointer" : ""
+                  editState ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
                 disabled={!editState}
-                onChange={(e) => setFortuneTellerStageName(e.target.value)}
+                onChange={(e) => setStageName(e.target.value)}
               ></input>
             </form>
           </div>
@@ -100,12 +101,12 @@ export default function Form(props: { fortuneTellerId: string }) {
             <br />
             <input
               type="text"
-              placeholder={fortuneTellerDescription}
+              placeholder={description}
               className={`bg-white placeholder-white bg-opacity-50 rounded-xl w-full h-12 pl-8 ${
-                editState ? "cursor-pointer" : ""
+                editState ? "cursor-pointer" : "cursor-not-allowed"
               }`}
               disabled={!editState}
-              onChange={(e) => setFortuneTellerDescription(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
             ></input>
           </div>
         </div>

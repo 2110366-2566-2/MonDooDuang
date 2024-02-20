@@ -16,5 +16,21 @@ export const fortuneTellerRepository = {
     } catch (err) {
       return null
     }
+  },
+
+  updateFortuneTellerDetail: async (fortuneTeller: FortuneTellerDetailSchema) => {
+    try {
+          const result = await db.query(
+            `
+            UPDATE fortune_teller
+            SET description = $2, stagename = $3
+            WHERE fortunetellerid = $1
+            `,
+            [fortuneTeller.fortuneTellerId, fortuneTeller.description, fortuneTeller.stageName]
+          )
+        return true
+    }catch (err) {
+      return false
+    }
   }
 }
