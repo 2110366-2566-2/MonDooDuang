@@ -6,7 +6,7 @@ export const reportRepository = {
     try {
       await db.query(
         `
-            INSERT INTO REPORT (Description, ReportType, Status, AppointmentId, ReporterId, ReporteeId)
+            INSERT INTO REPORT (description, report_type, status, appointment_id, reporter_id, reportee_id)
             VALUES($1, $2, $3, $4, $5, $6);
         `,
         [report.description, report.reportType, report.status, report.appointmentId, report.reporterId, report.reporteeId]
@@ -23,10 +23,10 @@ export const reportRepository = {
 
       await db.query(
         `
-          INSERT INTO REPORT (description, reporttype, status, appointmentid, reporterid, reporteeid)
-          SELECT $1, $2, $3, AppointmentId, $4, $5
+          INSERT INTO REPORT (description, report_type, status, appointment_id, reporter_id, reportee_id)
+          SELECT $1, $2, $3, appointment_id, $4, $5
           FROM APPOINTMENT
-          WHERE AppointmentId IN (${query});
+          WHERE appointment_id IN (${query});
           `,
         [report.description, report.reportType, report.status, report.reporterId, report.reporteeId, ...appointmentIds]
       )
@@ -38,31 +38,31 @@ export const reportRepository = {
   },
   getReporteeId: async (conversationId: string, reporterId: string) => {
     const result = await db.query(
-      `SELECT FortuneTellerId, CustomerId
+      `SELECT fortune_teller_id, customer_id
       FROM CONVERSATION
-      WHERE ConversationId = $1;`,
+      WHERE conversation_id = $1;`,
       [conversationId]
     )
 
     if (result.rows.length === 0) return null
 
-    if (result.rows[0].fortunetellerid === reporterId) { return result.rows[0].customerid }
-    return result.rows[0].fortunetellerid
+    if (result.rows[0].fortune_teller_id === reporterId) { return result.rows[0].customer_id }
+    return result.rows[0].fortune_teller_id
   },
   getAppointmentIds: async (customerId: string, fortuneTellerId: string) => {
     const result = await db.query(
       `
-        SELECT AppointmentId
+        SELECT appointment_id
         FROM APPOINTMENT
-        WHERE CustomerId = $1
-        AND FortuneTellerId = $2
-        AND Status = 'EVENT_COMPLETED';
+        WHERE customer_id = $1
+        AND fortune_teller_id = $2
+        AND status = 'EVENT_COMPLETED';
       `,
       [customerId, fortuneTellerId]
     )
 
     // Turn list of object to list of string
-    const appointmentIds = result.rows.map(row => row.appointmentid)
+    const appointmentIds = result.rows.map(row => row.appointment_id)
 
     return appointmentIds
   },
@@ -71,8 +71,8 @@ export const reportRepository = {
     await db.query(
       `
         UPDATE APPOINTMENT
-        SET Status = 'SUSPENDED'
-        WHERE AppointmentId IN (${query});
+        SET status = 'SUSPENDED'
+        WHERE appointment_id IN (${query});
       `,
       [...appointmentIds]
     )

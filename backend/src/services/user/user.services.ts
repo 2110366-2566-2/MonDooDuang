@@ -1,5 +1,6 @@
-import { CreateUserSchema, RegisterUserSchema, TokenInfoSchema } from "../../models/user/user.model"
+import { CreateUserSchema, RegisterUserSchema } from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
+import { TokenInfoSchema } from "../../types/jwtToken"
 import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
 
@@ -46,9 +47,9 @@ export const userService = {
     }
 
     const tokenInfo: TokenInfoSchema = {
-      userId: newUser.userid,
-      userType: newUser.usertype,
-      userName: newUser.fname + " " + newUser.lname[0] + "."
+      userId: newUser.user_id,
+      userType: newUser.user_type,
+      username: newUser.fname + " " + newUser.lname[0] + "."
     }
 
     const token = assignToken(tokenInfo)
@@ -71,9 +72,9 @@ export const userService = {
     }
 
     const tokenInfo: TokenInfoSchema = {
-      userId: user.userid,
-      userType: user.usertype,
-      userName: user.fname + " " + user.lname[0] + "."
+      userId: user.user_id,
+      userType: user.user_type,
+      username: user.fname + " " + user.lname[0] + "."
     }
 
     const token = assignToken(tokenInfo)
