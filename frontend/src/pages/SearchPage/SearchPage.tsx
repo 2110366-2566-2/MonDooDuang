@@ -4,6 +4,7 @@ import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/Fort
 import { SearchService } from "./services/SearchService"
 import { Specialities, specialitiesName } from "./types/SpecialityType"
 import { environment } from "../../common/constants/environment"
+import NavBar from "../../common/components/NavBar/NavBar"
 
 export default function SearchPage(): JSX.Element {
   const defaultSearch: SearchFortuneTeller = {
@@ -58,8 +59,17 @@ export default function SearchPage(): JSX.Element {
       speciality: fetchSearchData.speciality_list
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
-      chat: () => {},
-      moreInformation: () => {},
+      chat: () => {
+        window.location.href =
+          environment.frontend.url +
+          "/conversation"
+      },
+      moreInformation: () => {        
+        window.location.href =
+          environment.frontend.url +
+          "/fortuneteller/" +
+          fetchSearchData.fortunetellerid
+      },
       makeAppointment: () => {
         window.location.href =
           environment.frontend.url +
@@ -77,7 +87,8 @@ export default function SearchPage(): JSX.Element {
     }
   }
   return (
-    <div className="bg-black">
+    <div className="">
+      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
       <div className="sticky pt-5 z-10 top-0">
         <SearchBar
           searchFortuneTeller={searchFortuneTeller}
@@ -96,8 +107,8 @@ export default function SearchPage(): JSX.Element {
         <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0">
           {searchValue && searchValue.length > 0
             ? searchValue.map((fortunetellerInformation, index) => (
-                <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
-              ))
+              <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
+            ))
             : null}
         </div>
       </div>
