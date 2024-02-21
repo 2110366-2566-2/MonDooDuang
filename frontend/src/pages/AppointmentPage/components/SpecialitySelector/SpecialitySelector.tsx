@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from "react"
 import DropDownIcon from "../../../SearchPage/components/Icons/dropdown-icon.svg"
 import DropDownReverseIcon from "../../../SearchPage/components/Icons/dropdown-reverse-icon.svg"
 import SpecialityDropdown from "./SpecialityDropdown"
-import { Fortune, Package } from "../../types/AppointmentTypes"
+import { Package } from "../../types/AppointmentTypes"
 import { UnderLine } from "../Icon"
 import { specialitiesName } from "../../../SearchPage/types/SpecialityType"
 interface SpecialitySelectorProps {
   selectedSpeciaty: Package
-  typeJson: Fortune[]
+  typeJson: Package[]
   setType: (type: Package) => void
 }
 

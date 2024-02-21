@@ -2,7 +2,7 @@ import { useState } from "react"
 import FailedAlert from "./FailedAlert"
 import { LoginService } from "../services/LoginService"
 import { useNavigate } from "react-router-dom"
-import { setLocalStorage } from "../../../common/services/LocalStorage"
+import { LocalStorageUtils } from "../../../common/utils/LocalStorageUtils"
 import { UserLoginSchema } from "../types/LoginType"
 
 export default function LoginBox() {
@@ -45,7 +45,7 @@ export default function LoginBox() {
       setFAlert(true)
       return
     }
-    setLocalStorage(data.data)
+    LocalStorageUtils.setData("token", data.data)
     navigate("/search")
   }
 

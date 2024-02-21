@@ -1,10 +1,10 @@
+import { AuthProvider } from "../../common/providers/AuthProvider"
 import FortuneTellerAccountPage from "./FortuneTellerAccountPage"
 
 export default function FortuneTellerAccountApp() {
   return (
-    //Add providers as needed
-    <>
+    <AuthProvider>
       <FortuneTellerAccountPage />
-    </>
+    </AuthProvider>
   )
 }

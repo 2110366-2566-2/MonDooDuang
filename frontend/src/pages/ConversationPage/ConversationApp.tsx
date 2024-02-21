@@ -1,10 +1,10 @@
+import { AuthProvider } from "../../common/providers/AuthProvider"
 import ConversationPage from "./ConversationPage"
 
 export default function ConversationApp() {
   return (
-    //Add providers as needed
-    <>
+    <AuthProvider>
       <ConversationPage />
-    </>
+    </AuthProvider>
   )
 }
