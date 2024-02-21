@@ -53,7 +53,7 @@ const getFortuneTellerValid = async (req: Request, res: Response) => {
 
   const result = await fortuneTellerService.getFortuneTellerValid(fortuneTellerId)
 
-  return res.status(200).json({succes : true, data : result})
+  return res.status(200).json({ success: true, data: result })
 }
 
 const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
