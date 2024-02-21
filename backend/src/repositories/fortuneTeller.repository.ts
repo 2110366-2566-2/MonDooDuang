@@ -9,7 +9,7 @@ export const fortuneTellerRepository = {
     try {
       await db.query(
         `
-            INSERT INTO FORTUNE_TELLER (fortunetellerid, identitycardnumber, identitycardcopy)
+            INSERT INTO FORTUNE_TELLER (fortune_teller_id, identity_card_number, identity_card_copy)
             VALUES($1, $2, $3);
         `,
         [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
@@ -41,8 +41,8 @@ export const fortuneTellerRepository = {
       await db.query(
         `
               UPDATE fortune_teller
-              SET identitycardnumber = $2, identitycardcopy = $3
-              WHERE fortunetellerid = $1
+              SET identity_card_number = $2, identity_card_copy = $3
+              WHERE fortune_teller_id = $1
           `,
         [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
       )
@@ -71,9 +71,9 @@ export const fortuneTellerRepository = {
   getFortuneTellerValid: async (fortuneTellerId: string) => {
     try {
       const query = await db.query(
-        `SELECT isverified 
+        `SELECT is_verified 
       FROM fortune_teller
-      WHERE fortunetellerid = '${fortuneTellerId}' `
+      WHERE fortune_teller_id = '${fortuneTellerId}' `
       )
       if (query.rowCount === 0) return false
       return true
