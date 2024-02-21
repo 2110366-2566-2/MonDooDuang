@@ -1,8 +1,87 @@
 import { db } from "../configs/pgdbConnection"
-import { FortuneTellerSchema } from "../models/fortuneTeller/fortuneTeller.model"
+import { FortuneTellerRegisterSchema, RequestSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
 
 export const fortuneTellerRepository = {
+
+  // create fortuneTeller
+  createFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+    try {
+      await db.query(
+        `
+            INSERT INTO FORTUNE_TELLER (fortune_teller_id, identity_card_number, identity_card_copy)
+            VALUES($1, $2, $3);
+        `,
+        [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
+      )
+      return true
+    } catch (err) {
+      return false
+    }
+  },
+
+  // create request
+  createFortuneTellerRequest: async (request: RequestSchema) => {
+    try {
+      await db.query(
+        `
+                INSERT INTO REQUEST (fortune_teller_id, status)
+                VALUES($1, $2);
+            `,
+        [request.fortuneTellerId, request.status]
+      )
+      return true
+    } catch (err) {
+      return false
+    }
+  },
+
+  updateFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+    try {
+      await db.query(
+        `
+              UPDATE fortune_teller
+              SET identity_card_number = $2, identity_card_copy = $3
+              WHERE fortune_teller_id = $1
+          `,
+        [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
+      )
+      return true
+    } catch (err) {
+      return false
+    }
+  },
+
+  updateFortuneTellerRequest: async (request: RequestSchema) => {
+    try {
+      await db.query(
+        `
+                UPDATE request
+                SET status =  'PENDING'
+                WHERE fortune_teller_id = '${request.fortuneTellerId}';
+            `
+      )
+
+      return true
+    } catch (err) {
+      return false
+    }
+  },
+
+  getFortuneTellerValid: async (fortuneTellerId: string) => {
+    try {
+      const query = await db.query(
+        `SELECT is_verified 
+      FROM fortune_teller
+      WHERE fortune_teller_id = '${fortuneTellerId}' `
+      )
+      if (query.rowCount === 0) return false
+      return true
+    } catch (err) {
+      return null
+    }
+  },
+
   getFortuneTellerDisplayInfoById: async (fortuneTellerId: string): Promise<null | FortuneTellerDetailSchema> => {
     const result = await db.query(
       `SELECT description, stage_name, total_score, total_review, profile_picture
