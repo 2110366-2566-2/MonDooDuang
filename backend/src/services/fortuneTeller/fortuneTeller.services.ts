@@ -14,6 +14,11 @@ export const fortuneTellerService = {
   updateFortuneTellerDetail: async (fortuneTeller : FortuneTellerDetailSchema) => {
     const isSuccess = await fortuneTellerRepository.updateFortuneTellerDetail(fortuneTeller)
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller detail" }
+  },
+
+  getStageNameValid: async (fortuneTellerId: String, stageName: String) => {
+    const stageNameValid = await fortuneTellerRepository.getStageNameValid(fortuneTellerId, stageName)
+    return stageNameValid
   }
 
 }

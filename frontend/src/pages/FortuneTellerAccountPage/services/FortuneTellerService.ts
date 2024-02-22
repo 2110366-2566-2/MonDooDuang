@@ -22,6 +22,18 @@ export const FortuneTellerService = {
     })
     const data = await res.json()
     return { isSuccess: data.success, message: data.message }
+  },
+
+  getStageNameValid: async(fortuneTellerId: String, stageName: String): Promise<boolean> => {
+    const res = await fetch(`${environment.backend.url}/fortuneTeller/stageNameValid`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ fortuneTellerId, stageName })
+  })
+    const data = await res.json()
+    return data.data
   }
 
 }

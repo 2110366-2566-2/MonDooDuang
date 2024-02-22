@@ -6,6 +6,7 @@ export default function Form(props: { fortuneTellerId: string }) {
   const [editState, setEditState] = useState(false)
   const [stageName, setStageName] = useState("")
   const [description, setDescription] = useState("")
+  const [isStageNameValid, setIsStageNameValid] = useState(true)
 
   //get fortune teller's detail at the beginning
   useEffect(() => {
@@ -23,15 +24,23 @@ export default function Form(props: { fortuneTellerId: string }) {
   //update fortune teller's detail after click 'เสร็จสิ้น'
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const response = await FortuneTellerService.updateFortuneTellerDetail(
+    const stagenameValid = await FortuneTellerService.getStageNameValid(
       props.fortuneTellerId,
-      description,
       stageName
     )
-    if (!response.isSuccess) {
-      return alert(response.message)
+    if (stagenameValid) {
+      const response = await FortuneTellerService.updateFortuneTellerDetail(
+        props.fortuneTellerId,
+        description,
+        stageName
+      )
+      if (!response.isSuccess) {
+        return alert(response.message)
+      }
+      window.location.href = "/account/fortuneteller"
+    } else {
+      setIsStageNameValid(false)
     }
-    window.location.href = "/account/fortuneteller"
   }
 
   // useEffect(() => {
@@ -87,13 +96,14 @@ export default function Form(props: { fortuneTellerId: string }) {
               <input
                 type="text"
                 placeholder={stageName}
-                className={`bg-white bg-opacity-50 placeholder-white rounded-xl w-full h-12 pl-8 ${
+                className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 ${
                   editState ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
                 disabled={!editState}
                 onChange={(e) => setStageName(e.target.value)}
               ></input>
             </form>
+            {!isStageNameValid && <span className="text-red-500 text-xs">ชื่อนี้ถูกใช้ไปแล้ว</span>}
           </div>
 
           <div className="w-7/12">
@@ -102,7 +112,7 @@ export default function Form(props: { fortuneTellerId: string }) {
             <input
               type="text"
               placeholder={description}
-              className={`bg-white placeholder-white bg-opacity-50 rounded-xl w-full h-12 pl-8 ${
+              className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 ${
                 editState ? "cursor-pointer" : "cursor-not-allowed"
               }`}
               disabled={!editState}

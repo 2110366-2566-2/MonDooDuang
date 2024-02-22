@@ -32,5 +32,22 @@ export const fortuneTellerRepository = {
     }catch (err) {
       return false
     }
+  },
+  
+  getStageNameValid: async (fortuneTellerId: String, stageName: String) => {
+    try {
+      const stageNameValid = await db.query(
+        `
+        SELECT stagename 
+        FROM fortune_teller
+        WHERE stagename = $2 AND fortunetellerid != $1
+        `,
+        [fortuneTellerId, stageName]
+      )
+      if (stageNameValid.rows.length === 0) return true
+      return false
+    } catch (err) {
+      return false
+    }
   }
 }

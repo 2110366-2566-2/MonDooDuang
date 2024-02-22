@@ -9,7 +9,6 @@ const getFortuneTellerDetail = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: fortuneTellerDetail })
 }
 
-
 const updateFortuneTellerDetail = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerDetailSchema = {
     fortuneTellerId: req.params.fortuneTellerId,
@@ -21,7 +20,15 @@ const updateFortuneTellerDetail = async (req: Request, res: Response) => {
   return res.status(200).json({success : true})
 }
 
+const getStageNameValid = async (req: Request, res: Response) => {
+  const fortuneTellerId = req.body.fortuneTellerId
+  const stageName = req.body.stageName
+  const stageNameValid = await fortuneTellerService.getStageNameValid(fortuneTellerId, stageName)
+  return res.status(200).json({ success: true, data: stageNameValid })
+}
+
 export const fortuneTelllerController = {
   getFortuneTellerDetail,
-  updateFortuneTellerDetail
+  updateFortuneTellerDetail,
+  getStageNameValid
 }
