@@ -25,7 +25,7 @@ export default function FortuneTellerPackage({
   }
 
   const specialityName = (): string => {
-    let speciality = fortuneTellerPackage.speciality
+    const speciality = fortuneTellerPackage.speciality
     if (speciality === "TAROT_CARD") return "ไพ่ทาโรต์"
     if (speciality === "THAI") return "โหราศาตร์ไทย"
     if (speciality === "NUMBER") return "ศาตร์ตัวเลข"
