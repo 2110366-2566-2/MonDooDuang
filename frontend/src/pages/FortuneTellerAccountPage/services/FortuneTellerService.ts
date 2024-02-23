@@ -1,4 +1,5 @@
 import { environment } from "../../../common/constants/environment"
+import { PackageTypes } from "../types/PackageTypes"
 
 export const FortuneTellerService = {
   
@@ -34,6 +35,13 @@ export const FortuneTellerService = {
   })
     const data = await res.json()
     return data.data
-  }
+  },
+
+  getPackageByFortuneTellerId: async(fortuneTellerId: string):Promise<PackageTypes[]> => {
+    const res = await fetch(`${environment.backend.url}/fortuneteller/package/${fortuneTellerId}`)
+    const data = await res.json()
+
+    return data.data
+  },
 
 }

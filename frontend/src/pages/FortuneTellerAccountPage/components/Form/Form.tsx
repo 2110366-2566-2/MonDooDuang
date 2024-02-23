@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react"
 import EditIcon from "../../../../assets/FortuneTellerAccountAssets/EditIcon.png"
 import { FortuneTellerService } from "../../services/FortuneTellerService"
+import { PackageTypes } from "../../types/PackageTypes"
+import FortuneTellerPackage from "../FortuneTellerPackage/FortuneTellerPackage"
 
 export default function Form(props: { fortuneTellerId: string }) {
   const [editState, setEditState] = useState(false)
   const [stageName, setStageName] = useState("")
   const [description, setDescription] = useState("")
   const [isStageNameValid, setIsStageNameValid] = useState(true)
+  const [fortuneTellerPackage, setFortuneTellerPackage] = useState<PackageTypes[]>()
 
   //get fortune teller's detail at the beginning
   useEffect(() => {
@@ -19,6 +22,17 @@ export default function Form(props: { fortuneTellerId: string }) {
       setDescription(description)
     }
     fetchFortuneTellerDetail()
+  }, [])
+
+  //fetch all package from fortuneTellerId
+  useEffect(() => {
+    const fetchFortuneTellerPackage = async () => {
+      const response = await FortuneTellerService.getPackageByFortuneTellerId(props.fortuneTellerId)
+      const fortuneTellerPackage = await response
+
+      setFortuneTellerPackage(fortuneTellerPackage)
+    }
+    fetchFortuneTellerPackage()
   }, [])
 
   //update fortune teller's detail after click 'เสร็จสิ้น'
@@ -42,21 +56,6 @@ export default function Form(props: { fortuneTellerId: string }) {
       setIsStageNameValid(false)
     }
   }
-
-  // useEffect(() => {
-  //   const fetchPackage = async () => {
-  //     try {
-  //       const requests = await FortuneTellerService.getFortuneTellerPackage(props.fortuneTellerId)
-
-  //       if (requests) {
-  //         setFortuneTellerPackage(requests)
-  //       }
-  //     } catch (err) {
-  //       console.log(err)
-  //     }
-  //   }
-  //   fetchPackage()
-  // }, [])
 
   return (
     <div className="text-white">
@@ -132,17 +131,19 @@ export default function Form(props: { fortuneTellerId: string }) {
           </button>
 
           <div className="h-full my-auto">
-            <div className="cursor-pointer pb-12 text-xl text-center font-regular my-auto items-center">
-              ขณะนี้ยังไม่มี Package การดูดวง
-            </div>
-            {/* {fortuneTellerPackage.length === 0 ? (
+            {!fortuneTellerPackage ? (
               <div className="cursor-pointer pb-12 text-xl text-center font-regular my-auto items-center">
                 ขณะนี้ยังไม่มี Package การดูดวง
               </div>
-            ) : null}
-            {fortuneTellerPackage.map((req: PackageType) => {
-              return <FortuneTellerPackage fortuneTellerPackage={req} />
-            })} */}
+            ) : (
+              <div className="grid grid-cols-2 gap-10 m-10">
+                {fortuneTellerPackage.map((fortuneTellerPackage) => (
+                  <FortuneTellerPackage
+                    fortuneTellerPackage={fortuneTellerPackage}
+                  ></FortuneTellerPackage>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
