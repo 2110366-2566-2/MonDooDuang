@@ -47,7 +47,6 @@ export default function AppointmentPanel({
   fid: string | undefined
   pid: string | undefined
 }) {
-  
   let fortuneTellerId = ""
   if (fid) {
     fortuneTellerId = fid
@@ -147,9 +146,8 @@ export default function AppointmentPanel({
           setPackages(packages)
           if (pid) {
             const myPackage = packages.find((obj) => {
-              return obj.packageid === pid
+              return obj.package_id === pid
             })
-            console.log(myPackage)
             if (myPackage) {
               setPackageType(myPackage)
             } else {

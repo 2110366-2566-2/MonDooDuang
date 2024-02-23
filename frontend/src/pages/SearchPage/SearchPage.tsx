@@ -47,6 +47,7 @@ export default function SearchPage(): JSX.Element {
   }, [isSubmit, initPage])
 
   const transformFetchDataToSearchValue = (fetchSearchData: FetchSearchData): SearchValue => {
+    console.log(fetchSearchData.fortune_teller_id)
     return {
       name: fetchSearchData.stage_name ?? fetchSearchData.fname,
       rating:
@@ -60,22 +61,18 @@ export default function SearchPage(): JSX.Element {
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
       chat: () => {
-        window.location.href =
-          environment.frontend.url +
-          "/conversation"
+        window.location.href = environment.frontend.url + "/conversation"
       },
-      moreInformation: () => {        
+      moreInformation: () => {
         window.location.href =
-          environment.frontend.url +
-          "/fortuneteller/" +
-          fetchSearchData.fortunetellerid
+          environment.frontend.url + "/fortuneteller/" + fetchSearchData.fortune_teller_id
       },
       makeAppointment: () => {
         window.location.href =
           environment.frontend.url +
           "/appointment" +
           "/" +
-          fetchSearchData.fortunetellerid +
+          fetchSearchData.fortune_teller_id +
           "/" +
           fetchSearchData.current_packageid.split(",")[0]
       },
@@ -107,8 +104,8 @@ export default function SearchPage(): JSX.Element {
         <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0">
           {searchValue && searchValue.length > 0
             ? searchValue.map((fortunetellerInformation, index) => (
-              <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
-            ))
+                <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
+              ))
             : null}
         </div>
       </div>

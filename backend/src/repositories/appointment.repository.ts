@@ -55,7 +55,6 @@ export const appointmentRepository = {
       FROM user_table
       WHERE user_id = $1;`, [userId]
     )
-
     return result.rows[0]
   }
 }
