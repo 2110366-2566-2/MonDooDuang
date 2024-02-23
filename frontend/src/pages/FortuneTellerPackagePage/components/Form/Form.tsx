@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { SpecialityType } from "../../types/SpecialityTypes"
+import { Speciality } from "../../types/SpecialityTypes"
 import { PackageService } from "../../services/PackageService"
 
 export default function Form(props: { fortuneTellerId: string }) {
-  const [fortune, setFortune] = useState<SpecialityType>("TAROT_CARD")
+  const [fortune, setFortune] = useState<Speciality>("TAROT_CARD")
   const [price, setPrice] = useState(0)
   const [time, setTime] = useState(0)
   const [unitTime, setUnitTime] = useState("minute")
@@ -56,7 +56,7 @@ export default function Form(props: { fortuneTellerId: string }) {
                 id="fortune"
                 name="fortune"
                 className="bg-[#C4C4C4] bg-opacity-[.6] rounded-lg w-5/6 pl-11 h-full text-white"
-                onChange={(e) => setFortune(e.target.value as SpecialityType)}
+                onChange={(e) => setFortune(e.target.value as Speciality)}
               >
                 <option value="TAROT_CARD">ไพ่ทาโรต์</option>
                 <option value="NUMBER">โหราศาตร์ไทย</option>

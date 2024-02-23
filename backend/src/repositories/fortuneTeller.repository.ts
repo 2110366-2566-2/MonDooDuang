@@ -106,12 +106,14 @@ export const fortuneTellerRepository = {
   getFortuneTellerDetail: async (fortuneTellerId: string) => {
     try {
       const result = await db.query(
-        `SELECT stagename, description FROM fortune_teller
-        WHERE fortunetellerid = '${fortuneTellerId}'`
+        `SELECT stage_name, description 
+        FROM fortune_teller
+        WHERE fortune_teller_id = '${fortuneTellerId}'
+        `
       )
       if (result.rows.length === 0) return null
       return {
-        stageName: result.rows[0].stagename,
+        stageName: result.rows[0].stage_name,
         description: result.rows[0].description
       }
     } catch (err) {
@@ -124,8 +126,8 @@ export const fortuneTellerRepository = {
           const result = await db.query(
             `
             UPDATE fortune_teller
-            SET description = $2, stagename = $3
-            WHERE fortunetellerid = $1
+            SET description = $2, stage_name = $3
+            WHERE fortune_teller_id = $1
             `,
             [fortuneTeller.fortuneTellerId, fortuneTeller.description, fortuneTeller.stageName]
           )
@@ -139,9 +141,9 @@ export const fortuneTellerRepository = {
     try {
       const stageNameValid = await db.query(
         `
-        SELECT stagename 
+        SELECT stage_name 
         FROM fortune_teller
-        WHERE stagename = $2 AND fortunetellerid != $1
+        WHERE stage_name = $2 AND fortune_teller_id != $1
         `,
         [fortuneTellerId, stageName]
       )

@@ -4,16 +4,16 @@ import { packageService } from "../../services/package/package.services"
 
 
 const createPackage = async (req: Request, res: Response) => {
-  const packageFortune: PackageSchema = {
-    specialityType: req.body.specialityType,
+  const packageFortuneTeller: PackageSchema = {
+    speciality: req.body.speciality,
     description: req.body.description,
     duration: req.body.duration,
     price: req.body.price,
-    fortunetellerId: req.body.fortunetellerId
+    fortuneTellerId: req.body.fortuneTellerId
    
   }
 
-  const result = await packageService.createPackage(packageFortune)
+  const result = await packageService.createPackage(packageFortuneTeller)
   const isSuccess = result.success
 
   if (!isSuccess) { return res.status(400).json(result) }
@@ -22,5 +22,5 @@ const createPackage = async (req: Request, res: Response) => {
 }
 
 export const packageController = {
-  createPackage,
+  createPackage
 }

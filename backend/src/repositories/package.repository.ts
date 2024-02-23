@@ -3,20 +3,21 @@ import { PackageSchema } from "../models/package/package.model"
 import { SearchSchema } from "../models/search/search.model"
 
 export const packageRepository = {
-  createPackage: async (packageFortune: PackageSchema) => {
+  createPackage: async (packageFortuneTeller: PackageSchema) => {
     try {
       await db.query(
         `
-            INSERT INTO PACKAGE (speciality,description, duration, price, fortunetellerId)
+            INSERT INTO PACKAGE (speciality,description, duration, price, fortune_teller_Id)
             VALUES($1, $2, $3, $4, $5);
         `,
-        [packageFortune.speciality,packageFortune.description, packageFortune.duration, packageFortune.price, packageFortune.fortuneTellerId]
+        [packageFortuneTeller.speciality,packageFortuneTeller.description, packageFortuneTeller.duration, packageFortuneTeller.price, packageFortuneTeller.fortuneTellerId]
       )
       return true
     } catch (err) {
       return false
     }
   },
+  
   getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageSchema[] > => {
     const result = await db.query(
       `SELECT * FROM PACKAGE 

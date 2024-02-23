@@ -3,8 +3,8 @@ import { packageRepository } from "../../repositories/package.repository"
 
 
 export const packageService = {
-  createPackage: async (packageFortune: PackageSchema) => {
-    const isSuccess = await packageRepository.createPackage(packageFortune)
+  createPackage: async (packageFortuneTeller: PackageSchema) => {
+    const isSuccess = await packageRepository.createPackage(packageFortuneTeller)
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to create package" } 
     
   }

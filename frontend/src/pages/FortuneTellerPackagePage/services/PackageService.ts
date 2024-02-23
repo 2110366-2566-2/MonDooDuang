@@ -1,25 +1,25 @@
 import { environment } from "../../../common/constants/environment"
-import { SpecialityType } from "../types/SpecialityTypes"
+import { Speciality } from "../types/SpecialityTypes"
 
 export const PackageService = {
   createPackage: async (
-    specialityType: SpecialityType,
+    speciality: Speciality,
     description: string,
     duration: number,
     price: number,
-    fortunetellerId: string
+    fortuneTellerId: string
   ) => {
-    const res = await fetch(`${environment.backend.url}/fortune/create-package`, {
+    const res = await fetch(`${environment.backend.url}/package/create-package`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        specialityType,
+        speciality,
         description,
         duration,
         price,
-        fortunetellerId
+        fortuneTellerId
       })
     })
     const data = await res.json()

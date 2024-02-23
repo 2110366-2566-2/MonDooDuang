@@ -5,7 +5,7 @@ import reportRouter from "./routes/report.routes"
 import requestRouter from "./routes/request.routes"
 import searchRouter from "./routes/search.routes"
 import fortuneTellerRouter from "./routes/fortuneTeller.routes"
-
+import PackageController from "./routes/package.routes"
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
 import cors from "cors"
@@ -45,6 +45,7 @@ app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
+app.use("/package",PackageController)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
