@@ -9,7 +9,7 @@ export const PackageService = {
     price: number,
     fortuneTellerId: string
   ) => {
-    const res = await fetch(`${environment.backend.url}/package/create-package`, {
+    const res = await fetch(`${environment.backend.url}/fortuneTeller/create-package`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

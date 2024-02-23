@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../../models/fortuneTeller/fortuneTeller.model"
+import { PackageSchema } from "../../models/package/package.model"
 
 const createFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerRegisterSchema = {
@@ -90,6 +91,24 @@ const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: fortuneTellerData })
 }
 
+const createPackage = async (req: Request, res: Response) => {
+  const packageFortuneTeller: PackageSchema = {
+    speciality: req.body.speciality,
+    description: req.body.description,
+    duration: req.body.duration,
+    price: req.body.price,
+    fortuneTellerId: req.body.fortuneTellerId
+   
+  }
+
+  const result = await fortuneTellerService.createPackage(packageFortuneTeller)
+  const isSuccess = result.success
+
+  if (!isSuccess) { return res.status(400).json(result) }
+
+  res.status(201).json(result)
+}
+
 const getPackageByFortuneTellerId = async (req: Request, res: Response) => {
   const fortuneTellerId = req.params.fortuneTellerId
   const packageData = await fortuneTellerService.getPackageByFortuneTellerId(fortuneTellerId)
@@ -123,6 +142,7 @@ export const fortuneTellerController = {
   updateFortuneTellerDetail,
   getStageNameValid,
   getFortuneTellerDisplayInfoById,
+  createPackage,
   getPackageByFortuneTellerId,
   getReviewByFortuneTellerId,
   getRecommendPackage

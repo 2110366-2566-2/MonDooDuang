@@ -10,6 +10,7 @@ router.get("/detail/:fortuneTellerId", fortuneTellerController.getFortuneTellerD
 router.patch("/detail/update-detail/:fortuneTellerId", fortuneTellerController.updateFortuneTellerDetail)
 router.post("/stageNameValid", fortuneTellerController.getStageNameValid)
 router.get("/detail-page/:fortuneTellerId", fortuneTellerController.getFortuneTellerDisplayInfoById)
+router.post("/create-package", fortuneTellerController.createPackage)
 router.get("/package/:fortuneTellerId", fortuneTellerController.getPackageByFortuneTellerId)
 router.get("/review/:fortuneTellerId", fortuneTellerController.getReviewByFortuneTellerId)
 router.get("/recommend", fortuneTellerController.getRecommendPackage)
