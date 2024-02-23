@@ -71,13 +71,13 @@ const updateFortuneTellerDetail = async (req: Request, res: Response) => {
     stageName: req.body.stageName
   }
   const updateDetail = await fortuneTellerService.updateFortuneTellerDetail(fortuneTeller)
-  if (!updateDetail) return res.status(400).json(updateDetail)
-  return res.status(200).json({ success : true })
+  if (!updateDetail.success) return res.status(400).json(updateDetail)
+  return res.status(200).json({ success: true })
 }
 
 const getStageNameValid = async (req: Request, res: Response) => {
-  const fortuneTellerId = req.body.fortuneTellerId
-  const stageName = req.body.stageName
+  const fortuneTellerId: String = req.body.fortuneTellerId
+  const stageName: String  = req.body.stageName
   const stageNameValid = await fortuneTellerService.getStageNameValid(fortuneTellerId, stageName)
   return res.status(200).json({ success: true, data: stageNameValid })
 }
@@ -98,7 +98,6 @@ const createPackage = async (req: Request, res: Response) => {
     duration: req.body.duration,
     price: req.body.price,
     fortuneTellerId: req.body.fortuneTellerId
-   
   }
 
   const result = await fortuneTellerService.createPackage(packageFortuneTeller)
@@ -146,7 +145,7 @@ const getPackageData = async (req: Request, res: Response) => {
   const packageId = req.params.packageId
   const packageData = await fortuneTellerService.getPackageData(packageId)
 
-  res.status(200).json({ success: true, data : packageData })
+  res.status(200).json({ success: true, data: packageData })
 }
 
 const updatePackage = async (req: Request, res: Response) => {
@@ -155,13 +154,12 @@ const updatePackage = async (req: Request, res: Response) => {
     speciality: req.body.speciality,
     description: req.body.description,
     duration: req.body.duration,
-    price: req.body.price,
+    price: req.body.price
   }
   const result = await fortuneTellerService.updatePackage(packageData)
   const isSuccess = result.success 
   if (!isSuccess) return res.status(400).json(result)
-  return res.status(200).json({ success : true })
-  
+  return res.status(200).json({ success: true })
 }
 
 const deletePackage = async (req: Request, res: Response) => {
@@ -170,9 +168,7 @@ const deletePackage = async (req: Request, res: Response) => {
   const result = await fortuneTellerService.deletePackage(packageId)
   const isSuccess = result.success
 
-
   if (!isSuccess) { return res.status(400).json(result) }
-
   res.status(201).json(result)
 }
 

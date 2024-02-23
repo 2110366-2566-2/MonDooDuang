@@ -10,15 +10,14 @@ export const packageRepository = {
             INSERT INTO PACKAGE (speciality,description, duration, price, fortune_teller_Id)
             VALUES($1, $2, $3, $4, $5);
         `,
-        [packageFortuneTeller.speciality,packageFortuneTeller.description, packageFortuneTeller.duration, packageFortuneTeller.price, packageFortuneTeller.fortuneTellerId]
+        [packageFortuneTeller.speciality, packageFortuneTeller.description, packageFortuneTeller.duration, packageFortuneTeller.price, packageFortuneTeller.fortuneTellerId]
       )
       return true
     } catch (err) {
       return false
     }
   },
-  
-  getPackageData: async (packageId : string) => {
+  getPackageData: async (packageId: string) => {
     try {
       const result = await db.query(
         `
@@ -29,7 +28,6 @@ export const packageRepository = {
       )
       if (result.rows.length === 0) return null
       return {
-        
         speciality: result.rows[0].speciality,
         duration: result.rows[0].duration,
         price: result.rows[0].price,
@@ -40,7 +38,7 @@ export const packageRepository = {
     }
   },
 
-  updatePackage: async (packageData : PackageWithIdSchema) => {
+  updatePackage: async (packageData: PackageWithIdSchema) => {
     try {
       const result = await db.query(
         `
@@ -51,7 +49,7 @@ export const packageRepository = {
         [packageData.packageId, packageData.speciality, packageData.duration, packageData.price, packageData.description]
       )
       return true
-    }catch (err) {
+    } catch (err) {
       return false
     }
   },
@@ -61,9 +59,9 @@ export const packageRepository = {
       const result = await db.query (
         `
         DELETE FROM PACKAGE
-        WHERE package_id = '${packageId}'
+        WHERE package_id ='${packageId}'
         `
-      ) 
+      )
       return true
     } catch (err) {
       return false
@@ -72,7 +70,7 @@ export const packageRepository = {
   
   getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageSchema[] > => {
     const result = await db.query(
-      `SELECT * FROM PACKAGE 
+      `SELECT * FROM PACKAGE
             WHERE fortune_teller_id = $1
             ORDER BY speciality, price DESC;`,
       [fortuneTellerId]

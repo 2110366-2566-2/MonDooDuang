@@ -17,6 +17,6 @@ router.get("/review/:fortuneTellerId", fortuneTellerController.getReviewByFortun
 router.get("/recommend", fortuneTellerController.getRecommendPackage)
 router.get("/get-package/:packageId", fortuneTellerController.getPackageData)
 router.patch("/update-package/:packageId", fortuneTellerController.updatePackage)
-router.delete("/delete-package/:packageId",fortuneTellerController.deletePackage)
+router.delete("/delete-package/:packageId", fortuneTellerController.deletePackage)
 
 export default router
