@@ -20,7 +20,7 @@ export const FortuneTellerService = {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ description, stageName })
-  })
+    })
     const data = await res.json()
     return { isSuccess: data.success, message: data.message }
   },

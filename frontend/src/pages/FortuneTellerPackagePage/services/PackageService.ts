@@ -65,6 +65,6 @@ export const PackageService = {
     })
     const data = await res.json()
     return { isSuccess: data.success, message: data.message }
-    }
+  }
     
 }
