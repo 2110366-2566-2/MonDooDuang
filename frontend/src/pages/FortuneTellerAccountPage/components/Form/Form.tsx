@@ -60,7 +60,7 @@ export default function Form(props: { fortuneTellerId: string }) {
   return (
     <div className="text-white">
       <button
-        className="cursor-pointer ml-9 mt-10 "
+        className="cursor-pointer ml-9 mt-10 leading-normal font-semibold text-2xl"
         onClick={() => (window.location.href = "/search")}
       >
         &lt; กลับสู่หน้าหลัก
@@ -69,7 +69,7 @@ export default function Form(props: { fortuneTellerId: string }) {
       <div className="flex flex-col">
         <div className="flex flex-row items-center justify-between w-full px-16">
           <div className="w-32"></div>
-          <span className="font-medium text-4xl ">ข้อมูลส่วนตัว</span>
+          <span className="font-medium text-4xl">ข้อมูลส่วนตัว</span>
 
           {editState ? (
             <div className="w-32"></div>
@@ -89,13 +89,13 @@ export default function Form(props: { fortuneTellerId: string }) {
         <div className="font-regular flex flex-row mt-10 w-3/4 mx-auto">
           <div className="mr-20 w-1/3">
             <form id="completeSubmit" onSubmit={submitForm}>
-              <label className="pl-2.5">ชื่อในวงการ</label>
+              <label className="pl-2.5 text-2xl leading-normal ">ชื่อในวงการ</label>
               <br />
 
               <input
                 type="text"
                 placeholder={stageName}
-                className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 ${
+                className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 text-xl leading-normal ${
                   editState ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
                 disabled={!editState}
@@ -106,12 +106,12 @@ export default function Form(props: { fortuneTellerId: string }) {
           </div>
 
           <div className="w-7/12">
-            <label className="pl-2.5">รายละเอียด</label>
+            <label className="pl-2.5 text-2xl leading-normal">รายละเอียด</label>
             <br />
             <input
               type="text"
               placeholder={description}
-              className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 ${
+              className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 text-xl leading-normal ${
                 editState ? "cursor-pointer" : "cursor-not-allowed"
               }`}
               disabled={!editState}
@@ -124,7 +124,7 @@ export default function Form(props: { fortuneTellerId: string }) {
 
         <div className="w-3/4 min-h-60 bg-transparent mx-auto rounded-3xl mt-3.5 flex flex-col border">
           <button
-            className=" self-end bg-[#76AA7B] w-24 h-10 rounded-xl text-xl mt-4 mr-5"
+            className=" self-end bg-[#76AA7B] w-24 h-10 rounded-xl text-xl mt-4 mr-5 font-medium leading-normal"
             onClick={() => (window.location.href = "/account/fortuneteller/package")}
           >
             เพิ่ม
@@ -150,14 +150,14 @@ export default function Form(props: { fortuneTellerId: string }) {
         <div className={`w-full flex ${editState ? "justify-end" : "justify-start"}`}>
           {editState ? (
             <button
-              className="cursor-pointer mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold"
+              className="cursor-pointer mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold leading-normal text-2xl"
               form="completeSubmit"
             >
               เสร็จสิ้น
             </button>
           ) : (
             <button
-              className="cursor-pointer ml-14 mb-12 mt-8 bottom-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold"
+              className="cursor-pointer ml-14 mb-12 mt-8 bottom-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold leading-normal text-2xl"
               onClick={() => (window.location.href = "/account")}
             >
               &lt; ย้อนกลับ
