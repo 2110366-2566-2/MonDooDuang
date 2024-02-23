@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
-import { FortuneTellerRegisterSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
+import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../../models/fortuneTeller/fortuneTeller.model"
 
 const createFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerRegisterSchema = {
@@ -56,6 +56,31 @@ const getFortuneTellerValid = async (req: Request, res: Response) => {
   return res.status(200).json({ success: true, data: result })
 }
 
+const getFortuneTellerDetail = async (req: Request, res: Response) => {
+  const fortuneTellerId: string = req.params.fortuneTellerId
+  const fortuneTellerDetail = await fortuneTellerService.getFortuneTellerDetail(fortuneTellerId)
+  if (!fortuneTellerDetail) { return res.status(400).json({ success: false, message: `Fortune teller with Id ${fortuneTellerId} is not found` }) }
+  res.status(200).json({ success: true, data: fortuneTellerDetail })
+}
+
+const updateFortuneTellerDetail = async (req: Request, res: Response) => {
+  const fortuneTeller: FortuneTellerAccountDetailSchema = {
+    fortuneTellerId: req.params.fortuneTellerId,
+    description: req.body.description,
+    stageName: req.body.stageName,
+  }
+  const updateDetail = await fortuneTellerService.updateFortuneTellerDetail(fortuneTeller)
+  if (!updateDetail) return res.status(400).json(updateDetail)
+  return res.status(200).json({success : true})
+}
+
+const getStageNameValid = async (req: Request, res: Response) => {
+  const fortuneTellerId = req.body.fortuneTellerId
+  const stageName = req.body.stageName
+  const stageNameValid = await fortuneTellerService.getStageNameValid(fortuneTellerId, stageName)
+  return res.status(200).json({ success: true, data: stageNameValid })
+}
+
 const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
   const fortuneTellerId = req.params.fortuneTellerId
   const fortuneTellerData = await fortuneTellerService.getFortuneTellerDisplayInfoById(fortuneTellerId)
@@ -94,6 +119,9 @@ export const fortuneTellerController = {
   createFortuneTellerRequest,
   updateFortuneTeller,
   getFortuneTellerValid,
+  getFortuneTellerDetail,
+  updateFortuneTellerDetail,
+  getStageNameValid,
   getFortuneTellerDisplayInfoById,
   getPackageByFortuneTellerId,
   getReviewByFortuneTellerId,

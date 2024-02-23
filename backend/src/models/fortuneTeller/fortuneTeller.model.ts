@@ -20,3 +20,9 @@ export interface RequestSchema {
   fortuneTellerId: string
   status: status
 }
+
+export interface FortuneTellerAccountDetailSchema{
+  fortuneTellerId: string,
+  stageName: string,
+  description: string
+}

@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { FortuneTellerRegisterSchema, RequestSchema } from "../models/fortuneTeller/fortuneTeller.model"
+import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
 
 export const fortuneTellerRepository = {
@@ -119,7 +119,7 @@ export const fortuneTellerRepository = {
     }
   },
 
-  updateFortuneTellerDetail: async (fortuneTeller: FortuneTellerDetailSchema) => {
+  updateFortuneTellerDetail: async (fortuneTeller: FortuneTellerAccountDetailSchema) => {
     try {
           const result = await db.query(
             `
