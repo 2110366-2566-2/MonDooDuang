@@ -125,11 +125,11 @@ export const fortuneTellerRepository = {
   updateFortuneTellerDetail: async (fortuneTeller: FortuneTellerAccountDetailSchema) => {
     try {
       const result = await db.query(
-      `
-        UPDATE fortune_teller
-        SET description = $2, stage_name = $3
-        WHERE fortune_teller_id = $1
-      `,
+        `
+          UPDATE fortune_teller
+          SET description = $2, stage_name = $3
+          WHERE fortune_teller_id = $1
+        `,
         [fortuneTeller.fortuneTellerId, fortuneTeller.description, fortuneTeller.stageName]
       )
         return true
@@ -137,7 +137,6 @@ export const fortuneTellerRepository = {
       return false
     }
   },
-  
   getStageNameValid: async (fortuneTellerId: string, stageName: string) => {
     try {
       const stageNameValid = await db.query(
@@ -154,5 +153,5 @@ export const fortuneTellerRepository = {
       return false
     }
   }
-  
+
 }

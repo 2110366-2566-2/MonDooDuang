@@ -76,8 +76,8 @@ const updateFortuneTellerDetail = async (req: Request, res: Response) => {
 }
 
 const getStageNameValid = async (req: Request, res: Response) => {
-  const fortuneTellerId: String = req.body.fortuneTellerId
-  const stageName: String  = req.body.stageName
+  const fortuneTellerId: string = req.body.fortuneTellerId
+  const stageName: string = req.body.stageName
   const stageNameValid = await fortuneTellerService.getStageNameValid(fortuneTellerId, stageName)
   return res.status(200).json({ success: true, data: stageNameValid })
 }
@@ -157,7 +157,7 @@ const updatePackage = async (req: Request, res: Response) => {
     price: req.body.price
   }
   const result = await fortuneTellerService.updatePackage(packageData)
-  const isSuccess = result.success 
+  const isSuccess = result.success
   if (!isSuccess) return res.status(400).json(result)
   return res.status(200).json({ success: true })
 }
