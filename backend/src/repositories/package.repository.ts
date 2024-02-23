@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { PackageSchema } from "../models/package/package.model"
+import { PackageSchema, PackageIncludeIdSchema, PackageWithIdSchema } from "../models/package/package.model"
 import { SearchSchema } from "../models/search/search.model"
 
 export const packageRepository = {
@@ -12,6 +12,57 @@ export const packageRepository = {
         `,
         [packageFortuneTeller.speciality,packageFortuneTeller.description, packageFortuneTeller.duration, packageFortuneTeller.price, packageFortuneTeller.fortuneTellerId]
       )
+      return true
+    } catch (err) {
+      return false
+    }
+  },
+  getPackageData: async (packageId : string) => {
+    try {
+      const result = await db.query(
+        `
+        SELECT speciality, duration, price, description
+        FROM package
+        WHERE package_id = '${packageId}'
+        `
+      )
+      if (result.rows.length === 0) return null
+      return {
+        
+        speciality: result.rows[0].speciality,
+        duration: result.rows[0].duration,
+        price: result.rows[0].price,
+        description: result.rows[0].description
+      }
+    } catch (err) {
+      return null
+    }
+  },
+
+  updatePackage: async (packageData : PackageWithIdSchema) => {
+    try {
+      const result = await db.query(
+        `
+        UPDATE package
+        SET speciality=$2, duration=$3, price=$4, description=$5
+        WHERE package_id = $1
+        `,
+        [packageData.packageId, packageData.speciality, packageData.duration, packageData.price, packageData.description]
+      )
+      return true
+    }catch (err) {
+      return false
+    }
+  },
+
+  deletePackage: async (packageId: string) => {
+    try {
+      const result = await db.query (
+        `
+        DELETE FROM PACKAGE
+        WHERE package_id = '${packageId}'
+        `
+      ) 
       return true
     } catch (err) {
       return false
@@ -30,6 +81,30 @@ export const packageRepository = {
 
     const packages: PackageSchema[] = result.rows.map(row => ({
 
+      speciality: row.speciality,
+      description: row.description,
+      duration: row.duration,
+      price: row.price,
+      fortuneTellerId: row.fortune_teller_id
+
+    }))
+
+    return packages
+  },
+
+  getPackageIncludeIdByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageIncludeIdSchema[] > => {
+    const result = await db.query(
+      `SELECT * FROM PACKAGE 
+            WHERE fortune_teller_id = $1
+            ORDER BY speciality, price DESC;`,
+      [fortuneTellerId]
+    )
+
+    if (result.rows.length === 0) return null
+
+    const packages: PackageIncludeIdSchema[] = result.rows.map(row => ({
+
+      packageId: row.package_id,
       speciality: row.speciality,
       description: row.description,
       duration: row.duration,

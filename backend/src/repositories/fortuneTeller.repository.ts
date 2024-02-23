@@ -1,6 +1,7 @@
 import { db } from "../configs/pgdbConnection"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
+import { PackageWithIdSchema } from "../models/package/package.model"
 
 export const fortuneTellerRepository = {
 
@@ -152,5 +153,6 @@ export const fortuneTellerRepository = {
     } catch (err) {
       return false
     }
-  }
+  },
+
 }

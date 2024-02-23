@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { environment } from "../../../../common/constants/environment"
 import EditIcon from "../../../../assets/FortuneTellerAccountAssets/EditIcon.png"
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { PackageTypes } from "../../types/PackageTypes"
@@ -27,7 +28,9 @@ export default function Form(props: { fortuneTellerId: string }) {
   //fetch all package from fortuneTellerId
   useEffect(() => {
     const fetchFortuneTellerPackage = async () => {
-      const response = await FortuneTellerService.getPackageByFortuneTellerId(props.fortuneTellerId)
+      const response = await FortuneTellerService.getPackageIncludeIdByFortuneTellerId(
+        props.fortuneTellerId
+      )
       const fortuneTellerPackage = await response
 
       setFortuneTellerPackage(fortuneTellerPackage)
@@ -55,6 +58,11 @@ export default function Form(props: { fortuneTellerId: string }) {
     } else {
       setIsStageNameValid(false)
     }
+  }
+
+  // go to package Page for creating new package
+  const createPackage = () => {
+    window.location.href = environment.frontend.url + "/account/fortuneteller/package"
   }
 
   return (
@@ -90,13 +98,12 @@ export default function Form(props: { fortuneTellerId: string }) {
           <div className="mr-20 w-1/3">
             <form id="completeSubmit" onSubmit={submitForm}>
               <label className="pl-2.5 text-2xl leading-normal ">ชื่อในวงการ</label>
-              <br />
 
               <input
                 type="text"
-                placeholder={stageName}
+                value={stageName}
                 className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 text-xl leading-normal ${
-                  editState ? "cursor-pointer" : "cursor-not-allowed"
+                  editState ? "cursor-text" : "cursor-not-allowed"
                 }`}
                 disabled={!editState}
                 onChange={(e) => setStageName(e.target.value)}
@@ -107,12 +114,12 @@ export default function Form(props: { fortuneTellerId: string }) {
 
           <div className="w-7/12">
             <label className="pl-2.5 text-2xl leading-normal">รายละเอียด</label>
-            <br />
+
             <input
               type="text"
-              placeholder={description}
+              value={description}
               className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 text-xl leading-normal ${
-                editState ? "cursor-pointer" : "cursor-not-allowed"
+                editState ? "cursor-text" : "cursor-not-allowed"
               }`}
               disabled={!editState}
               onChange={(e) => setDescription(e.target.value)}
@@ -125,7 +132,11 @@ export default function Form(props: { fortuneTellerId: string }) {
         <div className="w-3/4 min-h-60 bg-transparent mx-auto rounded-3xl mt-3.5 flex flex-col border">
           <button
             className=" self-end bg-[#76AA7B] w-24 h-10 rounded-xl text-xl mt-4 mr-5 font-medium leading-normal"
-            onClick={() => (window.location.href = "/account/fortuneteller/package")}
+            onClick={() => {
+              {
+                createPackage()
+              }
+            }}
           >
             เพิ่ม
           </button>

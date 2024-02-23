@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../../models/fortuneTeller/fortuneTeller.model"
-import { PackageSchema } from "../../models/package/package.model"
+import { PackageSchema, PackageWithIdSchema } from "../../models/package/package.model"
 
 const createFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerRegisterSchema = {
@@ -68,7 +68,7 @@ const updateFortuneTellerDetail = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerAccountDetailSchema = {
     fortuneTellerId: req.params.fortuneTellerId,
     description: req.body.description,
-    stageName: req.body.stageName,
+    stageName: req.body.stageName
   }
   const updateDetail = await fortuneTellerService.updateFortuneTellerDetail(fortuneTeller)
   if (!updateDetail) return res.status(400).json(updateDetail)
@@ -118,6 +118,15 @@ const getPackageByFortuneTellerId = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: packageData })
 }
 
+const getPackageIncludeIdByFortuneTellerId = async (req: Request, res: Response) => {
+  const fortuneTellerId = req.params.fortuneTellerId
+  const packageData = await fortuneTellerService.getPackageIncludeIdByFortuneTellerId(fortuneTellerId)
+
+  if (packageData === null) { return res.status(400).json({ success: false, message: `Package and Package id of fortune teller with Id ${fortuneTellerId} is not found` }) }
+
+  res.status(200).json({ success: true, data: packageData })
+}
+
 const getReviewByFortuneTellerId = async (req: Request, res: Response) => {
   const fortuneTellerId = req.params.fortuneTellerId
   const reviewData = await fortuneTellerService.getReviewByFortuneTellerId(fortuneTellerId)
@@ -133,6 +142,40 @@ const getRecommendPackage = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data })
 }
 
+const getPackageData = async (req: Request, res: Response) => {
+  const packageId = req.params.packageId
+  const packageData = await fortuneTellerService.getPackageData(packageId)
+
+  res.status(200).json({ success: true, data : packageData })
+}
+
+const updatePackage = async (req: Request, res: Response) => {
+  const packageData: PackageWithIdSchema = {
+    packageId: req.params.packageId,
+    speciality: req.body.speciality,
+    description: req.body.description,
+    duration: req.body.duration,
+    price: req.body.price,
+  }
+  const result = await fortuneTellerService.updatePackage(packageData)
+  const isSuccess = result.success 
+  if (!isSuccess) return res.status(400).json(result)
+  return res.status(200).json({success : true})
+  
+}
+
+const deletePackage = async (req: Request, res: Response) => {
+  const packageId = req.params.packageId
+
+  const result = await fortuneTellerService.deletePackage(packageId)
+  const isSuccess = result.success
+
+
+  if (!isSuccess) { return res.status(400).json(result) }
+
+  res.status(201).json(result)
+}
+
 export const fortuneTellerController = {
   createFortuneTeller,
   createFortuneTellerRequest,
@@ -144,6 +187,10 @@ export const fortuneTellerController = {
   getFortuneTellerDisplayInfoById,
   createPackage,
   getPackageByFortuneTellerId,
+  getPackageIncludeIdByFortuneTellerId,
   getReviewByFortuneTellerId,
-  getRecommendPackage
+  getRecommendPackage,
+  getPackageData,
+  updatePackage,
+  deletePackage
 }

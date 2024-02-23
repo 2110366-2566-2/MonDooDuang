@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { Speciality } from "../../types/SpecialityTypes"
 import { PackageService } from "../../services/PackageService"
+import { useEffect } from "react"
 
-export default function Form(props: { fortuneTellerId: string }) {
+export default function EditForm(props: { fortuneTellerId: string; packageId: string }) {
   const [fortune, setFortune] = useState<Speciality>("TAROT_CARD")
   const [price, setPrice] = useState(0)
   const [time, setTime] = useState(0)
@@ -11,6 +12,30 @@ export default function Form(props: { fortuneTellerId: string }) {
 
   const [isPriceError, setIsPriceError] = useState(false)
   const [isTimeError, setIsTimeError] = useState(false)
+
+  // get package's data at the beginning
+  useEffect(() => {
+    const fetchPackageData = async () => {
+      const response = await PackageService.getPakageData(props.packageId)
+      setFortune(response.speciality)
+      setDescription(response.description)
+      setPrice(response.price)
+      let duration = response.duration
+
+      if (duration >= 1440 && duration % 1440 === 0) {
+        duration /= 1440
+        setTime(duration)
+        setUnitTime("day")
+      } else if (duration >= 60 && duration % 60 === 0) {
+        duration /= 60
+        setTime(duration)
+        setUnitTime("hour")
+      } else {
+        setTime(duration)
+      }
+    }
+    fetchPackageData()
+  }, [])
 
   // for validate information
   const validation = ({ price, time }: { price: number; time: number }): boolean => {
@@ -23,17 +48,18 @@ export default function Form(props: { fortuneTellerId: string }) {
     return checkPrice && checkTime
   }
 
+  // after click เสร็จสิ้น
   const SubmitPackage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (validation({ price, time })) {
       const duration = unitTime === "hour" ? time * 60 : unitTime === "day" ? time * 60 * 24 : time
-      const response = await PackageService.createPackage(
+      const response = await PackageService.updatePackage(
+        props.packageId,
         fortune,
         description,
         duration,
-        price,
-        props.fortuneTellerId
+        price
       )
 
       if (!response.isSuccess) {
@@ -41,6 +67,16 @@ export default function Form(props: { fortuneTellerId: string }) {
       }
       window.location.href = "/account/fortuneteller"
     }
+  }
+
+  // after click ลบ
+  const deletePackage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const response = await PackageService.deletePackage(props.packageId)
+    if (!response.isSuccess) {
+      return alert(response.message)
+    }
+    window.location.href = "/account/fortuneteller"
   }
 
   return (
@@ -54,8 +90,7 @@ export default function Form(props: { fortuneTellerId: string }) {
             <div className="items-center justify-center">
               <label className="ml-2.5 leading-normal">ศาสตร์การดูดวง</label>
               <select
-                id="fortune"
-                name="fortune"
+                value={fortune}
                 className="bg-[#C4C4C4] bg-opacity-[.6] rounded-lg w-11/12 pl-11 h-12 text-white leading-normal"
                 onChange={(e) => setFortune(e.target.value as Speciality)}
               >
@@ -73,15 +108,12 @@ export default function Form(props: { fortuneTellerId: string }) {
                   <form id="packageForm" onSubmit={SubmitPackage}>
                     <input
                       type="number"
-                      id="time"
-                      name="time"
-                      className="bg-white bg-opacity-[.54] rounded-lg text-center w-44 h-12 leading-normal"
+                      value={time.toString()}
+                      className="bg-white bg-opacity-[.54] placeholder-white rounded-lg text-center w-44 h-12 leading-normal"
                       onChange={(e) => setTime(Number(e.target.value))}
                     />
 
                     <select
-                      id="unitTime"
-                      name="unitTime"
                       className="bg-[#C4C4C4] bg-opacity-[.6] rounded-lg cursor-pointer ml-2.5 h-12 w-36 pl-5 leading-normal"
                       onChange={(e) => setUnitTime(e.target.value)}
                     >
@@ -101,13 +133,14 @@ export default function Form(props: { fortuneTellerId: string }) {
             <div className="items-center justify-center">
               <label className="ml-2.5 leading-normal">อัตราการให้บริการ</label>
               <div className="flex flex-row h-12">
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  className="bg-white bg-opacity-[.54] rounded-lg text-center w-60 leading-normal"
-                  onChange={(e) => setPrice(Number(e.target.value))}
-                ></input>
+                <form id="packageDeleteForm" onSubmit={deletePackage}>
+                  <input
+                    type="number"
+                    value={price.toString()}
+                    className="bg-white bg-opacity-[.54] placeholder-white rounded-lg text-center w-60 leading-normal"
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                  ></input>
+                </form>
                 <span className="ml-5 leading-normal">บาท</span>
               </div>
               {isPriceError && (
@@ -119,9 +152,8 @@ export default function Form(props: { fortuneTellerId: string }) {
             <div className="items-center justify-center">
               <label className="ml-2.5 leading-normal">รายละเอียด</label>
               <textarea
-                id="description"
-                name="description"
-                className="bg-white bg-opacity-[.54] rounded-lg pl-11 w-full min-h-28 text-xl leading-normal py-3.5 pr-2.5"
+                placeholder={description}
+                className="bg-white bg-opacity-[.54] placeholder-white rounded-lg pl-11 w-full min-h-28 text-xl leading-normal py-3.5 pr-2.5"
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
@@ -130,13 +162,13 @@ export default function Form(props: { fortuneTellerId: string }) {
       </div>
       <div>
         <button
-          className="cursor-pointer ml-14 mb-12 mt-8 bottom-0 left-0 w-36 h-10 text-white bg-[#8A8A8A] rounded-xl font-semibold leading-normal"
-          onClick={() => (window.location.href = "/account/fortuneteller")}
+          className="cursor-pointer ml-14 mb-12 mt-8 bottom-0 left-0 w-36 h-10 text-white bg-[#FF5656] rounded-xl font-semibold text-2xl leading-normal"
+          form="packageDeleteForm"
         >
-          ย้อนกลับ
+          ลบ
         </button>
         <button
-          className="cursor-pointer float-right mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold leading-normal"
+          className="cursor-pointer float-right mr-14 mb-12 mt-8 bottom-0 right-0 w-36 h-10 text-[#3B3B3B] bg-white rounded-xl font-semibold text-2xl leading-normal"
           form="packageForm"
         >
           เสร็จสิ้น

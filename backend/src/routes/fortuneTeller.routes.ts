@@ -12,7 +12,11 @@ router.post("/stageNameValid", fortuneTellerController.getStageNameValid)
 router.get("/detail-page/:fortuneTellerId", fortuneTellerController.getFortuneTellerDisplayInfoById)
 router.post("/create-package", fortuneTellerController.createPackage)
 router.get("/package/:fortuneTellerId", fortuneTellerController.getPackageByFortuneTellerId)
+router.get("/package-with-id/:fortuneTellerId", fortuneTellerController.getPackageIncludeIdByFortuneTellerId)
 router.get("/review/:fortuneTellerId", fortuneTellerController.getReviewByFortuneTellerId)
 router.get("/recommend", fortuneTellerController.getRecommendPackage)
+router.get("/get-package/:packageId", fortuneTellerController.getPackageData)
+router.patch("/update-package/:packageId", fortuneTellerController.updatePackage)
+router.delete("/delete-package/:packageId",fortuneTellerController.deletePackage)
 
 export default router

@@ -2,7 +2,7 @@ import { fortuneTellerRepository } from "../../repositories/fortuneTeller.reposi
 import { packageRepository } from "../../repositories/package.repository"
 import { reviewRepository } from "../../repositories/review.repository"
 import { FortuneTellerRegisterSchema, FortuneTellerAccountDetailSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
-import { PackageSchema } from "../../models/package/package.model"
+import { PackageSchema, PackageWithIdSchema } from "../../models/package/package.model"
 
 export const fortuneTellerService = {
 
@@ -79,6 +79,12 @@ export const fortuneTellerService = {
     return result
   },
 
+  getPackageIncludeIdByFortuneTellerId: async (fortuneTellerId: string) => {
+    const result = await packageRepository.getPackageIncludeIdByFortuneTellerId(fortuneTellerId)
+    if (result === null) return null
+    return result
+  },
+
   getReviewByFortuneTellerId: async (fortuneTellerId: string) => {
     const review = await reviewRepository.getReviewByFortuneTellerId(fortuneTellerId)
 
@@ -90,5 +96,27 @@ export const fortuneTellerService = {
   getRecommendPackage: async () => {
     const recommendData = await packageRepository.getRecommendPackage()
     return recommendData
+  },
+
+  getPackageData: async (packageId: string) => {
+    const packageData = await packageRepository.getPackageData(packageId)
+    if ( packageData === null ) return null
+    return {
+      speciality: packageData.speciality,
+      price : packageData.price,
+      duration: packageData.duration,
+      description : packageData.description
+    }
+  },
+
+  updatePackage: async (packageData: PackageWithIdSchema) => {
+    const isSuccess = await packageRepository.updatePackage(packageData)
+    return { success: isSuccess, message: (isSuccess) ? "success" : "error to update package" }
+  },
+
+  deletePackage: async (packageId: string)  => {
+    const isSuccess = await packageRepository.deletePackage(packageId)
+    return { success: isSuccess, message: (isSuccess) ? "success" : "error to delete package" }
   }
+
 }

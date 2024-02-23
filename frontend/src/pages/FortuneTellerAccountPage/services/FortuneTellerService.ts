@@ -37,8 +37,8 @@ export const FortuneTellerService = {
     return data.data
   },
 
-  getPackageByFortuneTellerId: async(fortuneTellerId: string):Promise<PackageTypes[]> => {
-    const res = await fetch(`${environment.backend.url}/fortuneteller/package/${fortuneTellerId}`)
+  getPackageIncludeIdByFortuneTellerId: async(fortuneTellerId: string):Promise<PackageTypes[]> => {
+    const res = await fetch(`${environment.backend.url}/fortuneteller/package-with-id/${fortuneTellerId}`)
     const data = await res.json()
 
     return data.data

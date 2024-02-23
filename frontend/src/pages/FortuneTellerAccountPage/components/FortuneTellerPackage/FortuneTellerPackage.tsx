@@ -1,3 +1,4 @@
+import { environment } from "../../../../common/constants/environment"
 import Star from "../../../../assets/FortuneTellerAccountAssets/Star.png"
 import Coin from "../../../../assets/FortuneTellerAccountAssets/Coin.svg"
 import EditIcon from "../../../../assets/FortuneTellerAccountAssets/EditIcon.svg"
@@ -10,17 +11,17 @@ export default function FortuneTellerPackage({
 }) {
   const timeSeparate = (): [number, string] => {
     let time = Number(fortuneTellerPackage.duration)
-    let unit = "นาที"
 
-    if (time >= 1440) {
+    if (time >= 1440 && time % 1440 === 0) {
       time /= 1440
-      unit = "วัน"
-    } else if (time >= 60) {
-      time /= 1440
-      unit = "ชั่วโมง"
+      return [time, "วัน"]
+    }
+    if (time >= 60 && time % 60 === 0) {
+      time /= 60
+      return [time, "ชั่วโมง"]
     }
 
-    return [time, unit]
+    return [time, "นาที"]
   }
 
   const specialityName = (): string => {
@@ -30,6 +31,15 @@ export default function FortuneTellerPackage({
     if (speciality === "NUMBER") return "ศาตร์ตัวเลข"
     if (speciality === "ORACLE") return "ไพ่ออราเคิล"
     return "รูนส์"
+  }
+
+  // edit package with packageId
+  const editPackage = () => {
+    window.location.href =
+      environment.frontend.url +
+      "/account/fortuneteller/package" +
+      "/" +
+      fortuneTellerPackage.packageId
   }
 
   return (
@@ -42,8 +52,9 @@ export default function FortuneTellerPackage({
         <img
           src={EditIcon}
           className="size-6 text-white right-0 self-center cursor-pointer"
-          // path ไปหา ${fortuneTellerId}/${packageId}/edit
-          // onClick={() => (window.location.href = "/account/fortuneteller/package")}
+          onClick={() => {
+            editPackage()
+          }}
         />
       </div>
       <div className="flex flex-row pl-14 items-center">
