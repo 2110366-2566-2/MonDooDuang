@@ -56,7 +56,7 @@ export const packageRepository = {
 
   deletePackage: async (packageId: string) => {
     try {
-      const result = await db.query (
+      const result = await db.query(
         `
         DELETE FROM PACKAGE
         WHERE package_id ='${packageId}'
@@ -67,7 +67,7 @@ export const packageRepository = {
       return false
     }
   },
-  
+
   getPackageByFortuneTellerId: async (fortuneTellerId: string): Promise< null | PackageSchema[] > => {
     const result = await db.query(
       `SELECT * FROM PACKAGE

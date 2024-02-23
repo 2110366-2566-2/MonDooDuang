@@ -132,7 +132,7 @@ export const fortuneTellerRepository = {
         `,
         [fortuneTeller.fortuneTellerId, fortuneTeller.description, fortuneTeller.stageName]
       )
-        return true
+      return true
     } catch (err) {
       return false
     }
