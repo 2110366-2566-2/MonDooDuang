@@ -72,7 +72,7 @@ const updateFortuneTellerDetail = async (req: Request, res: Response) => {
   }
   const updateDetail = await fortuneTellerService.updateFortuneTellerDetail(fortuneTeller)
   if (!updateDetail) return res.status(400).json(updateDetail)
-  return res.status(200).json({success : true})
+  return res.status(200).json({ success : true })
 }
 
 const getStageNameValid = async (req: Request, res: Response) => {
@@ -160,7 +160,7 @@ const updatePackage = async (req: Request, res: Response) => {
   const result = await fortuneTellerService.updatePackage(packageData)
   const isSuccess = result.success 
   if (!isSuccess) return res.status(400).json(result)
-  return res.status(200).json({success : true})
+  return res.status(200).json({ success : true })
   
 }
 
