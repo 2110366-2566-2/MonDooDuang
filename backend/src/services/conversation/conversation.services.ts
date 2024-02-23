@@ -15,7 +15,7 @@ export const conversationService = {
       return []
     }
 
-    return data.map((conversation) => conversation.conversationid)
+    return data.map((conversation) => conversation.conversation_id)
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const data = await conversationRepository.getNameWithLastMessage(conversationId, userId)
@@ -57,10 +57,10 @@ export const conversationService = {
       }
 
       formattedMessages.push({
-        message: message.messagetext,
+        message: message.message_text,
         timeSent: currentTimeSent,
         sender: message.sender,
-        isRead: message.isread
+        isRead: message.is_read
       })
 
       prevTimeSent = currentTimeSent

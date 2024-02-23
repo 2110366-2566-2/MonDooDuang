@@ -4,10 +4,10 @@ import { ShowedReviewSchema } from "../models/fortuneTellerDetail/showedReview.m
 export const reviewRepository = {
   getReviewByFortuneTellerId: async (fortuneTellerId: string): Promise< null | ShowedReviewSchema[] > => {
     const result = await db.query(
-      `SELECT reviewMessage, score, review.created_at, fname, lname  FROM REVIEW
+      `SELECT review_message, score, review.created_at, fname, lname  FROM REVIEW
             JOIN USER_TABLE
-            ON REVIEW.customerId = USER_TABLE.userID
-            WHERE FortuneTellerId = $1
+            ON REVIEW.customer_id = USER_TABLE.user_id
+            WHERE fortune_teller_id = $1
             ORDER BY review.created_at DESC;`,
       [fortuneTellerId]
     )
@@ -16,7 +16,7 @@ export const reviewRepository = {
 
     const reviews: ShowedReviewSchema[] = result.rows.map(row => ({
 
-      reviewMessage: row.reviewmessage,
+      reviewMessage: row.review_message,
       score: row.score,
       created_at: row.created_at,
       fName: row.fname,

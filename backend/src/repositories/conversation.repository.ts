@@ -4,15 +4,15 @@ export const conversationRepository = {
   getConversationsByUserId: async (userId: string) => {
     const result = await db.query(
       `
-        SELECT c.conversationid 
+        SELECT c.conversation_id 
         FROM conversation c
         LEFT JOIN (
-          SELECT conversationid, created_at
+          SELECT conversation_id, created_at
           FROM message
           ORDER BY created_at DESC
           LIMIT 1
-        ) m ON c.conversationid = m.conversationid
-        WHERE fortunetellerid = $1 OR customerid = $1
+        ) m ON c.conversation_id = m.conversation_id
+        WHERE fortune_teller_id = $1 OR customer_id = $1
         ORDER BY m.created_at
       `,
       [userId]
@@ -24,16 +24,16 @@ export const conversationRepository = {
       `
       SELECT 
       CASE 
-      WHEN c.fortunetellerid = $2 THEN CONCAT(u.fname,' ',u.lname)
-      WHEN c.customerid = $2 THEN ft.stagename
+      WHEN c.fortune_teller_id = $2 THEN CONCAT(u.fname,' ',u.lname)
+      WHEN c.customer_id = $2 THEN ft.stage_name
       END AS name,
-      m.messagetext AS lastMessage
+      m.message_text AS last_message
     FROM 
       CONVERSATION c
-    LEFT JOIN USER_TABLE u ON c.customerid = u.userid
-    LEFT JOIN FORTUNE_TELLER ft ON c.fortunetellerid = ft.fortunetellerid
-    LEFT JOIN MESSAGE m ON c.conversationid = m.conversationid
-    WHERE c.conversationid = $1
+    LEFT JOIN USER_TABLE u ON c.customer_id = u.user_id
+    LEFT JOIN FORTUNE_TELLER ft ON c.fortune_teller_id = ft.fortune_teller_id
+    LEFT JOIN MESSAGE m ON c.conversation_id = m.conversation_id
+    WHERE c.conversation_id = $1
     ORDER BY m.created_at DESC
     LIMIT 1
       `,
@@ -41,19 +41,19 @@ export const conversationRepository = {
     )
     return {
       name: conversationDetails.rows[0].name,
-      lastMessage: conversationDetails.rows[0].lastmessage
+      lastMessage: conversationDetails.rows[0].last_message
     }
   },
   getMessagesByConversationId: async (conversationId: string, userId: string) => {
     const result = await db.query(
       `
-        SELECT messagetext, created_at, isRead,
+        SELECT message_text, created_at, is_read,
         CASE 
-          WHEN senderid = $2 THEN 'SELF'
-          WHEN senderid <> $2 THEN 'OTHER'
+          WHEN sender_id = $2 THEN 'SELF'
+          WHEN sender_id <> $2 THEN 'OTHER'
         END AS sender
         FROM MESSAGE
-        WHERE conversationid = $1
+        WHERE conversation_id = $1
         ORDER BY created_at
       `,
       [conversationId, userId]
@@ -65,18 +65,18 @@ export const conversationRepository = {
       `
         SELECT 
         CASE 
-            WHEN fortunetellerid = $2 THEN (
+            WHEN fortune_teller_id = $2 THEN (
                 SELECT CONCAT(fname,' ',lname) FROM USER_TABLE 
-                WHERE USER_TABLE.userid = CONVERSATION.customerid
+                WHERE USER_TABLE.user_id = CONVERSATION.customer_id
             )
-            WHEN customerid = $2 THEN (
-                SELECT stagename FROM FORTUNE_TELLER
-                WHERE FORTUNE_TELLER.fortunetellerid = CONVERSATION.fortunetellerid
+            WHEN customer_id = $2 THEN (
+                SELECT stage_name FROM FORTUNE_TELLER
+                WHERE FORTUNE_TELLER.fortune_teller_id = CONVERSATION.fortune_teller_id
             )
         END AS result
         FROM 
             CONVERSATION
-        WHERE conversationid = $1
+        WHERE conversation_id = $1
     `,
       [conversationId, userId]
     )
@@ -86,7 +86,7 @@ export const conversationRepository = {
     try {
       await db.query(
         `
-          INSERT INTO MESSAGE(conversationid, senderid, messageText)
+          INSERT INTO MESSAGE(conversation_id, sender_id, message_text)
           VALUES($1, $2, $3)
         `,
         [conversationId, senderId, message]
@@ -100,19 +100,19 @@ export const conversationRepository = {
     try {
       await db.query(
         `
-          INSERT INTO CONVERSATION(fortunetellerid, customerid)
+          INSERT INTO CONVERSATION(fortune_teller_id, customer_id)
           VALUES($1, $2)
         `,
         [fortunetellerId, customerId]
       )
       const result = await db.query(
         `
-          SELECT conversationid
+          SELECT conversation_id
           FROM CONVERSATION
-          WHERE fortunetellerid = $1 AND customerid = $2`,
+          WHERE fortune_teller_id = $1 AND customer_id = $2`,
         [fortunetellerId, customerId]
       )
-      return { isSuccess: true, data: result.rows[0].conversationid }
+      return { isSuccess: true, data: result.rows[0].conversation_id }
     } catch (err) {
       return { isSuccess: false }
     }
