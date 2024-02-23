@@ -1,7 +1,7 @@
 import { fortuneTellerRepository } from "../../repositories/fortuneTeller.repository"
 import { packageRepository } from "../../repositories/package.repository"
 import { reviewRepository } from "../../repositories/review.repository"
-import { FortuneTellerRegisterSchema, FortuneTellerDetailSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
+import { FortuneTellerRegisterSchema, FortuneTellerAccountDetailSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
 
 export const fortuneTellerService = {
 
@@ -41,7 +41,7 @@ export const fortuneTellerService = {
     }
   },
 
-  updateFortuneTellerDetail: async (fortuneTeller : FortuneTellerDetailSchema) => {
+  updateFortuneTellerDetail: async (fortuneTeller : FortuneTellerAccountDetailSchema) => {
     const isSuccess = await fortuneTellerRepository.updateFortuneTellerDetail(fortuneTeller)
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to update fortune teller detail" }
   },

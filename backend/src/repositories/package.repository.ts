@@ -1,6 +1,5 @@
 import { db } from "../configs/pgdbConnection"
 import { PackageSchema } from "../models/package/package.model"
-import { PackageSchema } from "../models/package/package.model"
 import { SearchSchema } from "../models/search/search.model"
 
 export const packageRepository = {
@@ -11,7 +10,7 @@ export const packageRepository = {
             INSERT INTO PACKAGE (speciality,description, duration, price, fortunetellerId)
             VALUES($1, $2, $3, $4, $5);
         `,
-        [packageFortune.speciality,packageFortune.description, packageFortune.duration, packageFortune.price, packageFortune.fortunetellerId]
+        [packageFortune.speciality,packageFortune.description, packageFortune.duration, packageFortune.price, packageFortune.fortuneTellerId]
       )
       return true
     } catch (err) {
