@@ -48,14 +48,14 @@ export default function SearchPage(): JSX.Element {
 
   const transformFetchDataToSearchValue = (fetchSearchData: FetchSearchData): SearchValue => {
     return {
-      name: fetchSearchData.stagename ?? fetchSearchData.fname,
+      name: fetchSearchData.stage_name ?? fetchSearchData.fname,
       rating:
-        fetchSearchData.totalreview === 0
+        fetchSearchData.total_review === 0
           ? 0
-          : fetchSearchData.totalscore / fetchSearchData.totalreview,
-      minPrice: fetchSearchData.minprice,
-      maxPrice: fetchSearchData.maxprice,
-      image: fetchSearchData.profilepicture,
+          : fetchSearchData.total_score / fetchSearchData.total_review,
+      minPrice: fetchSearchData.min_price,
+      maxPrice: fetchSearchData.max_price,
+      image: fetchSearchData.profile_picture,
       speciality: fetchSearchData.speciality_list
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
@@ -83,7 +83,7 @@ export default function SearchPage(): JSX.Element {
       packageid_list: fetchSearchData.packageid_list.split(","),
       current_speciality: fetchSearchData.current_speciality.split(",")[0],
       speciality_list: fetchSearchData.speciality_list.split(","),
-      fortunetellerid: fetchSearchData.fortunetellerid
+      fortunetellerid: fetchSearchData.fortune_teller_id
     }
   }
   return (

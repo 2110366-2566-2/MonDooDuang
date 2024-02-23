@@ -1,5 +1,60 @@
 import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
+import { FortuneTellerRegisterSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
+
+const createFortuneTeller = async (req: Request, res: Response) => {
+  const fortuneTeller: FortuneTellerRegisterSchema = {
+    fortuneTellerId: req.body.fortuneTellerId,
+    identityCardNumber: req.body.identityCardNumber,
+    identityCardCopy: req.body.identityCardCopy
+  }
+
+  const result = await fortuneTellerService.createFortuneTeller(fortuneTeller)
+
+  if (!result.success) return res.status(400).json(result)
+  res.status(201).json({ success: true })
+}
+
+const createFortuneTellerRequest = async (req: Request, res: Response) => {
+  const request: RequestSchema = {
+    fortuneTellerId: req.body.fortuneTellerId,
+    status: "PENDING"
+  }
+
+  const result = await fortuneTellerService.createFortuneTellerRequest(request)
+
+  if (!result.success) return res.status(400).json(result)
+  res.status(201).json(result)
+}
+
+const updateFortuneTeller = async (req: Request, res: Response) => {
+  const fortuneTeller: FortuneTellerRegisterSchema = {
+    fortuneTellerId: req.body.fortuneTellerId,
+    identityCardNumber: req.body.identityCardNumber,
+    identityCardCopy: req.body.identityCardCopy
+  }
+  const resultOne = await fortuneTellerService.updateFortuneTeller(fortuneTeller)
+
+  if (!resultOne.success) return res.status(400).json(resultOne)
+
+  const request: RequestSchema = {
+    fortuneTellerId: req.body.fortuneTellerId,
+    status: "PENDING"
+  }
+
+  const resultTwo = await fortuneTellerService.updateFortuneTellerRequest(request)
+
+  if (!resultTwo.success) return res.status(400).json(resultTwo)
+  res.status(200).json({ success: true })
+}
+
+const getFortuneTellerValid = async (req: Request, res: Response) => {
+  const fortuneTellerId: string = req.body.fortuneTellerId
+
+  const result = await fortuneTellerService.getFortuneTellerValid(fortuneTellerId)
+
+  return res.status(200).json({ success: true, data: result })
+}
 
 const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
   const fortuneTellerId = req.params.fortuneTellerId
@@ -35,6 +90,10 @@ const getRecommendPackage = async (req: Request, res: Response) => {
 }
 
 export const fortuneTellerController = {
+  createFortuneTeller,
+  createFortuneTellerRequest,
+  updateFortuneTeller,
+  getFortuneTellerValid,
   getFortuneTellerDisplayInfoById,
   getPackageByFortuneTellerId,
   getReviewByFortuneTellerId,

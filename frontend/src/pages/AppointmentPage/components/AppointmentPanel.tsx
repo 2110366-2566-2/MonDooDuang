@@ -63,18 +63,18 @@ export default function AppointmentPanel({
   const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
   const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
   const [packageType, setPackageType] = useState<Package>({
-    packageid: "",
+    package_id: "",
     speciality: "",
     price: 0,
     duration: 0
   })
   const [packages, setPackages] = useState<Package[]>([])
   const [userInfo, setUserInfo] = useState<UserInfo>({
-    userid: "",
+    user_id: "",
     fname: "",
     lname: "",
-    phonenumber: "",
-    birthdate: ""
+    phone_number: "",
+    birth_date: ""
   })
   const [appointments, setAppointments] = useState<GroupedAppointments>({})
 
@@ -116,7 +116,7 @@ export default function AppointmentPanel({
 
   const groupAppointmentsByDate = (data: FortuneTellerAppointments[]): GroupedAppointments => {
     return data.reduce((acc, curr) => {
-      const plusdate = dayjs(curr.appointmentdate)
+      const plusdate = dayjs(curr.appointment_date)
         .add(7, "hours")
         .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")
       const date = plusdate.split("T")[0]
@@ -217,8 +217,8 @@ export default function AppointmentPanel({
           <div style={text_shadow}>
             ชื่อผู้จอง : {userInfo.fname} {userInfo.lname}
           </div>
-          <div style={text_shadow}>วันเกิด : {formatDate(userInfo.birthdate)}</div>
-          <div style={text_shadow}>เบอร์โทรศัพท์ : {formatPhoneNumber(userInfo.phonenumber)}</div>
+          <div style={text_shadow}>วันเกิด : {formatDate(userInfo.birth_date)}</div>
+          <div style={text_shadow}>เบอร์โทรศัพท์ : {formatPhoneNumber(userInfo.phone_number)}</div>
         </div>
         <div className="w-full flex items-end justify-items-end mt-6">
           <div className="flex ml-auto">
@@ -230,6 +230,7 @@ export default function AppointmentPanel({
       </div>
     )
   }
+
   return (
     <div
       style={{
@@ -314,8 +315,8 @@ export default function AppointmentPanel({
               .subtract(7, "hours")
               .format("YYYY-MM-DD HH:mm:ss")
             AppointmentService.createAppointment(
-              packageType.packageid,
-              userInfo.userid,
+              packageType.package_id,
+              userInfo.user_id,
               fortuneTellerId,
               appointmentDate
             )

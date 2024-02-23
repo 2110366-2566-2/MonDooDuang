@@ -1,29 +1,23 @@
 export type Package = {
-  packageid: string
+  package_id: string
   speciality: string
   price: number
   duration: number
 }
 
 export type UserInfo = {
-  userid: string
+  user_id: string
   fname: string
   lname: string
-  phonenumber: string
-  birthdate: string
+  phone_number: string
+  birth_date: string
 }
 
 export type FortuneTellerAppointments = {
-  appointmentdate: string
+  appointment_date: string
   duration: number
 }
 
-export interface Fortune {
-  packageid: string
-  speciality: string
-  price: number
-  duration: number
-}
 export interface GroupedAppointments {
   [date: string]: { time: string; duration: number }[]
 }

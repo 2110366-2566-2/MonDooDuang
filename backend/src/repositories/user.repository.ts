@@ -4,14 +4,14 @@ import { CreateUserSchema, UserDBSchema } from "../models/user/user.model"
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
     const user = await db.query<UserDBSchema>(
-      "SELECT userid, password, usertype, fname, lname FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )",
+      "SELECT user_id, password, user_type, fname, lname FROM user_table WHERE email = $1 OR ( fname = $2 AND lname = $3 )",
       [email, fName, lName]
     )
     return user.rows[0]
   },
   createUser: async (user: CreateUserSchema) => {
     await db.query(
-      `INSERT INTO user_table(fName, lName, gender, phoneNumber, email, birthDate, profilePicture, isBanned, bankName, accountNumber, password, userType)
+      `INSERT INTO user_table(fname, lname, gender, phone_number, email, birth_date, profile_picture, is_banned, bank_name, account_number, password, user_type)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
       [
         user.fName,
@@ -29,7 +29,7 @@ export const userRepository = {
       ]
     )
     const newUser = await db.query<UserDBSchema>(
-      "SELECT userid, usertype, fname, lname FROM user_table WHERE email = $1",
+      "SELECT user_id, user_type, fname, lname FROM user_table WHERE email = $1",
       [user.email]
     )
     return newUser.rows[0]

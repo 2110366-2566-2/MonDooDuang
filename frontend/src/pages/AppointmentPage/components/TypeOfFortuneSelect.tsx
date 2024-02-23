@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { CoinIcon, LeftArrow, RightArrow } from "./Icon"
-import { Fortune, Package } from "../types/AppointmentTypes"
+import { Package } from "../types/AppointmentTypes"
 import SpecialitySelector from "./SpecialitySelector/SpecialitySelector"
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
@@ -9,13 +9,13 @@ export function TypeOfFortuneSelect({
   fortuneTeller,
   onPackageChange
 }: {
-  typeJson: Fortune[]
+  typeJson: Package[]
   fortuneTeller: string
   onPackageChange: (value: Package) => void
 }) {
   const [price, setPrice] = useState(0)
   const [packageType, setPackageType] = useState<Package>({
-    packageid: "",
+    package_id: "",
     speciality: "",
     price: 0,
     duration: 0
