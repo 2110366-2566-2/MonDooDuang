@@ -1,10 +1,13 @@
+import RootLayout from "../../common/components/RootLayout/RootLayout"
+import { AuthProvider } from "../../common/providers/AuthProvider"
 import AppointmentPage from "./AppointmentPage"
 
 export default function AppointmentApp() {
   return (
-    //Add providers as needed
-    <>
-      <AppointmentPage />
-    </>
+    <RootLayout>
+      <AuthProvider>
+        <AppointmentPage />
+      </AuthProvider>
+    </RootLayout>
   )
 }

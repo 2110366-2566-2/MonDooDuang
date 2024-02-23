@@ -1,9 +1,9 @@
-export type SpecialityType = "THAI" | "NUMBER" | "ORACLE" | "TAROT_CARD" | "RUNES" 
+type Speciality = "TAROT_CARD" | "THAI" | "NUMBER" | "ORACLE" | "RUNES"
 
-export interface PackageSchema{
-    specialityType: SpecialityType,
-    description: string,
-    duration: number,
-    price: number,
-    fortunetellerId: string
+export interface PackageSchema {
+  speciality: Speciality
+  description: string
+  duration: number
+  price: number
+  fortuneTellerId: string
 }

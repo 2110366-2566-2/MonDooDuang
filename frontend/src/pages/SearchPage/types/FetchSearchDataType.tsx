@@ -2,13 +2,13 @@ type FetchSearchData = {
     current_packageid: string
     current_speciality: string
     fname: string
-    fortunetellerid: string
-    maxprice: number
-    minprice: number
+    fortune_teller_id: string
+    max_price: number
+    min_price: number
     packageid_list: string
-    profilepicture: string | null
+    profile_picture: string | null
     speciality_list: string
-    stagename: string | null
-    totalreview: number
-    totalscore: number
+    stage_name: string | null
+    total_review: number
+    total_score: number
   }
