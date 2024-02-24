@@ -67,5 +67,14 @@ export const packageRepository = {
 
     if (result.rows.length === 0) return null
     return result.rows
-  }
+  },
+
+  getPackagesForAppointment: async (fortuneTellerId: string) => {
+    const result = await db.query(
+      `SELECT P.package_id,P.speciality,P.duration,P.price
+      FROM package as P
+      WHERE P.fortune_teller_id = $1;`, [fortuneTellerId]
+    )
+    return result.rows
+  },
 }

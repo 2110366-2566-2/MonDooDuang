@@ -15,31 +15,7 @@ export const appointmentRepository = {
       return false
     }
   },
-  getFortuneTeller: async (fortuneTellerId: string) => {
-    const result = await db.query(
-      `SELECT fortune_teller_id, stage_name
-      FROM fortune_teller as F
-      WHERE F.fortune_teller_id = $1;`, [fortuneTellerId]
-    )
-    if (result.rows[0] === null) { return null }
-    return result.rows[0]
-  },
-  getAllFortuneTeller: async () => {
-    const result = await db.query(
-      `SELECT fortune_teller_id, stage_name
-       FROM fortune_teller
-      `
-    )
-    return result.rows
-  },
-  getPackages: async (fortuneTellerId: string) => {
-    const result = await db.query(
-      `SELECT P.package_id,P.speciality,P.duration,P.price
-      FROM package as P
-      WHERE P.fortune_teller_id = $1;`, [fortuneTellerId]
-    )
-    return result.rows
-  },
+
   getFortuneTellerAppointment: async (fortuneTellerId: string) => {
     const result = await db.query(
       `SELECT A.appointment_date , P.duration
@@ -48,14 +24,5 @@ export const appointmentRepository = {
       and A.status = 'WAITING_FOR_EVENT';`, [fortuneTellerId]
     )
     return result.rows
-  },
-  getUserInfo: async (userId: string) => {
-    const result = await db.query(
-      `SELECT user_id,fname,lname,phone_number,birth_date
-      FROM user_table
-      WHERE user_id = $1;`, [userId]
-    )
-
-    return result.rows[0]
   }
 }

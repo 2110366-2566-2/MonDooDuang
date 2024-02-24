@@ -33,5 +33,15 @@ export const userRepository = {
       [user.email]
     )
     return newUser.rows[0]
+  },
+
+  getUserInfoForAppointment: async (userId: string) => {
+    const result = await db.query(
+      `SELECT user_id,fname,lname,phone_number,birth_date
+      FROM user_table
+      WHERE user_id = $1;`, [userId]
+    )
+
+    return result.rows[0]
   }
 }
