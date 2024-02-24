@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom"
 import { AppointmentService } from "../services/AppointmentService"
 import { AppointmentInformation } from "../types/AppointmentInformation"
 import { specialityMapper } from "../../../common/types/Package"
-import PaymentIcon from "../../../common/components/AppointmentCard/Icon/paymentIcon"
+import PaymentIcon from "../../../common/components/AppointmentCard/Icon/PaymentIcon"
+import SuccessIcon from "../../../common/components/AppointmentCard/Icon/SuccessIcon"
 
 export default function ConversationHeader({
   name,
@@ -24,7 +25,7 @@ export default function ConversationHeader({
 
   useEffect(()=>{
     const fetchAppointments = async () => {
-      const appointments = await AppointmentService.getAppointmentsByBothUser('3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d')
+      const appointments = await AppointmentService.getAppointmentsByBothUser('6362e550-bae0-462e-989c-7d6c072613a5', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d')
       setAppointments(appointments)
     }
     fetchAppointments()
@@ -74,6 +75,16 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getWaitingForEventInfo = (appointmentId: string) => {
+    const content = <><h1 className="text-mdd-yellow600 font-semibold text-[28px]">ชำระเงินเรียบร้อย</h1><p className="text-mdd-gray-success-text">การนัดหมายของคุณได้ถูกจองเสร็จสมบูรณ์</p></>
+    const moreContent = "*ทั้งหมอดูและลูกค้าสามารถกดยกเลิกการนัดหมายได้ โดยสามารถยกเลิกได้ถึงก่อนวันนัดหมาย 3 วัน"
+    const button = <button className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5" onClick={()=> {
+      if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
+        AppointmentService.updateAppointmentStatus("USER_CANCELED",appointmentId)}}
+    }>ยกเลิกการดูดวง</button>
+    return { content, moreContent, button }
+  }
+
   return (
     <div className="flex flex-col bg-white bg-opacity-85">
       <div className="h-[60px] flex items-center justify-between p-4">
@@ -101,6 +112,9 @@ export default function ConversationHeader({
           if(appointment.status === "WAITING_FOR_PAYMENT"){
             const { content, moreContent, button } = getWaitingForPaymentInfo(appointment.price, paymentDate, paymentTime)
             return <BaseAppointmentCard icon={<PaymentIcon/>} content={content} moreContent={moreContent} button={button} formattedDate={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]}/>
+          } else if(appointment.status === "WAITING_FOR_EVENT"){
+            const {content, moreContent, button} = getWaitingForEventInfo(appointment.appointmentId)
+            return <BaseAppointmentCard icon={<SuccessIcon/>} content={content} moreContent={moreContent} button={button} formattedDate={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]}/>
           }
         })
       }
