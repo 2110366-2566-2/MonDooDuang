@@ -6,5 +6,4 @@ dist-ssr
 *.md
 node_modules
 node_modules/*
-yarn.lock
 package-lock.json
