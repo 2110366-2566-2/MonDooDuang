@@ -137,6 +137,7 @@ export const fortuneTellerRepository = {
       return false
     }
   },
+  
   getStageNameValid: async (fortuneTellerId: string, stageName: string) => {
     try {
       const stageNameValid = await db.query(
@@ -152,6 +153,24 @@ export const fortuneTellerRepository = {
     } catch (err) {
       return false
     }
-  }
+  },
+  
+  getFortuneTellerStageName: async (fortuneTellerId: string) => {
+    const result = await db.query(
+      `SELECT fortune_teller_id, stage_name
+      FROM fortune_teller as F
+      WHERE F.fortune_teller_id = $1;`, [fortuneTellerId]
+    )
+    if (result.rows[0] === null) { return null }
+    return result.rows[0]
+  },
 
+  getAllFortuneTellerStageName: async () => {
+    const result = await db.query(
+      `SELECT fortune_teller_id, stage_name
+       FROM fortune_teller
+      `
+    )
+    return result.rows
+  }
 }
