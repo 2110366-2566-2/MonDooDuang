@@ -8,14 +8,15 @@ import ConversationHeader from "./ConversationHeader"
 import { MessageInformation } from "../types/MessageInformation"
 
 const socket = io(environment.backend.url)
-const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
 
 export default function ConversationBox({
   conversationId,
-  showReport
+  showReport,
+  userId
 }: {
   conversationId: string | null
   showReport: () => void
+  userId: string
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
@@ -26,13 +27,13 @@ export default function ConversationBox({
     const fetchMessages = async () => {
       const messages = await ConversationService.getMessagesByConversationId(
         conversationId,
-        mockUserId
+        userId
       )
       setMessages(messages)
     }
     const fetchName = async () => {
       if (conversationId) {
-        const data = await ConversationService.getNameByConversationId(conversationId, mockUserId)
+        const data = await ConversationService.getNameByConversationId(conversationId, userId)
         setName(data.name)
       }
     }
@@ -66,7 +67,7 @@ export default function ConversationBox({
         timeSent: Date.now()
       },
       room,
-      mockUserId
+      userId
     )
     setMessages([
       ...messages,

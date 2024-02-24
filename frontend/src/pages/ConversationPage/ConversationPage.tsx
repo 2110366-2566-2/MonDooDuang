@@ -34,10 +34,11 @@ export default function ConversationPage() {
           conversationIds={conversationIds}
           onConversationSelect={handleConversationSelect}
           selectedConversationId={selectedConversationId}
+          userId={userId}
         />
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ConversationBox conversationId={selectedConversationId} showReport={showReport} />
+        <ConversationBox conversationId={selectedConversationId} showReport={showReport} userId={userId}/>
       </div>
       <ReportModal
         isShowReport={isShowReport}

@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react"
 import { ConversationService } from "../services/ConversationService"
 
-const mockUserId = "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
-
 export default function ConversationList({
   conversationId,
   onSelect,
-  isSelected
+  isSelected,
+  userId
 }: {
   conversationId: string
   onSelect: () => void
   isSelected: boolean
+  userId: string
 }) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
-      if (conversationId && mockUserId) {
+      if (conversationId && userId) {
         const { name, lastMessage } = await ConversationService.getNameWithLastMessage(
           conversationId,
-          mockUserId
+          userId
         )
         setName(name)
         setLastMessage(lastMessage)
