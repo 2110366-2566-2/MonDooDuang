@@ -2,11 +2,13 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp"
 import VolumeOffIcon from "@mui/icons-material/VolumeOff"
 import SearchIcon from "@mui/icons-material/Search"
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred"
-import AppointmentCard from "../../../common/components/AppointmentCard/AppointmentCard"
+import BaseAppointmentCard from "../../../common/components/AppointmentCard/BaseAppointmentCard"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { AppointmentService } from "../services/AppointmentService"
 import { AppointmentInformation } from "../types/AppointmentInformation"
 import { specialityMapper } from "../../../common/types/Package"
+import PaymentIcon from "../../../common/components/AppointmentCard/Icon/paymentIcon"
 
 export default function ConversationHeader({
   name,
@@ -15,6 +17,8 @@ export default function ConversationHeader({
   name: string
   showReport: () => void
 }) {
+  const navigate = useNavigate()
+
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
 
@@ -63,6 +67,13 @@ export default function ConversationHeader({
     return { formattedDate, startTime, endTime, paymentDate: paymentDateFormatted, paymentTime: paymentTimeFormatted }
   }
 
+  const getWaitingForPaymentInfo = (price:number, paymentDate: string, paymentTime: string) => {
+    const content = <><h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังรอการชำระเงิน</h1><p className="text-mdd-gray-success-text">ยอดที่ต้องชำระ {price} บาท <br /> สามารถชำระได้จนถึงวันที่ {paymentDate} เวลา {paymentTime} น.</p></>
+    const moreContent = "*หากไม่ชำระภายในวันและเวลาที่กำหนด ทางเว็บไซต์ขออนุญาตยกเลิกการนัดหมายดูดวง"
+    const button = <button className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5" onClick={()=> navigate(`/payment/${price}`)}>ชำระเงินค่าดูดวง</button>
+    return { content, moreContent, button }
+  }
+
   return (
     <div className="flex flex-col bg-white bg-opacity-85">
       <div className="h-[60px] flex items-center justify-between p-4">
@@ -87,8 +98,10 @@ export default function ConversationHeader({
       {
         appointments.map((appointment) => {
           const  { formattedDate, startTime, endTime, paymentDate, paymentTime } = convertDateFormat(appointment.appointmentDate, appointment.duration)
-          
-          return <AppointmentCard date={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]} price={appointment.price} paymentDate={paymentDate} paymentTime={paymentTime}/>
+          if(appointment.status === "WAITING_FOR_PAYMENT"){
+            const { content, moreContent, button } = getWaitingForPaymentInfo(appointment.price, paymentDate, paymentTime)
+            return <BaseAppointmentCard icon={<PaymentIcon/>} content={content} moreContent={moreContent} button={button} formattedDate={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]}/>
+          }
         })
       }
     </div>
