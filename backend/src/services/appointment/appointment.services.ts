@@ -32,5 +32,13 @@ export const appointmentService = {
   getUserInfo: async (userId: string) => {
     const userInfo = await appointmentRepository.getUserInfo(userId)
     return userInfo
+  },
+
+  getAppointmentByBothUserId: async (firstUserId: string, secondUserId: string) => {
+    const appointments = await appointmentRepository.getAppointmentByBothUserId(firstUserId, secondUserId)
+    appointments.forEach((appointment) => {
+      appointment.appointmentDate = new Date((appointment.appointmentDate as Date).setUTCHours((appointment.appointmentDate as Date).getUTCHours() + 14))
+    })
+    return appointments
   }
 }

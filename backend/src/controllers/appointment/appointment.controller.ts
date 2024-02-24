@@ -57,11 +57,18 @@ const getUserInfo = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: userInfo })
 }
 
+const getAppointmentByBothUserId = async (req: Request, res: Response) => {
+  const appointments = await appointmentService.getAppointmentByBothUserId(req.params.firstUserId, req.params.secondUserId)
+
+  res.status(200).json({ success: true, data: appointments })
+}
+
 export const appointmentController = {
   createAppointment,
   getFortuneTeller,
   getAllFortuneTeller,
   getPackages,
   getFortuneTellerAppointment,
-  getUserInfo
+  getUserInfo,
+  getAppointmentByBothUserId
 }

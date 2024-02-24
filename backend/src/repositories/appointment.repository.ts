@@ -57,5 +57,24 @@ export const appointmentRepository = {
     )
 
     return result.rows[0]
+  },
+  getAppointmentByBothUserId: async (firstUserId: string, secondUserId: string) => {
+    const result = await db.query(
+      `
+        SELECT A.status, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality
+        FROM APPOINTMENT A
+        JOIN PACKAGE P ON A.package_id = P.package_id
+        WHERE (A.customer_id = $1 AND A.fortune_teller_id = $2) OR (A.customer_id = $2 AND A.fortune_teller_id = $1)
+      `, [firstUserId, secondUserId]
+    )
+    return result.rows.map((row) => {
+      return {
+        status: row.status,
+        customerId: row.customer_id,
+        fortuneTellerId: row.fortune_teller_id,
+        appointmentDate: row.appointment_date,
+        speciality: row.speciality
+      }
+    })
   }
 }
