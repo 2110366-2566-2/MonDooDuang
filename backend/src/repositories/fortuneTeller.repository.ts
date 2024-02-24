@@ -101,5 +101,24 @@ export const fortuneTellerRepository = {
       totalReview: result.rows[0].total_review,
       profilePicture: result.rows[0].profile_picture
     }
+  },
+
+  getFortuneTellerStageName: async (fortuneTellerId: string) => {
+    const result = await db.query(
+      `SELECT fortune_teller_id, stage_name
+      FROM fortune_teller as F
+      WHERE F.fortune_teller_id = $1;`, [fortuneTellerId]
+    )
+    if (result.rows[0] === null) { return null }
+    return result.rows[0]
+  },
+
+  getAllFortuneTellerStageName: async () => {
+    const result = await db.query(
+      `SELECT fortune_teller_id, stage_name
+       FROM fortune_teller
+      `
+    )
+    return result.rows
   }
 }

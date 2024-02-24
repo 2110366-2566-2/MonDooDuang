@@ -1,5 +1,8 @@
 import { appointmentRepository } from "../../repositories/appointment.repository"
 import { AppointmentSchema } from "../../models/appointment/appointment.model"
+import { fortuneTellerRepository } from "../../repositories/fortuneTeller.repository"
+import { packageRepository } from "../../repositories/package.repository"
+import { userRepository } from "../../repositories/user.repository"
 
 export const appointmentService = {
   createAppointment: async (appointment: AppointmentSchema) => {
@@ -10,17 +13,17 @@ export const appointmentService = {
   },
 
   getFortuneTeller: async (fortuneTellerId: string) => {
-    const fortuneTeller = await appointmentRepository.getFortuneTeller(fortuneTellerId)
+    const fortuneTeller = await fortuneTellerRepository.getFortuneTellerStageName(fortuneTellerId)
     return fortuneTeller
   },
 
   getAllFortuneTeller: async () => {
-    const fortuneTellers = await appointmentRepository.getAllFortuneTeller()
+    const fortuneTellers = await fortuneTellerRepository.getAllFortuneTellerStageName()
     return fortuneTellers
   },
 
   getPackages: async (fortuneTellerId: string) => {
-    const packages = await appointmentRepository.getPackages(fortuneTellerId)
+    const packages = await packageRepository.getPackagesForAppointment(fortuneTellerId)
     return packages
   },
 
@@ -30,7 +33,7 @@ export const appointmentService = {
   },
 
   getUserInfo: async (userId: string) => {
-    const userInfo = await appointmentRepository.getUserInfo(userId)
+    const userInfo = await userRepository.getUserInfoForAppointment(userId)
     return userInfo
   },
 
