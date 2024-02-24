@@ -40,5 +40,10 @@ export const appointmentService = {
       appointment.appointmentDate = new Date((appointment.appointmentDate as Date).setUTCHours((appointment.appointmentDate as Date).getUTCHours() + 14))
     })
     return appointments
+  },
+
+  updateAppointmentStatus: async (appointmentId: string, status: string) => {
+    const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
+    return isSuccess
   }
 }
