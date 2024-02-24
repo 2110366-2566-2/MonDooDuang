@@ -112,7 +112,7 @@ export const fortuneTellerRepository = {
     if (result.rows[0] === null) { return null }
     return result.rows[0]
   },
-  
+
   getAllFortuneTellerStageName: async () => {
     const result = await db.query(
       `SELECT fortune_teller_id, stage_name
@@ -120,5 +120,5 @@ export const fortuneTellerRepository = {
       `
     )
     return result.rows
-  },
+  }
 }

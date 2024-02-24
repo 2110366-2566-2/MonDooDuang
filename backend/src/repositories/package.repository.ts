@@ -76,5 +76,5 @@ export const packageRepository = {
       WHERE P.fortune_teller_id = $1;`, [fortuneTellerId]
     )
     return result.rows
-  },
+  }
 }
