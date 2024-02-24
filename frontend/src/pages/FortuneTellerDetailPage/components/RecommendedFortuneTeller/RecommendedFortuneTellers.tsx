@@ -5,21 +5,22 @@ import { Specialities,specialitiesName } from "../../../SearchPage/types/Special
 import { useEffect, useState } from "react"
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { environment } from "../../../../common/constants/environment"
+import { ConversationService } from "../../services/ConversationService"
 
-export default function RecommendedFortuneTellers() {
+export default function RecommendedFortuneTellers({userId}:{userId: string}) {
  
   const [recommendPackage, setRecommendPackage] = useState<SearchValue[] | null>(null)
     
   useEffect(() => {
     const fetchData = async () => {
       const data = await FortuneTellerService.getRecommendPackage()
-      setRecommendPackage((data as FetchSearchData[]).map(transformFetchDataToRecommendPackage))
+      setRecommendPackage(await Promise.all((data as FetchSearchData[]).map(transformFetchDataToRecommendPackage)))
     }
     fetchData()
         
   },[])
     
-  const transformFetchDataToRecommendPackage = (fetchSearchData: FetchSearchData): SearchValue => {
+  const transformFetchDataToRecommendPackage = async (fetchSearchData: FetchSearchData): Promise<SearchValue> => {
     return {
       name: fetchSearchData.stage_name ?? fetchSearchData.fname,
       rating: fetchSearchData.total_review === 0 ? 0 : fetchSearchData.total_score / fetchSearchData.total_review,
@@ -29,9 +30,9 @@ export default function RecommendedFortuneTellers() {
       speciality: fetchSearchData.speciality_list
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
-      chat: () => {
-        //create conver
-        window.location.href = environment.frontend.url + "/conversation"
+      chat: async() => {
+        const {conversationId} = await ConversationService.createConversation(userId, fetchSearchData.fortune_teller_id)
+        window.location.href = `${environment.frontend.url}/conversation/${conversationId}`
       },
       moreInformation: () => {
         window.location.href =

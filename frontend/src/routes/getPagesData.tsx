@@ -53,6 +53,10 @@ export const getPagesData = (stripePromise: any) =>
       element: <FortuneTellerDetailApp />
     },
     {
+      path: "/conversation/:cid?",
+      element: <ConversationApp />
+    },
+    {
       path: "/conversation",
       element: <ConversationApp />
     },

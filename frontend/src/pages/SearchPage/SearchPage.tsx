@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import SearchBar from "./components/SearchBar/SearchBar"
 import FortuneTellerSearchModal from "./components/FortuneTellerSearchModal/FortuneTellerSerachModal"
 import { SearchService } from "./services/SearchService"
 import { Specialities, specialitiesName } from "./types/SpecialityType"
 import { environment } from "../../common/constants/environment"
 import NavBar from "../../common/components/NavBar/NavBar"
+import { ConversationService } from "./services/ConversationService"
+import { AuthContext } from "../../common/providers/AuthProvider"
 
 export default function SearchPage(): JSX.Element {
+  const { userId } = useContext(AuthContext)
   const defaultSearch: SearchFortuneTeller = {
     name: "",
     speciality: "",
@@ -31,13 +34,15 @@ export default function SearchPage(): JSX.Element {
       const fetchData = async () => {
         const data = await SearchService.searchFortuneteller(searchFortuneTeller)
         if (data && (data as FetchSearchData[]).length > 0) {
-          setSearchValue((data as FetchSearchData[]).map(transformFetchDataToSearchValue))
+          const transformedData = await Promise.all((data as FetchSearchData[]).map(transformFetchDataToSearchValue))
+          setSearchValue(transformedData)
           setSearchFound(true)
         } else {
           console.log("No data found")
           setSearchFound(false)
           const allData = await SearchService.searchFortuneteller(defaultSearch)
-          setSearchValue((allData as FetchSearchData[]).map(transformFetchDataToSearchValue))
+          const transformedAllData = await Promise.all((allData as FetchSearchData[]).map(transformFetchDataToSearchValue))
+          setSearchValue(transformedAllData)
         }
         setIsSubmit(false)
         setInitPage(false)
@@ -46,7 +51,7 @@ export default function SearchPage(): JSX.Element {
     }
   }, [isSubmit, initPage])
 
-  const transformFetchDataToSearchValue = (fetchSearchData: FetchSearchData): SearchValue => {
+  const transformFetchDataToSearchValue = async (fetchSearchData: FetchSearchData): Promise<SearchValue> => {
     console.log(fetchSearchData.fortune_teller_id)
     return {
       name: fetchSearchData.stage_name ?? fetchSearchData.fname,
@@ -60,9 +65,9 @@ export default function SearchPage(): JSX.Element {
       speciality: fetchSearchData.speciality_list
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
-      chat: () => {
-        //create conver
-        window.location.href = environment.frontend.url + "/conversation"
+      chat: async () => {
+        const {conversationId} = await ConversationService.createConversation(userId,fetchSearchData.fortune_teller_id)
+        window.location.href = `${environment.frontend.url}/conversation/${conversationId}`
       },
       moreInformation: () => {
         window.location.href =
@@ -105,8 +110,8 @@ export default function SearchPage(): JSX.Element {
         <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0">
           {searchValue && searchValue.length > 0
             ? searchValue.map((fortunetellerInformation, index) => (
-                <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
-              ))
+              <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
+            ))
             : null}
         </div>
       </div>

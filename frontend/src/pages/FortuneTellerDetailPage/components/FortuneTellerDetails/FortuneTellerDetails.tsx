@@ -9,11 +9,13 @@ import { environment } from "../../../../common/constants/environment"
 
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
+import { ConversationService } from "../../services/ConversationService"
 
 export default function FortuneTellerDetails({
-  fid,
+  fid,userId
 }: {
   fid: string | undefined
+  userId: string
 }) {
 
   let fortuneTellerId = ""
@@ -44,9 +46,9 @@ export default function FortuneTellerDetails({
     fetchFortuneTellerDetail()
   }, [])
 
-  function chat() {
-    //create conver
-    window.location.href = environment.frontend.url + "/conversation"
+  async function chat() {
+    const {conversationId} = await ConversationService.createConversation(userId, fortuneTellerId)
+    window.location.href = `${environment.frontend.url}/conversation/${conversationId}`
   }
 
   return (
