@@ -4,16 +4,26 @@ import { ShowedReviewTypes } from "../../types/ShowedReviewTypes"
 
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
+import { environment } from "../../../../common/constants/environment"
 
-export default function Reviews() {
+export default function Reviews({
+  fid,
+}: {
+  fid: string | undefined
+}) {
+
+  let fortuneTellerId = ""
+  if (fid) {
+    fortuneTellerId = fid
+  } else {
+    window.location.href = environment.frontend.url + "/search"
+  }
 
   const [fortuneTellerReview, setFortuneTellerReview] = useState<ShowedReviewTypes[]>()
   
-  const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
-  
   useEffect(() => {
     const fetchFortuneTellerReview = async () => {
-      const response = await FortuneTellerService.getReviewByFortuneTellerId(mockUserId)
+      const response = await FortuneTellerService.getReviewByFortuneTellerId(fortuneTellerId)
       const fortuneTellerReview = response
 
       setFortuneTellerReview(fortuneTellerReview)
@@ -22,10 +32,11 @@ export default function Reviews() {
     fetchFortuneTellerReview()
   }, [])
 
-  let reviewItems = null
-  if(fortuneTellerReview !== undefined){
-    reviewItems = fortuneTellerReview.map((reviewItem) => <ReviewList reviewItem = {reviewItem}></ReviewList>)   
+  if (!fortuneTellerReview || fortuneTellerReview.length === 0) {
+    return null;
   }
+
+  const reviewItems = fortuneTellerReview.map((reviewItem) => <ReviewList reviewItem={reviewItem} />)
 
   return (
     <div>

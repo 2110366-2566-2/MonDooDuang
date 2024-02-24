@@ -39,7 +39,7 @@ export const fortuneTellerService = {
 
     return {
       stageName: fortuneTeller.stageName,
-      averageStar: fortuneTeller.totalReview === 0 ? 0 : (fortuneTeller.totalScore / fortuneTeller.totalReview),
+      averageStar: fortuneTeller.totalReview === 0 ? 0 : (fortuneTeller.totalScore / fortuneTeller.totalReview).toFixed(1),
       description: fortuneTeller.description,
       profilePicture: fortuneTeller.profilePicture
     }

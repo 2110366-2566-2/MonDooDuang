@@ -3,16 +3,26 @@ import { PackageTypes } from "../../types/PackageTypes"
 
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
+import { environment } from "../../../../common/constants/environment"
 
-export default function Packages() {
+export default function Packages({
+  fid,
+}: {
+  fid: string | undefined
+}) {
+
+  let fortuneTellerId = ""
+  if (fid) {
+    fortuneTellerId = fid
+  } else {
+    window.location.href = environment.frontend.url + "/search"
+  }
 
   const [fortuneTellerPackage, setFortuneTellerPackage] = useState<PackageTypes[]>()
   
-  const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
-  
   useEffect(() => {
     const fetchFortuneTellerPackage = async () => {
-      const response = await FortuneTellerService.getPackageByFortuneTellerId(mockUserId)
+      const response = await FortuneTellerService.getPackageByFortuneTellerId(fortuneTellerId)
       const fortuneTellerPackage = await response
 
       setFortuneTellerPackage(fortuneTellerPackage)

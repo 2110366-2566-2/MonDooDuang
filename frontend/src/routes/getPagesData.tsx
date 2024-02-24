@@ -49,7 +49,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <SearchApp />
     },
     {
-      path: "/fortuneteller/:fortunetellerid",
+      path: "/fortuneteller/:fid",
       element: <FortuneTellerDetailApp />
     },
     {

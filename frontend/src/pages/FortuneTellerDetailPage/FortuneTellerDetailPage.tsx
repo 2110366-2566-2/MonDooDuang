@@ -9,7 +9,11 @@ import { AuthContext } from "../../common/providers/AuthProvider"
 import { useNavigate } from "react-router-dom"
 import NavBar from "../../common/components/NavBar/NavBar"
 
-export default function FortuneTellerDetailPage() {
+export default function FortuneTellerDetailPage({
+  fid
+}: {
+  fid: string | undefined
+}) {
   const { userId, userType, username } = useContext(AuthContext)
 
   const navigate = useNavigate()
@@ -27,10 +31,10 @@ export default function FortuneTellerDetailPage() {
         </div>
         <div className="px-6  text-[20px] font-light space-y-[64px] pt-4">
           <div className="flex flex-row flex-wrap justify-center space-x-16 w-full items-center">
-            <FortuneTellerDetails></FortuneTellerDetails>
-            <Packages></Packages>
+            <FortuneTellerDetails fid = {fid}></FortuneTellerDetails>
+            <Packages fid = {fid}></Packages>
           </div>
-          <Reviews></Reviews>
+          <Reviews fid = {fid}></Reviews>
           <RecommendedFortuneTellers></RecommendedFortuneTellers>
           <Footer></Footer>
         </div>

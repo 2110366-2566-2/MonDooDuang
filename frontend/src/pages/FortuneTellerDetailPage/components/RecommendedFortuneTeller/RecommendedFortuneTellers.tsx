@@ -4,6 +4,7 @@ import FortuneTellerSearchModal from "../../../SearchPage/components/FortuneTell
 import { Specialities,specialitiesName } from "../../../SearchPage/types/SpecialityType"
 import { useEffect, useState } from "react"
 import { FortuneTellerService } from "../../services/FortuneTellerService"
+import { environment } from "../../../../common/constants/environment"
 
 export default function RecommendedFortuneTellers() {
  
@@ -20,22 +21,35 @@ export default function RecommendedFortuneTellers() {
     
   const transformFetchDataToRecommendPackage = (fetchSearchData: FetchSearchData): SearchValue => {
     return {
-      name: fetchSearchData.stagename ?? fetchSearchData.fname,
-      rating: fetchSearchData.totalreview === 0 ? 0 : fetchSearchData.totalscore / fetchSearchData.totalreview,
-      minPrice: fetchSearchData.minprice,
-      maxPrice: fetchSearchData.maxprice,
-      image: fetchSearchData.profilepicture,
+      name: fetchSearchData.stage_name ?? fetchSearchData.fname,
+      rating: fetchSearchData.total_review === 0 ? 0 : fetchSearchData.total_score / fetchSearchData.total_review,
+      minPrice: fetchSearchData.min_price,
+      maxPrice: fetchSearchData.max_price,
+      image: fetchSearchData.profile_picture,
       speciality: fetchSearchData.speciality_list
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
-      chat: () => {},
-      moreInformation: () => {},
-      makeAppointment: () => {},
+      chat: () => {
+        window.location.href = environment.frontend.url + "/conversation"
+      },
+      moreInformation: () => {
+        window.location.href =
+          environment.frontend.url + "/fortuneteller/" + fetchSearchData.fortune_teller_id
+      },
+      makeAppointment: () => {
+        window.location.href =
+          environment.frontend.url +
+          "/appointment" +
+          "/" +
+          fetchSearchData.fortune_teller_id +
+          "/" +
+          fetchSearchData.current_packageid.split(",")[0]
+      },
       current_packageid: fetchSearchData.current_packageid.split(",")[0],
       packageid_list: fetchSearchData.packageid_list.split(","),
       current_speciality: fetchSearchData.current_speciality.split(",")[0],
       speciality_list: fetchSearchData.speciality_list.split(","),
-      fortunetellerid: fetchSearchData.fortunetellerid
+      fortunetellerid: fetchSearchData.fortune_teller_id
     }
   }
 

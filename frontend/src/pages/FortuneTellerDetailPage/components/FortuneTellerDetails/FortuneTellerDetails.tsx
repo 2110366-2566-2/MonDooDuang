@@ -5,21 +5,32 @@ import RatedStar from "./RatedStar"
 import LeftLine from "../Line/LeftLine"
 import RightLine from "../Line/RightLine"
 
+import { environment } from "../../../../common/constants/environment"
+
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
 
-export default function FortuneTellerDetails() {
+export default function FortuneTellerDetails({
+  fid,
+}: {
+  fid: string | undefined
+}) {
+
+  let fortuneTellerId = ""
+  if (fid) {
+    fortuneTellerId = fid
+  } else {
+    window.location.href = environment.frontend.url + "/search"
+  }
 
   const [fortuneTellerStageName, setFortuneTellerStageName] = useState<string>()
   const [fortuneTellerDescription, setFortuneTellerDescription] = useState<string>()
   const [fortuneTellerAverageStar, setFortuneTellerAverageStar] = useState<number>()
   const [fortuneTellerProfile, setFortuneTellerProfile] = useState<string>()
 
-  const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
-
   useEffect(() => {
     const fetchFortuneTellerDetail = async () => {
-      const response = await FortuneTellerService.getFortuneTellerDisplayInfoById(mockUserId)
+      const response = await FortuneTellerService.getFortuneTellerDisplayInfoById(fortuneTellerId)
       const fortuneTellerStageName = response.stageName
       const fortuneTellerDescription = response.description
       const fortuneTellerAverageStar = response.averageStar
@@ -33,10 +44,14 @@ export default function FortuneTellerDetails() {
     fetchFortuneTellerDetail()
   }, [])
 
+  function chat() {
+    window.location.href = environment.frontend.url + "/conversation"
+  }
+
   return (
     <div className="w-[40%] relative flex flex-wrap justify-center self-start min-w-[550px]">
       <div className="py-10">
-        <div className="relative z-40 ml-[370px]">
+        <div className="relative z-40 ml-[370px]" onClick={chat}>
           <ChatIcon></ChatIcon>
         </div>
         <div className="relative z-0 w-[100%] mt-[-150px] flex justify-center">
