@@ -5,7 +5,7 @@ import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { PackageTypes } from "../../types/PackageTypes"
 import FortuneTellerPackage from "../FortuneTellerPackage/FortuneTellerPackage"
 
-export default function Form(props: { fortuneTellerId: string }) {
+export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
   const [editState, setEditState] = useState(false)
   const [stageName, setStageName] = useState("")
   const [description, setDescription] = useState("")
