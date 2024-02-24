@@ -45,6 +45,7 @@ export default function FortuneTellerDetails({
   }, [])
 
   function chat() {
+    //create conver
     window.location.href = environment.frontend.url + "/conversation"
   }
 

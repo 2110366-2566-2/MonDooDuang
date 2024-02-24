@@ -30,6 +30,7 @@ export default function RecommendedFortuneTellers() {
         .split(",")
         .map((speciality) => specialitiesName[speciality as Specialities]),
       chat: () => {
+        //create conver
         window.location.href = environment.frontend.url + "/conversation"
       },
       moreInformation: () => {

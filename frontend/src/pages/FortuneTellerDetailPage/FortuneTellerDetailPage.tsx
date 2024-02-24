@@ -4,9 +4,6 @@ import Packages from "./components/Packages/Packages"
 import Reviews from "./components/Reviews/Reviews"
 import RecommendedFortuneTellers from "./components/RecommendedFortuneTeller/RecommendedFortuneTellers"
 import Footer from "./components/Footer/Footer"
-import { useContext } from "react"
-import { AuthContext } from "../../common/providers/AuthProvider"
-import { useNavigate } from "react-router-dom"
 import NavBar from "../../common/components/NavBar/NavBar"
 
 export default function FortuneTellerDetailPage({
@@ -14,13 +11,7 @@ export default function FortuneTellerDetailPage({
 }: {
   fid: string | undefined
 }) {
-  const { userId, userType, username } = useContext(AuthContext)
 
-  const navigate = useNavigate()
-  if (userType !== "FORTUNE_TELLER") {
-    navigate("/search")
-    return
-  }
 
   return (
     <>
