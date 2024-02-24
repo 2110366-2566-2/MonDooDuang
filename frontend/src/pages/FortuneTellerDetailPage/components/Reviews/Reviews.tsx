@@ -33,7 +33,7 @@ export default function Reviews({
   }, [])
 
   if (!fortuneTellerReview || fortuneTellerReview.length === 0) {
-    return null;
+    return null
   }
 
   const reviewItems = fortuneTellerReview.map((reviewItem) => <ReviewList reviewItem={reviewItem} />)

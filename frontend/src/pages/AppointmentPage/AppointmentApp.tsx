@@ -4,7 +4,7 @@ import { AuthProvider } from "../../common/providers/AuthProvider"
 import AppointmentPage from "./AppointmentPage"
 
 export default function AppointmentApp() {
-  const params = useParams();
+  const params = useParams()
   return (
     <RootLayout>
       <AuthProvider>
