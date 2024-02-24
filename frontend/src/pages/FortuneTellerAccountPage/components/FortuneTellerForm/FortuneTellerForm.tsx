@@ -148,11 +148,14 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-10 m-10">
-                {fortuneTellerPackage.map((fortuneTellerPackage) => (
-                  <FortuneTellerPackage
-                    fortuneTellerPackage={fortuneTellerPackage}
-                  ></FortuneTellerPackage>
-                ))}
+                {fortuneTellerPackage.map((req: PackageTypes) => {
+                  return (
+                    <FortuneTellerPackage
+                      key={req.packageId}
+                      fortuneTellerPackage={req}
+                    ></FortuneTellerPackage>
+                  )
+                })}
               </div>
             )}
           </div>
