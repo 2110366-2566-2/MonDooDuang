@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../../common/providers/AuthProvider"
 import { useParams } from "react-router-dom"
 import Logo from "../../assets/FortuneTellerPackageAssets/Logo.svg"
-import EditForm from "./components/Form/EditForm"
-import CreateForm from "./components/Form/CreateForm"
+import PackageForm from "./components/PackageForm/PackageForm"
 
 export default function FortuneTellerPackagePage() {
   const { userId, userType } = useContext(AuthContext)
@@ -20,11 +19,7 @@ export default function FortuneTellerPackagePage() {
     <div className="z-50 flex flex-col items-center relative">
       <img className="z-50 flex flex-col items-center mt-7 absolute" src={Logo} />
       <div className="bg-transparent -z-[78] rounded-3xl border my-20 h-5/6 w-11/12 ">
-        {params.packageid !== undefined ? (
-          <EditForm fortuneTellerId={userId} packageId={String(params.packageid)} />
-        ) : (
-          <CreateForm fortuneTellerId={userId} />
-        )}
+        <PackageForm fortuneTellerId={userId} packageId={params.packageid} />
       </div>
     </div>
   )
