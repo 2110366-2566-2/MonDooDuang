@@ -7,7 +7,7 @@ export default function PaymentApp({ stripePromise }: { stripePromise: any }) {
   return (
     <RootLayout>
       <AuthProvider>
-        <NavBar isFortuneTeller={false} menuFocus={"search"} username={"Payment"} />
+        <NavBar isFortuneTeller={false} menuFocus={"search"} username={"Payment"} userId={""} />
         <PaymentPage stripePromise={stripePromise} />
       </AuthProvider>
     </RootLayout>

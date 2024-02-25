@@ -20,7 +20,7 @@ export default function FortuneTellerDetailPage() {
 
   return (
     <>
-      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
+      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} userId={userId} />
       <div className="text-white">
         <div className="px-6">
           <Breadcrumb></Breadcrumb>

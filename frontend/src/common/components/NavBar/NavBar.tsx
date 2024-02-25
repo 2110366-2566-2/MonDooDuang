@@ -3,17 +3,21 @@ import { LocalStorageUtils } from "../../utils/LocalStorageUtils"
 import LogoIcon from "./LogoIcon"
 import LogoutIcon from "./LogoutIcon"
 import NotificationIcon from "./NotificationIcon"
+import { useState } from "react"
+import Notifications from "./Notification/Notifications"
 
 type MenuFocus = "search" | "schedule" | "conversation" | "none"
 
 export default function NavBar({
   isFortuneTeller,
   menuFocus,
-  username
+  username,
+  userId
 }: {
   isFortuneTeller: boolean
   menuFocus: MenuFocus
   username: string
+  userId: string
 }) {
   const navigate = useNavigate()
 
@@ -24,13 +28,16 @@ export default function NavBar({
     { name: "ประวัติการสนทนา", focus: "conversation", href: "" }
   ]
 
-  const handleNotification = () => {}
+  const handleNotification = () => {
+    setShowNotification(!showNotification)
+  }
   const handleLogout = () => {
     LocalStorageUtils.removeData("token")
     navigate("/login")
   }
 
   const isHavingNotification = true
+  const [showNotification, setShowNotification] = useState<boolean>(false)
 
   return (
     <div className="flex justify-between py-3 px-6 items-center">
@@ -53,6 +60,7 @@ export default function NavBar({
             <div className="absolute rounded-full w-3 h-3 right-0 top-0 bg-mdd-sand-yellow" />
           )}
         </div>
+        {showNotification && <Notifications userId={userId} />}
         <div className="flex items-center justify-center gap-3">
           <div className="flex flex-col text-white">
             <div className="font-noto-sans-eng font-normal">{username}</div>

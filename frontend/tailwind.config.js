@@ -25,6 +25,7 @@ export default {
         "mdd-gray-success-text": "#838383",
         "mdd-red-success-text": "#FF5656",
         "mdd-login-frame": "rgba(191, 191, 191, 0.28)",
+        "mdd-yellow-noti": "#DD9F00"
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],

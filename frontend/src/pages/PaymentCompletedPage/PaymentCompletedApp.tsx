@@ -7,7 +7,7 @@ export default function PaymentCompletedApp() {
   return (
     <RootLayout>
       <AuthProvider>
-        <NavBar isFortuneTeller={false} menuFocus={"search"} username={"Payment"} />
+        <NavBar isFortuneTeller={false} menuFocus={"search"} username={"Payment"} userId={""} />
         <PaymentCompletedPage />
       </AuthProvider>
     </RootLayout>
