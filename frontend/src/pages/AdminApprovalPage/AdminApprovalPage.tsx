@@ -36,7 +36,7 @@ export default function AdminApprovalPage() {
         <div
           className="text-white"
           onClick={() => {
-            window.location.href = environment.frontend.url + "/search"
+            window.location.href = environment.frontend.url + "/admin/report_management"
           }}
         >
           หน้าหลัก

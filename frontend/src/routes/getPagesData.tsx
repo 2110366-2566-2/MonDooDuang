@@ -13,6 +13,7 @@ import FortuneTellerDetailApp from "../pages/FortuneTellerDetailPage/FortuneTell
 import PaymentApp from "../pages/PaymentPage/PaymentApp"
 import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
+import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
 
 export const getPagesData = (stripePromise: any) =>
   [
@@ -63,6 +64,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/admin/fortuneteller_approvals",
       element: <AdminApprovalApp />
+    },
+    {
+      path: "/admin/report_management",
+      element: <AdminReportManagementApp />
     },
     {
       path: "/payment",
