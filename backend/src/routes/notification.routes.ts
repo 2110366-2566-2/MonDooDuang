@@ -4,6 +4,9 @@ import { notificationController } from "../controllers/notification/notification
 const router = express.Router()
 
 router.get("/:userId", notificationController.getNotifications)
-router.get("/appointment/:notificationId", notificationController.getAppointmentNotification)
+router.get(
+  "/appointment/:notificationId/:userId",
+  notificationController.getAppointmentNotification
+)
 
 export default router

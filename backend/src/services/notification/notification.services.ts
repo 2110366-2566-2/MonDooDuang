@@ -6,8 +6,8 @@ export const notificationService = {
     return notifications
   },
 
-  getAppointmentNotification: async (notificationId: string) => {
-    const notification = notificationRepository.getAppointmentNotification(notificationId)
+  getAppointmentNotification: async (notificationId: string, userId: string) => {
+    const notification = notificationRepository.getAppointmentNotification(notificationId, userId)
     return notification
   }
 }
