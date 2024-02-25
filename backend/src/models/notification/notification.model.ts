@@ -23,7 +23,7 @@ export interface NotificationSchema {
 }
 
 export interface AppointmentNotificationSchema {
-  appointmentNotificationType: NotificationType
+  appointmentNotificationType: AppointmentNotificationType
   updatedAt: Date
   otherName: string
   appointmentDate: Date
