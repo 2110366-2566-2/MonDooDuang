@@ -24,5 +24,31 @@ export const appointmentRepository = {
       and A.status = 'WAITING_FOR_EVENT';`, [fortuneTellerId]
     )
     return result.rows
+  },
+
+  getExpiredAppointment: async () => {
+    const result = await db.query(
+      `
+        SELECT appointment_id
+        FROM APPOINTMENT
+        WHERE created_at <= NOW() - '1 day'::INTERVAL AND status = 'CREATED';
+      `
+    )
+
+    const appointmentIds = result.rows.map(row => row.appointment_id)
+    return appointmentIds
+
+  },
+
+  declineAppointment: async (appointmentIds: string[]) => {
+    const query = appointmentIds.map((_, i) => `$${i + 1}`).join(", ")
+    await db.query(
+      `
+        UPDATE APPOINTMENT
+        SET status = 'FORTUNE_TELLER_DECLINED'
+        WHERE appointment_id IN (${query});
+      `,
+      [...appointmentIds]
+    )
   }
 }

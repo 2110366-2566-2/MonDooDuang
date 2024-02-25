@@ -35,5 +35,19 @@ export const appointmentService = {
   getUserInfo: async (userId: string) => {
     const userInfo = await userRepository.getUserInfoForAppointment(userId)
     return userInfo
+  },
+
+  autoDeclineAppointment: async () => {
+
+    //get appointment which is still CREATED over 24 hours
+    const expiredAppointment = await appointmentRepository.getExpiredAppointment()
+
+    if (expiredAppointment.length !== 0) {
+      appointmentRepository.declineAppointment(expiredAppointment)
+
+      //Send notification to the list of expiredAppointmentId
+      //Call function here
+    }
+
   }
 }

@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import cron from "node-cron"
 import { AppointmentSchema } from "../../models/appointment/appointment.model"
 import { appointmentService } from "../../services/appointment/appointment.services"
 
@@ -56,6 +57,13 @@ const getUserInfo = async (req: Request, res: Response) => {
 
   res.status(200).json({ success: true, data: userInfo })
 }
+
+const autoDeclineAppointment = cron.schedule("* * * * *", () => {
+  console.log("Checking expired appointment to decline every minute")
+  appointmentService.autoDeclineAppointment()
+})
+
+autoDeclineAppointment.start()
 
 export const appointmentController = {
   createAppointment,
