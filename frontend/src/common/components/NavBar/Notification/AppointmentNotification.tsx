@@ -71,7 +71,7 @@ export default function AppointmentNotification({
         ) : (
           <div className="flex flex-col gap-2">
             <div className="flex gap-1">
-              <div className="font-semibold text-mdd-yellow-noti">
+              <div className="font-semibold text-mdd-yellow600">
                 {appointmentNotification.otherName}
               </div>
               <div>
@@ -79,18 +79,18 @@ export default function AppointmentNotification({
                   appointmentNotification.appointmentNotificationType
                 )}
               </div>
-              <div className="font-semibold text-mdd-yellow-noti">
+              <div className="font-semibold text-mdd-yellow600">
                 {translateSpeciality(appointmentNotification.speciality)}
               </div>
               <div>กับคุณ</div>
             </div>
             <div className="flex gap-1">
               <div>ในวันที่</div>
-              <div className="text-mdd-yellow-noti">
+              <div className="text-mdd-yellow600">
                 {showDate(appointmentNotification.appointmentDate)}
               </div>
               <div>เวลา</div>
-              <div className="text-mdd-yellow-noti">
+              <div className="text-mdd-yellow600">
                 {showTime(appointmentNotification.appointmentDate)}
               </div>
               <div>น.</div>
