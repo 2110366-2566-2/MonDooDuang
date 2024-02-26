@@ -10,6 +10,7 @@ import { AppointmentInformation } from "../types/AppointmentInformation"
 import { specialityMapper } from "../../../common/types/Package"
 import PaymentIcon from "../../../common/components/AppointmentCard/Icon/PaymentIcon"
 import SuccessIcon from "../../../common/components/AppointmentCard/Icon/SuccessIcon"
+import { formatDateTime } from "../../../common/utils/FormatUtils"
 
 export default function ConversationHeader({
   name,
@@ -33,39 +34,6 @@ export default function ConversationHeader({
 
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)
-  }
-
-  const convertDateFormat = (isoDateTimeString: string, duration: number) => {
-    const date = new Date(isoDateTimeString)
-    
-    // Format date as "dd/mm/yyyy"
-    const day = date.getUTCDate().toString().padStart(2, '0')
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0')
-    const year = date.getUTCFullYear().toString()
-    const formattedDate = `${day}/${month}/${year}`
-
-    // Format time as "HH.MM"
-    const hours = date.getUTCHours().toString().padStart(2, '0')
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0')
-    const startTime = `${hours}.${minutes}`
-
-    // Calculate end time by adding duration in minutes
-    const endTimeDate = new Date(date.getTime() + duration * 60000)
-    const endTimeHours = endTimeDate.getUTCHours().toString().padStart(2, '0')
-    const endTimeMinutes = endTimeDate.getUTCMinutes().toString().padStart(2, '0')
-    const endTime = `${endTimeHours}.${endTimeMinutes}`
-
-    // Calculate payment date and time by adding 1 day
-    const paymentDate = new Date(date.getTime() + 24 * 60 * 60 * 1000)
-    const paymentDay = paymentDate.getUTCDate().toString().padStart(2, '0')
-    const paymentMonth = (paymentDate.getUTCMonth() + 1).toString().padStart(2, '0')
-    const paymentYear = paymentDate.getUTCFullYear().toString()
-    const paymentTimeHours = paymentDate.getUTCHours().toString().padStart(2, '0')
-    const paymentTimeMinutes = paymentDate.getUTCMinutes().toString().padStart(2, '0')
-    const paymentDateFormatted = `${paymentDay}/${paymentMonth}/${paymentYear}`
-    const paymentTimeFormatted = `${paymentTimeHours}.${paymentTimeMinutes}`
-
-    return { formattedDate, startTime, endTime, paymentDate: paymentDateFormatted, paymentTime: paymentTimeFormatted }
   }
 
   const getWaitingForPaymentInfo = (price:number, paymentDate: string, paymentTime: string) => {
@@ -108,7 +76,13 @@ export default function ConversationHeader({
       </div>
       {
         appointments.map((appointment) => {
-          const  { formattedDate, startTime, endTime, paymentDate, paymentTime } = convertDateFormat(appointment.appointmentDate, appointment.duration)
+          const  [formattedDate, startTime] = formatDateTime(appointment.appointmentDate)
+          const appointmentDateTime = new Date(appointment.appointmentDate)
+          const endDateTime = new Date(appointmentDateTime.getTime() + appointment.duration * 60000)
+          const endTime = formatDateTime(endDateTime.toISOString())[1]
+          const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
+          const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
+
           if(appointment.status === "WAITING_FOR_PAYMENT"){
             const { content, moreContent, button } = getWaitingForPaymentInfo(appointment.price, paymentDate, paymentTime)
             return <BaseAppointmentCard icon={<PaymentIcon/>} content={content} moreContent={moreContent} button={button} formattedDate={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]}/>

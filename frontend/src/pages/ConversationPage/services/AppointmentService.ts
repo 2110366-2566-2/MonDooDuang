@@ -23,7 +23,6 @@ export const AppointmentService = {
       })
     })
     const data = await res.json()
-    console.log(data)
     return { isSuccess: data.success, message: data.message }
   },
  
