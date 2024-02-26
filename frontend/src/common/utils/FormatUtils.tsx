@@ -21,3 +21,20 @@ export const formatCitizenId = (str: string): string => {
 
   return substrings.join("-")
 }
+
+export const formatDateTime = (isoDateTimeString: string) => {
+  const date = new Date(isoDateTimeString)
+
+  // Format date as "dd/mm/yyyy"
+  const day = date.getUTCDate().toString().padStart(2, '0')
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0')
+  const year = date.getUTCFullYear().toString()
+  const formattedDate = `${day}/${month}/${year}`
+
+  // Format time as "HH.MM"
+  const hours = date.getUTCHours().toString().padStart(2, '0')
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0')
+  const formattedTime = `${hours}.${minutes}`
+
+  return [formattedDate, formattedTime]
+}
