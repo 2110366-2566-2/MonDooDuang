@@ -9,6 +9,14 @@ export interface PackageSchema {
   fortuneTellerId: string
 }
 
+export interface ForCreatePackageSchema {
+  speciality: Speciality
+  description: string
+  duration: number
+  price: number
+  fortuneTellerId: string
+}
+
 export interface PackageIncludeIdSchema {
   packageId: string
   speciality: Speciality

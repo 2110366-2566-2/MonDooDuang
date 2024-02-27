@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { fortuneTellerService } from "../../services/fortuneTeller/fortuneTeller.services"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../../models/fortuneTeller/fortuneTeller.model"
-import { PackageSchema, PackageWithIdSchema } from "../../models/package/package.model"
+import { PackageSchema, PackageWithIdSchema, ForCreatePackageSchema } from "../../models/package/package.model"
 
 const createFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTeller: FortuneTellerRegisterSchema = {
@@ -92,7 +92,7 @@ const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
 }
 
 const createPackage = async (req: Request, res: Response) => {
-  const packageFortuneTeller: PackageSchema = {
+  const packageFortuneTeller: ForCreatePackageSchema = {
     speciality: req.body.speciality,
     description: req.body.description,
     duration: req.body.duration,
