@@ -98,6 +98,14 @@ export const conversationRepository = {
   },
   createConversation: async (fortunetellerId: string, customerId: string) => {
     try {
+      const existedConversation = await db.query(
+        `
+          SELECT conversation_id
+          FROM CONVERSATION
+          WHERE fortune_teller_id = $1 AND customer_id = $2
+        `, [fortunetellerId, customerId]
+      )
+      if (existedConversation.rows.length > 0) return { isSuccess: true, data: existedConversation.rows[0].conversation_id }
       await db.query(
         `
           INSERT INTO CONVERSATION(fortune_teller_id, customer_id)

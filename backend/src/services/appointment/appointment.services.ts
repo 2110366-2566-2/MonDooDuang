@@ -14,7 +14,10 @@ export const appointmentService = {
 
   getFortuneTeller: async (fortuneTellerId: string) => {
     const fortuneTeller = await fortuneTellerRepository.getFortuneTellerStageName(fortuneTellerId)
-    return fortuneTeller
+    return {
+      fortuneTellerId: fortuneTeller.fortune_teller_id,
+      stageName: fortuneTeller.stage_name
+    }
   },
 
   getAllFortuneTeller: async () => {
@@ -35,5 +38,18 @@ export const appointmentService = {
   getUserInfo: async (userId: string) => {
     const userInfo = await userRepository.getUserInfoForAppointment(userId)
     return userInfo
+  },
+
+  getAppointmentByBothUserId: async (firstUserId: string, secondUserId: string) => {
+    const appointments = await appointmentRepository.getAppointmentByBothUserId(firstUserId, secondUserId)
+    appointments.forEach((appointment) => {
+      appointment.appointmentDate = new Date((appointment.appointmentDate as Date).setUTCHours((appointment.appointmentDate as Date).getUTCHours() + 14))
+    })
+    return appointments
+  },
+
+  updateAppointmentStatus: async (appointmentId: string, status: string) => {
+    const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
+    return isSuccess
   }
 }
