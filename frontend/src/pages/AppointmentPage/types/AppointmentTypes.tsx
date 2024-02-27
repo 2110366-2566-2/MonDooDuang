@@ -36,5 +36,5 @@ export type ConfirmProps = {
 
 export type fortuneTellerInfo = {
   fortuneTellerId: string
-  stagename: string
+  stageName: string
 }

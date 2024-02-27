@@ -18,6 +18,7 @@ import {
   Package,
   UserInfo
 } from "../types/AppointmentTypes"
+import { useParams } from "react-router-dom"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
@@ -38,22 +39,17 @@ const newTheme = createTheme({
 
 export default function AppointmentPanel({
   onCancel,
-  user_id,
-  fid,
-  pid
+  user_id
 }: {
   onCancel: () => void
   user_id: string
-  fid: string | undefined
-  pid: string | undefined
 }) {
-  let fortuneTellerId = ""
-  if (fid) {
-    fortuneTellerId = fid
-  } else {
+  const { fid, pid } = useParams()
+
+  if (fid == undefined) {
     window.location.href = environment.frontend.url + "/search"
   }
-
+  const fortuneTellerId = fid ?? ""
   const [fortuneTeller, setFortuneTeller] = useState("")
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
@@ -183,7 +179,7 @@ export default function AppointmentPanel({
       try {
         const fortune_teller_info = await AppointmentService.getFortuneTeller(fortuneTellerId)
         if (fortune_teller_info) {
-          setFortuneTeller(fortune_teller_info.stagename)
+          setFortuneTeller(fortune_teller_info.stageName)
         }
       } catch (err) {
         console.log(err)
