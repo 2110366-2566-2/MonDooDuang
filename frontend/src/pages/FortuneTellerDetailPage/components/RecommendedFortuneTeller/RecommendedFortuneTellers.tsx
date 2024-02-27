@@ -79,8 +79,8 @@ export default function RecommendedFortuneTellers() {
         <div className="h-[430px] w-full grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0 text-[16px]">
           {recommendPackage && recommendPackage.length > 0
             ? recommendPackage.map((fortunetellerInformation, index) => (
-                <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
-              ))
+              <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
+            ))
             : null}
         </div>
       </div>
