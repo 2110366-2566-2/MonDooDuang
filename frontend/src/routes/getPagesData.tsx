@@ -69,7 +69,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <AdminApprovalApp />
     },
     {
-      path: "/payment",
+      path: "/payment/:payAmount",
       element: <PaymentApp stripePromise={stripePromise} />
     },
     {

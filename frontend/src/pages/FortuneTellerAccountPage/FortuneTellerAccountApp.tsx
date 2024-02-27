@@ -1,10 +1,13 @@
 import { AuthProvider } from "../../common/providers/AuthProvider"
+import RootLayout from "../../common/components/RootLayout/RootLayout"
 import FortuneTellerAccountPage from "./FortuneTellerAccountPage"
 
 export default function FortuneTellerAccountApp() {
   return (
-    <AuthProvider>
-      <FortuneTellerAccountPage />
-    </AuthProvider>
+    <RootLayout>
+      <AuthProvider>
+        <FortuneTellerAccountPage />
+      </AuthProvider>
+    </RootLayout>
   )
 }
