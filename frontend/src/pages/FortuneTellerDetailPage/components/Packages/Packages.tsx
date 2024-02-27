@@ -3,20 +3,25 @@ import { PackageTypes } from "../../types/PackageTypes"
 
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { environment } from "../../../../common/constants/environment"
 
 export default function Packages() {
+  const { fid } = useParams()
+
+  if (fid == undefined) {
+    window.location.href = environment.frontend.url + "/search"
+  }
+  const fortuneTellerId = fid ?? ""
 
   const [fortuneTellerPackage, setFortuneTellerPackage] = useState<PackageTypes[]>()
-  
-  const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
-  
+
   useEffect(() => {
     const fetchFortuneTellerPackage = async () => {
-      const response = await FortuneTellerService.getPackageByFortuneTellerId(mockUserId)
+      const response = await FortuneTellerService.getPackageByFortuneTellerId(fortuneTellerId)
       const fortuneTellerPackage = await response
 
       setFortuneTellerPackage(fortuneTellerPackage)
-
     }
     fetchFortuneTellerPackage()
   }, [])
@@ -24,9 +29,14 @@ export default function Packages() {
   return (
     <div className="border-white border-[1px] w-[50%] min-w-[500px] sm:rounded-lg flex justify-center h-fit">
       <table className="w-[98%] max-h-[600px] h-auto">
-        <thead className="text-[40px] font-libre-bodoni text-center leading-loose border-b-[1px] border-white">Packages</thead>
+        <thead className="text-[40px] font-libre-bodoni text-center leading-loose border-b-[1px] border-white">
+          Packages
+        </thead>
         <tbody className="flex flex-col overflow-x-auto overflow-y-auto">
-          { fortuneTellerPackage && fortuneTellerPackage.map((packageItem) => <PackageList packageItem = {packageItem}></PackageList>) }
+          {fortuneTellerPackage &&
+            fortuneTellerPackage.map((packageItem) => (
+              <PackageList packageItem={packageItem}></PackageList>
+            ))}
         </tbody>
       </table>
     </div>
