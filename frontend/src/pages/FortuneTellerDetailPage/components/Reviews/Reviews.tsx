@@ -8,14 +8,12 @@ import { useParams } from "react-router-dom"
 import { environment } from "../../../../common/constants/environment"
 
 export default function Reviews() {
-  const { fid } = useParams<{ fid: string }>()
+  const { fid } = useParams()
 
-  let fortuneTellerId = ""
-  if (fid) {
-    fortuneTellerId = fid
-  } else {
+  if (fid == undefined) {
     window.location.href = environment.frontend.url + "/search"
   }
+  const fortuneTellerId = fid ?? ""
 
   const [fortuneTellerReview, setFortuneTellerReview] = useState<ShowedReviewTypes[]>()
 

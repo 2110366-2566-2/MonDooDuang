@@ -16,14 +16,12 @@ import { ConversationService } from "../../services/ConversationService"
 
 export default function FortuneTellerDetails() {
   const { userId } = useContext(AuthContext)
-  const { fid } = useParams<{ fid: string }>()
+  const { fid } = useParams()
 
-  let fortuneTellerId = ""
-  if (fid) {
-    fortuneTellerId = fid
-  } else {
+  if (fid == undefined) {
     window.location.href = environment.frontend.url + "/search"
   }
+  const fortuneTellerId = fid ?? ""
 
   const [fortuneTellerStageName, setFortuneTellerStageName] = useState<string>()
   const [fortuneTellerDescription, setFortuneTellerDescription] = useState<string>()
