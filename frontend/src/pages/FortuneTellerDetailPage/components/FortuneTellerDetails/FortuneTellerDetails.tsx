@@ -6,17 +6,17 @@ import LeftLine from "../Line/LeftLine"
 import RightLine from "../Line/RightLine"
 
 import { environment } from "../../../../common/constants/environment"
+import { useParams } from "react-router-dom"
+import { AuthContext } from "../../../../common/providers/AuthProvider"
+import { useContext } from "react"
 
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
 import { ConversationService } from "../../services/ConversationService"
 
-export default function FortuneTellerDetails({
-  fid,userId
-}: {
-  fid: string | undefined
-  userId: string
-}) {
+export default function FortuneTellerDetails() {
+  const { userId } = useContext(AuthContext)
+  const { fid } = useParams<{ fid: string }>()
 
   let fortuneTellerId = ""
   if (fid) {
@@ -47,7 +47,7 @@ export default function FortuneTellerDetails({
   }, [])
 
   async function chat() {
-    const {conversationId} = await ConversationService.createConversation(userId, fortuneTellerId)
+    const { conversationId } = await ConversationService.createConversation(userId, fortuneTellerId)
     window.location.href = `${environment.frontend.url}/conversation/${conversationId}`
   }
 
@@ -58,20 +58,40 @@ export default function FortuneTellerDetails({
           <ChatIcon></ChatIcon>
         </div>
         <div className="relative z-0 w-[100%] mt-[-150px] flex justify-center">
-          <FortuneTellerPictureBlur profile={fortuneTellerProfile == undefined? "" : fortuneTellerProfile}></FortuneTellerPictureBlur>
-          <FortuneTellerPicture profile={fortuneTellerProfile == undefined? "" : fortuneTellerProfile}></FortuneTellerPicture>
+          <FortuneTellerPictureBlur
+            profile={fortuneTellerProfile == undefined ? "" : fortuneTellerProfile}
+          ></FortuneTellerPictureBlur>
+          <FortuneTellerPicture
+            profile={fortuneTellerProfile == undefined ? "" : fortuneTellerProfile}
+          ></FortuneTellerPicture>
         </div>
       </div>
       <div className="relative text-center">
-        <div className="absolute font-libre-bodoni text-center w-[100%] text-[40px]">{fortuneTellerStageName}</div>
-        <div className="font-libre-bodoni text-[40px] w-[100%] blur-sm">{fortuneTellerStageName}</div>
+        <div className="absolute font-libre-bodoni text-center w-[100%] text-[40px]">
+          {fortuneTellerStageName}
+        </div>
+        <div className="font-libre-bodoni text-[40px] w-[100%] blur-sm">
+          {fortuneTellerStageName}
+        </div>
         <div className="flex flex-row justify-center space-x-3 items-end">
-          <RatedStar check = {fortuneTellerAverageStar == undefined? false :fortuneTellerAverageStar>0.5}></RatedStar>
-          <RatedStar check = {fortuneTellerAverageStar == undefined? false :fortuneTellerAverageStar>1.5}></RatedStar>
-          <RatedStar check = {fortuneTellerAverageStar == undefined? false :fortuneTellerAverageStar>2.5}></RatedStar>
-          <RatedStar check = {fortuneTellerAverageStar == undefined? false :fortuneTellerAverageStar>3.5}></RatedStar>
-          <RatedStar check = {fortuneTellerAverageStar == undefined? false :fortuneTellerAverageStar>4.5}></RatedStar>
-          <div className="font-libre-bodoni text-[20px] mb-[-4px]">{fortuneTellerAverageStar} / 5</div>
+          <RatedStar
+            check={fortuneTellerAverageStar == undefined ? false : fortuneTellerAverageStar > 0.5}
+          ></RatedStar>
+          <RatedStar
+            check={fortuneTellerAverageStar == undefined ? false : fortuneTellerAverageStar > 1.5}
+          ></RatedStar>
+          <RatedStar
+            check={fortuneTellerAverageStar == undefined ? false : fortuneTellerAverageStar > 2.5}
+          ></RatedStar>
+          <RatedStar
+            check={fortuneTellerAverageStar == undefined ? false : fortuneTellerAverageStar > 3.5}
+          ></RatedStar>
+          <RatedStar
+            check={fortuneTellerAverageStar == undefined ? false : fortuneTellerAverageStar > 4.5}
+          ></RatedStar>
+          <div className="font-libre-bodoni text-[20px] mb-[-4px]">
+            {fortuneTellerAverageStar} / 5
+          </div>
         </div>
         <div className="py-4">
           <div className="flex flex-row space-x-4 items-center">

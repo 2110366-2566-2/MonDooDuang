@@ -5,15 +5,8 @@ import Reviews from "./components/Reviews/Reviews"
 import RecommendedFortuneTellers from "./components/RecommendedFortuneTeller/RecommendedFortuneTellers"
 import Footer from "./components/Footer/Footer"
 import NavBar from "../../common/components/NavBar/NavBar"
-import { AuthContext } from "../../common/providers/AuthProvider"
-import { useContext } from "react"
 
-export default function FortuneTellerDetailPage({
-  fid
-}: {
-  fid: string | undefined
-}) {
-  const { userId } = useContext(AuthContext)
+export default function FortuneTellerDetailPage() {
   return (
     <>
       <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
@@ -23,11 +16,11 @@ export default function FortuneTellerDetailPage({
         </div>
         <div className="px-6  text-[20px] font-light space-y-[64px] pt-4">
           <div className="flex flex-row flex-wrap justify-center space-x-16 w-full items-center">
-            <FortuneTellerDetails fid={fid} userId={userId}></FortuneTellerDetails>
-            <Packages fid = {fid}></Packages>
+            <FortuneTellerDetails></FortuneTellerDetails>
+            <Packages></Packages>
           </div>
-          <Reviews fid = {fid}></Reviews>
-          <RecommendedFortuneTellers userId={userId}/>
+          <Reviews></Reviews>
+          <RecommendedFortuneTellers />
           <Footer></Footer>
         </div>
       </div>
