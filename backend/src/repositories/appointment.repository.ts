@@ -4,15 +4,17 @@ import { AppointmentSchema } from "../models/appointment/appointment.model"
 export const appointmentRepository = {
   createAppointment: async (appointment: AppointmentSchema) => {
     try {
-      await db.query(
+      const result = await db.query(
         `
           INSERT INTO APPOINTMENT (status, package_id, customer_id, fortune_teller_id, appointment_date) 
-          VALUES($1, $2, $3, $4, $5);
+          VALUES($1, $2, $3, $4, $5)
+          RETURNING *;
         `, [appointment.status, appointment.packageId, appointment.customerId, appointment.fortuneTellerId, appointment.appointmentDate]
       )
-      return true
+
+      return { isSuccess: true, appointmentId: result.rows[0].appointment_id }
     } catch (err) {
-      return false
+      return { isSuccess: false, appointmentId: null }
     }
   },
 
@@ -26,30 +28,19 @@ export const appointmentRepository = {
     return result.rows
   },
 
-  getExpiredAppointment: async () => {
+  getAppointmentStatus: async (appointmentId: string) => {
     const result = await db.query(
       `
-        SELECT appointment_id
+        SELECT status
         FROM APPOINTMENT
-        WHERE created_at <= NOW() - '1 day'::INTERVAL AND status = 'CREATED';
-      `
+        WHERE appointment_id = $1;
+      `, [appointmentId]
     )
 
-    const appointmentIds = result.rows.map(row => row.appointment_id)
-    return appointmentIds
+    if (result.rowCount == 0)
+      return null
+    return result.rows[0].status
 
-  },
-
-  declineAppointment: async (appointmentIds: string[]) => {
-    const query = appointmentIds.map((_, i) => `$${i + 1}`).join(", ")
-    await db.query(
-      `
-        UPDATE APPOINTMENT
-        SET status = 'FORTUNE_TELLER_DECLINED'
-        WHERE appointment_id IN (${query});
-      `,
-      [...appointmentIds]
-    )
   },
 
   getUserInfo: async (userId: string) => {

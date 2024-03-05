@@ -4,12 +4,24 @@ import { fortuneTellerRepository } from "../../repositories/fortuneTeller.reposi
 import { packageRepository } from "../../repositories/package.repository"
 import { userRepository } from "../../repositories/user.repository"
 
+const schedule = require('node-schedule')
+
 export const appointmentService = {
   createAppointment: async (appointment: AppointmentSchema) => {
     appointment.status = "CREATED"
 
-    const isSuccess = await appointmentRepository.createAppointment(appointment)
-    return isSuccess
+    const result = await appointmentRepository.createAppointment(appointment)
+
+    if (!result.isSuccess) {
+      return result.isSuccess
+    }
+
+    //Schedule the auto decline
+    const declineDate = new Date()
+    declineDate.setHours(declineDate.getHours() + 24)
+    const job = schedule.scheduleJob(declineDate, () => appointmentService.autoDeclineAppointment(result.appointmentId))
+
+    return result.isSuccess
   },
 
   getFortuneTeller: async (fortuneTellerId: string) => {
@@ -37,15 +49,15 @@ export const appointmentService = {
     return userInfo
   },
 
-  autoDeclineAppointment: async () => {
+  autoDeclineAppointment: async (appointmentId: string) => {
 
-    //get appointment which is still CREATED over 24 hours
-    const expiredAppointment = await appointmentRepository.getExpiredAppointment()
+    //Check if appointment is still CREATED over 24 hours
+    const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
 
-    if (expiredAppointment.length !== 0) {
-      appointmentRepository.declineAppointment(expiredAppointment)
+    if (appointmentStatus == 'CREATED') {
+      appointmentRepository.updateAppointmentStatus(appointmentId, 'FORTUNE_TELLER_DECLINED')
 
-      //Send notification to the list of expiredAppointmentId
+      //Send notification to expiredAppointmentId
       //Call function here
     }
   },
