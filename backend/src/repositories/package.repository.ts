@@ -79,7 +79,7 @@ export const packageRepository = {
     if (result.rows.length === 0) return null
 
     const packages: PackageSchema[] = result.rows.map(row => ({
-
+      packageId: row.package_id,
       speciality: row.speciality,
       description: row.description,
       duration: row.duration,

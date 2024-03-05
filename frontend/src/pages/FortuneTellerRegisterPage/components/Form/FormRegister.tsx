@@ -13,7 +13,7 @@ export default function FormRegister(props: { userId: string }) {
 
   // for validate information
   const validation = ({ idNumber }: { idNumber: string; file: string }): boolean => {
-    const tempNumber = parseInt(idNumber)
+    const tempNumber = Number(idNumber)
     const checkNumber = !isNaN(tempNumber)
     const checkLength = idNumber.length == 13
     const checkbox = document.getElementById("policy") as HTMLInputElement | null
@@ -31,7 +31,7 @@ export default function FormRegister(props: { userId: string }) {
   const SubmitRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (validation({ idNumber, file }) && !isPolicyError) {
-      // setIsShowComplete(true)
+      setIsShowComplete(true)
       // check is userId is exist in fortune_teller before
       const isIdExist = await FortuneTellerRegisterService.getFortuneTellerValid(props.userId)
       if (isIdExist) {

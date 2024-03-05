@@ -26,7 +26,10 @@ export const appointmentService = {
 
   getFortuneTeller: async (fortuneTellerId: string) => {
     const fortuneTeller = await fortuneTellerRepository.getFortuneTellerStageName(fortuneTellerId)
-    return fortuneTeller
+    return {
+      fortuneTellerId: fortuneTeller.fortune_teller_id,
+      stageName: fortuneTeller.stage_name
+    }
   },
 
   getAllFortuneTeller: async () => {
