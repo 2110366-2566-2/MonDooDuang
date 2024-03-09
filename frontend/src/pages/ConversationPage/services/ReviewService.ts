@@ -1,13 +1,13 @@
 import { environment } from "../../../common/constants/environment"
 
 export const ReviewService = {
-    createReview: async(
-        reviewMessage: string,
-        score: number,
-        customerId: string,
-        fortuneTellerId: string,
-        appointmentId: string
-      ) => {
+  createReview: async(
+      reviewMessage: string,
+      score: number,
+      customerId: string,
+      fortuneTellerId: string,
+      appointmentId: string
+    ) => {
     const res = await fetch(`${environment.backend.url}/review/create-review`, {
       method: "POST",
       headers: {

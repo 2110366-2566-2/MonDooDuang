@@ -10,13 +10,13 @@ export const reviewRepository = {
             INSERT INTO REVIEW (review_message, score, customer_id, fortune_teller_id, appointment_id)
             VALUES($1, $2, $3, $4, $5);
         `,
-        [review.reviewMessage, review.score, review.customerId, review.fortuneTellerId, review.appointmentId,]
+        [review.reviewMessage, review.score, review.customerId, review.fortuneTellerId, review.appointmentId]
       )
       return true
     } catch (err) {
       return false
     }
-  }, 
+  },
 
   getReviewByFortuneTellerId: async (fortuneTellerId: string): Promise< null | ShowedReviewSchema[] > => {
     const result = await db.query(

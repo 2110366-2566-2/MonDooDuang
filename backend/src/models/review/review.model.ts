@@ -9,9 +9,9 @@ export interface ReviewSchema {
 }
 
 export interface CreateReviewSchema {
-  reviewMessage: string,
-  score: number,
-  customerId: string,
-  fortuneTellerId: string,
-  appointmentId: string,
+  reviewMessage: string
+  score: number
+  customerId: string
+  fortuneTellerId: string
+  appointmentId: string
 }
