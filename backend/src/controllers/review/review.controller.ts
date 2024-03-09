@@ -8,7 +8,7 @@ const createReview = async (req: Request, res: Response) => {
     score: req.body.score,
     customerId: req.body.customerId,
     fortuneTellerId: req.body.fortuneTellerId,
-    appointmentId: req.body.appointmentId,
+    appointmentId: req.body.appointmentId
   }
 
   const result = await reviewService.createReview(report)
