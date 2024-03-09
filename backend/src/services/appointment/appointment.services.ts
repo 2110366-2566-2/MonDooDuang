@@ -51,5 +51,10 @@ export const appointmentService = {
   updateAppointmentStatus: async (appointmentId: string, status: string) => {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     return isSuccess
+  },
+
+  getIsReview: async (appointmentId: string, customerId: string) => {
+    const isReview = await appointmentRepository.getIsReview(appointmentId, customerId)
+    return isReview
   }
 }

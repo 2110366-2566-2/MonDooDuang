@@ -69,5 +69,14 @@ export const appointmentRepository = {
     } catch (err) {
       return false
     }
+  },
+  getIsReview: async (appointmentId: string, customerId: string) => {
+    const result = await db.query(
+      `SELECT appointment_id, customer_id
+      FROM review
+      WHERE appointment_id = '${appointmentId}' and customer_id = '${customerId}'`
+    )
+    if (result.rows.length === 0) return false
+    return true
   }
 }

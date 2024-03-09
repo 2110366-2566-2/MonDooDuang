@@ -11,5 +11,6 @@ router.get("/find-appointments/:fortuneTellerId", appointmentController.getFortu
 router.get("/find-appointment-by-both-userId/:firstUserId/:secondUserId", appointmentController.getAppointmentByBothUserId)
 router.post("/create-appointment", appointmentController.createAppointment)
 router.post("/update-appointment-status", appointmentController.updateAppointmentStatus)
+router.get("/getIsReview/:appointmentId/:customerId", appointmentController.getIsReview)
 
 export default router
