@@ -12,10 +12,12 @@ const socket = io(environment.backend.url)
 export default function ConversationBox({
   conversationId,
   showReport,
+  systemReport,
   userId
 }: {
   conversationId: string | null
   showReport: () => void
+  systemReport: (selectReportMode: boolean) => void
   userId: string
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
@@ -75,7 +77,12 @@ export default function ConversationBox({
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ConversationHeader name={name} showReport={showReport} userId={userId} />
+      <ConversationHeader
+        name={name}
+        showReport={showReport}
+        systemReport={systemReport}
+        userId={userId}
+      />
       <MessageList messages={messages} />
       <div className="mt-auto">
         <ConversationFooter

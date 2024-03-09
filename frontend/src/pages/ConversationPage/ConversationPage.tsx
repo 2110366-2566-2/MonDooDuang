@@ -12,11 +12,13 @@ export default function ConversationPage() {
   const [conversationIds, setConversationIds] = useState<string[]>([])
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(cid || null)
   const { userId, userType } = useContext(AuthContext)
+  const [isSystemReport, setIsSystemReport] = useState(false)
   useEffect(() => {
     const fetchConversations = async () => {
       const conversationIds = await ConversationService.getConversationsByUserId(userId)
       setConversationIds(conversationIds)
-      if (cid === undefined && conversationIds.length > 0) setSelectedConversationId(conversationIds[0])
+      if (cid === undefined && conversationIds.length > 0)
+        setSelectedConversationId(conversationIds[0])
     }
     fetchConversations()
   }, [])
@@ -27,6 +29,10 @@ export default function ConversationPage() {
 
   const showReport = () => {
     setIsShowReport(true)
+  }
+
+  const systemReport = (selectReportMode: boolean) => {
+    setIsSystemReport(selectReportMode)
   }
 
   return (
@@ -40,7 +46,12 @@ export default function ConversationPage() {
         />
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ConversationBox conversationId={selectedConversationId} showReport={showReport} userId={userId}/>
+        <ConversationBox
+          conversationId={selectedConversationId}
+          showReport={showReport}
+          systemReport={systemReport}
+          userId={userId}
+        />
       </div>
       <ReportModal
         isShowReport={isShowReport}
@@ -48,7 +59,7 @@ export default function ConversationPage() {
         isCustomer={userType === "CUSTOMER"}
         userId={userId}
         conversationId={selectedConversationId}
-        isSystemReport={false}
+        isSystemReport={isSystemReport}
       />
     </div>
   )

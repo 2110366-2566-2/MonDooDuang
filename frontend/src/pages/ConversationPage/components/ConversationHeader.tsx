@@ -16,10 +16,12 @@ import EventCompleteCard from "./EventCompleteCard"
 export default function ConversationHeader({
   name,
   showReport,
+  systemReport,
   userId
 }: {
   name: string
   showReport: () => void
+  systemReport: (selectReportMode: boolean) => void
   userId: string
 }) {
   const navigate = useNavigate()
@@ -104,6 +106,7 @@ export default function ConversationHeader({
           <SearchIcon className="mr-2" />
           <ReportGmailerrorredIcon
             onClick={() => {
+              systemReport(false)
               showReport()
             }}
           />
@@ -162,6 +165,7 @@ export default function ConversationHeader({
               customerId={appointment.customerId}
               isCustomer={isCustomer}
               showReport={showReport}
+              systemReport={systemReport}
             />
           )
         }

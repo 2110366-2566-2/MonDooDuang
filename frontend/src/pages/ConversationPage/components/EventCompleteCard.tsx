@@ -15,6 +15,7 @@ export default function EventCompleteCard(props: {
   customerId: string
   isCustomer: boolean
   showReport: () => void
+  systemReport: (selectReportMode: boolean) => void
 }) {
   const [stageName, setStageName] = useState("")
   const [isReview, setIsReview] = useState(false)
@@ -22,8 +23,10 @@ export default function EventCompleteCard(props: {
 
   useEffect(() => {
     const getDetail = async () => {
-      const response = await FortuneTellerService.getFortuneTellerDetail(props.fortuneTellerId)
-      const stageName = response.stageName
+      const fortuneTellerDetail = await FortuneTellerService.getFortuneTellerDetail(
+        props.fortuneTellerId
+      )
+      const stageName = fortuneTellerDetail.stageName
       const isReview = await AppointmentService.getIsReview(props.appointmentId, props.customerId)
 
       setStageName(stageName)
@@ -58,10 +61,12 @@ export default function EventCompleteCard(props: {
               รีวิวหมอดู
             </button>
           )}
-
           <button
             className="h-[37px] rounded-[10px] px-2 text-white bg-[#FF5656] mx-1"
-            onClick={props.showReport}
+            onClick={() => {
+              props.systemReport(true)
+              props.showReport()
+            }}
           >
             รายงานหมอดู
           </button>
