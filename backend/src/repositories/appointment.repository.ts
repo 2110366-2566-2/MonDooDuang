@@ -73,7 +73,7 @@ export const appointmentRepository = {
   getIsReview: async (appointmentId: string, customerId: string) => {
     const result = await db.query(
       `
-      SELECT appointment_id, customer_id
+      SELECT *
       FROM review
       WHERE appointment_id = '${appointmentId}' and customer_id = '${customerId}'
       `

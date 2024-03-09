@@ -36,6 +36,6 @@ export const AppointmentService = {
     const res = await fetch(`${environment.backend.url}/appointment/getIsReview/${appointmentId}/${customerId}`)
     const result = await res.json()
     return result.data
-  },
-  
+  }
+
 }
