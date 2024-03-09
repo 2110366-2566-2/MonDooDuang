@@ -3,7 +3,7 @@ import BaseAppointmentCard from "../../../common/components/AppointmentCard/Base
 import { AppointmentService } from "../services/AppointmentService"
 import CompleteEventIcon from "../../../common/components/AppointmentCard/Icon/CompleteEventIcon"
 import ReviewModal from "./Review/ReviewModal"
-
+import { FortuneTellerService } from "../../FortuneTellerAccountPage/services/FortuneTellerService"
 interface EventCompletedCardProps {
   formattedDate: string
   startTime: string
@@ -30,18 +30,16 @@ export default function EventCompleteCard(props: EventCompletedCardProps) {
   } = props
   const [stageName, setStageName] = useState("")
   const [isReview, setIsReview] = useState(false)
-  // const [isReport, setIsReport] = useState(false)
   const [isShowReview, setIsShowReview] = useState(false)
 
   useEffect(() => {
     const getDetail = async () => {
-      const stageName = await AppointmentService.getStageNameFromAppointment(fortuneTellerId)
-      const isReview = await AppointmentService.isReview(appointmentId, customerId)
-      // const isReport = await AppointmentService.isReport(appointmentId)
+      const response = await FortuneTellerService.getFortuneTellerDetail(props.fortuneTellerId)
+      const stageName = response.stageName
+      const isReview = await AppointmentService.getIsReview(appointmentId, customerId)
 
       setStageName(stageName)
       setIsReview(isReview)
-      // setIsReport(isReport)
     }
 
     getDetail()

@@ -32,8 +32,8 @@ export const AppointmentService = {
     return result.data
   },
 
-  isReview: async (appointmentId: string, customerId: string) => {
-    const res = await fetch(`${environment.backend.url}/appointment/isReview/${appointmentId}/${customerId}`)
+  getIsReview: async (appointmentId: string, customerId: string) => {
+    const res = await fetch(`${environment.backend.url}/appointment/getIsReview/${appointmentId}/${customerId}`)
     const result = await res.json()
     return result.data
   },
