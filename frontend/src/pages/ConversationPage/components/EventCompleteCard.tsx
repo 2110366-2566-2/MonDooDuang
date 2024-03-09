@@ -4,7 +4,8 @@ import { AppointmentService } from "../services/AppointmentService"
 import CompleteEventIcon from "../../../common/components/AppointmentCard/Icon/CompleteEventIcon"
 import ReviewModal from "./Review/ReviewModal"
 import { FortuneTellerService } from "../../FortuneTellerAccountPage/services/FortuneTellerService"
-interface EventCompletedCardProps {
+
+export default function EventCompleteCard(props: {
   formattedDate: string
   startTime: string
   endTime: string
@@ -14,20 +15,7 @@ interface EventCompletedCardProps {
   customerId: string
   isCustomer: boolean
   showReport: () => void
-}
-
-export default function EventCompleteCard(props: EventCompletedCardProps) {
-  const {
-    formattedDate,
-    startTime,
-    endTime,
-    speciality,
-    appointmentId,
-    fortuneTellerId,
-    customerId,
-    isCustomer,
-    showReport
-  } = props
+}) {
   const [stageName, setStageName] = useState("")
   const [isReview, setIsReview] = useState(false)
   const [isShowReview, setIsShowReview] = useState(false)
@@ -36,7 +24,7 @@ export default function EventCompleteCard(props: EventCompletedCardProps) {
     const getDetail = async () => {
       const response = await FortuneTellerService.getFortuneTellerDetail(props.fortuneTellerId)
       const stageName = response.stageName
-      const isReview = await AppointmentService.getIsReview(appointmentId, customerId)
+      const isReview = await AppointmentService.getIsReview(props.appointmentId, props.customerId)
 
       setStageName(stageName)
       setIsReview(isReview)
@@ -50,7 +38,7 @@ export default function EventCompleteCard(props: EventCompletedCardProps) {
   }
 
   const getCompleteEventInfo = () => {
-    if (isCustomer) {
+    if (props.isCustomer) {
       const content = (
         <>
           <h1 className="text-mdd-yellow600 font-semibold text-[28px]">การดูดวงเสร็จสิ้น</h1>
@@ -73,7 +61,7 @@ export default function EventCompleteCard(props: EventCompletedCardProps) {
 
           <button
             className="h-[37px] rounded-[10px] px-2 text-white bg-[#FF5656] mx-1"
-            onClick={showReport}
+            onClick={props.showReport}
           >
             รายงานหมอดู
           </button>
@@ -102,10 +90,10 @@ export default function EventCompleteCard(props: EventCompletedCardProps) {
       <ReviewModal
         isShowComplete={isShowReview}
         setIsShowComplete={setIsShowReview}
-        isCustomer={isCustomer}
-        customerId={customerId}
-        fortuneTellerId={fortuneTellerId}
-        appointmentId={appointmentId}
+        isCustomer={props.isCustomer}
+        customerId={props.customerId}
+        fortuneTellerId={props.fortuneTellerId}
+        appointmentId={props.appointmentId}
       />
 
       <BaseAppointmentCard
@@ -113,10 +101,10 @@ export default function EventCompleteCard(props: EventCompletedCardProps) {
         content={content}
         moreContent={moreContent}
         button={button}
-        formattedDate={formattedDate}
-        startTime={startTime}
-        endTime={endTime}
-        speciality={speciality}
+        formattedDate={props.formattedDate}
+        startTime={props.startTime}
+        endTime={props.endTime}
+        speciality={props.speciality}
       />
     </>
   )
