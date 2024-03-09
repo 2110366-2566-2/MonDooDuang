@@ -1,19 +1,3 @@
-{
-  /*   const [isShowComplete, setIsShowComplete] = useState(false)
-   const showReview = () => {
-    setIsShowReview(true)
-  }
-
-  <ReviewModal
-  isShowComplete={isShowComplete}
-  setIsShowComplete={setIsShowComplete}
-  isCustomer={mockIsCustomer}
-  customerId={"3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"}
-  fortuneTellerId={"0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"}
-  appointmentId={"5678ghij-9012-34kl-mnop-qrst12345678"}
-      /> */
-}
-
 import { useState } from "react"
 import { Rating } from "@mui/material"
 import { styled } from "@mui/material/styles"
