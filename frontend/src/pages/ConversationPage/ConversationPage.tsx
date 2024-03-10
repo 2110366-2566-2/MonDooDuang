@@ -16,7 +16,8 @@ export default function ConversationPage() {
     const fetchConversations = async () => {
       const conversationIds = await ConversationService.getConversationsByUserId(userId)
       setConversationIds(conversationIds)
-      if (cid === undefined && conversationIds.length > 0) setSelectedConversationId(conversationIds[0])
+      if (cid === undefined && conversationIds.length > 0)
+        setSelectedConversationId(conversationIds[0])
     }
     fetchConversations()
   }, [])
@@ -31,7 +32,7 @@ export default function ConversationPage() {
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/4 bg-white bg-opacity-20">
+      <div className="w-1/4">
         <ConversationSidebar
           conversationIds={conversationIds}
           onConversationSelect={handleConversationSelect}
@@ -39,8 +40,12 @@ export default function ConversationPage() {
           userId={userId}
         />
       </div>
-      <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ConversationBox conversationId={selectedConversationId} showReport={showReport} userId={userId}/>
+      <div className="w-3/4 border-l-2 border-white">
+        <ConversationBox
+          conversationId={selectedConversationId}
+          showReport={showReport}
+          userId={userId}
+        />
       </div>
       <ReportModal
         isShowReport={isShowReport}
