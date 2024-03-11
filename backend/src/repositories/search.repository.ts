@@ -46,7 +46,7 @@ export const searchRepository = {
 }
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
-                        SELECT DISTINCT FA.speciality, FA.package_id, FA.fortune_teller_id, FT.stage_name, U.fname, U.profile_picture, FT.total_score, FT.total_review FROM FILTER_APPOINTMENT FA
+                        SELECT DISTINCT FA.speciality, FA.package_id, FA.fortune_teller_id, FT.stage_name, U.fname, U.profile_picture, FT.total_score, FT.total_review, FA.price FROM FILTER_APPOINTMENT FA
                         JOIN FORTUNE_TELLER FT ON FA.fortune_teller_id = FT.fortune_teller_id
                         JOIN USER_TABLE U ON FA.fortune_teller_id = U.user_id
                         WHERE (CASE
@@ -63,10 +63,10 @@ export const searchRepository = {
                         F.total_score, F.total_review, 
                         STRING_AGG(DISTINCT P.package_id, ',') AS package_id_list,
                         P.speciality,
-                        MIN(P.price) AS min_price,
-                        MAX(P.price) AS max_price
+                        MIN(F.price) AS min_price,
+                        MAX(F.price) AS max_price
                         FROM INTEGRATE_FORTUNETELLER F
-                        JOIN package P ON F.fortune_teller_id = P.fortune_teller_id
+                        JOIN package P ON F.package_id = P.package_id
                         GROUP BY F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, F.total_score, F.total_review, P.speciality
                     )
                     
