@@ -29,4 +29,6 @@ export interface AppointmentNotificationTypes {
   appointmentDate: Date
   speciality: Speciality
   duration: number
+  isCustomer: boolean
+  conversationId: string
 }

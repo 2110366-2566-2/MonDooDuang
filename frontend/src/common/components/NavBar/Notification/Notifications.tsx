@@ -9,15 +9,14 @@ export default function Notifications({ userId }: { userId: string }) {
   useEffect(() => {
     const fetchNotifications = async () => {
       const notifications = await NotificationService.getNotifications(userId)
-      console.log(notifications)
       setNotifications(notifications)
     }
     fetchNotifications()
   }, [])
 
   return (
-    <div className="absolute top-16 right-32 bg-white rounded-xl w-1/3 max-h-[500px] overflow-y-auto p-4">
-      {notifications &&
+    <div className="z-50 absolute top-16 right-32 bg-white rounded-xl w-1/3 max-h-[500px] overflow-y-auto p-4">
+      {notifications ? (
         notifications
           .map((notificationItem) => (
             <>
@@ -30,7 +29,10 @@ export default function Notifications({ userId }: { userId: string }) {
               <div className="bg-yellow-300 w-full h-px my-4" />
               {curr}
             </>
-          ))}
+          ))
+      ) : (
+        <div className="text-center">- ไม่มีการแจ้งเตือน -</div>
+      )}
     </div>
   )
 }

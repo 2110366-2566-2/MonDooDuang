@@ -52,9 +52,10 @@ export const notificationRepository = {
     try {
       const result = await db.query(
         `
-        SELECT AN.type, AN.updated_at, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality, P.duration  FROM APPOINTMENT_NOTIFICATION AS AN
+        SELECT AN.type, AN.updated_at, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality, P.duration, C.conversation_id FROM APPOINTMENT_NOTIFICATION AS AN
         INNER JOIN APPOINTMENT AS A ON A.appointment_id = AN.appointment_id
         INNER JOIN PACKAGE AS P ON A.package_id = P.package_id
+        INNER JOIN CONVERSATION AS C ON A.customer_id = C.customer_id AND A.fortune_teller_id = C.fortune_teller_id
         WHERE AN.notification_id = $1;
         `,
         [notificationId]
@@ -63,6 +64,7 @@ export const notificationRepository = {
       if (result.rows.length === 0) return null
 
       let otherName = ""
+      let isCustomer = true
 
       if (userId === result.rows[0].customer_id) {
         const stageName = await db.query(
@@ -83,6 +85,7 @@ export const notificationRepository = {
           [result.rows[0].customer_id]
         )
         otherName = fullName.rows[0].fname + " " + fullName.rows[0].lname
+        isCustomer = false
       }
 
       return {
@@ -91,7 +94,9 @@ export const notificationRepository = {
         otherName: otherName,
         appointmentDate: result.rows[0].appointment_date,
         speciality: result.rows[0].speciality,
-        duration: result.rows[0].duration
+        duration: result.rows[0].duration,
+        isCustomer: isCustomer,
+        conversationId: result.rows[0].conversation_id
       }
     } catch (err) {
       return false
