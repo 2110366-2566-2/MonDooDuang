@@ -19,6 +19,42 @@ export const conversationRepository = {
     )
     return result.rows
   },
+  getCustomerConversationsByUserId: async (userId: string) => {
+    const result = await db.query(
+      `
+        SELECT c.conversation_id 
+        FROM conversation c
+        LEFT JOIN (
+          SELECT conversation_id, created_at
+          FROM message
+          ORDER BY created_at DESC
+          LIMIT 1
+        ) m ON c.conversation_id = m.conversation_id
+        WHERE fortune_teller_id = $1
+        ORDER BY m.created_at
+      `,
+      [userId]
+    )
+    return result.rows
+  },
+  getFortuneTellerConversationsByUserId: async (userId: string) => {
+    const result = await db.query(
+      `
+        SELECT c.conversation_id 
+        FROM conversation c
+        LEFT JOIN (
+          SELECT conversation_id, created_at
+          FROM message
+          ORDER BY created_at DESC
+          LIMIT 1
+        ) m ON c.conversation_id = m.conversation_id
+        WHERE customer_id = $1
+        ORDER BY m.created_at
+      `,
+      [userId]
+    )
+    return result.rows
+  },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const conversationDetails = await db.query(
       `
@@ -106,7 +142,9 @@ export const conversationRepository = {
         `,
         [fortunetellerId, customerId]
       )
-      if (existedConversation.rows.length > 0) { return { isSuccess: true, data: existedConversation.rows[0].conversation_id } }
+      if (existedConversation.rows.length > 0) {
+        return { isSuccess: true, data: existedConversation.rows[0].conversation_id }
+      }
       await db.query(
         `
           INSERT INTO CONVERSATION(fortune_teller_id, customer_id)

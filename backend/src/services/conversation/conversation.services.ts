@@ -17,6 +17,22 @@ export const conversationService = {
 
     return data.map((conversation) => conversation.conversation_id)
   },
+  getCustomerConversationsByUserId: async (userId: string) => {
+    const data = await conversationRepository.getCustomerConversationsByUserId(userId)
+    if (data === null) {
+      return []
+    }
+
+    return data.map((conversation) => conversation.conversation_id)
+  },
+  getFortuneTellerConversationsByUserId: async (userId: string) => {
+    const data = await conversationRepository.getFortuneTellerConversationsByUserId(userId)
+    if (data === null) {
+      return []
+    }
+
+    return data.map((conversation) => conversation.conversation_id)
+  },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const data = await conversationRepository.getNameWithLastMessage(conversationId, userId)
     if (data === null) {

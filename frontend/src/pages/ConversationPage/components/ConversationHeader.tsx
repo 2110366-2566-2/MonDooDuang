@@ -150,7 +150,7 @@ export default function ConversationHeader({
           dayjs(today).format("YYYY-MM-DD"),
           "day"
         )
-        console.log("CHECK",appointment.status)
+        console.log("CHECK", appointment.status)
 
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(

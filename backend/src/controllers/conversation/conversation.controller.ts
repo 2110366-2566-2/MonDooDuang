@@ -7,6 +7,18 @@ const getConversationsByUserId = async (req: Request, res: Response) => {
   res.status(200).send(conversations)
 }
 
+const getCustomerConversationsByUserId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversations = await conversationService.getCustomerConversationsByUserId(userId)
+  res.status(200).send(conversations)
+}
+
+const getFortuneTellerConversationsByUserId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversations = await conversationService.getFortuneTellerConversationsByUserId(userId)
+  res.status(200).send(conversations)
+}
+
 const getNameWithLastMessage = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userId = req.params.userId
@@ -48,6 +60,8 @@ const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
 
 export const conversationController = {
   getConversationsByUserId,
+  getCustomerConversationsByUserId,
+  getFortuneTellerConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,
   getNameByConversationId,

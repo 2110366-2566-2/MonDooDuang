@@ -5,6 +5,14 @@ export const ConversationService = {
     const response = await fetch(`${environment.backend.url}/conversations/${userId}`)
     return await response.json()
   },
+  getCustomerConversationsByUserId: async (userId: string) => {
+    const response = await fetch(`${environment.backend.url}/conversations/customer/${userId}`)
+    return await response.json()
+  },
+  getFortuneTellerConversationsByUserId: async (userId: string) => {
+    const response = await fetch(`${environment.backend.url}/conversations/fortuneTeller/${userId}`)
+    return await response.json()
+  },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const response = await fetch(
       `${environment.backend.url}/conversations/name-with-lastMessage/${conversationId}/${userId}`

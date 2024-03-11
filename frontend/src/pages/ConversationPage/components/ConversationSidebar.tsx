@@ -20,11 +20,12 @@ export default function ConversationSidebar({
   }
   useEffect(() => {
     const fetchConversations = async () => {
-      const customerConversationIds = await ConversationService.getConversationsByUserId(userId)
-      setCustomerConversationIds(customerConversationIds)
-      const fortuneTellerConversationIds = await ConversationService.getConversationsByUserId(
+      const customerConversationIds = await ConversationService.getCustomerConversationsByUserId(
         userId
       )
+      setCustomerConversationIds(customerConversationIds)
+      const fortuneTellerConversationIds =
+        await ConversationService.getFortuneTellerConversationsByUserId(userId)
       setFortuneTellerConversationIds(fortuneTellerConversationIds)
       setFilteredConversations(customerConversationIds)
     }
