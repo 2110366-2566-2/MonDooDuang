@@ -117,6 +117,18 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getDeclinedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูไม่ตอบรับการนัดหมายภายใน 1 วัน</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
   return (
     <div className="flex flex-col bg-white bg-opacity-85">
       <div className="h-[60px] flex items-center justify-between p-4">
@@ -150,7 +162,7 @@ export default function ConversationHeader({
           dayjs(today).format("YYYY-MM-DD"),
           "day"
         )
-        console.log("CHECK",appointment.status)
+        console.log("CHECK", appointment.status)
 
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
@@ -205,6 +217,20 @@ export default function ConversationHeader({
           )
         } else if (appointment.status === "USER_CANCELED") {
           const { content, moreContent, button } = getCanceledEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
+          const { content, moreContent, button } = getDeclinedEventInfo()
           return (
             <BaseAppointmentCard
               icon={<ErrorIcon />}
