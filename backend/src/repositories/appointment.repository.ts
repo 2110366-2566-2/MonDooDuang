@@ -14,7 +14,7 @@ export const appointmentRepository = {
 
       return { isSuccess: true, appointmentId: result.rows[0].appointment_id }
     } catch (err) {
-      return { isSuccess: false, appointmentId: null }
+      return { isSuccess: false, appointmentId: "" }
     }
   },
 
@@ -37,10 +37,8 @@ export const appointmentRepository = {
       `, [appointmentId]
     )
 
-    if (result.rowCount == 0)
-      return null
+    if (result.rowCount === 0) { return null }
     return result.rows[0].status
-
   },
 
   getUserInfo: async (userId: string) => {

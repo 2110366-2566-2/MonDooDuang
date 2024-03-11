@@ -3,23 +3,25 @@ import { AppointmentSchema } from "../../models/appointment/appointment.model"
 import { fortuneTellerRepository } from "../../repositories/fortuneTeller.repository"
 import { packageRepository } from "../../repositories/package.repository"
 import { userRepository } from "../../repositories/user.repository"
-
-const schedule = require('node-schedule')
+import { scheduleJob } from "node-schedule"
 
 export const appointmentService = {
   createAppointment: async (appointment: AppointmentSchema) => {
     appointment.status = "CREATED"
 
-    const result = await appointmentRepository.createAppointment(appointment)
+    const result: {
+      isSuccess: boolean
+      appointmentId: string
+    } = await appointmentRepository.createAppointment(appointment)
 
     if (!result.isSuccess) {
       return result.isSuccess
     }
 
-    //Schedule the auto decline
+    // Schedule the auto decline
     const declineDate = new Date()
     declineDate.setHours(declineDate.getHours() + 24)
-    const job = schedule.scheduleJob(declineDate, () => appointmentService.autoDeclineAppointment(result.appointmentId))
+    scheduleJob(declineDate, async () => { await appointmentService.autoDeclineAppointment(result.appointmentId) })
 
     return result.isSuccess
   },
@@ -53,12 +55,11 @@ export const appointmentService = {
   },
 
   autoDeclineAppointment: async (appointmentId: string) => {
-
-    //Check if appointment is still CREATED over 24 hours
+    // Check if appointment is still CREATED over 24 hours
     const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
 
-    if (appointmentStatus == 'CREATED') {
-      appointmentRepository.updateAppointmentStatus(appointmentId, 'FORTUNE_TELLER_DECLINED')
+    if (appointmentStatus === "CREATED") {
+      await appointmentRepository.updateAppointmentStatus(appointmentId, "FORTUNE_TELLER_DECLINED")
     }
   },
 
