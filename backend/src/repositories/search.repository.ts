@@ -1,6 +1,27 @@
 import { db } from "../configs/pgdbConnection"
 import { SearchSchema } from "../models/search/search.model"
 
+function correctName (name: string): string {
+  const sqlKeywords = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE", "DROP", "CREATE", "TABLE", "DATABASE", "ALTER", "UNION", "ALL", "AND", "OR", "LIKE", "UNION", "ALL", ";", "--", "'", "\"", "`", "/*", "*/"]
+
+  name = name.toUpperCase()
+  const names: string[] = name.split(" ")
+
+  for (let i = 0; i < names.length; i++) {
+    if (sqlKeywords.includes(names[i])) {
+      names[i] = ""
+    }
+  }
+  let correctedName = ""
+  names.forEach((name, index) => {
+    if (name !== "") {
+      correctedName += name + " "
+    }
+  })
+
+  return correctedName.trim().toLowerCase()
+}
+
 export const searchRepository = {
   searchFortuneteller: async (searchOption: SearchSchema) => {
     const { name, speciality, minPrice, maxPrice, startTime, endTime, startDate, endDate, rating } =
@@ -52,7 +73,7 @@ export const searchRepository = {
                         WHERE (CASE
                             WHEN FT.stage_name IS NULL THEN LOWER(U.fname)
                             ELSE LOWER(FT.stage_name)
-                        END) LIKE '${name}'
+                        END) LIKE '${name === "" ? "%" : "%" + correctName(name) + "%"}'
                         AND (CASE
                             WHEN FT.total_review > 0 THEN (FT.total_score / FT.total_review)
                             ELSE 0
