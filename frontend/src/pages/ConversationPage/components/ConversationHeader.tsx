@@ -12,6 +12,8 @@ import PaymentIcon from "../../../common/components/AppointmentCard/Icon/Payment
 import SuccessIcon from "../../../common/components/AppointmentCard/Icon/SuccessIcon"
 import { formatDateTime } from "../../../common/utils/FormatUtils"
 import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
+import dayjs from "dayjs"
+import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
 
 export default function ConversationHeader({
   name,
@@ -87,6 +89,20 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+
+  const getUpComingEventInfo = (startTime:string,endTime:string,date:string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">แจ้งการนัดหมายดูดวง</h1>
+        <p className="text-mdd-gray-success-text">คุณมีนัดหมายดูดวงในวันที่ {date} เวลา {startTime} - {endTime} น.</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+
   const getCanceledEventInfo = () => {
     const content = (
       <>
@@ -130,6 +146,12 @@ export default function ConversationHeader({
         const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
         const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
 
+        const today = new Date()
+        const waiting_day = dayjs(appointmentDateTime).diff(
+          dayjs(today).format("YYYY-MM-DD"),
+          "day"
+        )
+
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
             appointment.price,
@@ -149,6 +171,21 @@ export default function ConversationHeader({
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
+          if (waiting_day < 3) {
+            const { content, moreContent, button } = getUpComingEventInfo(startTime,endTime,formattedDate)
+            return (
+              <BaseAppointmentCard
+                icon={<NotiIcon />}
+                content={content}
+                moreContent={moreContent}
+                button={button}
+                formattedDate={formattedDate}
+                startTime={startTime}
+                endTime={endTime}
+                speciality={specialityMapper[appointment.speciality]}
+              />
+            )
+          }
           const { content, moreContent, button } = getWaitingForEventInfo(appointment.appointmentId)
           return (
             <BaseAppointmentCard
