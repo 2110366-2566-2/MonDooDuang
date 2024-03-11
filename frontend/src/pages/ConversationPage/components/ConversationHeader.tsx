@@ -11,6 +11,7 @@ import { specialityMapper } from "../../../common/types/Package"
 import PaymentIcon from "../../../common/components/AppointmentCard/Icon/PaymentIcon"
 import SuccessIcon from "../../../common/components/AppointmentCard/Icon/SuccessIcon"
 import { formatDateTime } from "../../../common/utils/FormatUtils"
+import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
 
 export default function ConversationHeader({
   name,
@@ -24,32 +25,80 @@ export default function ConversationHeader({
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchAppointments = async () => {
-      const appointments = await AppointmentService.getAppointmentsByBothUser('6362e550-bae0-462e-989c-7d6c072613a5', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d')
+      const appointments = await AppointmentService.getAppointmentsByBothUser(
+        "dedee29e-4e6f-42b7-87b9-8178292a5fbf",
+        "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
+      )
       setAppointments(appointments)
     }
     fetchAppointments()
-  },[name])
+  }, [name])
 
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)
   }
 
-  const getWaitingForPaymentInfo = (price:number, paymentDate: string, paymentTime: string) => {
-    const content = <><h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังรอการชำระเงิน</h1><p className="text-mdd-gray-success-text">ยอดที่ต้องชำระ {price} บาท <br /> สามารถชำระได้จนถึงวันที่ {paymentDate} เวลา {paymentTime} น.</p></>
-    const moreContent = "*หากไม่ชำระภายในวันและเวลาที่กำหนด ทางเว็บไซต์ขออนุญาตยกเลิกการนัดหมายดูดวง"
-    const button = <button className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5" onClick={()=> navigate(`/payment/${price}`)}>ชำระเงินค่าดูดวง</button>
+  const getWaitingForPaymentInfo = (price: number, paymentDate: string, paymentTime: string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังรอการชำระเงิน</h1>
+        <p className="text-mdd-gray-success-text">
+          ยอดที่ต้องชำระ {price} บาท <br /> สามารถชำระได้จนถึงวันที่ {paymentDate} เวลา{" "}
+          {paymentTime} น.
+        </p>
+      </>
+    )
+    const moreContent =
+      "*หากไม่ชำระภายในวันและเวลาที่กำหนด ทางเว็บไซต์ขออนุญาตยกเลิกการนัดหมายดูดวง"
+    const button = (
+      <button
+        className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5"
+        onClick={() => navigate(`/payment/${price}`)}
+      >
+        ชำระเงินค่าดูดวง
+      </button>
+    )
     return { content, moreContent, button }
   }
 
   const getWaitingForEventInfo = (appointmentId: string) => {
-    const content = <><h1 className="text-mdd-yellow600 font-semibold text-[28px]">ชำระเงินเรียบร้อย</h1><p className="text-mdd-gray-success-text">การนัดหมายของคุณได้ถูกจองเสร็จสมบูรณ์</p></>
-    const moreContent = "*ทั้งหมอดูและลูกค้าสามารถกดยกเลิกการนัดหมายได้ โดยสามารถยกเลิกได้ถึงก่อนวันนัดหมาย 3 วัน"
-    const button = <button className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5" onClick={()=> {
-      if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
-        AppointmentService.updateAppointmentStatus("USER_CANCELED",appointmentId)}}
-    }>ยกเลิกการดูดวง</button>
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">ชำระเงินเรียบร้อย</h1>
+        <p className="text-mdd-gray-success-text">การนัดหมายของคุณได้ถูกจองเสร็จสมบูรณ์</p>
+      </>
+    )
+    const moreContent =
+      "*ทั้งหมอดูและลูกค้าสามารถกดยกเลิกการนัดหมายได้ โดยสามารถยกเลิกได้ถึงก่อนวันนัดหมาย 3 วัน"
+    const button = (
+      <button
+        className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5"
+        onClick={() => {
+          if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
+            AppointmentService.updateAppointmentStatus("USER_CANCELED", appointmentId)
+          }
+        }}
+      >
+        ยกเลิกการดูดวง
+      </button>
+    )
+    return { content, moreContent, button }
+  }
+
+  const getCanceledEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการคืนเงินให้กับลูกค้า</p>
+        <p className="text-mdd-gray-success-text">
+          ขออภัยในความไม่สะดวก และหวังว่าเราจะได้พบกันในโอกาสหน้า
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
     return { content, moreContent, button }
   }
 
@@ -61,7 +110,6 @@ export default function ConversationHeader({
           {isNotificationsEnabled ? (
             <VolumeUpIcon onClick={toggleNotifications} />
           ) : (
-            
             <VolumeOffIcon onClick={toggleNotifications} />
           )}
         </div>
@@ -74,24 +122,62 @@ export default function ConversationHeader({
           />
         </div>
       </div>
-      {
-        appointments.map((appointment) => {
-          const  [formattedDate, startTime] = formatDateTime(appointment.appointmentDate)
-          const appointmentDateTime = new Date(appointment.appointmentDate)
-          const endDateTime = new Date(appointmentDateTime.getTime() + appointment.duration * 60000)
-          const endTime = formatDateTime(endDateTime.toISOString())[1]
-          const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
-          const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
+      {appointments.map((appointment) => {
+        const [formattedDate, startTime] = formatDateTime(appointment.appointmentDate)
+        const appointmentDateTime = new Date(appointment.appointmentDate)
+        const endDateTime = new Date(appointmentDateTime.getTime() + appointment.duration * 60000)
+        const endTime = formatDateTime(endDateTime.toISOString())[1]
+        const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
+        const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
 
-          if(appointment.status === "WAITING_FOR_PAYMENT"){
-            const { content, moreContent, button } = getWaitingForPaymentInfo(appointment.price, paymentDate, paymentTime)
-            return <BaseAppointmentCard icon={<PaymentIcon/>} content={content} moreContent={moreContent} button={button} formattedDate={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]}/>
-          } else if(appointment.status === "WAITING_FOR_EVENT"){
-            const {content, moreContent, button} = getWaitingForEventInfo(appointment.appointmentId)
-            return <BaseAppointmentCard icon={<SuccessIcon/>} content={content} moreContent={moreContent} button={button} formattedDate={formattedDate} startTime={startTime} endTime={endTime} speciality={specialityMapper[appointment.speciality]}/>
-          }
-        })
-      }
+        if (appointment.status === "WAITING_FOR_PAYMENT") {
+          const { content, moreContent, button } = getWaitingForPaymentInfo(
+            appointment.price,
+            paymentDate,
+            paymentTime
+          )
+          return (
+            <BaseAppointmentCard
+              icon={<PaymentIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "WAITING_FOR_EVENT") {
+          const { content, moreContent, button } = getWaitingForEventInfo(appointment.appointmentId)
+          return (
+            <BaseAppointmentCard
+              icon={<SuccessIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "USER_CANCELED") {
+          const { content, moreContent, button } = getCanceledEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        }
+      })}
     </div>
   )
 }
