@@ -2,6 +2,7 @@ import AppointmentButton from "./AppointmentButton"
 import packageListIcon from "../../../../assets/fortuneTellerDetailsAssets/packageListIcon.png"
 import priceIcon from "../../../../assets/fortuneTellerDetailsAssets/priceIcon.svg"
 import { PackageTypes, Speciality } from "../../types/PackageTypes"
+import { environment } from "../../../../common/constants/environment"
 
 export const specialityMapper: Record<Speciality, string> = {
   TAROT_CARD: "ไพ่ทาโร่",
@@ -14,6 +15,16 @@ export const specialityMapper: Record<Speciality, string> = {
 export default function PackageList({ packageItem }: { packageItem: PackageTypes }) {
   function translate(specialty: Speciality) {
     return specialityMapper[specialty]
+  }
+
+  function makeAppointment() {
+    window.location.href =
+      environment.frontend.url +
+      "/appointment" +
+      "/" +
+      packageItem.fortuneTellerId +
+      "/" +
+      packageItem.packageId
   }
 
   return (
@@ -34,7 +45,7 @@ export default function PackageList({ packageItem }: { packageItem: PackageTypes
           <div>รายละเอียด : {packageItem.description}</div>
         </div>
       </div>
-      <AppointmentButton></AppointmentButton>
+      <AppointmentButton makeAppointment={makeAppointment} ></AppointmentButton>
     </tr>
   )
 }

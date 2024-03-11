@@ -12,6 +12,7 @@ export default {
         "mdd-muted-yellow-hover": "#C89456",
         "mdd-sand-yellow": "#E9AC12",
         "mdd-sand-yellow-hover": "#CC9403",
+        "mdd-yellow600": "#DD9F00",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",

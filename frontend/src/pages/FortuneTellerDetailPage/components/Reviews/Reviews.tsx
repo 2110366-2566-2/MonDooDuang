@@ -4,28 +4,36 @@ import { ShowedReviewTypes } from "../../types/ShowedReviewTypes"
 
 import { FortuneTellerService } from "../../services/FortuneTellerService"
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { environment } from "../../../../common/constants/environment"
 
 export default function Reviews() {
+  const { fid } = useParams()
+
+  if (fid == undefined) {
+    window.location.href = environment.frontend.url + "/search"
+  }
+  const fortuneTellerId = fid ?? ""
 
   const [fortuneTellerReview, setFortuneTellerReview] = useState<ShowedReviewTypes[]>()
-  
-  const mockUserId = "0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d"
-  
+
   useEffect(() => {
     const fetchFortuneTellerReview = async () => {
-      const response = await FortuneTellerService.getReviewByFortuneTellerId(mockUserId)
+      const response = await FortuneTellerService.getReviewByFortuneTellerId(fortuneTellerId)
       const fortuneTellerReview = response
 
       setFortuneTellerReview(fortuneTellerReview)
-
     }
     fetchFortuneTellerReview()
   }, [])
 
-  let reviewItems = null
-  if(fortuneTellerReview !== undefined){
-    reviewItems = fortuneTellerReview.map((reviewItem) => <ReviewList reviewItem = {reviewItem}></ReviewList>)   
+  if (!fortuneTellerReview || fortuneTellerReview.length === 0) {
+    return null
   }
+
+  const reviewItems = fortuneTellerReview.map((reviewItem) => (
+    <ReviewList reviewItem={reviewItem} />
+  ))
 
   return (
     <div>
@@ -33,11 +41,11 @@ export default function Reviews() {
         <div className="font-libre-bodoni text-[36px]">Reviews</div>
         <ReviewHeaderLine></ReviewHeaderLine>
       </div>
-      <div className="flex flex-row  scroll-smooth overflow-auto space-x-4">
-        {reviewItems}
-      </div>
+      <div className="flex flex-row  scroll-smooth overflow-auto space-x-4">{reviewItems}</div>
       <div className="flex flex-row space-x-2 items-center justify-end">
-        <div className="text-[16px] font-libre-bodoni underline underline-offset-2">Swipe left to see more</div>
+        <div className="text-[16px] font-libre-bodoni underline underline-offset-2">
+          Swipe left to see more
+        </div>
         <div className="text-[36px] text-mdd-focus-yellow">&gt;</div>
       </div>
     </div>

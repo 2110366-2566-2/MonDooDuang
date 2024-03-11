@@ -17,8 +17,8 @@ export default function ConversationFooter({
   }
 
   return (
-    <div className="h-[59px] bg-gray-300 p-4 flex justify-center items-center">
-      <EventAvailableIcon fontSize="large" />
+    <div className="h-[59px] p-4 flex justify-center items-center">
+      <EventAvailableIcon fontSize="large" className="text-white" />
       <div className="flex ml-2">
         <input
           type="text"

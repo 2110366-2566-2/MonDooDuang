@@ -18,6 +18,7 @@ import {
   Package,
   UserInfo
 } from "../types/AppointmentTypes"
+import { useParams } from "react-router-dom"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
@@ -36,13 +37,20 @@ const newTheme = createTheme({
   }
 })
 
-export default function AppointmentPanel({ onCancel }: { onCancel: () => void }) {
-  //mock data
-  const fortuneTeller = "DaengDooDaung"
-  const fortuneTellerId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
-  const user_id = "84885c07-43d7-42b8-8919-88263a33fc74"
-  //
+export default function AppointmentPanel({
+  onCancel,
+  user_id
+}: {
+  onCancel: () => void
+  user_id: string
+}) {
+  const { fid, pid } = useParams()
 
+  if (fid == undefined) {
+    window.location.href = environment.frontend.url + "/search"
+  }
+  const fortuneTellerId = fid ?? ""
+  const [fortuneTeller, setFortuneTeller] = useState("")
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [isValidDate, setIsValidDate] = useState(true)
@@ -132,7 +140,16 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
         const packages = await AppointmentService.getPackages(fortuneTellerId)
         if (packages) {
           setPackages(packages)
-          if (packages.length > 0) {
+          if (pid) {
+            const myPackage = packages.find((obj) => {
+              return obj.package_id === pid
+            })
+            if (myPackage) {
+              setPackageType(myPackage)
+            } else {
+              setPackageType(packages[0])
+            }
+          } else {
             setPackageType(packages[0])
           }
         }
@@ -155,6 +172,20 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
       }
     }
     fetchUserInfo()
+  }, [])
+
+  useEffect(() => {
+    const fetchFortuneTellerName = async () => {
+      try {
+        const fortune_teller_info = await AppointmentService.getFortuneTeller(fortuneTellerId)
+        if (fortune_teller_info) {
+          setFortuneTeller(fortune_teller_info.stageName)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchFortuneTellerName()
   }, [])
 
   useEffect(() => {

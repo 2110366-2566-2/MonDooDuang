@@ -2,20 +2,18 @@ import ReportModal from "./components/ReportModal"
 import ConversationSidebar from "./components/ConversationSidebar"
 import ConversationBox from "./components/ConversationBox"
 import { ConversationService } from "./services/ConversationService"
-import { useEffect, useState } from "react"
-
-const mockIsCustomer = true
-const mockUserId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
+import { useContext, useEffect, useState } from "react"
+import { AuthContext } from "../../common/providers/AuthProvider"
 
 export default function ConversationPage() {
   const [isShowReport, setIsShowReport] = useState(false)
   const [conversationIds, setConversationIds] = useState<string[]>([])
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
+  const { userId, userType } = useContext(AuthContext)
   useEffect(() => {
     const fetchConversations = async () => {
-      const conversationIds = await ConversationService.getConversationsByUserId(mockUserId)
+      const conversationIds = await ConversationService.getConversationsByUserId(userId)
       setConversationIds(conversationIds)
-      if (conversationIds.length > 0) setSelectedConversationId(conversationIds[0])
     }
     fetchConversations()
   }, [])
@@ -30,21 +28,26 @@ export default function ConversationPage() {
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/4 bg-white bg-opacity-20">
+      <div className="w-1/4">
         <ConversationSidebar
           conversationIds={conversationIds}
           onConversationSelect={handleConversationSelect}
           selectedConversationId={selectedConversationId}
+          userId={userId}
         />
       </div>
-      <div className="w-3/4 bg-black bg-opacity-40 border border-white">
-        <ConversationBox conversationId={selectedConversationId} showReport={showReport} />
+      <div className="w-3/4 border-l-2 border-white">
+        <ConversationBox
+          conversationId={selectedConversationId}
+          showReport={showReport}
+          userId={userId}
+        />
       </div>
       <ReportModal
         isShowReport={isShowReport}
         setIsShowReport={setIsShowReport}
-        isCustomer={mockIsCustomer}
-        userId={mockUserId}
+        isCustomer={userType === "CUSTOMER"}
+        userId={userId}
         conversationId={selectedConversationId}
         isSystemReport={false}
       />

@@ -24,5 +24,58 @@ export const appointmentRepository = {
       and A.status = 'WAITING_FOR_EVENT';`, [fortuneTellerId]
     )
     return result.rows
+  },
+  getUserInfo: async (userId: string) => {
+    const result = await db.query(
+      `SELECT user_id,fname,lname,phone_number,birth_date
+      FROM user_table
+      WHERE user_id = $1;`, [userId]
+    )
+
+    return result.rows[0]
+  },
+  getAppointmentByConversationId: async (conversationId: string) => {
+    const userId = await db.query(
+      `
+        SELECT customer_id, fortune_teller_id
+        FROM conversation
+        WHERE conversation_id = $1
+      `, [conversationId]
+    )
+    const { customer_id: customerId, fortune_teller_id: fortuneTellerId } = userId.rows[0]
+    const result = await db.query(
+      `
+        SELECT A.appointment_id, A.status, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality, P.duration, P.price
+        FROM APPOINTMENT A
+        JOIN PACKAGE P ON A.package_id = P.package_id
+        WHERE (A.customer_id = $1 AND A.fortune_teller_id = $2)
+      `, [customerId, fortuneTellerId]
+    )
+    return result.rows.map((row) => {
+      return {
+        appointmentId: row.appointment_id,
+        status: row.status,
+        customerId: row.customer_id,
+        fortuneTellerId: row.fortune_teller_id,
+        appointmentDate: row.appointment_date,
+        speciality: row.speciality,
+        duration: row.duration,
+        price: row.price
+      }
+    })
+  },
+  updateAppointmentStatus: async (appointmentId: string, status: string) => {
+    try {
+      await db.query(
+        `
+          UPDATE APPOINTMENT
+          SET status = $1
+          WHERE appointment_id = $2;
+        `, [status, appointmentId]
+      )
+      return true
+    } catch (err) {
+      return false
+    }
   }
 }
