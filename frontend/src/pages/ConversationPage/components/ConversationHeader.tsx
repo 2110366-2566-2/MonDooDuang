@@ -17,10 +17,12 @@ import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
 
 export default function ConversationHeader({
   name,
-  showReport
+  showReport,
+  conversationId
 }: {
   name: string
   showReport: () => void
+  conversationId: string | null
 }) {
   const navigate = useNavigate()
 
@@ -29,10 +31,7 @@ export default function ConversationHeader({
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const appointments = await AppointmentService.getAppointmentsByBothUser(
-        "dedee29e-4e6f-42b7-87b9-8178292a5fbf",
-        "2da1baf4-4291-493b-b8d4-8a6c7d65d6b1"
-      )
+      const appointments = await AppointmentService.getAppointmentsByConversationId(conversationId)
       setAppointments(appointments)
     }
     fetchAppointments()
@@ -151,6 +150,7 @@ export default function ConversationHeader({
           dayjs(today).format("YYYY-MM-DD"),
           "day"
         )
+        console.log("CHECK",appointment.status)
 
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(

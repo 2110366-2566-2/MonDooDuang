@@ -78,7 +78,7 @@ export default function ConversationBox({
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ConversationHeader name={name} showReport={showReport} />
+      <ConversationHeader name={name} showReport={showReport} conversationId={conversationId}/>
       <MessageList messages={messages} />
       <div className="mt-auto">
         <ConversationFooter

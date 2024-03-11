@@ -2,8 +2,8 @@ import { environment } from "../../../common/constants/environment"
 import { AppointmentStatusType } from "../../../common/types/Appointment"
 
 export const AppointmentService = {
-  getAppointmentsByBothUser: async (firstUserId: string, secondUserId: string) => {
-    const response = await fetch(`${environment.backend.url}/appointment/find-appointment-by-both-userId/${firstUserId}/${secondUserId}`)
+  getAppointmentsByConversationId: async (conversationId: string | null) => {
+    const response = await fetch(`${environment.backend.url}/appointment/find-appointment-by-conversationId/${conversationId}`)
     const result = await response.json()
     return result.data
   },
