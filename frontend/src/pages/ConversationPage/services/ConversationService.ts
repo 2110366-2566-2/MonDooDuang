@@ -22,5 +22,11 @@ export const ConversationService = {
       `${environment.backend.url}/conversations/name/${conversationId}/${userId}`
     )
     return await response.json()
+  },
+  getUnreadMessagesConversationId: async (conversationId: string, userId: string) => {
+    const response = await fetch(
+      `${environment.backend.url}/conversations/unread-messages/${conversationId}/${userId}`
+    )
+    return await response.json()
   }
 }

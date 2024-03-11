@@ -25,10 +25,7 @@ export default function ConversationBox({
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const messages = await ConversationService.getMessagesByConversationId(
-        conversationId,
-        userId
-      )
+      const messages = await ConversationService.getMessagesByConversationId(conversationId, userId)
       setMessages(messages)
     }
     const fetchName = async () => {
