@@ -121,7 +121,7 @@ export default function ConversationHeader({
     const content = (
       <>
         <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
-        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูไม่ตอบรับการนัดหมายภายใน 1 วัน</p>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูปฏิเสธการนัดหมาย</p>
       </>
     )
     const moreContent = ""
