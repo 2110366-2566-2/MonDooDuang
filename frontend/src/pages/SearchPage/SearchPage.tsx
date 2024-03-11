@@ -123,8 +123,8 @@ export default function SearchPage(): JSX.Element {
         <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0">
           {searchValue && searchValue.length > 0
             ? searchValue.map((fortunetellerInformation, index) => (
-                <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
-              ))
+              <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
+            ))
             : null}
         </div>
       </div>
