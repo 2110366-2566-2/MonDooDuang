@@ -1,5 +1,4 @@
 import ConversationList from "./ConversationList"
-import SearchIcon from "@mui/icons-material/Search"
 
 export default function ConversationSidebar({
   conversationIds,
@@ -15,7 +14,6 @@ export default function ConversationSidebar({
   return (
     <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">
       <div className="relative">
-        <SearchIcon />
         <input
           type="text"
           placeholder={"ค้นหาข้อความและห้องแชท"}

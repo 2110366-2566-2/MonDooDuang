@@ -34,14 +34,22 @@ export const appointmentRepository = {
 
     return result.rows[0]
   },
-  getAppointmentByBothUserId: async (firstUserId: string, secondUserId: string) => {
+  getAppointmentByConversationId: async (conversationId: string) => {
+    const userId = await db.query(
+      `
+        SELECT customer_id, fortune_teller_id
+        FROM conversation
+        WHERE conversation_id = $1
+      `, [conversationId]
+    )
+    const { customer_id: customerId, fortune_teller_id: fortuneTellerId } = userId.rows[0]
     const result = await db.query(
       `
         SELECT A.appointment_id, A.status, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality, P.duration, P.price
         FROM APPOINTMENT A
         JOIN PACKAGE P ON A.package_id = P.package_id
-        WHERE (A.customer_id = $1 AND A.fortune_teller_id = $2) OR (A.customer_id = $2 AND A.fortune_teller_id = $1)
-      `, [firstUserId, secondUserId]
+        WHERE (A.customer_id = $1 AND A.fortune_teller_id = $2)
+      `, [customerId, fortuneTellerId]
     )
     return result.rows.map((row) => {
       return {
