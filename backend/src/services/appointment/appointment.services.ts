@@ -59,9 +59,6 @@ export const appointmentService = {
 
     if (appointmentStatus == 'CREATED') {
       appointmentRepository.updateAppointmentStatus(appointmentId, 'FORTUNE_TELLER_DECLINED')
-
-      //Send notification to expiredAppointmentId
-      //Call function here
     }
   },
 
