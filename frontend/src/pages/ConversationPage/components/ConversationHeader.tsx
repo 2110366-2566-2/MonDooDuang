@@ -89,19 +89,19 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
-
-  const getUpComingEventInfo = (startTime:string,endTime:string,date:string) => {
+  const getUpComingEventInfo = (startTime: string, endTime: string, date: string) => {
     const content = (
       <>
         <h1 className="text-mdd-yellow600 font-semibold text-[28px]">แจ้งการนัดหมายดูดวง</h1>
-        <p className="text-mdd-gray-success-text">คุณมีนัดหมายดูดวงในวันที่ {date} เวลา {startTime} - {endTime} น.</p>
+        <p className="text-mdd-gray-success-text">
+          คุณมีนัดหมายดูดวงในวันที่ {date} เวลา {startTime} - {endTime} น.
+        </p>
       </>
     )
     const moreContent = ""
     const button = <></>
     return { content, moreContent, button }
   }
-
 
   const getCanceledEventInfo = () => {
     const content = (
@@ -172,7 +172,11 @@ export default function ConversationHeader({
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
           if (waiting_day < 3) {
-            const { content, moreContent, button } = getUpComingEventInfo(startTime,endTime,formattedDate)
+            const { content, moreContent, button } = getUpComingEventInfo(
+              startTime,
+              endTime,
+              formattedDate
+            )
             return (
               <BaseAppointmentCard
                 icon={<NotiIcon />}
