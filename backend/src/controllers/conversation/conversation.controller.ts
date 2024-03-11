@@ -39,10 +39,19 @@ const createConversation = async (req: Request, res: Response) => {
   }
 }
 
+const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversationId = req.params.conversationId
+  const data = await conversationService.getUnreadMessagesByConversationId(conversationId, userId)
+  console.log(data)
+  res.status(200).send(data)
+}
+
 export const conversationController = {
   getConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,
   getNameByConversationId,
-  createConversation
+  createConversation,
+  getUnreadMessagesConversationId
 }
