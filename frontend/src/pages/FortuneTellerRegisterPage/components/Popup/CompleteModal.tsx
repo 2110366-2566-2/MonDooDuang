@@ -6,7 +6,7 @@ export default function CompleteModal(props: {
 }) {
   const closeCompleteModal = () => {
     props.setIsShowComplete(false)
-    window.location.href = "/account"
+    window.location.href = "/search"
   }
   return (
     <div

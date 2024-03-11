@@ -1,6 +1,7 @@
 import { db } from "../configs/pgdbConnection"
-import { FortuneTellerRegisterSchema, RequestSchema } from "../models/fortuneTeller/fortuneTeller.model"
+import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
+import { PackageWithIdSchema } from "../models/package/package.model"
 
 export const fortuneTellerRepository = {
 
@@ -101,5 +102,75 @@ export const fortuneTellerRepository = {
       totalReview: result.rows[0].total_review,
       profilePicture: result.rows[0].profile_picture
     }
+  },
+
+  getFortuneTellerDetail: async (fortuneTellerId: string) => {
+    try {
+      const result = await db.query(
+        `SELECT stage_name, description 
+        FROM fortune_teller
+        WHERE fortune_teller_id = '${fortuneTellerId}'
+        `
+      )
+      if (result.rows.length === 0) return null
+      return {
+        stageName: result.rows[0].stage_name,
+        description: result.rows[0].description
+      }
+    } catch (err) {
+      return null
+    }
+  },
+
+  updateFortuneTellerDetail: async (fortuneTeller: FortuneTellerAccountDetailSchema) => {
+    try {
+      const result = await db.query(
+        `
+          UPDATE fortune_teller
+          SET description = $2, stage_name = $3
+          WHERE fortune_teller_id = $1
+        `,
+        [fortuneTeller.fortuneTellerId, fortuneTeller.description, fortuneTeller.stageName]
+      )
+      return true
+    } catch (err) {
+      return false
+    }
+  },
+
+  getStageNameValid: async (fortuneTellerId: string, stageName: string) => {
+    try {
+      const stageNameValid = await db.query(
+        `
+        SELECT stage_name 
+        FROM fortune_teller
+        WHERE stage_name = $2 AND fortune_teller_id != $1
+        `,
+        [fortuneTellerId, stageName]
+      )
+      if (stageNameValid.rows.length === 0) return true
+      return false
+    } catch (err) {
+      return false
+    }
+  },
+
+  getFortuneTellerStageName: async (fortuneTellerId: string) => {
+    const result = await db.query(
+      `SELECT fortune_teller_id, stage_name
+      FROM fortune_teller as F
+      WHERE F.fortune_teller_id = $1;`, [fortuneTellerId]
+    )
+    if (result.rows[0] === null) { return null }
+    return result.rows[0]
+  },
+
+  getAllFortuneTellerStageName: async () => {
+    const result = await db.query(
+      `SELECT fortune_teller_id, stage_name
+       FROM fortune_teller
+      `
+    )
+    return result.rows
   }
 }
