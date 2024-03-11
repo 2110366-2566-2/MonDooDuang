@@ -106,8 +106,7 @@ export const conversationRepository = {
         `,
         [fortunetellerId, customerId]
       )
-      if (existedConversation.rows.length > 0)
-        return { isSuccess: true, data: existedConversation.rows[0].conversation_id }
+      if (existedConversation.rows.length > 0) { return { isSuccess: true, data: existedConversation.rows[0].conversation_id } }
       await db.query(
         `
           INSERT INTO CONVERSATION(fortune_teller_id, customer_id)

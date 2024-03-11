@@ -65,7 +65,7 @@ export const conversationService = {
 
       prevTimeSent = currentTimeSent
     })
-    conversationService.readMessage(conversationId, userId)
+    await conversationService.readMessage(conversationId, userId)
 
     return formattedMessages
   },
