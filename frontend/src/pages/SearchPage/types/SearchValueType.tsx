@@ -8,7 +8,6 @@ type SearchValue = {
     chat: () => void
     moreInformation: () => void
     makeAppointment: () => void
-    package_id: string
     package_id_list: string[]
     fortunetellerid: string
   }

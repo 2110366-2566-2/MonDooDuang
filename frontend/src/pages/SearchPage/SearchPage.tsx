@@ -77,9 +77,8 @@ export default function SearchPage(): JSX.Element {
           "/" +
           fetchSearchData.fortune_teller_id +
           "/" +
-          fetchSearchData.package_id
+          fetchSearchData.package_id_list[0]
       },
-      package_id: fetchSearchData.package_id,
       package_id_list: fetchSearchData.package_id_list.split(","),
       fortunetellerid: fetchSearchData.fortune_teller_id
     }

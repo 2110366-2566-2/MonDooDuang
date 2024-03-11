@@ -1,5 +1,4 @@
 type FetchSearchData = {
-    package_id: string
     speciality: string
     fname: string
     fortune_teller_id: string
