@@ -61,7 +61,6 @@ export const searchRepository = {
                     FORTUNETELLER_PACKAGE AS (
                         SELECT F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, 
                         F.total_score, F.total_review, 
-                        P.package_id
                         STRING_AGG(DISTINCT P.package_id, ',') AS package_id_list,
                         P.speciality,
                         MIN(P.price) AS min_price,
