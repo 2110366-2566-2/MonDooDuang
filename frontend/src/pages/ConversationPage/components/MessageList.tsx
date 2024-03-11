@@ -23,6 +23,7 @@ export default function MessageList({ messages }: { messages: MessageInformation
           message={message.message}
           sender={message.sender}
           timeSent={message.timeSent}
+          isRead={message.isRead}
         />
       ))}
       <div ref={messagesEndRef} />
