@@ -61,15 +61,14 @@ export const searchRepository = {
                     FORTUNETELLER_PACKAGE AS (
                         SELECT F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, 
                         F.total_score, F.total_review, 
-                        STRING_AGG(DISTINCT F.package_id, ',') AS current_packageid,
-                        STRING_AGG(DISTINCT P.package_id, ',') AS packageid_list,
-                        ARRAY_TO_STRING(ARRAY_AGG(DISTINCT F.speciality), ',') AS current_speciality,
-                        ARRAY_TO_STRING(ARRAY_AGG(DISTINCT P.speciality), ',') AS speciality_list,
+                        P.package_id
+                        STRING_AGG(DISTINCT P.package_id, ',') AS package_id_list,
+                        P.speciality,
                         MIN(P.price) AS min_price,
                         MAX(P.price) AS max_price
                         FROM INTEGRATE_FORTUNETELLER F
                         JOIN package P ON F.fortune_teller_id = P.fortune_teller_id
-                        GROUP BY F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, F.total_score, F.total_review
+                        GROUP BY F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, F.total_score, F.total_review, P.speciality
                     )
                     
                     SELECT * FROM FORTUNETELLER_PACKAGE`
