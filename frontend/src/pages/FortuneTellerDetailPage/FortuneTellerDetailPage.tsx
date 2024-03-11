@@ -6,10 +6,19 @@ import RecommendedFortuneTellers from "./components/RecommendedFortuneTeller/Rec
 import Footer from "./components/Footer/Footer"
 import NavBar from "../../common/components/NavBar/NavBar"
 
+import { useContext } from "react"
+import { AuthContext } from "../../common/providers/AuthProvider"
+
 export default function FortuneTellerDetailPage() {
+  const { userType, username } = useContext(AuthContext)
+
   return (
     <>
-      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
+      <NavBar
+        isFortuneTeller={userType === "FORTUNE_TELLER"}
+        menuFocus={"search"}
+        username={username}
+      />
       <div className="text-white">
         <div className="px-6">
           <Breadcrumb></Breadcrumb>

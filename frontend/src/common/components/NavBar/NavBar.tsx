@@ -19,9 +19,9 @@ export default function NavBar({
 
   const role = isFortuneTeller ? "หมอดู/ผู้ใช้บริการ" : "ผู้ใช้บริการ"
   const menuList: { name: string; focus: MenuFocus; href: string }[] = [
-    { name: "ค้นหาหมอดู", focus: "search", href: "" },
+    { name: "ค้นหาหมอดู", focus: "search", href: "/search" },
     { name: "เช็คตารางเวลา", focus: "schedule", href: "" },
-    { name: "ประวัติการสนทนา", focus: "conversation", href: "" }
+    { name: "ประวัติการสนทนา", focus: "conversation", href: "/conversation" }
   ]
 
   const handleNotification = () => {}
