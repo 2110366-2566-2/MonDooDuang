@@ -25,7 +25,6 @@ export default function ConversationHeader({
   conversationId: string | null
 }) {
   const navigate = useNavigate()
-
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
 
@@ -79,6 +78,7 @@ export default function ConversationHeader({
         onClick={() => {
           if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
             AppointmentService.updateAppointmentStatus("USER_CANCELED", appointmentId)
+            window.location.reload()
           }
         }}
       >
