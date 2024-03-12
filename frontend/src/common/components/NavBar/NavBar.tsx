@@ -8,10 +8,12 @@ type MenuFocus = "search" | "schedule" | "conversation" | "none"
 
 export default function NavBar({
   isFortuneTeller,
+  isFortuneTellerPage = false,
   menuFocus,
   username
 }: {
   isFortuneTeller: boolean
+  isFortuneTellerPage?: boolean
   menuFocus: MenuFocus
   username: string
 }) {
@@ -33,7 +35,13 @@ export default function NavBar({
   const isHavingNotification = true
 
   return (
-    <div className="flex justify-between py-3 px-6 items-center">
+    <div
+      className={`flex justify-between py-3 px-6 items-center ${
+        isFortuneTellerPage
+          ? "bg-gradient-to-b from-[#4C122F] from-10% to-[#481248a0] to-90%" // [radial-gradient(ellipse_at_center, rgba(76, 18, 71, 1) 50%, rgba(72, 18, 72, 0) 100%)]"
+          : ""
+      }`}
+    >
       <div className="flex gap-6 items-center text-white font-noto-sans font-light">
         <LogoIcon />
         {menuList.map((menu, index) => (
