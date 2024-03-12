@@ -2,12 +2,15 @@ import { notificationRepository } from "../../repositories/notification.reposito
 
 export const notificationService = {
   getNotifications: async (userId: string) => {
-    const notifications = notificationRepository.getNotifications(userId)
+    const notifications = await notificationRepository.getNotifications(userId)
     return notifications
   },
 
-  getAppointmentNotification: async (notificationId: string) => {
-    const notification = notificationRepository.getAppointmentNotification(notificationId)
+  getAppointmentNotification: async (notificationId: string, userId: string) => {
+    const notification = await notificationRepository.getAppointmentNotification(
+      notificationId,
+      userId
+    )
     return notification
   }
 }

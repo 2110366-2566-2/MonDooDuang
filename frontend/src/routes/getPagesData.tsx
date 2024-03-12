@@ -12,6 +12,7 @@ import AdminApprovalApp from "../pages/AdminApprovalPage/AdminApprovalApp"
 import FortuneTellerDetailApp from "../pages/FortuneTellerDetailPage/FortuneTellerDetailApp"
 import PaymentApp from "../pages/PaymentPage/PaymentApp"
 import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedApp"
+import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 
 export const getPagesData = (stripePromise: any) =>
@@ -67,6 +68,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/admin/fortuneteller_approvals",
       element: <AdminApprovalApp />
+    },
+    {
+      path: "/admin/login",
+      element: <AdminLoginApp />
     },
     {
       path: "/payment/:payAmount",
