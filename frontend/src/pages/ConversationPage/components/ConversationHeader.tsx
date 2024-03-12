@@ -78,7 +78,7 @@ export default function ConversationHeader({
       <button
         className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5"
         onClick={() => {
-          if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
+          if (confirm("โปรดกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
             userType === "FORTUNE_TELLER"
               ? AppointmentService.updateAppointmentStatus("FORTUNE_TELLER_CANCELED", appointmentId)
               : AppointmentService.updateAppointmentStatus("CUSTOMER_CANCELED", appointmentId)
