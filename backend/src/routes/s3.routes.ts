@@ -7,7 +7,7 @@ const upload = multer({ dest: "uploads/" })
 
 router.route("/profile-picture/:id")
   .get(s3Controller.downloadProfilePicture, upload.single("image"))
-  .post(s3Controller.uploadIdCard, upload.single("image"))
+  .post(s3Controller.uploadProfilePicture, upload.single("image"))
   .put(s3Controller.updateProfilePicture, upload.single("image"))
   .delete(s3Controller.deleteProfilePicture, upload.single("image"))
 router.route("/id-card/:id")

@@ -7,7 +7,6 @@ const uploadProfilePicture = async (req: Request, res: Response) => {
     userId: req.params.id,
     image: req.body.image
   }
-
   const data = await s3Service.uploadProfilePicture(s3Object)
 
   res.status(200).json({ success: true, data })
