@@ -167,7 +167,7 @@ export default function AppointmentNotification({
             {appointmentNotification.appointmentNotificationType === "CANCEL" &&
               appointmentNotification.isCustomer && (
                 <div className="flex gap-1">
-                  <div>ระบบจะทำการคืนเงินให้ภายใน x วัน</div>
+                  <div>ระบบจะทำการคืนเงินให้ภายใน 7 วัน</div>
                 </div>
               )}
             {appointmentNotification.appointmentNotificationType === "NEW" && (
