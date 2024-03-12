@@ -58,7 +58,6 @@ export default function SearchPage(): JSX.Element {
   const transformFetchDataToSearchValue = async (
     fetchSearchData: FetchSearchData
   ): Promise<SearchValue> => {
-    console.log(fetchSearchData.fortune_teller_id)
     return {
       name: fetchSearchData.stage_name ?? fetchSearchData.fname,
       rating:
@@ -68,9 +67,7 @@ export default function SearchPage(): JSX.Element {
       minPrice: fetchSearchData.min_price,
       maxPrice: fetchSearchData.max_price,
       image: fetchSearchData.profile_picture,
-      speciality: fetchSearchData.speciality_list
-        .split(",")
-        .map((speciality) => specialitiesName[speciality as Specialities]),
+      speciality: specialitiesName[fetchSearchData.speciality as Specialities],
       chat: async () => {
         const { conversationId } = await ConversationService.createConversation(
           userId,
@@ -89,12 +86,9 @@ export default function SearchPage(): JSX.Element {
           "/" +
           fetchSearchData.fortune_teller_id +
           "/" +
-          fetchSearchData.current_packageid.split(",")[0]
+          fetchSearchData.package_id_list[0]
       },
-      current_packageid: fetchSearchData.current_packageid.split(",")[0],
-      packageid_list: fetchSearchData.packageid_list.split(","),
-      current_speciality: fetchSearchData.current_speciality.split(",")[0],
-      speciality_list: fetchSearchData.speciality_list.split(","),
+      package_id_list: fetchSearchData.package_id_list.split(","),
       fortunetellerid: fetchSearchData.fortune_teller_id
     }
   }
@@ -123,8 +117,8 @@ export default function SearchPage(): JSX.Element {
         <div className="grid gap-0 grid-cols-4 justify-items-center mx-8 -z-0">
           {searchValue && searchValue.length > 0
             ? searchValue.map((fortunetellerInformation, index) => (
-              <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
-            ))
+                <FortuneTellerSearchModal key={index} {...fortunetellerInformation} />
+              ))
             : null}
         </div>
       </div>

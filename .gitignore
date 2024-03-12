@@ -32,3 +32,7 @@ backend/dist
 ### Temp Files
 backend/.eslintrc-abandoned
 frontend/.eslintrc-abandoned
+
+### env
+frontend/.env
+backend/.env
