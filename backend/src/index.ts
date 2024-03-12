@@ -1,10 +1,10 @@
 import express, { Request, Response, Application } from "express"
-import dotenv from "dotenv"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
 import requestRouter from "./routes/request.routes"
 import searchRouter from "./routes/search.routes"
 import fortuneTellerRouter from "./routes/fortuneTeller.routes"
+import notificationRouter from "./routes/notification.routes"
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
 import reviewRouter from "./routes/review.routes"
@@ -14,13 +14,10 @@ import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
 import userRouter from "./routes/user.routes"
 import adminRouter from "./routes/admin.routes"
-import cookieParser from "cookie-parser"
-
-// For env File
-dotenv.config()
+import { environment } from "./configs/environment"
 
 const app: Application = express()
-const port = process.env.PORT ?? 8000
+const port = environment.server.port
 const server = connectToSocket(app)
 
 app.use(
@@ -32,7 +29,6 @@ app.use(
 app.use(express.json())
 
 app.use(logger("dev"))
-app.use(cookieParser())
 
 server.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`)
@@ -48,6 +44,7 @@ app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
 app.use("/admin", adminRouter)
 app.use("/review", reviewRouter)
+app.use("/notification", notificationRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)

@@ -13,12 +13,14 @@ export default function ConversationBox({
   conversationId,
   showReport,
   systemReport,
-  userId
+  userId,
+  userType
 }: {
   conversationId: string | null
   showReport: () => void
   systemReport: (selectReportMode: boolean) => void
   userId: string
+  userType: string
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
@@ -81,8 +83,8 @@ export default function ConversationBox({
         name={name}
         showReport={showReport}
         systemReport={systemReport}
-        userId={userId}
         conversationId={conversationId}
+        userType={userType}
       />
       <MessageList messages={messages} />
       <div className="mt-auto">

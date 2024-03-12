@@ -21,13 +21,13 @@ export default function ConversationHeader({
   showReport,
   conversationId,
   systemReport,
-  userId
+  userType
 }: {
   name: string
   showReport: () => void
   conversationId: string | null
   systemReport: (selectReportMode: boolean) => void
-  userId: string
+  userType: string
 }) {
   const navigate = useNavigate()
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
@@ -81,8 +81,10 @@ export default function ConversationHeader({
       <button
         className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5"
         onClick={() => {
-          if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
-            AppointmentService.updateAppointmentStatus("USER_CANCELED", appointmentId)
+          if (confirm("โปรดกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
+            userType === "FORTUNE_TELLER"
+              ? AppointmentService.updateAppointmentStatus("FORTUNE_TELLER_CANCELED", appointmentId)
+              : AppointmentService.updateAppointmentStatus("CUSTOMER_CANCELED", appointmentId)
             window.location.reload()
           }
         }}
@@ -162,7 +164,6 @@ export default function ConversationHeader({
         const endTime = formatDateTime(endDateTime.toISOString())[1]
         const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
         const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
-        const isCustomer = userId === appointment.customerId
 
         const today = new Date()
         const waiting_day = dayjs(appointmentDateTime).diff(
@@ -221,7 +222,10 @@ export default function ConversationHeader({
               speciality={specialityMapper[appointment.speciality]}
             />
           )
-        } else if (appointment.status === "USER_CANCELED") {
+        } else if (
+          appointment.status === "FORTUNE_TELLER_CANCELED" ||
+          appointment.status === "CUSTOMER_CANCELED"
+        ) {
           const { content, moreContent, button } = getCanceledEventInfo()
           return (
             <BaseAppointmentCard
@@ -259,7 +263,7 @@ export default function ConversationHeader({
               appointmentId={appointment.appointmentId}
               fortuneTellerId={appointment.fortuneTellerId}
               customerId={appointment.customerId}
-              isCustomer={isCustomer}
+              isCustomer={userType === "CUSTOMER"}
               showReport={showReport}
               systemReport={systemReport}
             />
