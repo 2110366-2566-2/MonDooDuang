@@ -27,6 +27,7 @@ export const notificationRepository = {
         SELECT * FROM NOTIFICATION 
         WHERE user_id = $1
         AND type != $2
+        ORDER BY updated_at DESC
         `,
         [userId, "HIDDEN"]
       )
