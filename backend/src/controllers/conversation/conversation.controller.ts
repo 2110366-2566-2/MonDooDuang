@@ -3,19 +3,8 @@ import { conversationService } from "../../services/conversation/conversation.se
 
 const getConversationsByUserId = async (req: Request, res: Response) => {
   const userId = req.params.userId
-  const conversations = await conversationService.getConversationsByUserId(userId)
-  res.status(200).send(conversations)
-}
-
-const getCustomerConversationsByUserId = async (req: Request, res: Response) => {
-  const userId = req.params.userId
-  const conversations = await conversationService.getCustomerConversationsByUserId(userId)
-  res.status(200).send(conversations)
-}
-
-const getFortuneTellerConversationsByUserId = async (req: Request, res: Response) => {
-  const userId = req.params.userId
-  const conversations = await conversationService.getFortuneTellerConversationsByUserId(userId)
+  const role = req.params.role
+  const conversations = await conversationService.getConversationsByUserId(userId, role)
   res.status(200).send(conversations)
 }
 
@@ -60,8 +49,6 @@ const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
 
 export const conversationController = {
   getConversationsByUserId,
-  getCustomerConversationsByUserId,
-  getFortuneTellerConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,
   getNameByConversationId,

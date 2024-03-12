@@ -9,24 +9,8 @@ export interface MessageType {
 }
 
 export const conversationService = {
-  getConversationsByUserId: async (userId: string) => {
-    const data = await conversationRepository.getConversationsByUserId(userId)
-    if (data === null) {
-      return []
-    }
-
-    return data.map((conversation) => conversation.conversation_id)
-  },
-  getCustomerConversationsByUserId: async (userId: string) => {
-    const data = await conversationRepository.getCustomerConversationsByUserId(userId)
-    if (data === null) {
-      return []
-    }
-
-    return data.map((conversation) => conversation.conversation_id)
-  },
-  getFortuneTellerConversationsByUserId: async (userId: string) => {
-    const data = await conversationRepository.getFortuneTellerConversationsByUserId(userId)
+  getConversationsByUserId: async (userId: string, role: string) => {
+    const data = await conversationRepository.getConversationsByUserId(userId, role)
     if (data === null) {
       return []
     }

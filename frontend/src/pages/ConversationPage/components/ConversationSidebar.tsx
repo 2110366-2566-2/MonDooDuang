@@ -14,18 +14,21 @@ export default function ConversationSidebar({
   const [customerConversationIds, setCustomerConversationIds] = useState<string[]>([])
   const [fortuneTellerConversationIds, setFortuneTellerConversationIds] = useState<string[]>([])
   const [filteredConversations, setFilteredConversations] = useState<string[]>([])
-  const [selectedMode, setSelectedMode] = useState<"customer" | "fortuneTeller">("customer")
-  const handleModeSelect = (mode: "customer" | "fortuneTeller") => {
+  const [selectedMode, setSelectedMode] = useState<"CUSTOMER" | "FORTUNE_TELLER">("CUSTOMER")
+  const handleModeSelect = (mode: "CUSTOMER" | "FORTUNE_TELLER") => {
     setSelectedMode(mode)
   }
   useEffect(() => {
     const fetchConversations = async () => {
-      const customerConversationIds = await ConversationService.getCustomerConversationsByUserId(
-        userId
+      const customerConversationIds = await ConversationService.getConversationsByUserId(
+        userId,
+        "CUSTOMER"
       )
       setCustomerConversationIds(customerConversationIds)
-      const fortuneTellerConversationIds =
-        await ConversationService.getFortuneTellerConversationsByUserId(userId)
+      const fortuneTellerConversationIds = await ConversationService.getConversationsByUserId(
+        userId,
+        "FORTUNE_TELLER"
+      )
       setFortuneTellerConversationIds(fortuneTellerConversationIds)
       setFilteredConversations(customerConversationIds)
     }
@@ -33,7 +36,7 @@ export default function ConversationSidebar({
   }, [])
 
   useEffect(() => {
-    if (selectedMode === "customer") {
+    if (selectedMode === "CUSTOMER") {
       setFilteredConversations(customerConversationIds)
     } else {
       setFilteredConversations(fortuneTellerConversationIds)
@@ -45,21 +48,21 @@ export default function ConversationSidebar({
       <div className="flex">
         <div
           className={`cursor-pointer p-2 border-b-2 w-[130px] flex justify-center ${
-            selectedMode === "customer"
+            selectedMode === "CUSTOMER"
               ? "text-yellow-200 border-yellow-200 font-bold border-b-4"
               : "text-white border-white"
           }`}
-          onClick={() => handleModeSelect("customer")}
+          onClick={() => handleModeSelect("CUSTOMER")}
         >
           ลูกค้า
         </div>
         <div
           className={`cursor-pointer p-2 border-b-2 w-[130px] flex justify-center ${
-            selectedMode === "fortuneTeller"
+            selectedMode === "FORTUNE_TELLER"
               ? "text-yellow-200 border-yellow-300 font-bold border-b-4"
               : "text-white border-white"
           }`}
-          onClick={() => handleModeSelect("fortuneTeller")}
+          onClick={() => handleModeSelect("FORTUNE_TELLER")}
         >
           หมอดู
         </div>

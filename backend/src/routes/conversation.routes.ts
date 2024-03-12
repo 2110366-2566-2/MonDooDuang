@@ -3,9 +3,7 @@ import { conversationController } from "../controllers/conversation/conversation
 
 const router = express.Router()
 
-router.get("/:userId", conversationController.getConversationsByUserId)
-router.get("/customer/:userId", conversationController.getCustomerConversationsByUserId)
-router.get("/fortuneTeller/:userId", conversationController.getFortuneTellerConversationsByUserId)
+router.get("/:userId/:role", conversationController.getConversationsByUserId)
 router.get(
   "/name-with-lastMessage/:conversationId/:userId",
   conversationController.getNameWithLastMessage
