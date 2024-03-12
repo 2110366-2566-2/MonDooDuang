@@ -1,6 +1,6 @@
 import RootLayout from "../../common/components/RootLayout/RootLayout"
 import moon_icon from "../LoginPage/components/Icons/moon_icon.svg"
-import LoginBox from "../LoginPage/components/LoginBox"
+import LoginBox from "./components/LoginBox"
 export default function AdminLoginPage() {
   return (
     <RootLayout>

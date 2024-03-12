@@ -84,17 +84,6 @@ export default function LoginBox() {
       >
         เข้าสู่ระบบ
       </button>
-      <div className="flex w-[100%] justify-center items-center gap-2 text-center">
-        <div className="h-[1px] w-[25%] bg-gradient-to-l from-white border-none" />
-        <p className="my-1 text-white">หรือ</p>
-        <div className="h-[1px] w-[25%] bg-gradient-to-r from-white border-none" />
-      </div>
-      <button
-        onClick={() => navigate("/register")}
-        className="w-[30%] py-[0.5vw] bg-orange-200 rounded-md text-black font-bold text-lg hover:bg-yellow-400 my-4"
-      >
-        สร้างบัญชีใหม่
-      </button>
       {FAlert && <FailedAlert FAlert={FAlert} setFAlert={setFAlert} />}
     </div>
   )
