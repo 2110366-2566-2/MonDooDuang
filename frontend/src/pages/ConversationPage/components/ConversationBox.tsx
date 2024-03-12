@@ -12,11 +12,13 @@ const socket = io(environment.backend.url)
 export default function ConversationBox({
   conversationId,
   showReport,
+  systemReport,
   userId,
   userType
 }: {
   conversationId: string | null
   showReport: () => void
+  systemReport: (selectReportMode: boolean) => void
   userId: string
   userType: string
 }) {
@@ -80,6 +82,7 @@ export default function ConversationBox({
       <ConversationHeader
         name={name}
         showReport={showReport}
+        systemReport={systemReport}
         conversationId={conversationId}
         userType={userType}
       />

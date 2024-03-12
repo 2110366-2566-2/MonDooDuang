@@ -4,6 +4,7 @@ import { fortuneTellerRepository } from "../../repositories/fortuneTeller.reposi
 import { packageRepository } from "../../repositories/package.repository"
 import { userRepository } from "../../repositories/user.repository"
 import { scheduleJob } from "node-schedule"
+import { notificationRepository } from "../../repositories/notification.repository"
 
 export const appointmentService = {
   createAppointment: async (appointment: AppointmentSchema) => {
@@ -21,7 +22,21 @@ export const appointmentService = {
     // Schedule the auto decline
     const declineDate = new Date()
     declineDate.setHours(declineDate.getHours() + 24)
-    scheduleJob(declineDate, async () => { await appointmentService.autoDeclineAppointment(result.appointmentId) })
+    scheduleJob(declineDate, async () => {
+      await appointmentService.autoDeclineAppointment(result.appointmentId)
+    })
+
+    // Schedule 10 minutes reminder
+    const remindDate = new Date(appointment.appointmentDate)
+    remindDate.setHours(remindDate.getHours() + 7)
+    remindDate.setMinutes(remindDate.getMinutes() - 10)
+    scheduleJob(remindDate, async () => {
+      await appointmentService.autoRemindAppointment(
+        appointment.customerId,
+        appointment.fortuneTellerId,
+        result.appointmentId
+      )
+    })
 
     return result.isSuccess
   },
@@ -63,10 +78,39 @@ export const appointmentService = {
     }
   },
 
+  createReminderNotification: async (userId: string, appointmentId: string) => {
+    const notificationId = await notificationRepository.createNotification(userId, "APPOINTMENT")
+    if (notificationId !== null) {
+      await notificationRepository.createAppointmentNotification(
+        notificationId,
+        "REMINDER",
+        appointmentId
+      )
+    }
+  },
+
+  autoRemindAppointment: async (
+    customerId: string,
+    fortuneTellerId: string,
+    appointmentId: string
+  ) => {
+    // Check if appointment is still WAITING_FOR_EVENT 10 minutes before the event
+    const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
+
+    if (appointmentStatus === "WAITING_FOR_EVENT") {
+      await appointmentService.createReminderNotification(customerId, appointmentId)
+      await appointmentService.createReminderNotification(fortuneTellerId, appointmentId)
+    }
+  },
+
   getAppointmentByConversationId: async (conversationId: string) => {
     const appointments = await appointmentRepository.getAppointmentByConversationId(conversationId)
     appointments.forEach((appointment) => {
-      appointment.appointmentDate = new Date((appointment.appointmentDate as Date).setUTCHours((appointment.appointmentDate as Date).getUTCHours() + 14))
+      appointment.appointmentDate = new Date(
+        (appointment.appointmentDate as Date).setUTCHours(
+          (appointment.appointmentDate as Date).getUTCHours() + 14
+        )
+      )
     })
     return appointments
   },
@@ -74,5 +118,10 @@ export const appointmentService = {
   updateAppointmentStatus: async (appointmentId: string, status: string) => {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     return isSuccess
+  },
+
+  getIsReview: async (appointmentId: string, customerId: string) => {
+    const isReview = await appointmentRepository.getIsReview(appointmentId, customerId)
+    return isReview
   }
 }
