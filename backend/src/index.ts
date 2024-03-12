@@ -7,6 +7,7 @@ import searchRouter from "./routes/search.routes"
 import fortuneTellerRouter from "./routes/fortuneTeller.routes"
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
+import s3Router from "./routes/s3.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
 import { connectToDatabase } from "./configs/pgdbConnection"
@@ -44,6 +45,7 @@ app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
+app.use("/images", s3Router)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
