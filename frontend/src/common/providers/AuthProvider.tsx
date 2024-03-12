@@ -9,12 +9,14 @@ type AuthContextType = {
   userId: string
   userType: UserType
   username: string
+  token: string
 }
 
 const AuthContext = createContext<AuthContextType>({
   userId: "",
   userType: "CUSTOMER",
-  username: ""
+  username: "",
+  token: ""
 })
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -26,9 +28,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return
   }
 
-  const decodedToken = jwtDecode<AuthContextType>(token)
+  const decodedToken = jwtDecode<Omit<AuthContextType, "token">>(token)
+  const contextValue = { ...decodedToken, token }
 
-  return <AuthContext.Provider value={decodedToken}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 }
 
 export { AuthProvider, AuthContext }
