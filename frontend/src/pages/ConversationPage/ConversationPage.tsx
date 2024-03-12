@@ -8,7 +8,6 @@ import { AuthContext } from "../../common/providers/AuthProvider"
 
 export default function ConversationPage() {
   const [isShowReport, setIsShowReport] = useState(false)
-  const [conversationIds, setConversationIds] = useState<string[]>([])
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
   const { userId, userType, username } = useContext(AuthContext)
   useEffect(() => {
