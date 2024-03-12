@@ -58,7 +58,7 @@ export const appointmentRepository = {
         WHERE conversation_id = $1
       `, [conversationId]
     )
-    if(userId.rowCount === 0) return []
+    if (userId.rowCount === 0) return []
     const { customer_id: customerId, fortune_teller_id: fortuneTellerId } = userId.rows[0]
     const result = await db.query(
       `
