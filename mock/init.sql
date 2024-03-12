@@ -252,6 +252,116 @@ CREATE TRIGGER chat_notification_updated_at
 BEFORE UPDATE ON CHAT_NOTIFICATION
 FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+CREATE OR REPLACE FUNCTION notify_new_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.fortune_teller_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'NEW', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_accept_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'ACCEPT', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_deny_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'DENY', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_cancel_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.fortune_teller_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'CANCEL', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_complete_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'COMPLETE', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER new_appointment_notification
+AFTER INSERT ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'CREATED')
+EXECUTE FUNCTION notify_new_appointment();
+
+CREATE OR REPLACE TRIGGER accecpt_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'WAITING_FOR_PAYMENT')
+EXECUTE FUNCTION notify_accept_appointment();
+
+CREATE OR REPLACE TRIGGER deny_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'FORTUNE_TELLER_DECLINED')
+EXECUTE FUNCTION notify_deny_appointment();
+
+CREATE OR REPLACE TRIGGER cancel_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'NO_PAYMENT_CANCELED' OR NEW.status = 'USER_CANCELED')
+EXECUTE FUNCTION notify_cancel_appointment();
+
+CREATE OR REPLACE TRIGGER complete_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'EVENT_COMPLETED')
+EXECUTE FUNCTION notify_complete_appointment();
+
 -- ADMIN
 INSERT INTO ADMIN (admin_id, email, password)
 VALUES
