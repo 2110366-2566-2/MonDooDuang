@@ -344,6 +344,14 @@ BEGIN
 	INSERT INTO appointment_notification (notification_id, type, appointment_id)
 	VALUES (notification_id, 'COMPLETE', NEW.appointment_id);
 
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.fortune_teller_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'COMPLETE', NEW.appointment_id);
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
