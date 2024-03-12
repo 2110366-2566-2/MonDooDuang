@@ -1,5 +1,5 @@
 import express, { Request, Response, Application } from "express"
-import dotenv from "dotenv"
+import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
 import requestRouter from "./routes/request.routes"
@@ -35,6 +35,7 @@ server.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`)
 })
 
+app.use("/example", exampleRouter)
 app.use("/user", userRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
