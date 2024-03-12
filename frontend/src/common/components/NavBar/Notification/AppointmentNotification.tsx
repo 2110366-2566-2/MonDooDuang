@@ -84,111 +84,107 @@ export default function AppointmentNotification({
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
 
-  if (appointmentNotification)
-    return (
-      <div className="flex flex-col gap-2">
-        {appointmentNotification.appointmentNotificationType === "REMINDER" ? (
-          <>
-            <div className="flex gap-1">
-              <div>การนัดหมายดูดวง</div>
-              <div className="font-semibold text-mdd-yellow600">
-                {translateSpeciality(appointmentNotification.speciality)}
-              </div>
-              <div>กับ</div>
-              <div className="font-semibold text-mdd-yellow600">
-                {appointmentNotification.otherName}
-              </div>
+  return (
+    <div className="flex flex-col gap-2">
+      {appointmentNotification.appointmentNotificationType === "REMINDER" ? (
+        <>
+          <div className="flex gap-1">
+            <div>การนัดหมายดูดวง</div>
+            <div className="font-semibold text-mdd-yellow600">
+              {translateSpeciality(appointmentNotification.speciality)}
             </div>
-            <div className="flex gap-1">
-              <div>กำลังจะมาถึงในอีก 10 นาที</div>
+            <div>กับ</div>
+            <div className="font-semibold text-mdd-yellow600">
+              {appointmentNotification.otherName}
             </div>
-          </>
-        ) : appointmentNotification.appointmentNotificationType === "COMPLETE" ? (
-          <>
-            <div className="flex gap-1">
-              <div>การนัดหมายดูดวง</div>
-              <div className="font-semibold text-mdd-yellow600">
-                {translateSpeciality(appointmentNotification.speciality)}
-              </div>
-              <div>กับ</div>
-              <div className="font-semibold text-mdd-yellow600">
-                {appointmentNotification.otherName}
-              </div>
-              <div>สิ้นสุดแล้ว</div>
+          </div>
+          <div className="flex gap-1">
+            <div>กำลังจะมาถึงในอีก 10 นาที</div>
+          </div>
+        </>
+      ) : appointmentNotification.appointmentNotificationType === "COMPLETE" ? (
+        <>
+          <div className="flex gap-1">
+            <div>การนัดหมายดูดวง</div>
+            <div className="font-semibold text-mdd-yellow600">
+              {translateSpeciality(appointmentNotification.speciality)}
             </div>
-            <div className="flex self-end gap-4">
-              <button
-                onClick={showReport}
-                className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-36"
-              >
-                รายงานปัญหาระบบ
-              </button>
+            <div>กับ</div>
+            <div className="font-semibold text-mdd-yellow600">
+              {appointmentNotification.otherName}
             </div>
-            <ReportModal
-              isShowReport={isShowReport}
-              setIsShowReport={setIsShowReport}
-              isCustomer={appointmentNotification.isCustomer}
-              userId={userId}
-              conversationId={appointmentNotification.conversationId}
-              isSystemReport={true}
-            />
-          </>
-        ) : (
-          <>
-            <div className="flex gap-1">
-              <div className="font-semibold text-mdd-yellow600">
-                {appointmentNotification.otherName}
-              </div>
-              <div>
-                {translateAppointmentNotificationType(
-                  appointmentNotification.appointmentNotificationType
-                )}
-              </div>
-              <div className="font-semibold text-mdd-yellow600">
-                {translateSpeciality(appointmentNotification.speciality)}
-              </div>
-              <div>กับคุณ</div>
+            <div>สิ้นสุดแล้ว</div>
+          </div>
+          <div className="flex self-end gap-4">
+            <button
+              onClick={showReport}
+              className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-36"
+            >
+              รายงานปัญหาระบบ
+            </button>
+          </div>
+          <ReportModal
+            isShowReport={isShowReport}
+            setIsShowReport={setIsShowReport}
+            isCustomer={appointmentNotification.isCustomer}
+            userId={userId}
+            conversationId={appointmentNotification.conversationId}
+            isSystemReport={true}
+          />
+        </>
+      ) : (
+        <>
+          <div className="flex gap-1">
+            <div className="font-semibold text-mdd-yellow600">
+              {appointmentNotification.otherName}
             </div>
-            <div className="flex gap-1">
-              <div>ในวันที่</div>
-              <div className="text-mdd-yellow600">
-                {showDate(appointmentNotification.appointmentDate)}
-              </div>
-              <div>เวลา</div>
-              <div className="text-mdd-yellow600">
-                {showTime(appointmentNotification.appointmentDate, 0)} {" - "}
-                {showTime(
-                  appointmentNotification.appointmentDate,
-                  appointmentNotification.duration
-                )}
-              </div>
-              <div>น.</div>
-            </div>
-            {appointmentNotification.appointmentNotificationType === "CANCEL" &&
-              appointmentNotification.isCustomer && (
-                <div className="flex gap-1">
-                  <div>ระบบจะทำการคืนเงินให้ภายใน 7 วัน</div>
-                </div>
+            <div>
+              {translateAppointmentNotificationType(
+                appointmentNotification.appointmentNotificationType
               )}
-            {appointmentNotification.appointmentNotificationType === "NEW" && (
-              <div className="flex self-end gap-4">
-                <button className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
-                  ปฏิเสธ
-                </button>
-                <button className="rounded-[10px] border border-mdd-muted-green bg-mdd-muted-green text-white text-center p-1 w-28">
-                  ตอบรับนัดหมาย
-                </button>
+            </div>
+            <div className="font-semibold text-mdd-yellow600">
+              {translateSpeciality(appointmentNotification.speciality)}
+            </div>
+            <div>กับคุณ</div>
+          </div>
+          <div className="flex gap-1">
+            <div>ในวันที่</div>
+            <div className="text-mdd-yellow600">
+              {showDate(appointmentNotification.appointmentDate)}
+            </div>
+            <div>เวลา</div>
+            <div className="text-mdd-yellow600">
+              {showTime(appointmentNotification.appointmentDate, 0)} {" - "}
+              {showTime(appointmentNotification.appointmentDate, appointmentNotification.duration)}
+            </div>
+            <div>น.</div>
+          </div>
+          {appointmentNotification.appointmentNotificationType === "CANCEL" &&
+            appointmentNotification.isCustomer && (
+              <div className="flex gap-1">
+                <div>ระบบจะทำการคืนเงินให้ภายใน 7 วัน</div>
               </div>
             )}
-          </>
-        )}
-        <div className="flex self-end gap-1 text-gray-500 text-sm">
-          <div>วันที่</div>
-          <div>{showDate(appointmentNotification.updatedAt)}</div>
-          <div>เวลา</div>
-          <div>{showTime(appointmentNotification.updatedAt, 0)}</div>
-          <div>น.</div>
-        </div>
+          {appointmentNotification.appointmentNotificationType === "NEW" && (
+            <div className="flex self-end gap-4">
+              <button className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
+                ปฏิเสธ
+              </button>
+              <button className="rounded-[10px] border border-mdd-muted-green bg-mdd-muted-green text-white text-center p-1 w-28">
+                ตอบรับนัดหมาย
+              </button>
+            </div>
+          )}
+        </>
+      )}
+      <div className="flex self-end gap-1 text-gray-500 text-sm">
+        <div>วันที่</div>
+        <div>{showDate(appointmentNotification.updatedAt)}</div>
+        <div>เวลา</div>
+        <div>{showTime(appointmentNotification.updatedAt, 0)}</div>
+        <div>น.</div>
       </div>
-    )
+    </div>
+  )
 }
