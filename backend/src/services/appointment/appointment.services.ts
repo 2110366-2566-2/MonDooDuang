@@ -80,7 +80,7 @@ export const appointmentService = {
 
   createReminderNotification: async (userId: string, appointmentId: string) => {
     const notificationId = await notificationRepository.createNotification(userId, "APPOINTMENT")
-    if (notificationId) {
+    if (notificationId !== null) {
       await notificationRepository.createAppointmentNotification(
         notificationId,
         "REMINDER",
@@ -98,8 +98,8 @@ export const appointmentService = {
     const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
 
     if (appointmentStatus === "WAITING_FOR_EVENT") {
-      appointmentService.createReminderNotification(customerId, appointmentId)
-      appointmentService.createReminderNotification(fortuneTellerId, appointmentId)
+      await appointmentService.createReminderNotification(customerId, appointmentId)
+      await appointmentService.createReminderNotification(fortuneTellerId, appointmentId)
     }
   },
 

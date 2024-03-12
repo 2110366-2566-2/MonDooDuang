@@ -7,7 +7,7 @@ import {
 } from "../models/notification/notification.model"
 
 export const notificationRepository = {
-  createNotification: async (userId: string, type: NotificationType) => {
+  createNotification: async (userId: string, type: NotificationType): Promise<string> => {
     try {
       const result = await db.query(
         `
