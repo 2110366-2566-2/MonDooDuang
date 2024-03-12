@@ -3,78 +3,64 @@ import { S3ObjectSchema } from "../../models/infra/s3.model"
 import { s3Service } from "../../services/infra/s3.services"
 
 const uploadProfilePicture = async (req: Request, res: Response) => {
-  if (!req.file || !req.file.buffer) {
-    // Handle the case where there's no file uploaded
+  if (!req.file?.buffer) {
     console.log(req.file?.buffer)
     return res.status(400).json({ success: false, error: "No file uploaded" })
   }
   const s3Object: S3ObjectSchema = {
     userId: req.params.id,
-    image: req.file.buffer // Accessing the image buffer from req.file
+    image: req.file.buffer
   }
-  const data = await s3Service.uploadProfilePicture(s3Object)
 
-  res.status(200).json({ success: true, data })
+  await s3Service.uploadProfilePicture(s3Object)
+
+  res.status(200).json({ success: true })
 }
 
 const downloadProfilePicture = async (req: Request, res: Response) => {
-  const s3Object: S3ObjectSchema = {
-    userId: req.params.id,
-    image: req.body.image
+  const data = await s3Service.downloadProfilePicture(req.params.id)
+  if (data && data.ContentType !== undefined && data.ContentType !== null) {
+    res.set("Content-Type", data.ContentType)
+    res.status(200).send(data.Body)
+  } else {
+    res.status(404).json({ success: false, error: "File not found" })
   }
-
-  const data = await s3Service.downloadProfilePicture(s3Object)
-
-  res.status(200).json({ success: true, data })
 }
+
 const deleteProfilePicture = async (req: Request, res: Response) => {
-  const s3Object: S3ObjectSchema = {
-    userId: req.params.id,
-    image: req.body.image
-  }
-
-  const data = await s3Service.deleteProfilePicture(s3Object)
-
-  res.status(200).json({ success: true, data })
-}
-
-const updateProfilePicture = async (req: Request, res: Response) => {
-  const s3Object: S3ObjectSchema = {
-    userId: req.params.id,
-    image: req.body.image
-  }
-
-  const data = await s3Service.updateProfilePicture(s3Object)
-
-  res.status(200).json({ success: true, data })
+  await s3Service.deleteProfilePicture(req.params.id)
+  res.status(200).json({ success: true })
 }
 
 const uploadIdCard = async (req: Request, res: Response) => {
+  if (!req.file?.buffer) {
+    console.log(req.file?.buffer)
+    return res.status(400).json({ success: false, error: "No file uploaded" })
+  }
   const s3Object: S3ObjectSchema = {
     userId: req.params.id,
-    image: req.body.image
+    image: req.file.buffer
   }
 
-  const data = await s3Service.uploadIdCard(s3Object)
+  await s3Service.uploadIdCard(s3Object)
 
-  res.status(200).json({ success: true, data })
+  res.status(200).json({ success: true })
 }
 
 const downloadIdCard = async (req: Request, res: Response) => {
-  const s3Object: S3ObjectSchema = {
-    userId: req.params.id,
-    image: req.body.image
+  const data = await s3Service.downloadIdCard(req.params.id)
+  if (data && data.ContentType !== undefined && data.ContentType !== null) {
+    res.set("Content-Type", data.ContentType)
+    res.status(200).send(data.Body)
+  } else {
+    res.status(404).json({ success: false, error: "File not found" })
   }
-  const data = await s3Service.uploadIdCard(s3Object)
-
-  res.status(200).json({ success: true, data })
 }
 
 export const s3Controller = {
   uploadProfilePicture,
   downloadProfilePicture,
   deleteProfilePicture,
-  updateProfilePicture,
   uploadIdCard,
   downloadIdCard
 }

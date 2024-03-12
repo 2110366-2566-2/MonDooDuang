@@ -9,7 +9,6 @@ const upload = multer({
 
 router.get("/profile-picture/:id", s3Controller.downloadProfilePicture)
 router.post("/profile-picture/:id", upload.single("image"), s3Controller.uploadProfilePicture)
-router.put("/profile-picture/:id", upload.single("image"), s3Controller.updateProfilePicture)
 router.delete("/profile-picture/:id", s3Controller.deleteProfilePicture)
 
 router.get("/id-card/:id", s3Controller.downloadIdCard)
