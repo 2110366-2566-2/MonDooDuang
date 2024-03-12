@@ -14,12 +14,10 @@ import logger from "morgan"
 import userRouter from "./routes/user.routes"
 import adminRouter from "./routes/admin.routes"
 import cookieParser from "cookie-parser"
-
-// For env File
-dotenv.config()
+import { environment } from "./configs/environment"
 
 const app: Application = express()
-const port = process.env.PORT ?? 8000
+const port = environment.server.port
 const server = connectToSocket(app)
 
 app.use(
