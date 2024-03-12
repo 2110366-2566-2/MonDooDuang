@@ -95,7 +95,8 @@ export const conversationService = {
       const { otherId }: { otherId: string } = await conversationRepository.getOtherId(room, senderId)
       const unreadMessages = await conversationService.getUnreadMessagesByConversationId(room, otherId)
       if (unreadMessages.count === "1") {
-        const { notificationId }: { notificationId: string } = await notificationRepository.createNotification(otherId, "CHAT")
+        const notificationId = await notificationRepository.createNotification(otherId, "CHAT")
+        if (notificationId === null) return
         await notificationRepository.createChatNotification(notificationId, room)
       }
     })

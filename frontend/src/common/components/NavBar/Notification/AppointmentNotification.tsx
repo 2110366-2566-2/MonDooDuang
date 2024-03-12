@@ -167,7 +167,7 @@ export default function AppointmentNotification({
       )}
       <div className="flex self-end gap-1 text-gray-500 text-sm">
         <div>วันที่</div>
-        <div>{showDate(appointmentNotification.updatedAt)}</div>
+        <div>{showFullDate(appointmentNotification.updatedAt)}</div>
         <div>เวลา</div>
         <div>{showTime(appointmentNotification.updatedAt, 0)}</div>
         <div>น.</div>
