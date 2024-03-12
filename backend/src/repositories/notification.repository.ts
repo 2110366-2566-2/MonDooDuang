@@ -47,7 +47,6 @@ export const notificationRepository = {
         `,
         [userId, "HIDDEN"]
       )
-
       const packages: NotificationSchema[] = result.rows.map((row) => ({
         notificationId: row.notification_id,
         userId: row.user_id,
@@ -111,6 +110,34 @@ export const notificationRepository = {
         isCustomer,
         conversationId: result.rows[0].conversation_id
       }
+    } catch (err) {
+      return null
+    }
+  },
+  getChatNotification: async (notificationId: string, userId: string) => {
+    try {
+      const result = await db.query(
+        `
+            WITH conversationId AS (
+              SELECT conversation_id
+              FROM CHAT_NOTIFICATION
+              WHERE notification_id = $1
+          ), otherId AS (
+              SELECT
+                  CASE
+                      WHEN $2 = customer_id THEN fortune_teller_id
+                      WHEN $2 = fortune_teller_id THEN customer_id
+                  END AS other_id
+              FROM conversation
+          ), otherName AS (
+            SELECT CONCAT(fname,' ',lname) AS full_name
+            FROM USER_TABLE
+            WHERE user_id = (SELECT other_id FROM otherId WHERE other_id IS NOT NULL)
+          )
+          SELECT * FROM otherName
+        `, [notificationId, userId]
+      )
+      return result.rows[0].full_name
     } catch (err) {
       return null
     }
