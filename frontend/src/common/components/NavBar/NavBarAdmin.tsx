@@ -3,21 +3,25 @@ import { LocalStorageUtils } from "../../utils/LocalStorageUtils"
 import LogoIcon from "./LogoIcon"
 import LogoutIcon from "./LogoutIcon"
 
-type MenuFocus =  "adminApproval" | "reportManagement" | "none"
+type MenuFocus = "adminApproval" | "reportManagement" | "none"
 
 export default function NavBarAdmin({
   menuFocus,
-  username,
+  username
 }: {
   menuFocus: MenuFocus
-  username:string
+  username: string
 }) {
   const navigate = useNavigate()
 
   const role = "ผู้ดูแลระบบ"
   const menuList: { name: string; focus: MenuFocus; href: string }[] = [
     { name: "จัดการคำร้องผู้ใช้", focus: "reportManagement", href: "/admin/report_management" },
-    { name: "คำร้องขออนุญาตเป็นหมอดู", focus: "adminApproval", href: "/admin/fortuneteller_approvals" }
+    {
+      name: "คำร้องขออนุญาตเป็นหมอดู",
+      focus: "adminApproval",
+      href: "/admin/fortuneteller_approvals"
+    }
   ]
 
   const handleLogout = () => {
