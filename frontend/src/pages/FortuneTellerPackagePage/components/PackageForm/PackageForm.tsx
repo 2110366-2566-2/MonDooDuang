@@ -196,6 +196,7 @@ export default function EditForm(props: {
               <textarea
                 value={isEdit ? description : undefined}
                 className="bg-white bg-opacity-[.54] placeholder-white rounded-lg pl-11 w-full min-h-28 text-xl leading-normal py-3.5 pr-2.5"
+                maxLength={200}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
