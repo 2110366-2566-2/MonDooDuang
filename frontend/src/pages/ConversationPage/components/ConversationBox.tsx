@@ -12,11 +12,13 @@ const socket = io(environment.backend.url)
 export default function ConversationBox({
   conversationId,
   showReport,
-  userId
+  userId,
+  userType
 }: {
   conversationId: string | null
   showReport: () => void
   userId: string
+  userType: string
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
@@ -79,7 +81,7 @@ export default function ConversationBox({
         name={name}
         showReport={showReport}
         conversationId={conversationId}
-        userId={userId}
+        userType={userType}
       />
       <MessageList messages={messages} />
       <div className="mt-auto">
