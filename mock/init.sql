@@ -88,7 +88,7 @@ CREATE TABLE MESSAGE(
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'SUSPENDED', 'REFUNDED', 'NO_PAYMENT_CANCELED', 'USER_CANCELED', 'NO_FRAUD_DETECTED');
+CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'SUSPENDED', 'REFUNDED', 'NO_PAYMENT_CANCELED', 'FORTUNE_TELLER_CANCELED', 'CUSTOMER_CANCELED', 'NO_FRAUD_DETECTED', 'FORTUNE_TELLER_DECLINED');
 
 CREATE TABLE APPOINTMENT (
     appointment_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -136,8 +136,8 @@ CREATE TABLE PAYMENT(
 
 CREATE TYPE report_type_enum AS ENUM ('INAPPROPRIATE_BEHAVIOR','MONEY_SUSPENSION','SYSTEM_ERROR');
 CREATE TYPE report_status_enum AS ENUM ('PENDING','COMPLETED');
-CREATE TYPE notification_type_enum AS ENUM ('VERIFICATION', 'CANCELED_VERIFICATION', 'CHAT', 'APPOINTMENT');
-CREATE TYPE appointment_notification_type_enum AS ENUM ('REMINDER', 'COMPLETE', 'CANCEL', 'NEW', 'ACCEPT');
+CREATE TYPE notification_type_enum AS ENUM ('VERIFICATION', 'CANCELED_VERIFICATION', 'CHAT', 'APPOINTMENT', 'HIDDEN');
+CREATE TYPE appointment_notification_type_enum AS ENUM ('REMINDER', 'COMPLETE', 'CANCEL', 'NEW', 'ACCEPT', 'DENY');
 CREATE TABLE REPORT (
     report_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
     description VARCHAR(200) NOT NULL,
@@ -251,6 +251,146 @@ FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER chat_notification_updated_at
 BEFORE UPDATE ON CHAT_NOTIFICATION
 FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE OR REPLACE FUNCTION notify_new_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.fortune_teller_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'NEW', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_accept_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'ACCEPT', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_deny_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'DENY', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_fortune_teller_cancel_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'CANCEL', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_customer_cancel_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.fortune_teller_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'CANCEL', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_complete_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'COMPLETE', NEW.appointment_id);
+
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.fortune_teller_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'COMPLETE', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER new_appointment_notification
+AFTER INSERT ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'CREATED')
+EXECUTE FUNCTION notify_new_appointment();
+
+CREATE OR REPLACE TRIGGER accept_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'WAITING_FOR_PAYMENT')
+EXECUTE FUNCTION notify_accept_appointment();
+
+CREATE OR REPLACE TRIGGER deny_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'FORTUNE_TELLER_DECLINED')
+EXECUTE FUNCTION notify_deny_appointment();
+
+CREATE OR REPLACE TRIGGER fortune_teller_cancel_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'FORTUNE_TELLER_CANCELED')
+EXECUTE FUNCTION notify_fortune_teller_cancel_appointment();
+
+CREATE OR REPLACE TRIGGER customer_appointment_cancel_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'CUSTOMER_CANCELED')
+EXECUTE FUNCTION notify_customer_cancel_appointment();
+
+CREATE OR REPLACE TRIGGER complete_appointment_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'EVENT_COMPLETED')
+EXECUTE FUNCTION notify_complete_appointment();
 
 -- ADMIN
 INSERT INTO ADMIN (admin_id, email, password)

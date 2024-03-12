@@ -14,6 +14,7 @@ export default function ConversationList({
 }) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
+  const [unreadMessage, setUnreadMessage] = useState(0)
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
       if (conversationId && userId) {
@@ -25,7 +26,17 @@ export default function ConversationList({
         setLastMessage(lastMessage)
       }
     }
+    const fetchUnreadMessage = async () => {
+      if (conversationId && userId) {
+        const unreadMessage = await ConversationService.getUnreadMessagesConversationId(
+          conversationId,
+          userId
+        )
+        setUnreadMessage(unreadMessage.count)
+      }
+    }
     fetchNameWithLastMessage()
+    fetchUnreadMessage()
   }, [conversationId, isSelected])
 
   const truncatedLastMessage =
@@ -34,7 +45,7 @@ export default function ConversationList({
   return (
     <div
       className={`flex flex-row items-center h-[79px] w-[339px] rounded-md mt-[10px] cursor-pointer ${
-        isSelected ? "bg-white bg-opacity-85" : "bg-gray-300 bg-opacity-51"
+        isSelected ? "bg-white bg-opacity-85" : "bg-white bg-opacity-45"
       }`}
       onClick={onSelect}
     >
@@ -47,6 +58,11 @@ export default function ConversationList({
         <p className="text-xl font-semibold">{name}</p>
         <p className="text-sm">{truncatedLastMessage}</p>
       </div>
+      {unreadMessage > 0 && !isSelected && (
+        <div className="flex items-center justify-center h-8 w-8 rounded-full bg-yellow-300 ml-auto mr-4">
+          <p className="text-s text-black">{unreadMessage}</p>
+        </div>
+      )}
     </div>
   )
 }

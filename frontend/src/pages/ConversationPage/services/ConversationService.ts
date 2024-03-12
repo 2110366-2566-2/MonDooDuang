@@ -1,8 +1,8 @@
 import { environment } from "../../../common/constants/environment"
 
 export const ConversationService = {
-  getConversationsByUserId: async (userId: string) => {
-    const response = await fetch(`${environment.backend.url}/conversations/${userId}`)
+  getConversationsByUserId: async (userId: string, role: string) => {
+    const response = await fetch(`${environment.backend.url}/conversations/${userId}/${role}`)
     return await response.json()
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
@@ -20,6 +20,12 @@ export const ConversationService = {
   getNameByConversationId: async (conversationId: string, userId: string) => {
     const response = await fetch(
       `${environment.backend.url}/conversations/name/${conversationId}/${userId}`
+    )
+    return await response.json()
+  },
+  getUnreadMessagesConversationId: async (conversationId: string, userId: string) => {
+    const response = await fetch(
+      `${environment.backend.url}/conversations/unread-messages/${conversationId}/${userId}`
     )
     return await response.json()
   }

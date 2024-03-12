@@ -3,7 +3,8 @@ import { conversationService } from "../../services/conversation/conversation.se
 
 const getConversationsByUserId = async (req: Request, res: Response) => {
   const userId = req.params.userId
-  const conversations = await conversationService.getConversationsByUserId(userId)
+  const role: "CUSTOMER" | "FORTUNE_TELLER" = req.params.role as "CUSTOMER" | "FORTUNE_TELLER"
+  const conversations = await conversationService.getConversationsByUserId(userId, role)
   res.status(200).send(conversations)
 }
 
@@ -39,10 +40,18 @@ const createConversation = async (req: Request, res: Response) => {
   }
 }
 
+const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversationId = req.params.conversationId
+  const data = await conversationService.getUnreadMessagesByConversationId(conversationId, userId)
+  res.status(200).send(data)
+}
+
 export const conversationController = {
   getConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,
   getNameByConversationId,
-  createConversation
+  createConversation,
+  getUnreadMessagesConversationId
 }

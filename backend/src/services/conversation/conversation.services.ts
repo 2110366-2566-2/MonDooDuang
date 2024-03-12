@@ -9,8 +9,8 @@ export interface MessageType {
 }
 
 export const conversationService = {
-  getConversationsByUserId: async (userId: string) => {
-    const data = await conversationRepository.getConversationsByUserId(userId)
+  getConversationsByUserId: async (userId: string, role: "CUSTOMER" | "FORTUNE_TELLER") => {
+    const data = await conversationRepository.getConversationsByUserId(userId, role)
     if (data === null) {
       return []
     }
@@ -65,6 +65,7 @@ export const conversationService = {
 
       prevTimeSent = currentTimeSent
     })
+    await conversationService.readMessage(conversationId, userId)
 
     return formattedMessages
   },
@@ -109,5 +110,21 @@ export const conversationService = {
       date1.getMonth() === date2.getMonth() &&
       date1.getDate() === date2.getDate()
     )
+  },
+  readMessage: async (conversationId: string, userId: string) => {
+    const isSuccess = await conversationRepository.readMessage(conversationId, userId)
+    if (!isSuccess) {
+      console.error("Error sending message")
+    }
+  },
+  getUnreadMessagesByConversationId: async (conversationId: string, userId: string) => {
+    const data = await conversationRepository.getUnreadMessagesByConversationId(
+      conversationId,
+      userId
+    )
+    if (data === null) {
+      return { count: 0 }
+    }
+    return { count: data }
   }
 }

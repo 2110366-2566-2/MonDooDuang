@@ -12,11 +12,13 @@ const socket = io(environment.backend.url)
 export default function ConversationBox({
   conversationId,
   showReport,
-  userId
+  userId,
+  userType
 }: {
   conversationId: string | null
   showReport: () => void
   userId: string
+  userType: string
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
@@ -25,10 +27,7 @@ export default function ConversationBox({
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const messages = await ConversationService.getMessagesByConversationId(
-        conversationId,
-        userId
-      )
+      const messages = await ConversationService.getMessagesByConversationId(conversationId, userId)
       setMessages(messages)
     }
     const fetchName = async () => {
@@ -78,7 +77,12 @@ export default function ConversationBox({
 
   return (
     <div className="relative flex flex-col h-screen">
-      <ConversationHeader name={name} showReport={showReport} />
+      <ConversationHeader
+        name={name}
+        showReport={showReport}
+        conversationId={conversationId}
+        userType={userType}
+      />
       <MessageList messages={messages} />
       <div className="mt-auto">
         <ConversationFooter
