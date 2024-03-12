@@ -36,3 +36,5 @@ frontend/.eslintrc-abandoned
 ### env
 frontend/.env
 backend/.env
+frontend/.env.local
+backend/.env.local

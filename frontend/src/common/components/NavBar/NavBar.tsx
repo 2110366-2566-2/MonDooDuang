@@ -10,11 +10,13 @@ type MenuFocus = "search" | "schedule" | "conversation" | "none"
 
 export default function NavBar({
   isFortuneTeller,
+  isFortuneTellerPage = false,
   menuFocus,
   username,
   userId
 }: {
   isFortuneTeller: boolean
+  isFortuneTellerPage?: boolean
   menuFocus: MenuFocus
   username: string
   userId: string
@@ -23,9 +25,9 @@ export default function NavBar({
 
   const role = isFortuneTeller ? "หมอดู/ผู้ใช้บริการ" : "ผู้ใช้บริการ"
   const menuList: { name: string; focus: MenuFocus; href: string }[] = [
-    { name: "ค้นหาหมอดู", focus: "search", href: "" },
+    { name: "ค้นหาหมอดู", focus: "search", href: "/search" },
     { name: "เช็คตารางเวลา", focus: "schedule", href: "" },
-    { name: "ประวัติการสนทนา", focus: "conversation", href: "" }
+    { name: "ประวัติการสนทนา", focus: "conversation", href: "/conversation" }
   ]
 
   const handleNotification = () => {
@@ -40,7 +42,13 @@ export default function NavBar({
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
   return (
-    <div className="flex justify-between py-3 px-6 items-center">
+    <div
+      className={`flex justify-between py-3 px-6 items-center ${
+        isFortuneTellerPage
+          ? "bg-gradient-to-b from-[#4C122F] from-10% to-[#481248a0] to-90%" // [radial-gradient(ellipse_at_center, rgba(76, 18, 71, 1) 50%, rgba(72, 18, 72, 0) 100%)]"
+          : ""
+      }`}
+    >
       <div className="flex gap-6 items-center text-white font-noto-sans font-light">
         <LogoIcon />
         {menuList.map((menu, index) => (

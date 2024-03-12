@@ -32,8 +32,6 @@ export const notificationRepository = {
         [userId, "HIDDEN"]
       )
 
-      if (result.rows.length === 0) return null
-
       const packages: NotificationSchema[] = result.rows.map((row) => ({
         notificationId: row.notification_id,
         userId: row.user_id,
@@ -61,8 +59,6 @@ export const notificationRepository = {
         `,
         [notificationId]
       )
-
-      if (result.rows.length === 0) return null
 
       let otherName = ""
       let isCustomer = true
