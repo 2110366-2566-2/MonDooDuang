@@ -11,7 +11,7 @@ interface SpecialitiesName {
 }
 
 export const specialitiesName: SpecialitiesName = {
-  [Specialities.tarot]: "ไพ่ทาโร่",
+  [Specialities.tarot]: "ไพ่ทาโรต์",
   [Specialities.oracle]: "ไพ่ออราเคิล",
   [Specialities.thai]: "โหราศาสตร์ไทย",
   [Specialities.number]: "ศาสตร์ตัวเลข",

@@ -5,7 +5,7 @@ import { PackageTypes, Speciality } from "../../types/PackageTypes"
 import { environment } from "../../../../common/constants/environment"
 
 export const specialityMapper: Record<Speciality, string> = {
-  TAROT_CARD: "ไพ่ทาโร่",
+  TAROT_CARD: "ไพ่ทาโรต์",
   THAI: "โหราศาสตร์ไทย",
   NUMBER: "ศราตร์ตัวเลข",
   ORACLE: "ไพ่ออราเคิล",
@@ -45,7 +45,7 @@ export default function PackageList({ packageItem }: { packageItem: PackageTypes
           <div>รายละเอียด : {packageItem.description}</div>
         </div>
       </div>
-      <AppointmentButton makeAppointment={makeAppointment} ></AppointmentButton>
+      <AppointmentButton makeAppointment={makeAppointment}></AppointmentButton>
     </tr>
   )
 }
