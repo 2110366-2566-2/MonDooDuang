@@ -3,9 +3,14 @@ import { S3ObjectSchema } from "../../models/infra/s3.model"
 import { s3Service } from "../../services/infra/s3.services"
 
 const uploadProfilePicture = async (req: Request, res: Response) => {
+  if (!req.file || !req.file.buffer) {
+    // Handle the case where there's no file uploaded
+    console.log(req.file?.buffer)
+    return res.status(400).json({ success: false, error: "No file uploaded" })
+  }
   const s3Object: S3ObjectSchema = {
     userId: req.params.id,
-    image: req.body.image
+    image: req.file.buffer // Accessing the image buffer from req.file
   }
   const data = await s3Service.uploadProfilePicture(s3Object)
 

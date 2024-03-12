@@ -19,17 +19,13 @@ const s3Client = new S3({
 
 export const s3Service = {
   uploadProfilePicture: async (s3Object: S3ObjectSchema) => {
-    const file = fs.createReadStream(s3Object.image)
-
     const uploadParams = {
       Bucket: bucketName,
-      Body: file,
+      Body: s3Object.image,
       Key: `${s3Object.userId}/profilePicture`,
       ACL: "public-read"
     }
-    const result = await s3Client.putObject(uploadParams).promise()
-    const data = await s3Repository.uploadProfilePicture(s3Object)
-    return data
+    s3Client.upload(uploadParams)
   },
 
   downloadProfilePicture: async (s3Object: S3ObjectSchema) => {
