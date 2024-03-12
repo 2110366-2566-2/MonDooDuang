@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { AppointmentSchema } from "../../models/appointment/appointment.model"
 import { appointmentService } from "../../services/appointment/appointment.services"
+import { TypedRequestBody } from "../../types/request"
 
 const createAppointment = async (req: Request, res: Response) => {
   // Map request to schema
@@ -57,11 +58,25 @@ const getUserInfo = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: userInfo })
 }
 
+const getAppointmentByConversationId = async (req: Request, res: Response) => {
+  const appointments = await appointmentService.getAppointmentByConversationId(req.params.conversationId)
+  return res.status(200).json({ success: true, data: appointments })
+}
+
+const updateAppointmentStatus = async (req: TypedRequestBody<{ status: string, appointmentId: string }>, res: Response) => {
+  const { status, appointmentId } = req.body
+  const isSuccess = await appointmentService.updateAppointmentStatus(appointmentId, status)
+  if (!isSuccess) return res.status(400).json({ success: false, message: "Failed to update appointment status" })
+  res.status(200).json({ success: isSuccess, message: "Appointment status updated" })
+}
+
 export const appointmentController = {
   createAppointment,
   getFortuneTeller,
   getAllFortuneTeller,
   getPackages,
   getFortuneTellerAppointment,
-  getUserInfo
+  getUserInfo,
+  getAppointmentByConversationId,
+  updateAppointmentStatus
 }

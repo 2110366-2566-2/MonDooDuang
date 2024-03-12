@@ -1,0 +1,29 @@
+import { environment } from "../../../common/constants/environment"
+import { AppointmentStatusType } from "../../../common/types/Appointment"
+
+export const AppointmentService = {
+  getAppointmentsByConversationId: async (conversationId: string | null) => {
+    const response = await fetch(`${environment.backend.url}/appointment/find-appointment-by-conversationId/${conversationId}`)
+    const result = await response.json()
+    return result.data
+  },
+
+  updateAppointmentStatus: async (
+    status: AppointmentStatusType,
+    appointmentId: string
+  ) => {
+    const res = await fetch(`${environment.backend.url}/appointment/update-appointment-status`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        status,
+        appointmentId
+      })
+    })
+    const data = await res.json()
+    return { isSuccess: data.success, message: data.message }
+  },
+ 
+}

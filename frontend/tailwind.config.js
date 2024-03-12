@@ -12,6 +12,7 @@ export default {
         "mdd-muted-yellow-hover": "#C89456",
         "mdd-sand-yellow": "#E9AC12",
         "mdd-sand-yellow-hover": "#CC9403",
+        "mdd-yellow600": "#DD9F00",
         "mdd-grey": "#757575",
         "mdd-overlay-grey": "#424242",
         "mdd-silver-grey": "#E8E8E8",
@@ -24,7 +25,7 @@ export default {
         "mdd-gray-boxbg": "#D9D9D9",
         "mdd-gray-success-text": "#838383",
         "mdd-red-success-text": "#FF5656",
-        "mdd-login-frame": "rgba(191, 191, 191, 0.28)",
+        "mdd-login-frame": "rgba(191, 191, 191, 0.28)"
       },
       fontFamily: {
         sans: ["Prompt", "sans-serif"],
