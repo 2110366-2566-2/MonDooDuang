@@ -1,4 +1,4 @@
-import { Speciality } from "../package/package.model"
+import { Speciality } from "../../pages/FortuneTellerDetailPage/types/PackageTypes"
 
 export type NotificationType =
   | "VERIFICATION"
@@ -15,14 +15,14 @@ export type AppointmentNotificationType =
   | "REMINDER"
   | "COMPLETE"
 
-export interface NotificationSchema {
+export interface NotificationTypes {
   notificationId: string
   userId: string
   notificationType: NotificationType
   updatedAt: Date
 }
 
-export interface AppointmentNotificationSchema {
+export interface AppointmentNotificationTypes {
   appointmentNotificationType: AppointmentNotificationType
   updatedAt: Date
   otherName: string

@@ -3,7 +3,8 @@ import { conversationService } from "../../services/conversation/conversation.se
 
 const getConversationsByUserId = async (req: Request, res: Response) => {
   const userId = req.params.userId
-  const conversations = await conversationService.getConversationsByUserId(userId)
+  const role: "CUSTOMER" | "FORTUNE_TELLER" = req.params.role as "CUSTOMER" | "FORTUNE_TELLER"
+  const conversations = await conversationService.getConversationsByUserId(userId, role)
   res.status(200).send(conversations)
 }
 
