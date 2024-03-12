@@ -17,7 +17,7 @@ interface FortuneTellerProps {
   minPrice: number
   maxPrice: number
   image: string | null
-  speciality: string[]
+  speciality: string
   chat: () => void
   moreInformation: () => void
   makeAppointment: () => void
@@ -73,7 +73,7 @@ export default function FortuneTellerSerachModal({
         </div>
         <div className="mx-auto pt-1 w-1/2 flex text-center justify-items-center justify-center translate-y-[1.1rem]">
           <h1 className="absolute text-lg font-sans font-light tracking-wide text-[#3D164B] overflow-hidden">
-            {speciality[0]}
+            {speciality}
           </h1>
         </div>
         <img
