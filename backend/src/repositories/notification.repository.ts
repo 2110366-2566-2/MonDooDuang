@@ -119,7 +119,7 @@ export const notificationRepository = {
       const result = await db.query(
         `
             WITH conversationId AS (
-              SELECT conversation_id
+              SELECT conversation_id, updated_at
               FROM CHAT_NOTIFICATION
               WHERE notification_id = $1
           ), otherId AS (
@@ -134,10 +134,11 @@ export const notificationRepository = {
             FROM USER_TABLE
             WHERE user_id = (SELECT other_id FROM otherId WHERE other_id IS NOT NULL)
           )
-          SELECT * FROM otherName
+          SELECT otherName.full_name, conversationId.updated_at
+          FROM otherName, conversationId;
         `, [notificationId, userId]
       )
-      return result.rows[0].full_name
+      return { otherName: result.rows[0].full_name, updatedAt: result.rows[0].updated_at }
     } catch (err) {
       return null
     }
