@@ -14,15 +14,18 @@ import { formatDateTime } from "../../../common/utils/FormatUtils"
 import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
 import dayjs from "dayjs"
 import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
+import WandIcon from "../../../common/components/AppointmentCard/Icon/WandIcon"
 
 export default function ConversationHeader({
   name,
   showReport,
-  conversationId
+  conversationId,
+  userId
 }: {
   name: string
   showReport: () => void
   conversationId: string | null
+  userId: string
 }) {
   const navigate = useNavigate()
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
@@ -129,6 +132,36 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getEventInProgressInfo = (appointmentId: string, isCustomer: boolean) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังดูดวง</h1>
+        <p className="text-mdd-gray-success-text">
+          {isCustomer
+            ? "กด 99 เพื่อน้อมรับคำทำนาย"
+            : "กดจบงานเพื่อยืนยันว่าการดูดวงของคุณเสร็จสิ้นแล้ว"}
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = isCustomer ? (
+      <></>
+    ) : (
+      <button
+        className="h-[37px] rounded-[10px] px-8 text-white bg-mdd-muted-green mx-5"
+        onClick={() => {
+          if (confirm("โปรกดตกลง เพื่อยืนยันการจบงาน") == true) {
+            AppointmentService.updateAppointmentStatus("EVENT_COMPLETED", appointmentId)
+            window.location.reload()
+          }
+        }}
+      >
+        จบงาน
+      </button>
+    )
+    return { content, moreContent, button }
+  }
+
   return (
     <div className="flex flex-col bg-white bg-opacity-85">
       <div className="h-[60px] flex items-center justify-between p-4">
@@ -162,6 +195,7 @@ export default function ConversationHeader({
           dayjs(today).format("YYYY-MM-DD"),
           "day"
         )
+        const isCustomer = userId === appointment.customerId
 
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
@@ -182,7 +216,24 @@ export default function ConversationHeader({
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
-          if (waiting_day < 3) {
+          if (appointmentDateTime > today) {
+            const { content, moreContent, button } = getEventInProgressInfo(
+              appointment.appointmentId,
+              isCustomer
+            )
+            return (
+              <BaseAppointmentCard
+                icon={<WandIcon />}
+                content={content}
+                moreContent={moreContent}
+                button={button}
+                formattedDate={formattedDate}
+                startTime={startTime}
+                endTime={endTime}
+                speciality={specialityMapper[appointment.speciality]}
+              />
+            )
+          } else if (waiting_day < 3) {
             const { content, moreContent, button } = getUpComingEventInfo(
               startTime,
               endTime,
