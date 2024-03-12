@@ -8,16 +8,32 @@ import {
 export const notificationRepository = {
   createNotification: async (userId: string, type: NotificationType) => {
     try {
-      await db.query(
+      const result = await db.query(
         `
-            INSERT INTO NOTIFICATION (user_id, type)
-            VALUES($1, $2);
+        INSERT INTO NOTIFICATION (user_id, type)
+        VALUES($1, $2)
+        RETURNING *;
         `,
         [userId, type]
       )
-      return true
+      return { isSuccess: true, notificationId: result.rows[0].notification_id }
     } catch (err) {
-      return false
+      console.log(err)
+      return { isSuccess: false, notificationId: "" }
+    }
+  },
+  createChatNotification: async (notificationId: string, conversationId: string) => {
+    try {
+      await db.query(
+        `
+          INSERT INTO CHAT_NOTIFICATION (notification_id, conversation_id)
+          VALUES($1, $2)
+          RETURNING *;
+        `, [notificationId, conversationId]
+      )
+      return { isSuccess: true }
+    } catch (err) {
+      return { isSuccess: false }
     }
   },
   getNotifications: async (userId: string): Promise<null | NotificationSchema[]> => {

@@ -1,5 +1,6 @@
 import { Socket } from "socket.io"
 import { conversationRepository } from "../../repositories/conversation.repository"
+import { notificationRepository } from "../../repositories/notification.repository"
 
 export interface MessageType {
   message: string
@@ -89,6 +90,13 @@ export const conversationService = {
       const isSuccess = await conversationRepository.addMessage(room, senderId, message.message)
       if (!isSuccess) {
         console.error("Error sending message")
+      }
+      // if only 1 unread message -> add to notification + chat notification
+      const { otherId }: { otherId: string } = await conversationRepository.getOtherId(room, senderId)
+      const unreadMessages = await conversationService.getUnreadMessagesByConversationId(room, otherId)
+      if (unreadMessages.count === "1") {
+        const { notificationId }: { notificationId: string } = await notificationRepository.createNotification(otherId, "CHAT")
+        await notificationRepository.createChatNotification(notificationId, room)
       }
     })
   },
