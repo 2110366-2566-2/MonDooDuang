@@ -1,15 +1,37 @@
 import { db } from "../configs/pgdbConnection"
-import { NotificationType } from "../models/notification/notification.model"
+import {
+  AppointmentNotificationType,
+  NotificationType
+} from "../models/notification/notification.model"
 
 export const notificationRepository = {
   createNotification: async (userId: string, type: NotificationType) => {
     try {
-      await db.query(
+      const result = await db.query(
         `
-            INSERT INTO NOTIFICATION (userid, type)
-            VALUES($1, $2);
+            INSERT INTO NOTIFICATION (user_id, type)
+            VALUES($1, $2)
+            RETURNING notification_id;
         `,
         [userId, type]
+      )
+      return result.rows[0].notification_id
+    } catch (err) {
+      return null
+    }
+  },
+  createAppointmentNotification: async (
+    notificationId: string,
+    type: AppointmentNotificationType,
+    appointmentId: string
+  ) => {
+    try {
+      await db.query(
+        `
+            INSERT INTO APPOINTMENT_NOTIFICATION (notification_id, type, appointment_id)
+            VALUES($1, $2, $3)
+        `,
+        [notificationId, type, appointmentId]
       )
       return true
     } catch (err) {
