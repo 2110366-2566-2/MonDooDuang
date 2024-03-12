@@ -12,6 +12,7 @@ import { connectToSocket } from "./configs/socketConnection"
 import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
 import userRouter from "./routes/user.routes"
+import adminRouter from "./routes/admin.routes"
 import cookieParser from "cookie-parser"
 
 // For env File
@@ -44,6 +45,7 @@ app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
+app.use("/admin", adminRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
