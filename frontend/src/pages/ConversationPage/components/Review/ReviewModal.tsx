@@ -4,6 +4,12 @@ import { styled } from "@mui/material/styles"
 import { SelectedStar, UnselectedStar } from "./StarIcon"
 import { ReviewService } from "../../services/ReviewService"
 
+const CustomRating = styled(Rating)({
+  "& .MuiRating-icon": {
+    margin: "0.25rem"
+  }
+})
+
 export default function ReviewModal(props: {
   isShowComplete: boolean
   setIsShowComplete: React.Dispatch<React.SetStateAction<boolean>>
@@ -15,12 +21,6 @@ export default function ReviewModal(props: {
   const closeCompleteModal = () => {
     props.setIsShowComplete(false)
   }
-
-  const CustomRating = styled(Rating)({
-    "& .MuiRating-icon": {
-      margin: "0.25rem"
-    }
-  })
 
   const [score, setScore] = useState(0)
   const [isScoreError, setIsScoreError] = useState(false)
