@@ -4,10 +4,7 @@ import { s3Controller } from "../controllers/infra/s3.controller"
 
 const router = express.Router()
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024 // limit file size to 5MB
-  }
+  storage: multer.memoryStorage()
 })
 
 router

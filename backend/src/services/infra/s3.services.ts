@@ -12,9 +12,9 @@ const accessKeyId = process.env.AWS_ACCESS_KEY
 const secretAccessKey = process.env.AWS_SECRET_KEY
 
 const s3Client = new S3({
-  region,
-  accessKeyId,
-  secretAccessKey
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
+  region: region
 })
 
 export const s3Service = {
@@ -22,10 +22,17 @@ export const s3Service = {
     const uploadParams = {
       Bucket: bucketName,
       Body: s3Object.image,
-      Key: `${s3Object.userId}/profilePicture`,
-      ACL: "public-read"
+      Key: `${s3Object.userId}/profilePicture.jpg`
     }
-    s3Client.upload(uploadParams)
+    console.log(uploadParams)
+    s3Client.upload(uploadParams, async (err: any, data: any) => {
+      if (err) {
+        console.log(err)
+      }
+      if (data) {
+        console.log(data)
+      }
+    })
   },
 
   downloadProfilePicture: async (s3Object: S3ObjectSchema) => {
