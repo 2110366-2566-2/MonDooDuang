@@ -7,15 +7,12 @@ const upload = multer({
   storage: multer.memoryStorage()
 })
 
-router
-  .route("/profile-picture/:id")
-  .post(upload.single("image"), s3Controller.uploadProfilePicture)
-  .get(s3Controller.downloadProfilePicture)
-  .put(upload.single("image"), s3Controller.updateProfilePicture)
-  .delete(upload.single("image"), s3Controller.deleteProfilePicture)
-router
-  .route("/id-card/:id")
-  .get(s3Controller.downloadIdCard, upload.single("image"))
-  .post(s3Controller.uploadIdCard, upload.single("image"))
+router.get("/profile-picture/:id", s3Controller.downloadProfilePicture)
+router.post("/profile-picture/:id", upload.single("image"), s3Controller.uploadProfilePicture)
+router.put("/profile-picture/:id", upload.single("image"), s3Controller.updateProfilePicture)
+router.delete("/profile-picture/:id", s3Controller.deleteProfilePicture)
+
+router.get("/id-card/:id", s3Controller.downloadIdCard)
+router.post("/id-card/:id", upload.single("image"), s3Controller.uploadIdCard)
 
 export default router
