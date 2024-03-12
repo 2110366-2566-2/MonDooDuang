@@ -83,15 +83,15 @@ export default function AppointmentNotification({
       appointmentNotification
         ? setAppointmentNotification(appointmentNotification)
         : setAppointmentNotification({
-            appointmentNotificationType: "NONE",
-            updatedAt: new Date(),
-            otherName: "",
-            appointmentDate: new Date(),
-            speciality: "RUNES",
-            duration: 0,
-            isCustomer: true,
-            conversationId: ""
-          })
+          appointmentNotificationType: "NONE",
+          updatedAt: new Date(),
+          otherName: "",
+          appointmentDate: new Date(),
+          speciality: "RUNES",
+          duration: 0,
+          isCustomer: true,
+          conversationId: ""
+        })
     }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
@@ -175,10 +175,10 @@ export default function AppointmentNotification({
           </div>
           {appointmentNotification.appointmentNotificationType === "CANCEL" &&
             appointmentNotification.isCustomer && (
-              <div className="flex gap-1">
-                <div>ระบบจะทำการคืนเงินให้ภายใน 7 วัน</div>
-              </div>
-            )}
+            <div className="flex gap-1">
+              <div>ระบบจะทำการคืนเงินให้ภายใน 7 วัน</div>
+            </div>
+          )}
           {appointmentNotification.appointmentNotificationType === "NEW" && (
             <div className="flex self-end gap-4">
               <button className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
