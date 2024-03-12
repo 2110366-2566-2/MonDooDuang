@@ -27,8 +27,9 @@ export const s3Service = {
       Key: `${s3Object.userId}/profilePicture`,
       ACL: "public-read"
     }
-
     const result = await s3Client.putObject(uploadParams).promise()
+    const data = await s3Repository.uploadProfilePicture(s3Object)
+    return data
   },
 
   downloadProfilePicture: async (s3Object: S3ObjectSchema) => {
