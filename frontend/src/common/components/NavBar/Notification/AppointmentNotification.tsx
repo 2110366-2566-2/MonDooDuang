@@ -14,7 +14,8 @@ const typeMapper: Record<AppointmentNotificationType, string> = {
   DENY: "ได้ปฏิเสธการนัดหมาย",
   CANCEL: "ได้ยกเลิกการนัดหมาย",
   REMINDER: "",
-  COMPLETE: ""
+  COMPLETE: "",
+  NONE: ""
 }
 
 export default function AppointmentNotification({
@@ -79,11 +80,23 @@ export default function AppointmentNotification({
         notificationId,
         userId
       )
-      setAppointmentNotification(appointmentNotification)
+      appointmentNotification
+        ? setAppointmentNotification(appointmentNotification)
+        : setAppointmentNotification({
+          appointmentNotificationType: "NONE",
+          updatedAt: new Date(),
+          otherName: "",
+          appointmentDate: new Date(),
+          speciality: "RUNES",
+          duration: 0,
+          isCustomer: true,
+          conversationId: ""
+        })
     }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
 
+  if (appointmentNotification.appointmentNotificationType === "NONE") return <></>
   return (
     <div className="flex flex-col gap-2">
       {appointmentNotification.appointmentNotificationType === "REMINDER" ? (

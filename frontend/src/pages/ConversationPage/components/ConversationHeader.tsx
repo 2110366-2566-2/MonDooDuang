@@ -14,16 +14,19 @@ import { formatDateTime } from "../../../common/utils/FormatUtils"
 import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
 import dayjs from "dayjs"
 import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
+import EventCompleteCard from "./EventCompleteCard"
 
 export default function ConversationHeader({
   name,
   showReport,
   conversationId,
+  systemReport,
   userType
 }: {
   name: string
   showReport: () => void
   conversationId: string | null
+  systemReport: (selectReportMode: boolean) => void
   userType: string
 }) {
   const navigate = useNavigate()
@@ -148,6 +151,7 @@ export default function ConversationHeader({
           <SearchIcon className="mr-2" />
           <ReportGmailerrorredIcon
             onClick={() => {
+              systemReport(false)
               showReport()
             }}
           />
@@ -247,6 +251,21 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "EVENT_COMPLETED") {
+          return (
+            <EventCompleteCard
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+              appointmentId={appointment.appointmentId}
+              fortuneTellerId={appointment.fortuneTellerId}
+              customerId={appointment.customerId}
+              isCustomer={userType === "CUSTOMER"}
+              showReport={showReport}
+              systemReport={systemReport}
             />
           )
         }
