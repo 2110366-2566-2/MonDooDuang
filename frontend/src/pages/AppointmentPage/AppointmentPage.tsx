@@ -50,6 +50,7 @@ export default function AppointmentPage({
         isFortuneTeller={userType === "FORTUNE_TELLER"}
         menuFocus={"search"}
         username={username}
+        userId={userId}
       />
       <div className="px-20 py-8">
         <PageNavigation />

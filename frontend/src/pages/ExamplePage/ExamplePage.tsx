@@ -13,6 +13,7 @@ export default function ExamplePage() {
         isFortuneTeller={userType === "FORTUNE_TELLER"}
         menuFocus={"search"}
         username={username}
+        userId={userId}
       />
       <button
         onClick={() => setIsExampleModalOpen(true)}

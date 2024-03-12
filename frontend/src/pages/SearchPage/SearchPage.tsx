@@ -9,7 +9,7 @@ import { ConversationService } from "./services/ConversationService"
 import { AuthContext } from "../../common/providers/AuthProvider"
 
 export default function SearchPage(): JSX.Element {
-  const { userId } = useContext(AuthContext)
+  const { userId, userType, username } = useContext(AuthContext)
   const defaultSearch: SearchFortuneTeller = {
     name: "",
     speciality: "",
@@ -34,14 +34,18 @@ export default function SearchPage(): JSX.Element {
       const fetchData = async () => {
         const data = await SearchService.searchFortuneteller(searchFortuneTeller)
         if (data && (data as FetchSearchData[]).length > 0) {
-          const transformedData = await Promise.all((data as FetchSearchData[]).map(transformFetchDataToSearchValue))
+          const transformedData = await Promise.all(
+            (data as FetchSearchData[]).map(transformFetchDataToSearchValue)
+          )
           setSearchValue(transformedData)
           setSearchFound(true)
         } else {
           console.log("No data found")
           setSearchFound(false)
           const allData = await SearchService.searchFortuneteller(defaultSearch)
-          const transformedAllData = await Promise.all((allData as FetchSearchData[]).map(transformFetchDataToSearchValue))
+          const transformedAllData = await Promise.all(
+            (allData as FetchSearchData[]).map(transformFetchDataToSearchValue)
+          )
           setSearchValue(transformedAllData)
         }
         setIsSubmit(false)
@@ -51,8 +55,9 @@ export default function SearchPage(): JSX.Element {
     }
   }, [isSubmit, initPage])
 
-  const transformFetchDataToSearchValue = async (fetchSearchData: FetchSearchData): Promise<SearchValue> => {
-    console.log(fetchSearchData.fortune_teller_id)
+  const transformFetchDataToSearchValue = async (
+    fetchSearchData: FetchSearchData
+  ): Promise<SearchValue> => {
     return {
       name: fetchSearchData.stage_name ?? fetchSearchData.fname,
       rating:
@@ -62,11 +67,12 @@ export default function SearchPage(): JSX.Element {
       minPrice: fetchSearchData.min_price,
       maxPrice: fetchSearchData.max_price,
       image: fetchSearchData.profile_picture,
-      speciality: fetchSearchData.speciality_list
-        .split(",")
-        .map((speciality) => specialitiesName[speciality as Specialities]),
+      speciality: specialitiesName[fetchSearchData.speciality as Specialities],
       chat: async () => {
-        const {conversationId} = await ConversationService.createConversation(userId,fetchSearchData.fortune_teller_id)
+        const { conversationId } = await ConversationService.createConversation(
+          userId,
+          fetchSearchData.fortune_teller_id
+        )
         window.location.href = `${environment.frontend.url}/conversation/${conversationId}`
       },
       moreInformation: () => {
@@ -80,18 +86,20 @@ export default function SearchPage(): JSX.Element {
           "/" +
           fetchSearchData.fortune_teller_id +
           "/" +
-          fetchSearchData.current_packageid.split(",")[0]
+          fetchSearchData.package_id_list[0]
       },
-      current_packageid: fetchSearchData.current_packageid.split(",")[0],
-      packageid_list: fetchSearchData.packageid_list.split(","),
-      current_speciality: fetchSearchData.current_speciality.split(",")[0],
-      speciality_list: fetchSearchData.speciality_list.split(","),
+      package_id_list: fetchSearchData.package_id_list.split(","),
       fortunetellerid: fetchSearchData.fortune_teller_id
     }
   }
   return (
     <div className="">
-      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
+      <NavBar
+        isFortuneTeller={userType === "FORTUNE_TELLER"}
+        menuFocus={"search"}
+        username={username}
+        userId={userId}
+      />
       <div className="sticky pt-5 z-10 top-0">
         <SearchBar
           searchFortuneTeller={searchFortuneTeller}

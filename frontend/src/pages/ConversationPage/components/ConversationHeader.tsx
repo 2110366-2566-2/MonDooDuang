@@ -18,11 +18,13 @@ import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
 export default function ConversationHeader({
   name,
   showReport,
-  conversationId
+  conversationId,
+  userType
 }: {
   name: string
   showReport: () => void
   conversationId: string | null
+  userType: string
 }) {
   const navigate = useNavigate()
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
@@ -76,8 +78,10 @@ export default function ConversationHeader({
       <button
         className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5"
         onClick={() => {
-          if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
-            AppointmentService.updateAppointmentStatus("USER_CANCELED", appointmentId)
+          if (confirm("โปรดกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
+            userType === "FORTUNE_TELLER"
+              ? AppointmentService.updateAppointmentStatus("FORTUNE_TELLER_CANCELED", appointmentId)
+              : AppointmentService.updateAppointmentStatus("CUSTOMER_CANCELED", appointmentId)
             window.location.reload()
           }
         }}
@@ -110,6 +114,18 @@ export default function ConversationHeader({
         <p className="text-mdd-gray-success-text">
           ขออภัยในความไม่สะดวก และหวังว่าเราจะได้พบกันในโอกาสหน้า
         </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getDeclinedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูปฏิเสธการนัดหมาย</p>
       </>
     )
     const moreContent = ""
@@ -150,7 +166,6 @@ export default function ConversationHeader({
           dayjs(today).format("YYYY-MM-DD"),
           "day"
         )
-        console.log("CHECK", appointment.status)
 
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
@@ -203,8 +218,25 @@ export default function ConversationHeader({
               speciality={specialityMapper[appointment.speciality]}
             />
           )
-        } else if (appointment.status === "USER_CANCELED") {
+        } else if (
+          appointment.status === "FORTUNE_TELLER_CANCELED" ||
+          appointment.status === "CUSTOMER_CANCELED"
+        ) {
           const { content, moreContent, button } = getCanceledEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
+          const { content, moreContent, button } = getDeclinedEventInfo()
           return (
             <BaseAppointmentCard
               icon={<ErrorIcon />}
