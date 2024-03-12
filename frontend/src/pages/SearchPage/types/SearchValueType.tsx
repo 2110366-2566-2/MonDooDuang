@@ -4,13 +4,10 @@ type SearchValue = {
     minPrice: number
     maxPrice: number
     image: string | null
-    speciality: string[]
+    speciality: string
     chat: () => void
     moreInformation: () => void
     makeAppointment: () => void
-    current_packageid: string
-    packageid_list: string[]
-    current_speciality: string
-    speciality_list: string[]
+    package_id_list: string[]
     fortunetellerid: string
   }

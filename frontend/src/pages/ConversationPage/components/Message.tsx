@@ -3,11 +3,13 @@ import { senderType } from "../types/MessageInformation"
 export default function Message({
   message,
   sender,
-  timeSent
+  timeSent,
+  isRead
 }: {
   message: string
   sender: senderType
   timeSent: number
+  isRead: boolean
 }) {
   return sender === "SYSTEM" ? (
     <>
