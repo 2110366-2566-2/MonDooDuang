@@ -3,7 +3,7 @@ import { PackageSchema, PackageIncludeIdSchema, PackageWithIdSchema, ForCreatePa
 import { SearchSchema } from "../models/search/search.model"
 
 export const packageRepository = {
-  createPackage: async (packageFortuneTeller: ForCreatePackageSchema) => {
+  createPackage: async (packageFortuneTeller: Omit<PackageSchema, "packageId">) => {
     try {
       await db.query(
         `

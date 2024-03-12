@@ -64,7 +64,7 @@ export const fortuneTellerService = {
     }
   },
 
-  createPackage: async (packageFortuneTeller: ForCreatePackageSchema) => {
+  createPackage: async (packageFortuneTeller: Omit<PackageSchema, "packageId">) => {
     const isSuccess = await packageRepository.createPackage(packageFortuneTeller)
     return { success: isSuccess, message: (isSuccess) ? "success" : "error to create package" }
   },

@@ -4,21 +4,17 @@ import ConversationBox from "./components/ConversationBox"
 import { ConversationService } from "./services/ConversationService"
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
-import { useParams } from "react-router-dom"
 
 export default function ConversationPage() {
-  const { cid } = useParams<{ cid: string }>()
   const [isShowReport, setIsShowReport] = useState(false)
   const [conversationIds, setConversationIds] = useState<string[]>([])
-  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(cid || null)
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
   const { userId, userType } = useContext(AuthContext)
   const [isSystemReport, setIsSystemReport] = useState(false)
   useEffect(() => {
     const fetchConversations = async () => {
       const conversationIds = await ConversationService.getConversationsByUserId(userId)
       setConversationIds(conversationIds)
-      if (cid === undefined && conversationIds.length > 0)
-        setSelectedConversationId(conversationIds[0])
     }
     fetchConversations()
   }, [])
@@ -37,7 +33,7 @@ export default function ConversationPage() {
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/4 bg-white bg-opacity-20">
+      <div className="w-1/4">
         <ConversationSidebar
           conversationIds={conversationIds}
           onConversationSelect={handleConversationSelect}

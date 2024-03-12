@@ -92,7 +92,7 @@ const getFortuneTellerDisplayInfoById = async (req: Request, res: Response) => {
 }
 
 const createPackage = async (req: Request, res: Response) => {
-  const packageFortuneTeller: ForCreatePackageSchema = {
+  const packageFortuneTeller: Omit<PackageSchema, "packageId"> = {
     speciality: req.body.speciality,
     description: req.body.description,
     duration: req.body.duration,

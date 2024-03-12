@@ -82,6 +82,7 @@ export default function ConversationBox({
         showReport={showReport}
         systemReport={systemReport}
         userId={userId}
+        conversationId={conversationId}
       />
       <MessageList messages={messages} />
       <div className="mt-auto">

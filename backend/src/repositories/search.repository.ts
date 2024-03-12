@@ -1,6 +1,27 @@
 import { db } from "../configs/pgdbConnection"
 import { SearchSchema } from "../models/search/search.model"
 
+function correctName (name: string): string {
+  const sqlKeywords = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE", "DROP", "CREATE", "TABLE", "DATABASE", "ALTER", "UNION", "ALL", "AND", "OR", "LIKE", "UNION", "ALL", ";", "--", "'", "\"", "`", "/*", "*/"]
+
+  name = name.toUpperCase()
+  const names: string[] = name.split(" ")
+
+  for (let i = 0; i < names.length; i++) {
+    if (sqlKeywords.includes(names[i])) {
+      names[i] = ""
+    }
+  }
+  let correctedName = ""
+  names.forEach((name, index) => {
+    if (name !== "") {
+      correctedName += name + " "
+    }
+  })
+
+  return correctedName.trim().toLowerCase()
+}
+
 export const searchRepository = {
   searchFortuneteller: async (searchOption: SearchSchema) => {
     const { name, speciality, minPrice, maxPrice, startTime, endTime, startDate, endDate, rating } =
@@ -46,13 +67,13 @@ export const searchRepository = {
 }
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
-                        SELECT DISTINCT FA.speciality, FA.package_id, FA.fortune_teller_id, FT.stage_name, U.fname, U.profile_picture, FT.total_score, FT.total_review FROM FILTER_APPOINTMENT FA
+                        SELECT DISTINCT FA.speciality, FA.package_id, FA.fortune_teller_id, FT.stage_name, U.fname, U.profile_picture, FT.total_score, FT.total_review, FA.price FROM FILTER_APPOINTMENT FA
                         JOIN FORTUNE_TELLER FT ON FA.fortune_teller_id = FT.fortune_teller_id
                         JOIN USER_TABLE U ON FA.fortune_teller_id = U.user_id
                         WHERE (CASE
                             WHEN FT.stage_name IS NULL THEN LOWER(U.fname)
                             ELSE LOWER(FT.stage_name)
-                        END) LIKE '${name}'
+                        END) LIKE '${name === "" ? "%" : "%" + correctName(name) + "%"}'
                         AND (CASE
                             WHEN FT.total_review > 0 THEN (FT.total_score / FT.total_review)
                             ELSE 0
@@ -61,15 +82,13 @@ export const searchRepository = {
                     FORTUNETELLER_PACKAGE AS (
                         SELECT F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, 
                         F.total_score, F.total_review, 
-                        STRING_AGG(DISTINCT F.package_id, ',') AS current_packageid,
-                        STRING_AGG(DISTINCT P.package_id, ',') AS packageid_list,
-                        ARRAY_TO_STRING(ARRAY_AGG(DISTINCT F.speciality), ',') AS current_speciality,
-                        ARRAY_TO_STRING(ARRAY_AGG(DISTINCT P.speciality), ',') AS speciality_list,
-                        MIN(P.price) AS min_price,
-                        MAX(P.price) AS max_price
+                        STRING_AGG(DISTINCT P.package_id, ',') AS package_id_list,
+                        P.speciality,
+                        MIN(F.price) AS min_price,
+                        MAX(F.price) AS max_price
                         FROM INTEGRATE_FORTUNETELLER F
-                        JOIN package P ON F.fortune_teller_id = P.fortune_teller_id
-                        GROUP BY F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, F.total_score, F.total_review
+                        JOIN package P ON F.package_id = P.package_id
+                        GROUP BY F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, F.total_score, F.total_review, P.speciality
                     )
                     
                     SELECT * FROM FORTUNETELLER_PACKAGE`

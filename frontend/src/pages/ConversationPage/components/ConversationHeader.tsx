@@ -11,30 +11,31 @@ import { specialityMapper } from "../../../common/types/Package"
 import PaymentIcon from "../../../common/components/AppointmentCard/Icon/PaymentIcon"
 import SuccessIcon from "../../../common/components/AppointmentCard/Icon/SuccessIcon"
 import { formatDateTime } from "../../../common/utils/FormatUtils"
+import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
+import dayjs from "dayjs"
+import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
 import EventCompleteCard from "./EventCompleteCard"
 
 export default function ConversationHeader({
   name,
   showReport,
+  conversationId,
   systemReport,
   userId
 }: {
   name: string
   showReport: () => void
+  conversationId: string | null
   systemReport: (selectReportMode: boolean) => void
   userId: string
 }) {
   const navigate = useNavigate()
-
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const appointments = await AppointmentService.getAppointmentsByBothUser(
-        "968aa8a1-836b-4e67-a70b-2c69d6db3150",
-        "f6a88fe6-c9fa-480d-9786-105554c5c048"
-      )
+      const appointments = await AppointmentService.getAppointmentsByConversationId(conversationId)
       setAppointments(appointments)
     }
     fetchAppointments()
@@ -82,12 +83,54 @@ export default function ConversationHeader({
         onClick={() => {
           if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
             AppointmentService.updateAppointmentStatus("USER_CANCELED", appointmentId)
+            window.location.reload()
           }
         }}
       >
         ยกเลิกการดูดวง
       </button>
     )
+    return { content, moreContent, button }
+  }
+
+  const getUpComingEventInfo = (startTime: string, endTime: string, date: string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">แจ้งการนัดหมายดูดวง</h1>
+        <p className="text-mdd-gray-success-text">
+          คุณมีนัดหมายดูดวงในวันที่ {date} เวลา {startTime} - {endTime} น.
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getCanceledEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการคืนเงินให้กับลูกค้า</p>
+        <p className="text-mdd-gray-success-text">
+          ขออภัยในความไม่สะดวก และหวังว่าเราจะได้พบกันในโอกาสหน้า
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getDeclinedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูปฏิเสธการนัดหมาย</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
     return { content, moreContent, button }
   }
 
@@ -121,6 +164,12 @@ export default function ConversationHeader({
         const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
         const isCustomer = userId === appointment.customerId
 
+        const today = new Date()
+        const waiting_day = dayjs(appointmentDateTime).diff(
+          dayjs(today).format("YYYY-MM-DD"),
+          "day"
+        )
+
         if (appointment.status === "WAITING_FOR_PAYMENT") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
             appointment.price,
@@ -140,10 +189,57 @@ export default function ConversationHeader({
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
+          if (waiting_day < 3) {
+            const { content, moreContent, button } = getUpComingEventInfo(
+              startTime,
+              endTime,
+              formattedDate
+            )
+            return (
+              <BaseAppointmentCard
+                icon={<NotiIcon />}
+                content={content}
+                moreContent={moreContent}
+                button={button}
+                formattedDate={formattedDate}
+                startTime={startTime}
+                endTime={endTime}
+                speciality={specialityMapper[appointment.speciality]}
+              />
+            )
+          }
           const { content, moreContent, button } = getWaitingForEventInfo(appointment.appointmentId)
           return (
             <BaseAppointmentCard
               icon={<SuccessIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "USER_CANCELED") {
+          const { content, moreContent, button } = getCanceledEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
+          const { content, moreContent, button } = getDeclinedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
               content={content}
               moreContent={moreContent}
               button={button}
