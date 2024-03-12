@@ -9,7 +9,7 @@ export default function Notifications({ userId }: { userId: string }) {
   useEffect(() => {
     const fetchNotifications = async () => {
       const notifications = await NotificationService.getNotifications(userId)
-      notifications ? setNotifications(notifications) : setNotifications([])
+      setNotifications(notifications)
     }
     fetchNotifications()
   }, [])
