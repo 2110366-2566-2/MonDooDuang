@@ -36,11 +36,13 @@ export const s3Service = {
   },
 
   downloadProfilePicture: async (s3Object: S3ObjectSchema) => {
+    const fileStream = fs.createWriteStream("../../../uploads/profilePicture.jpeg")
     const downloadParams = {
       Bucket: bucketName,
-      Key: `${s3Object.userId}/profilePicture`
+      Key: `${s3Object.userId}/profilePicture.jpeg`
     }
-    const result = await s3Client.getObject(downloadParams).promise()
+
+    s3Client.getObject(downloadParams).createReadStream().pipe(fileStream)
 
     const data = await s3Repository.downloadProfilePicture(s3Object)
     return data
