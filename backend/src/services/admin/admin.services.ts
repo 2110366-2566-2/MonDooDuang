@@ -4,7 +4,7 @@ import { assignToken } from "../../utils/jwt"
 import bcrypt from "bcrypt"
 
 export const adminService = {
-  login: async (body: { email: string; password: string }) => {
+  login: async (body: { email: string, password: string }) => {
     const email = body.email
     const password = body.password
 
