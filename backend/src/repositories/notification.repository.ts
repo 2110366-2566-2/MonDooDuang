@@ -92,11 +92,11 @@ export const notificationRepository = {
       return {
         appointmentNotificationType: result.rows[0].type,
         updatedAt: result.rows[0].updated_at,
-        otherName: otherName,
+        otherName,
         appointmentDate: result.rows[0].appointment_date,
         speciality: result.rows[0].speciality,
         duration: result.rows[0].duration,
-        isCustomer: isCustomer,
+        isCustomer,
         conversationId: result.rows[0].conversation_id
       }
     } catch (err) {
