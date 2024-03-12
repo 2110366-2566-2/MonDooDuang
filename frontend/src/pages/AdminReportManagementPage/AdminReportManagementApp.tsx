@@ -1,12 +1,13 @@
-import NavBarAdmin from "../../common/components/NavBar/NavBarAdmin"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
+import { AuthProvider } from "../../common/providers/AuthProvider"
 import AdminReportManagementPage from "./AdminReportManagementPage"
 
 export default function AdminReportManagementApp() {
   return (
     <RootLayout>
-         <NavBarAdmin menuFocus={"reportManagement"} />
-        <AdminReportManagementPage/>
+      <AuthProvider>
+        <AdminReportManagementPage />
+      </AuthProvider>
     </RootLayout>
   )
 }

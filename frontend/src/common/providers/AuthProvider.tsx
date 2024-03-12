@@ -1,5 +1,5 @@
 import React, { createContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 import { LocalStorageUtils } from "../utils/LocalStorageUtils"
 
@@ -19,9 +19,17 @@ const AuthContext = createContext<AuthContextType>({
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate()
+  const location = useLocation()
 
   const token = LocalStorageUtils.getData("token")
   if (!token) {
+    if (
+      location.pathname === "/admin/fortuneteller_approvals" ||
+      location.pathname === "/admin/report_management"
+    ) {
+      navigate("/admin/login")
+      return
+    }
     navigate("/login")
     return
   }
