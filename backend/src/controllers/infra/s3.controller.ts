@@ -4,7 +4,6 @@ import { s3Service } from "../../services/infra/s3.services"
 
 const uploadProfilePicture = async (req: Request, res: Response) => {
   if (!req.file?.buffer) {
-    console.log(req.file?.buffer)
     return res.status(400).json({ success: false, error: "No file uploaded" })
   }
   const s3Object: S3ObjectSchema = {
@@ -34,7 +33,6 @@ const deleteProfilePicture = async (req: Request, res: Response) => {
 
 const uploadIdCard = async (req: Request, res: Response) => {
   if (!req.file?.buffer) {
-    console.log(req.file?.buffer)
     return res.status(400).json({ success: false, error: "No file uploaded" })
   }
   const s3Object: S3ObjectSchema = {
