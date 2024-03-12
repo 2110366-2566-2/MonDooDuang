@@ -9,7 +9,7 @@ export interface MessageType {
 }
 
 export const conversationService = {
-  getConversationsByUserId: async (userId: string, role: string) => {
+  getConversationsByUserId: async (userId: string, role: "CUSTOMER" | "FORTUNE_TELLER") => {
     const data = await conversationRepository.getConversationsByUserId(userId, role)
     if (data === null) {
       return []

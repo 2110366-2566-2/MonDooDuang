@@ -1,7 +1,7 @@
 import { db } from "../configs/pgdbConnection"
 
 export const conversationRepository = {
-  getConversationsByUserId: async (userId: string, role: string) => {
+  getConversationsByUserId: async (userId: string, role: "CUSTOMER" | "FORTUNE_TELLER") => {
     const result = await db.query(
       `
         SELECT c.conversation_id 
