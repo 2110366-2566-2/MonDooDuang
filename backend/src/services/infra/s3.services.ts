@@ -21,54 +21,68 @@ export const s3Service = {
   uploadProfilePicture: async (s3Object: S3ObjectSchema) => {
     const file = fs.createReadStream(s3Object.image)
 
-    const checkParams = {
+    const uploadParams = {
       Bucket: bucketName,
-      Key: `${s3Object.userId}/profilePicture`
+      Body: file,
+      Key: `${s3Object.userId}/profilePicture`,
+      ACL: "public-read"
     }
 
-    try {
-      await s3Client.headObject(checkParams).promise()
-      const result = await s3Repository.updateProfilePicture(s3Object)
-      //   const data = await s3Repository.uploadProfilePicture(result.Location)
-      return result
-    } catch (error) {
-      const uploadParams = {
-        Bucket: bucketName,
-        Body: file,
-        Key: `${s3Object.userId}/profilePicture`,
-        ACL: "public-read"
-      }
-      try {
-        const result = await s3Client.upload(uploadParams).promise()
-        console.log("File uploaded successfully. ", result)
-        return uploadParams
-      } catch (uploadError) {
-        console.error("Error uploading file to S3:", uploadError)
-      }
-    }
+    const result = await s3Client.putObject(uploadParams).promise()
   },
 
   downloadProfilePicture: async (s3Object: S3ObjectSchema) => {
+    const downloadParams = {
+      Bucket: bucketName,
+      Key: `${s3Object.userId}/profilePicture`
+    }
+    const result = await s3Client.getObject(downloadParams).promise()
+
     const data = await s3Repository.downloadProfilePicture(s3Object)
     return data
   },
 
   deleteProfilePicture: async (s3Object: S3ObjectSchema) => {
+    const deleteParams = {
+      Bucket: bucketName,
+      Key: `${s3Object.userId}/profilePicture`
+    }
+    const result = await s3Client.deleteObject(deleteParams).promise()
     const data = await s3Repository.deleteProfilePicture(s3Object)
     return data
   },
 
   updateProfilePicture: async (s3Object: S3ObjectSchema) => {
+    const updateParams = {
+      Bucket: bucketName,
+      Key: `${s3Object.userId}/profilePicture`
+    }
+    const result = await s3Client.putObject(updateParams).promise()
     const data = await s3Repository.updateProfilePicture(s3Object)
     return data
   },
 
   uploadIdCard: async (s3Object: S3ObjectSchema) => {
+    const file = fs.createReadStream(s3Object.image)
+
+    const uploadParams = {
+      Bucket: bucketName,
+      Body: file,
+      Key: `${s3Object.userId}/idCard`,
+      ACL: "public-read"
+    }
+
+    const result = await s3Client.putObject(uploadParams).promise()
     const data = await s3Repository.uploadIdCard(s3Object)
     return data
   },
 
   downloadIdCard: async (s3Object: S3ObjectSchema) => {
+    const downloadParams = {
+      Bucket: bucketName,
+      Key: `${s3Object.userId}/idCard`
+    }
+    const result = await s3Client.getObject(downloadParams).promise()
     const data = await s3Repository.downloadIdCard(s3Object)
     return data
   }
