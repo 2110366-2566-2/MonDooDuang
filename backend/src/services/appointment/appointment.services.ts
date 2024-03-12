@@ -28,6 +28,7 @@ export const appointmentService = {
 
     // Schedule 10 minutes reminder
     const remindDate = new Date(appointment.appointmentDate)
+    remindDate.setHours(remindDate.getHours() + 7)
     remindDate.setMinutes(remindDate.getMinutes() - 10)
     scheduleJob(remindDate, async () => {
       await appointmentService.autoRemindAppointment(
