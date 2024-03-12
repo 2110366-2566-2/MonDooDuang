@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { PackageSchema, PackageIncludeIdSchema, PackageWithIdSchema, ForCreatePackageSchema } from "../models/package/package.model"
+import { PackageSchema, PackageIncludeIdSchema, PackageWithIdSchema } from "../models/package/package.model"
 import { SearchSchema } from "../models/search/search.model"
 
 export const packageRepository = {

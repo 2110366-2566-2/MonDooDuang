@@ -2,7 +2,7 @@ import { fortuneTellerRepository } from "../../repositories/fortuneTeller.reposi
 import { packageRepository } from "../../repositories/package.repository"
 import { reviewRepository } from "../../repositories/review.repository"
 import { FortuneTellerRegisterSchema, FortuneTellerAccountDetailSchema, RequestSchema } from "../../models/fortuneTeller/fortuneTeller.model"
-import { PackageSchema, PackageWithIdSchema, ForCreatePackageSchema } from "../../models/package/package.model"
+import { PackageSchema, PackageWithIdSchema } from "../../models/package/package.model"
 
 export const fortuneTellerService = {
 
