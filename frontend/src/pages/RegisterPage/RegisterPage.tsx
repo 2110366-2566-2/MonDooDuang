@@ -407,7 +407,7 @@ export default function RegisterPage() {
                   name="password"
                   required
                   value={formValues.password}
-                  maxLength={120}
+                  maxLength={100}
                   onChange={(e) => handlePasswordChange(false, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -429,7 +429,7 @@ export default function RegisterPage() {
                   name="passwordConfirm"
                   required
                   value={confirmPassword}
-                  maxLength={120}
+                  maxLength={100}
                   onChange={(e) => handlePasswordChange(true, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
