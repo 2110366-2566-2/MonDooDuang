@@ -51,7 +51,8 @@ export default function LoginBox() {
 
   return (
     <div className="flex flex-col justify-center items-center w-2/4">
-      <p className="text-3xl text-white">ยินดีต้อนรับกลับ!</p>
+      <p className="text-3xl text-white">ลงชื่อเข้าใช้</p>
+      <p className="text-3xl text-mdd-focus-yellow">ผู้ดูแลระบบ</p>
       <div className="flex flex-col justify-center items-center bg-mdd-login-frame p-8 mt-4 rounded-lg">
         <div className="relative">
           <p className={`${emailError ? "text-mdd-invalid-label" : "text-white"}`}>อีเมล</p>
