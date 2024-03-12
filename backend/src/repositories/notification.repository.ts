@@ -10,7 +10,7 @@ export const notificationRepository = {
     try {
       await db.query(
         `
-            INSERT INTO NOTIFICATION (userid, type)
+            INSERT INTO NOTIFICATION (user_id, type)
             VALUES($1, $2);
         `,
         [userId, type]
@@ -20,7 +20,7 @@ export const notificationRepository = {
       return false
     }
   },
-  getNotifications: async (userId: string) => {
+  getNotifications: async (userId: string): Promise<null | NotificationSchema[]> => {
     try {
       const result = await db.query(
         `
@@ -43,13 +43,13 @@ export const notificationRepository = {
 
       return packages
     } catch (err) {
-      return false
+      return null
     }
   },
   getAppointmentNotification: async (
     notificationId: string,
     userId: string
-  ): Promise<null | boolean | AppointmentNotificationSchema> => {
+  ): Promise<null | AppointmentNotificationSchema> => {
     try {
       const result = await db.query(
         `
@@ -100,7 +100,7 @@ export const notificationRepository = {
         conversationId: result.rows[0].conversation_id
       }
     } catch (err) {
-      return false
+      return null
     }
   }
 }

@@ -4,7 +4,7 @@ import { NotificationTypes } from "../../../types/NotificationTypes"
 import NotificationList from "./NotificationList"
 
 export default function Notifications({ userId }: { userId: string }) {
-  const [notifications, setNotifications] = useState<NotificationTypes[]>()
+  const [notifications, setNotifications] = useState<NotificationTypes[]>([])
 
   useEffect(() => {
     const fetchNotifications = async () => {
