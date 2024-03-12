@@ -12,6 +12,7 @@ import AdminApprovalApp from "../pages/AdminApprovalPage/AdminApprovalApp"
 import FortuneTellerDetailApp from "../pages/FortuneTellerDetailPage/FortuneTellerDetailApp"
 import PaymentApp from "../pages/PaymentPage/PaymentApp"
 import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedApp"
+import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 
 export const getPagesData = (stripePromise: any) =>
@@ -49,15 +50,19 @@ export const getPagesData = (stripePromise: any) =>
       element: <SearchApp />
     },
     {
-      path: "/fortuneteller/:fortunetellerid",
+      path: "/fortuneteller/:fid",
       element: <FortuneTellerDetailApp />
+    },
+    {
+      path: "/conversation/:cid?",
+      element: <ConversationApp />
     },
     {
       path: "/conversation",
       element: <ConversationApp />
     },
     {
-      path: "/appointment",
+      path: "/appointment/:fid/:pid",
       element: <AppointmentApp />
     },
     {
@@ -65,7 +70,11 @@ export const getPagesData = (stripePromise: any) =>
       element: <AdminApprovalApp />
     },
     {
-      path: "/payment",
+      path: "/admin/login",
+      element: <AdminLoginApp />
+    },
+    {
+      path: "/payment/:payAmount",
       element: <PaymentApp stripePromise={stripePromise} />
     },
     {

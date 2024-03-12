@@ -1,26 +1,47 @@
 import { db } from "../configs/pgdbConnection"
 import { SearchSchema } from "../models/search/search.model"
 
+function correctName (name: string): string {
+  const sqlKeywords = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE", "DROP", "CREATE", "TABLE", "DATABASE", "ALTER", "UNION", "ALL", "AND", "OR", "LIKE", "UNION", "ALL", ";", "--", "'", "\"", "`", "/*", "*/"]
+
+  name = name.toUpperCase()
+  const names: string[] = name.split(" ")
+
+  for (let i = 0; i < names.length; i++) {
+    if (sqlKeywords.includes(names[i])) {
+      names[i] = ""
+    }
+  }
+  let correctedName = ""
+  names.forEach((name, index) => {
+    if (name !== "") {
+      correctedName += name + " "
+    }
+  })
+
+  return correctedName.trim().toLowerCase()
+}
+
 export const searchRepository = {
   searchFortuneteller: async (searchOption: SearchSchema) => {
     const { name, speciality, minPrice, maxPrice, startTime, endTime, startDate, endDate, rating } =
       searchOption
     const query = `WITH FILTER_PACKAGE AS (
-                        SELECT * FROM package
+                        SELECT * FROM PACKAGE
                         ${speciality !== "" || maxPrice !== -1 ? "WHERE" : ""}
                         ${speciality === "" ? "" : `speciality = '${speciality}'`}
                         ${speciality !== "" && maxPrice !== -1 ? "AND" : ""}
                         ${maxPrice === -1 ? "" : `price >= ${minPrice} AND price <= ${maxPrice}`}
                     ), 
                     APPOINTMENT_DATE_RANGE AS(
-                        SELECT A.appointmentdate AS startdate, A.appointmentdate + (FP.duration || ' minutes')::interval AS enddate, FP.packageid 
+                        SELECT A.appointment_date AS startdate, A.appointment_date + (FP.duration || ' minutes')::interval AS enddate, FP.package_id 
                         FROM FILTER_PACKAGE FP
-                        JOIN appointment A ON FP.packageid = A.packageid
+                        JOIN APPOINTMENT A ON FP.package_id = A.package_id
                     ), 
                     FILTER_APPOINTMENT AS (
-                        SELECT FP.packageid, FP.speciality, FP.price, FP.fortunetellerid FROM FILTER_PACKAGE FP
-                        LEFT OUTER JOIN appointment A ON FP.packageid = A.packageid
-                        LEFT OUTER JOIN APPOINTMENT_DATE_RANGE R ON FP.packageid = R.packageid
+                        SELECT FP.package_id, FP.speciality, FP.price, FP.fortune_teller_id FROM FILTER_PACKAGE FP
+                        LEFT OUTER JOIN APPOINTMENT A ON FP.package_id = A.package_id
+                        LEFT OUTER JOIN APPOINTMENT_DATE_RANGE R ON FP.package_id = R.package_id
                         ${
   startDate === ""
     ? startTime === ""
@@ -46,30 +67,28 @@ export const searchRepository = {
 }
                     ), 
                     INTEGRATE_FORTUNETELLER AS (
-                        SELECT DISTINCT FA.speciality, FA.packageid, FA.fortunetellerid, FT.stagename, U.fname, U.profilepicture, FT.totalscore, FT.totalreview FROM FILTER_APPOINTMENT FA
-                        JOIN fortune_teller FT ON FA.fortunetellerid = FT.fortunetellerid
-                        JOIN user_table U ON FA.fortunetellerid = U.userid
+                        SELECT DISTINCT FA.speciality, FA.package_id, FA.fortune_teller_id, FT.stage_name, U.fname, U.profile_picture, FT.total_score, FT.total_review, FA.price FROM FILTER_APPOINTMENT FA
+                        JOIN FORTUNE_TELLER FT ON FA.fortune_teller_id = FT.fortune_teller_id
+                        JOIN USER_TABLE U ON FA.fortune_teller_id = U.user_id
                         WHERE (CASE
-                            WHEN FT.stagename IS NULL THEN LOWER(U.fname)
-                            ELSE LOWER(FT.stagename)
-                        END) LIKE '${name}'
+                            WHEN FT.stage_name IS NULL THEN LOWER(U.fname)
+                            ELSE LOWER(FT.stage_name)
+                        END) LIKE '${name === "" ? "%" : "%" + correctName(name) + "%"}'
                         AND (CASE
-                            WHEN FT.totalreview > 0 THEN (FT.totalscore / FT.totalreview)
+                            WHEN FT.total_review > 0 THEN (FT.total_score / FT.total_review)
                             ELSE 0
                         END) >= ${rating}
                     ),
                     FORTUNETELLER_PACKAGE AS (
-                        SELECT F.fortunetellerid, F.stagename, F.fname, F.profilepicture, 
-                        F.totalscore, F.totalreview, 
-                        STRING_AGG(DISTINCT F.packageid, ',') AS current_packageid,
-                        STRING_AGG(DISTINCT P.packageid, ',') AS packageid_list,
-                        ARRAY_TO_STRING(ARRAY_AGG(DISTINCT F.speciality), ',') AS current_speciality,
-                        ARRAY_TO_STRING(ARRAY_AGG(DISTINCT P.speciality), ',') AS speciality_list,
-                        MIN(P.price) AS minPrice,
-                        MAX(P.price) AS maxPrice
+                        SELECT F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, 
+                        F.total_score, F.total_review, 
+                        STRING_AGG(DISTINCT P.package_id, ',') AS package_id_list,
+                        P.speciality,
+                        MIN(F.price) AS min_price,
+                        MAX(F.price) AS max_price
                         FROM INTEGRATE_FORTUNETELLER F
-                        JOIN package P ON F.fortunetellerid = P.fortunetellerid
-                        GROUP BY F.fortunetellerid, F.stagename, F.fname, F.profilepicture, F.totalscore, F.totalreview
+                        JOIN package P ON F.package_id = P.package_id
+                        GROUP BY F.fortune_teller_id, F.stage_name, F.fname, F.profile_picture, F.total_score, F.total_review, P.speciality
                     )
                     
                     SELECT * FROM FORTUNETELLER_PACKAGE`

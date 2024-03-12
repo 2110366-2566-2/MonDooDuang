@@ -2,38 +2,248 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp"
 import VolumeOffIcon from "@mui/icons-material/VolumeOff"
 import SearchIcon from "@mui/icons-material/Search"
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred"
-import { useState } from "react"
+import BaseAppointmentCard from "../../../common/components/AppointmentCard/BaseAppointmentCard"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { AppointmentService } from "../services/AppointmentService"
+import { AppointmentInformation } from "../types/AppointmentInformation"
+import { specialityMapper } from "../../../common/types/Package"
+import PaymentIcon from "../../../common/components/AppointmentCard/Icon/PaymentIcon"
+import SuccessIcon from "../../../common/components/AppointmentCard/Icon/SuccessIcon"
+import { formatDateTime } from "../../../common/utils/FormatUtils"
+import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
+import dayjs from "dayjs"
+import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
 
 export default function ConversationHeader({
   name,
-  showReport
+  showReport,
+  conversationId
 }: {
   name: string
   showReport: () => void
+  conversationId: string | null
 }) {
-  const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true)
+  const navigate = useNavigate()
+  const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
+  const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const appointments = await AppointmentService.getAppointmentsByConversationId(conversationId)
+      setAppointments(appointments)
+    }
+    fetchAppointments()
+  }, [name])
+
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)
   }
 
+  const getWaitingForPaymentInfo = (price: number, paymentDate: string, paymentTime: string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังรอการชำระเงิน</h1>
+        <p className="text-mdd-gray-success-text">
+          ยอดที่ต้องชำระ {price} บาท <br /> สามารถชำระได้จนถึงวันที่ {paymentDate} เวลา{" "}
+          {paymentTime} น.
+        </p>
+      </>
+    )
+    const moreContent =
+      "*หากไม่ชำระภายในวันและเวลาที่กำหนด ทางเว็บไซต์ขออนุญาตยกเลิกการนัดหมายดูดวง"
+    const button = (
+      <button
+        className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5"
+        onClick={() => navigate(`/payment/${price}`)}
+      >
+        ชำระเงินค่าดูดวง
+      </button>
+    )
+    return { content, moreContent, button }
+  }
+
+  const getWaitingForEventInfo = (appointmentId: string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">ชำระเงินเรียบร้อย</h1>
+        <p className="text-mdd-gray-success-text">การนัดหมายของคุณได้ถูกจองเสร็จสมบูรณ์</p>
+      </>
+    )
+    const moreContent =
+      "*ทั้งหมอดูและลูกค้าสามารถกดยกเลิกการนัดหมายได้ โดยสามารถยกเลิกได้ถึงก่อนวันนัดหมาย 3 วัน"
+    const button = (
+      <button
+        className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-cancel-red mx-5"
+        onClick={() => {
+          if (confirm("โปรกดตกลง เพื่อยกเลิกการนัดหมาย") == true) {
+            AppointmentService.updateAppointmentStatus("USER_CANCELED", appointmentId)
+            window.location.reload()
+          }
+        }}
+      >
+        ยกเลิกการดูดวง
+      </button>
+    )
+    return { content, moreContent, button }
+  }
+
+  const getUpComingEventInfo = (startTime: string, endTime: string, date: string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">แจ้งการนัดหมายดูดวง</h1>
+        <p className="text-mdd-gray-success-text">
+          คุณมีนัดหมายดูดวงในวันที่ {date} เวลา {startTime} - {endTime} น.
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getCanceledEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการคืนเงินให้กับลูกค้า</p>
+        <p className="text-mdd-gray-success-text">
+          ขออภัยในความไม่สะดวก และหวังว่าเราจะได้พบกันในโอกาสหน้า
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getDeclinedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูปฏิเสธการนัดหมาย</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
   return (
-    <div className="h-[60px] flex items-center justify-between p-4 bg-white bg-opacity-85">
-      <div className="flex items-center">
-        <div className="font-bold text-xl mr-2">{name}</div>
-        {isNotificationsEnabled ? (
-          <VolumeUpIcon onClick={toggleNotifications} />
-        ) : (
-          <VolumeOffIcon onClick={toggleNotifications} />
-        )}
+    <div className="flex flex-col bg-white bg-opacity-85">
+      <div className="h-[60px] flex items-center justify-between p-4">
+        <div className="flex items-center">
+          <div className="font-bold text-xl mr-2">{name}</div>
+          {isNotificationsEnabled ? (
+            <VolumeUpIcon onClick={toggleNotifications} />
+          ) : (
+            <VolumeOffIcon onClick={toggleNotifications} />
+          )}
+        </div>
+        <div className="flex items-center">
+          <SearchIcon className="mr-2" />
+          <ReportGmailerrorredIcon
+            onClick={() => {
+              showReport()
+            }}
+          />
+        </div>
       </div>
-      <div className="flex items-center">
-        <SearchIcon className="mr-2" />
-        <ReportGmailerrorredIcon
-          onClick={() => {
-            showReport()
-          }}
-        />
-      </div>
+      {appointments.map((appointment) => {
+        const [formattedDate, startTime] = formatDateTime(appointment.appointmentDate)
+        const appointmentDateTime = new Date(appointment.appointmentDate)
+        const endDateTime = new Date(appointmentDateTime.getTime() + appointment.duration * 60000)
+        const endTime = formatDateTime(endDateTime.toISOString())[1]
+        const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
+        const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
+
+        const today = new Date()
+        const waiting_day = dayjs(appointmentDateTime).diff(
+          dayjs(today).format("YYYY-MM-DD"),
+          "day"
+        )
+
+        if (appointment.status === "WAITING_FOR_PAYMENT") {
+          const { content, moreContent, button } = getWaitingForPaymentInfo(
+            appointment.price,
+            paymentDate,
+            paymentTime
+          )
+          return (
+            <BaseAppointmentCard
+              icon={<PaymentIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "WAITING_FOR_EVENT") {
+          if (waiting_day < 3) {
+            const { content, moreContent, button } = getUpComingEventInfo(
+              startTime,
+              endTime,
+              formattedDate
+            )
+            return (
+              <BaseAppointmentCard
+                icon={<NotiIcon />}
+                content={content}
+                moreContent={moreContent}
+                button={button}
+                formattedDate={formattedDate}
+                startTime={startTime}
+                endTime={endTime}
+                speciality={specialityMapper[appointment.speciality]}
+              />
+            )
+          }
+          const { content, moreContent, button } = getWaitingForEventInfo(appointment.appointmentId)
+          return (
+            <BaseAppointmentCard
+              icon={<SuccessIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "USER_CANCELED") {
+          const { content, moreContent, button } = getCanceledEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
+          const { content, moreContent, button } = getDeclinedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        }
+      })}
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useState } from "react"
 import CheckoutForm from "./components/PaymentForm/CheckoutForm"
 import { StripeService } from "../../common/services/StripeService"
 import { Appearance } from "@stripe/stripe-js"
+import { useParams } from "react-router-dom"
 
 const appearance: Appearance = {
   theme: "night",
@@ -14,7 +15,8 @@ const appearance: Appearance = {
 }
 
 export default function PaymentPage({ stripePromise }: { stripePromise: any }) {
-  const [amount, setAmount] = useState(0)
+  const { payAmount } = useParams<{ payAmount: string }>()
+  const [amount, setAmount] = useState(Number(payAmount))
   const [clientSecret, setClientSecret] = useState("")
 
   const handlePriceConfirm = async (amount: number) => {

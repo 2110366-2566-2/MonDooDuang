@@ -1,8 +1,19 @@
 import AppointmentPanel from "./components/AppointmentPanel"
 import { NextPageIcon } from "./components/Icon"
 import { environment } from "../../common/constants/environment"
+import NavBar from "../../common/components/NavBar/NavBar"
+import { useContext } from "react"
+import { AuthContext } from "../../common/providers/AuthProvider"
 
-export default function AppointmentPage() {
+export default function AppointmentPage({
+  fid,
+  pid
+}: {
+  fid: string | undefined
+  pid: string | undefined
+}) {
+  const { userId, userType, username } = useContext(AuthContext)
+
   const previousPath = document.referrer
   const PageNavigation = () => {
     return (
@@ -34,19 +45,29 @@ export default function AppointmentPage() {
     )
   }
   return (
-    <div className="px-20 py-8">
-      <PageNavigation />
-      <div className="flex justify-center items-start">
-        <AppointmentPanel
-          onCancel={() => {
-            if (previousPath) {
-              window.location.href = previousPath
-            } else {
-              window.location.href = environment.frontend.url + "/search"
-            }
-          }}
-        />
+    <>
+      <NavBar
+        isFortuneTeller={userType === "FORTUNE_TELLER"}
+        menuFocus={"search"}
+        username={username}
+      />
+      <div className="px-20 py-8">
+        <PageNavigation />
+        <div className="flex justify-center items-start">
+          <AppointmentPanel
+            onCancel={() => {
+              if (previousPath) {
+                window.location.href = previousPath
+              } else {
+                window.location.href = environment.frontend.url + "/search"
+              }
+            }}
+            user_id={userId}
+            fid={fid}
+            pid={pid}
+          />
+        </div>
       </div>
-    </div>
+    </>
   )
 }

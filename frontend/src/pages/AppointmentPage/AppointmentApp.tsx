@@ -1,13 +1,15 @@
-import NavBar from "../../common/components/NavBar/NavBar"
+import { useParams } from "react-router-dom"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
+import { AuthProvider } from "../../common/providers/AuthProvider"
 import AppointmentPage from "./AppointmentPage"
 
 export default function AppointmentApp() {
+  const params = useParams()
   return (
-    //Add providers as needed
     <RootLayout>
-      <NavBar isFortuneTeller={true} menuFocus={"search"} username={"Username"} />
-      <AppointmentPage />
+      <AuthProvider>
+        <AppointmentPage fid={params.fid} pid={params.pid}/>
+      </AuthProvider>
     </RootLayout>
   )
 }

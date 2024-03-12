@@ -15,7 +15,7 @@ export const conversationService = {
       return []
     }
 
-    return data.map((conversation) => conversation.conversationid)
+    return data.map((conversation) => conversation.conversation_id)
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
     const data = await conversationRepository.getNameWithLastMessage(conversationId, userId)
@@ -57,14 +57,15 @@ export const conversationService = {
       }
 
       formattedMessages.push({
-        message: message.messagetext,
+        message: message.message_text,
         timeSent: currentTimeSent,
         sender: message.sender,
-        isRead: message.isread
+        isRead: message.is_read
       })
 
       prevTimeSent = currentTimeSent
     })
+    await conversationService.readMessage(conversationId, userId)
 
     return formattedMessages
   },
@@ -109,5 +110,21 @@ export const conversationService = {
       date1.getMonth() === date2.getMonth() &&
       date1.getDate() === date2.getDate()
     )
+  },
+  readMessage: async (conversationId: string, userId: string) => {
+    const isSuccess = await conversationRepository.readMessage(conversationId, userId)
+    if (!isSuccess) {
+      console.error("Error sending message")
+    }
+  },
+  getUnreadMessagesByConversationId: async (conversationId: string, userId: string) => {
+    const data = await conversationRepository.getUnreadMessagesByConversationId(
+      conversationId,
+      userId
+    )
+    if (data === null) {
+      return { count: 0 }
+    }
+    return { count: data }
   }
 }

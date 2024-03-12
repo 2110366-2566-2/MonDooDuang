@@ -33,10 +33,17 @@ const createConversation = async (req: Request, res: Response) => {
   const fortunetellerId = req.params.fortunetellerId
   const { isSuccess, data } = await conversationService.createConversation(fortunetellerId, userId)
   if (isSuccess) {
-    res.status(200).send(data)
+    res.status(200).send({ data })
   } else {
     res.status(500).send("Error creating conversation")
   }
+}
+
+const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversationId = req.params.conversationId
+  const data = await conversationService.getUnreadMessagesByConversationId(conversationId, userId)
+  res.status(200).send(data)
 }
 
 export const conversationController = {
@@ -44,5 +51,6 @@ export const conversationController = {
   getNameWithLastMessage,
   getMessagesByConversationId,
   getNameByConversationId,
-  createConversation
+  createConversation,
+  getUnreadMessagesConversationId
 }

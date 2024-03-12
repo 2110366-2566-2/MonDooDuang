@@ -18,6 +18,7 @@ import {
   Package,
   UserInfo
 } from "../types/AppointmentTypes"
+import { useParams } from "react-router-dom"
 
 const text_shadow = { textShadow: "4px 4px 3px rgba(0, 0, 0, 0.25)" } as React.CSSProperties
 
@@ -36,13 +37,20 @@ const newTheme = createTheme({
   }
 })
 
-export default function AppointmentPanel({ onCancel }: { onCancel: () => void }) {
-  //mock data
-  const fortuneTeller = "DaengDooDaung"
-  const fortuneTellerId = "3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da"
-  const user_id = "84885c07-43d7-42b8-8919-88263a33fc74"
-  //
+export default function AppointmentPanel({
+  onCancel,
+  user_id
+}: {
+  onCancel: () => void
+  user_id: string
+}) {
+  const { fid, pid } = useParams()
 
+  if (fid == undefined) {
+    window.location.href = environment.frontend.url + "/search"
+  }
+  const fortuneTellerId = fid ?? ""
+  const [fortuneTeller, setFortuneTeller] = useState("")
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [isValidDate, setIsValidDate] = useState(true)
@@ -50,18 +58,18 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
   const [reserveDate, setReserveDate] = useState<Dayjs | null>(null)
   const [reserveTime, setReserveTime] = useState<Dayjs | null>(null)
   const [packageType, setPackageType] = useState<Package>({
-    packageid: "",
+    package_id: "",
     speciality: "",
     price: 0,
     duration: 0
   })
   const [packages, setPackages] = useState<Package[]>([])
   const [userInfo, setUserInfo] = useState<UserInfo>({
-    userid: "",
+    user_id: "",
     fname: "",
     lname: "",
-    phonenumber: "",
-    birthdate: ""
+    phone_number: "",
+    birth_date: ""
   })
   const [appointments, setAppointments] = useState<GroupedAppointments>({})
 
@@ -103,7 +111,7 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
 
   const groupAppointmentsByDate = (data: FortuneTellerAppointments[]): GroupedAppointments => {
     return data.reduce((acc, curr) => {
-      const plusdate = dayjs(curr.appointmentdate)
+      const plusdate = dayjs(curr.appointment_date)
         .add(7, "hours")
         .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")
       const date = plusdate.split("T")[0]
@@ -132,7 +140,16 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
         const packages = await AppointmentService.getPackages(fortuneTellerId)
         if (packages) {
           setPackages(packages)
-          if (packages.length > 0) {
+          if (pid) {
+            const myPackage = packages.find((obj) => {
+              return obj.package_id === pid
+            })
+            if (myPackage) {
+              setPackageType(myPackage)
+            } else {
+              setPackageType(packages[0])
+            }
+          } else {
             setPackageType(packages[0])
           }
         }
@@ -158,6 +175,20 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
   }, [])
 
   useEffect(() => {
+    const fetchFortuneTellerName = async () => {
+      try {
+        const fortune_teller_info = await AppointmentService.getFortuneTeller(fortuneTellerId)
+        if (fortune_teller_info) {
+          setFortuneTeller(fortune_teller_info.stageName)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchFortuneTellerName()
+  }, [])
+
+  useEffect(() => {
     const fetchFortuneTellerAppointments = async () => {
       try {
         const appointments = await AppointmentService.getFortuneTellerAppointment(fortuneTellerId)
@@ -180,8 +211,8 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
           <div style={text_shadow}>
             ชื่อผู้จอง : {userInfo.fname} {userInfo.lname}
           </div>
-          <div style={text_shadow}>วันเกิด : {formatDate(userInfo.birthdate)}</div>
-          <div style={text_shadow}>เบอร์โทรศัพท์ : {formatPhoneNumber(userInfo.phonenumber)}</div>
+          <div style={text_shadow}>วันเกิด : {formatDate(userInfo.birth_date)}</div>
+          <div style={text_shadow}>เบอร์โทรศัพท์ : {formatPhoneNumber(userInfo.phone_number)}</div>
         </div>
         <div className="w-full flex items-end justify-items-end mt-6">
           <div className="flex ml-auto">
@@ -193,6 +224,7 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
       </div>
     )
   }
+
   return (
     <div
       style={{
@@ -277,8 +309,8 @@ export default function AppointmentPanel({ onCancel }: { onCancel: () => void })
               .subtract(7, "hours")
               .format("YYYY-MM-DD HH:mm:ss")
             AppointmentService.createAppointment(
-              packageType.packageid,
-              userInfo.userid,
+              packageType.package_id,
+              userInfo.user_id,
               fortuneTellerId,
               appointmentDate
             )

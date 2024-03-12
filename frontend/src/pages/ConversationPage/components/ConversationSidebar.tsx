@@ -1,19 +1,19 @@
 import ConversationList from "./ConversationList"
-import SearchIcon from "@mui/icons-material/Search"
 
 export default function ConversationSidebar({
   conversationIds,
   onConversationSelect,
-  selectedConversationId
+  selectedConversationId,
+  userId
 }: {
   conversationIds: string[]
   onConversationSelect: (conversationId: string) => void
   selectedConversationId: string | null
+  userId: string
 }) {
   return (
     <div className="overflow-y-auto h-screen flex flex-col items-center justify-start">
       <div className="relative">
-        <SearchIcon />
         <input
           type="text"
           placeholder={"ค้นหาข้อความและห้องแชท"}
@@ -26,6 +26,7 @@ export default function ConversationSidebar({
           key={conversationId}
           isSelected={conversationId === selectedConversationId}
           onSelect={() => onConversationSelect(conversationId)}
+          userId={userId}
         />
       ))}
     </div>
