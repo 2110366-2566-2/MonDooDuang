@@ -75,9 +75,9 @@ export default function RegisterPage() {
       ...formValues,
       [name]: value
     })
-    if (name == "email") handleEmailChange(value)
-    if (name == "tel") handleTelChange(value)
-    if (name == "accountNumber") handleAccountNumberChange(value)
+    if (name === "email") handleEmailChange(value)
+    if (name === "phoneNumber") handleTelChange(value)
+    if (name === "accountNumber") handleAccountNumberChange(value)
   }
 
   const handlePasswordChange = (isConfirm: boolean, password: string) => {
@@ -109,12 +109,12 @@ export default function RegisterPage() {
   }
 
   const handleTelChange = (tel: string) => {
-    if (/[0-9]{10}/.test(tel)) setTelError(false)
+    if (/^[0-9]{10}$/.test(tel) && tel.length === 10) setTelError(false)
     else setTelError(true)
   }
 
   const handleAccountNumberChange = (accountNumber: string) => {
-    if (/[0-9]{10,15}/.test(accountNumber)) setAccountNumberError(false)
+    if (/^[0-9]{10,15}$/.test(accountNumber)) setAccountNumberError(false)
     else setAccountNumberError(true)
   }
 
@@ -270,7 +270,7 @@ export default function RegisterPage() {
                   id="3"
                   name="phoneNumber"
                   required
-                  maxLength={20}
+                  maxLength={10}
                   value={formValues.phoneNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
@@ -453,7 +453,7 @@ export default function RegisterPage() {
                   id="7"
                   name="accountNumber"
                   required
-                  maxLength={100}
+                  maxLength={15}
                   value={formValues.accountNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
