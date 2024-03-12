@@ -88,7 +88,7 @@ CREATE TABLE MESSAGE(
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'SUSPENDED', 'REFUNDED', 'NO_PAYMENT_CANCELED', 'USER_CANCELED', 'NO_FRAUD_DETECTED');
+CREATE TYPE appointment_status_enum AS ENUM('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'PAYMENT_COMPLETED', 'SUSPENDED', 'REFUNDED', 'NO_PAYMENT_CANCELED', 'FORTUNE_TELLER_CANCELED', 'CUSTOMER_CANCELED', 'NO_FRAUD_DETECTED', 'FORTUNE_TELLER_DECLINED');
 
 CREATE TABLE APPOINTMENT (
     appointment_id CHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -300,7 +300,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION notify_cancel_appointment() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION notify_fortune_teller_cancel_appointment() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'APPOINTMENT');
+	
+	INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	VALUES (notification_id, 'CANCEL', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION notify_customer_cancel_appointment() RETURNS TRIGGER AS $$
 DECLARE
     notification_id UUID;
 BEGIN
@@ -338,7 +354,7 @@ FOR EACH ROW
 WHEN (NEW.status = 'CREATED')
 EXECUTE FUNCTION notify_new_appointment();
 
-CREATE OR REPLACE TRIGGER accecpt_appointment_notification
+CREATE OR REPLACE TRIGGER accept_appointment_notification
 AFTER UPDATE ON APPOINTMENT
 FOR EACH ROW
 WHEN (NEW.status = 'WAITING_FOR_PAYMENT')
@@ -350,11 +366,17 @@ FOR EACH ROW
 WHEN (NEW.status = 'FORTUNE_TELLER_DECLINED')
 EXECUTE FUNCTION notify_deny_appointment();
 
-CREATE OR REPLACE TRIGGER cancel_appointment_notification
+CREATE OR REPLACE TRIGGER fortune_teller_cancel_appointment_notification
 AFTER UPDATE ON APPOINTMENT
 FOR EACH ROW
-WHEN (NEW.status = 'NO_PAYMENT_CANCELED' OR NEW.status = 'USER_CANCELED')
-EXECUTE FUNCTION notify_cancel_appointment();
+WHEN (NEW.status = 'FORTUNE_TELLER_CANCELED')
+EXECUTE FUNCTION notify_fortune_teller_cancel_appointment();
+
+CREATE OR REPLACE TRIGGER customer_appointment_cancel_notification
+AFTER UPDATE ON APPOINTMENT
+FOR EACH ROW
+WHEN (NEW.status = 'CUSTOMER_CANCELED')
+EXECUTE FUNCTION notify_customer_cancel_appointment();
 
 CREATE OR REPLACE TRIGGER complete_appointment_notification
 AFTER UPDATE ON APPOINTMENT

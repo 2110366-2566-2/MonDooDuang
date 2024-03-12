@@ -41,6 +41,7 @@ export default function ConversationPage() {
           conversationId={selectedConversationId}
           showReport={showReport}
           userId={userId}
+          userType={userType}
         />
       </div>
       <ReportModal
