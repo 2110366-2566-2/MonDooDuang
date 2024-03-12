@@ -4,15 +4,17 @@ import { AppointmentSchema } from "../models/appointment/appointment.model"
 export const appointmentRepository = {
   createAppointment: async (appointment: AppointmentSchema) => {
     try {
-      await db.query(
+      const result = await db.query(
         `
           INSERT INTO APPOINTMENT (status, package_id, customer_id, fortune_teller_id, appointment_date) 
-          VALUES($1, $2, $3, $4, $5);
+          VALUES($1, $2, $3, $4, $5)
+          RETURNING *;
         `, [appointment.status, appointment.packageId, appointment.customerId, appointment.fortuneTellerId, appointment.appointmentDate]
       )
-      return true
+
+      return { isSuccess: true, appointmentId: result.rows[0].appointment_id }
     } catch (err) {
-      return false
+      return { isSuccess: false, appointmentId: "" }
     }
   },
 
@@ -25,6 +27,20 @@ export const appointmentRepository = {
     )
     return result.rows
   },
+
+  getAppointmentStatus: async (appointmentId: string) => {
+    const result = await db.query(
+      `
+        SELECT status
+        FROM APPOINTMENT
+        WHERE appointment_id = $1;
+      `, [appointmentId]
+    )
+
+    if (result.rowCount === 0) { return null }
+    return result.rows[0].status
+  },
+
   getUserInfo: async (userId: string) => {
     const result = await db.query(
       `SELECT user_id,fname,lname,phone_number,birth_date
