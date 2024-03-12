@@ -98,6 +98,7 @@ export default function SearchPage(): JSX.Element {
         isFortuneTeller={userType === "FORTUNE_TELLER"}
         menuFocus={"search"}
         username={username}
+        userId={userId}
       />
       <div className="sticky pt-5 z-10 top-0">
         <SearchBar

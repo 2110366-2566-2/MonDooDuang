@@ -33,6 +33,7 @@ export default function ConversationPage() {
         isFortuneTeller={userType === "FORTUNE_TELLER"}
         menuFocus={"conversation"}
         username={username}
+        userId={userId}
       />
       <div className="flex h-screen">
         <div className="w-1/4">
@@ -48,6 +49,7 @@ export default function ConversationPage() {
             conversationId={selectedConversationId}
             showReport={showReport}
             userId={userId}
+            userType={userType}
           />
         </div>
         <ReportModal
