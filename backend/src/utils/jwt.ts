@@ -10,16 +10,11 @@ export const JwtUtils = {
     )
   },
   verifyToken: (token: string) => {
-    let isVerified = false
-    let payload = {} as TokenInfoSchema
-    jsonwebtoken.verify(token, environment.jwt.secret, (err, decoded) => {
-      if (err) {
-        return
-      }
-      isVerified = true
-      payload = decoded as TokenInfoSchema
-    })
-
-    return { success: isVerified, data: payload }
+    try {
+      const payload = jsonwebtoken.verify(token, environment.jwt.secret) as TokenInfoSchema
+      return { success: true, data: payload }
+    } catch (err: any) {
+      return { success: false, message: `Token is not valid, ${err}` }
+    }
   }
 }

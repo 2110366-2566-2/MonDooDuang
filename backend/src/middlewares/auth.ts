@@ -4,10 +4,10 @@ import { JwtUtils } from "../utils/jwt"
 export const middleware = {
   protect: (req: Request, res: Response, next: NextFunction) => {
     let token
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1]
     }
-    if (!token || token === "null" || token === "undefined") {
+    if (token === undefined || token === "null" || token === "undefined") {
       return res.status(401).json({ success: false, message: "Unauthorized" })
     }
     const { success } = JwtUtils.verifyToken(token)
@@ -20,17 +20,20 @@ export const middleware = {
   authorize: (userType: "FORTUNE_TELLER" | "ADMIN") => {
     return (req: Request, res: Response, next: NextFunction) => {
       let token
-      if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+      if (
+        req.headers.authorization !== undefined &&
+        req.headers.authorization.startsWith("Bearer")
+      ) {
         token = req.headers.authorization.split(" ")[1]
       }
 
-      if (!token || token === "null" || token === "undefined") {
+      if (token === undefined || token === "null" || token === "undefined") {
         return res.status(401).json({ success: false, message: "Unauthorized" })
       }
 
-      const { success, data } = JwtUtils.verifyToken(token)
-      if (!success) {
-        return res.status(401).json({ success: false, message: "Unauthorized" })
+      const { success, data, message } = JwtUtils.verifyToken(token)
+      if (!success || data === undefined) {
+        return res.status(401).json({ success: false, message: `Unauthorized, ${message}` })
       }
 
       if (data.userType !== userType) {
