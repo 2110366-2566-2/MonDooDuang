@@ -14,16 +14,20 @@ import { formatDateTime } from "../../../common/utils/FormatUtils"
 import ErrorIcon from "../../../common/components/AppointmentCard/Icon/ErrorIcon"
 import dayjs from "dayjs"
 import NotiIcon from "../../../common/components/AppointmentCard/Icon/NotiIcon"
+import EventCompleteCard from "./EventCompleteCard"
+import WandIcon from "../../../common/components/AppointmentCard/Icon/WandIcon"
 
 export default function ConversationHeader({
   name,
   showReport,
   conversationId,
+  systemReport,
   userType
 }: {
   name: string
   showReport: () => void
   conversationId: string | null
+  systemReport: (selectReportMode: boolean) => void
   userType: string
 }) {
   const navigate = useNavigate()
@@ -133,6 +137,37 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getEventInProgressInfo = (appointmentId: string) => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังดูดวง</h1>
+        <p className="text-mdd-gray-success-text">
+          {userType === "FORTUNE_TELLER"
+            ? "กดจบงานเพื่อยืนยันว่าการดูดวงของคุณเสร็จสิ้นแล้ว"
+            : "กด 99 เพื่อน้อมรับคำทำนาย"}
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button =
+      userType === "FORTUNE_TELLER" ? (
+        <button
+          className="h-[37px] rounded-[10px] px-8 text-white bg-mdd-muted-green mx-5"
+          onClick={() => {
+            if (confirm("โปรกดตกลง เพื่อยืนยันการจบงาน") == true) {
+              AppointmentService.updateAppointmentStatus("EVENT_COMPLETED", appointmentId)
+              window.location.reload()
+            }
+          }}
+        >
+          จบงาน
+        </button>
+      ) : (
+        <></>
+      )
+    return { content, moreContent, button }
+  }
+
   return (
     <div className="flex flex-col bg-white bg-opacity-85">
       <div className="h-[60px] flex items-center justify-between p-4">
@@ -148,6 +183,7 @@ export default function ConversationHeader({
           <SearchIcon className="mr-2" />
           <ReportGmailerrorredIcon
             onClick={() => {
+              systemReport(false)
               showReport()
             }}
           />
@@ -186,7 +222,23 @@ export default function ConversationHeader({
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
-          if (waiting_day < 3) {
+          if (appointmentDateTime > today) {
+            const { content, moreContent, button } = getEventInProgressInfo(
+              appointment.appointmentId
+            )
+            return (
+              <BaseAppointmentCard
+                icon={<WandIcon />}
+                content={content}
+                moreContent={moreContent}
+                button={button}
+                formattedDate={formattedDate}
+                startTime={startTime}
+                endTime={endTime}
+                speciality={specialityMapper[appointment.speciality]}
+              />
+            )
+          } else if (waiting_day < 3) {
             const { content, moreContent, button } = getUpComingEventInfo(
               startTime,
               endTime,
@@ -247,6 +299,21 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "EVENT_COMPLETED") {
+          return (
+            <EventCompleteCard
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+              appointmentId={appointment.appointmentId}
+              fortuneTellerId={appointment.fortuneTellerId}
+              customerId={appointment.customerId}
+              isCustomer={userType === "CUSTOMER"}
+              showReport={showReport}
+              systemReport={systemReport}
             />
           )
         }
