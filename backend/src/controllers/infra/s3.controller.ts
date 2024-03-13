@@ -20,7 +20,7 @@ const downloadProfilePicture = async (req: Request, res: Response) => {
   const data = await s3Service.downloadProfilePicture(req.params.id)
   if (data && data.ContentType !== undefined && data.ContentType !== null) {
     res.set("Content-Type", data.ContentType)
-    res.status(200).send(data.Body)
+    res.status(200).send("data:image/jpg;base64," + data.Body?.toString("base64"))
   } else {
     res.status(404).json({ success: false, error: "File not found" })
   }
@@ -49,7 +49,7 @@ const downloadIdCard = async (req: Request, res: Response) => {
   const data = await s3Service.downloadIdCard(req.params.id)
   if (data && data.ContentType !== undefined && data.ContentType !== null) {
     res.set("Content-Type", data.ContentType)
-    res.status(200).send(data.Body)
+    res.status(200).send("data:image/jpg;base64," + data.Body?.toString("base64"))
   } else {
     res.status(404).json({ success: false, error: "File not found" })
   }
