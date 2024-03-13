@@ -7,7 +7,6 @@ import { ExampleService } from "./services/ExampleService"
 export default function ExamplePage() {
   const [isExampleModalOpen, setIsExampleModalOpen] = useState(false)
   const { userId, userType, username, token } = useContext(AuthContext)
-  console.log("token", token)
 
   useEffect(() => {
     const fetchAllTests = async () => {
