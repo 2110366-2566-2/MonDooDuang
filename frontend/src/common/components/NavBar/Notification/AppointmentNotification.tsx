@@ -54,23 +54,11 @@ export default function AppointmentNotification({
         notificationId,
         userId
       )
-      appointmentNotification
-        ? setAppointmentNotification(appointmentNotification)
-        : setAppointmentNotification({
-          appointmentNotificationType: "NONE",
-          updatedAt: new Date(),
-          otherName: "",
-          appointmentDate: new Date(),
-          speciality: "RUNES",
-          duration: 0,
-          isCustomer: true,
-          conversationId: ""
-        })
+      setAppointmentNotification(appointmentNotification)
     }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
 
-  if (appointmentNotification.appointmentNotificationType === "NONE") return <></>
   return (
     <div className="flex flex-col gap-2">
       {appointmentNotification.appointmentNotificationType === "REMINDER" ? (
