@@ -47,6 +47,6 @@ const getChatNotification = async (req: Request, res: Response) => {
 export const notificationController = {
   getNotifications,
   getAppointmentNotification,
-  updateNotificationType
+  updateNotificationType,
   getChatNotification
 }
