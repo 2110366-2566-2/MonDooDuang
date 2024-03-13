@@ -1,12 +1,12 @@
 import RootLayout from "../../common/components/RootLayout/RootLayout"
 import { AuthProvider } from "../../common/providers/AuthProvider"
-import AppointmentPage from "./AppointmentPage"
+import AdminReportManagementPage from "./AdminReportManagementPage"
 
-export default function AppointmentApp() {
+export default function AdminReportManagementApp() {
   return (
     <RootLayout>
       <AuthProvider>
-        <AppointmentPage/>
+        <AdminReportManagementPage />
       </AuthProvider>
     </RootLayout>
   )

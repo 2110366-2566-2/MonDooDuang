@@ -7,6 +7,7 @@ import { NotificationService } from "../../../services/NotificationService"
 import { specialityMapper } from "../../../../pages/FortuneTellerDetailPage/components/Packages/PackageList"
 import { Speciality } from "../../../../pages/FortuneTellerDetailPage/types/PackageTypes"
 import ReportModal from "../../../../pages/ConversationPage/components/ReportModal"
+import { showFullDate, showTime } from "../../../utils/FormatUtils"
 
 const typeMapper: Record<AppointmentNotificationType, string> = {
   NEW: "ต้องการนัดหมาย",
@@ -37,33 +38,6 @@ export default function AppointmentNotification({
     return specialityMapper[specialty]
   }
 
-  function addTimes(date: Date, minutes: number, hours: number): Date {
-    const result = new Date(date)
-    result.setMinutes(result.getMinutes() + minutes)
-    result.setHours(result.getHours() + hours)
-    return result
-  }
-
-  function padTo2Digits(num: number): string {
-    return num.toString().padStart(2, "0")
-  }
-
-  function showDate(date: Date): string {
-    date = addTimes(date, 0, 7)
-    return (
-      padTo2Digits(date.getDate()) +
-      "/" +
-      padTo2Digits(date.getMonth() + 1) +
-      "/" +
-      date.getFullYear()
-    )
-  }
-
-  function showTime(date: Date, duration: number): string {
-    date = addTimes(date, duration, 7)
-    return padTo2Digits(date.getHours()) + "." + padTo2Digits(date.getMinutes())
-  }
-
   const showReport = () => {
     setIsShowReport(true)
   }
@@ -80,23 +54,11 @@ export default function AppointmentNotification({
         notificationId,
         userId
       )
-      appointmentNotification
-        ? setAppointmentNotification(appointmentNotification)
-        : setAppointmentNotification({
-          appointmentNotificationType: "NONE",
-          updatedAt: new Date(),
-          otherName: "",
-          appointmentDate: new Date(),
-          speciality: "RUNES",
-          duration: 0,
-          isCustomer: true,
-          conversationId: ""
-        })
+      setAppointmentNotification(appointmentNotification)
     }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
 
-  if (appointmentNotification.appointmentNotificationType === "NONE") return <></>
   return (
     <div className="flex flex-col gap-2">
       {appointmentNotification.appointmentNotificationType === "REMINDER" ? (
@@ -164,7 +126,7 @@ export default function AppointmentNotification({
           <div className="flex gap-1">
             <div>ในวันที่</div>
             <div className="text-mdd-yellow600">
-              {showDate(appointmentNotification.appointmentDate)}
+              {showFullDate(appointmentNotification.appointmentDate)}
             </div>
             <div>เวลา</div>
             <div className="text-mdd-yellow600">
@@ -193,7 +155,7 @@ export default function AppointmentNotification({
       )}
       <div className="flex self-end gap-1 text-gray-500 text-sm">
         <div>วันที่</div>
-        <div>{showDate(appointmentNotification.updatedAt)}</div>
+        <div>{showFullDate(appointmentNotification.updatedAt)}</div>
         <div>เวลา</div>
         <div>{showTime(appointmentNotification.updatedAt, 0)}</div>
         <div>น.</div>

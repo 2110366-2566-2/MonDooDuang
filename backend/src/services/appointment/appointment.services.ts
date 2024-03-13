@@ -79,14 +79,13 @@ export const appointmentService = {
   },
 
   createReminderNotification: async (userId: string, appointmentId: string) => {
-    const notificationId = await notificationRepository.createNotification(userId, "APPOINTMENT")
-    if (notificationId !== null) {
-      await notificationRepository.createAppointmentNotification(
-        notificationId,
-        "REMINDER",
-        appointmentId
-      )
-    }
+    const result = await notificationRepository.createNotification(userId, "APPOINTMENT")
+    if (!result.isSuccess) return
+    await notificationRepository.createAppointmentNotification(
+      result.notificationId,
+      "REMINDER",
+      appointmentId
+    )
   },
 
   autoRemindAppointment: async (
@@ -118,5 +117,10 @@ export const appointmentService = {
   updateAppointmentStatus: async (appointmentId: string, status: string) => {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     return isSuccess
+  },
+
+  getIsReview: async (appointmentId: string, customerId: string) => {
+    const isReview = await appointmentRepository.getIsReview(appointmentId, customerId)
+    return isReview
   }
 }

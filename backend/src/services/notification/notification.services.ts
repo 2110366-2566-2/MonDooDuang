@@ -12,5 +12,13 @@ export const notificationService = {
       userId
     )
     return notification
+  },
+
+  getChatNotification: async (notificationId: string, userId: string) => {
+    const notification = await notificationRepository.getChatNotification(
+      notificationId,
+      userId
+    )
+    return notification
   }
 }
