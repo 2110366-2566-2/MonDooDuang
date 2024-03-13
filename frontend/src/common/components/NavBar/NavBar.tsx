@@ -71,7 +71,9 @@ export default function NavBar({
         {showNotification && <Notifications userId={userId} />}
         <div className="flex items-center justify-center gap-3">
           <div className="flex flex-col text-white">
-            <div className="font-noto-sans-eng font-normal">{username}</div>
+            <a href="/account" className="font-noto-sans-eng font-normal">
+              {username}
+            </a>
             <div className="mt-[-2px] text-xs font-noto-sans font-light">{role}</div>
           </div>
           <div className="cursor-pointer" onClick={() => handleLogout()}>

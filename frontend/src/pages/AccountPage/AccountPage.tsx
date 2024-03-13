@@ -69,12 +69,15 @@ export default function RegisterPage() {
   const [FTAlert, setFTAlert] = useState<boolean>(false)
   const [CFAlert, setCFAlert] = useState<boolean>(false)
   const [FAlert, setFAlert] = useState<boolean>(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+
+  // console.log(typeof today)
+  // console.log(birthDateAsDate)
+  console.log(isEditing)
 
   useEffect(() => {
     const fetchUserInformation = async () => {
       const response = await AccountService.getUserInformation(userId)
-
-      console.log(response)
 
       setFetchFormValues({
         ...fetchFormValues,
@@ -107,7 +110,7 @@ export default function RegisterPage() {
   const handlePasswordChange = (isConfirm: boolean, password: string) => {
     if (!isConfirm) {
       setFormValues({
-        ...formValues,
+        ...fetchFormValues,
         password: password
       })
       if (password === confirmPassword) setPasswordError(false)
@@ -148,18 +151,24 @@ export default function RegisterPage() {
   }
 
   const handleSubmitButton = async (event) => {
+    setIsEditing(false)
+    // event.preventDefault()
+    // const sum = checkAllInput()
+    // if (!sum || dateError || passwordError || emailError) {
+    //   return
+    // }
+    // const data = await RegisterService.createUser(formValues)
+    // if (data.success === false) {
+    //   setFAlert(true)
+    //   return
+    // }
+    // LocalStorageUtils.setData("token", data.data)
+    // setFTAlert(true)
+  }
+
+  const handleEditButton = async (event) => {
     event.preventDefault()
-    const sum = checkAllInput()
-    if (!sum || dateError || passwordError || emailError) {
-      return
-    }
-    const data = await RegisterService.createUser(formValues)
-    if (data.success === false) {
-      setFAlert(true)
-      return
-    }
-    LocalStorageUtils.setData("token", data.data)
-    setFTAlert(true)
+    setIsEditing(true)
   }
 
   return (
@@ -175,6 +184,15 @@ export default function RegisterPage() {
         <div className="flex mt-24 mb-8 pt-14 pb-10 flex-col items-center text-white w-[90%] border border-white rounded-[30px]">
           <p className="text-3xl font-medium">สร้างบัญชีใหม่</p>
           <form className="flex flex-col w-[80%]">
+            <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
+              <button
+                type="submit"
+                onClick={(e) => handleEditButton(e)}
+                className="text-[#3B3B3B] text-xl font-semibold"
+              >
+                แก้ไข
+              </button>
+            </div>
             <div className="flex mt-5">
               <div className="flex w-[46%] flex-col items-center justify-center gap-2">
                 <div className="flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]">
@@ -201,9 +219,7 @@ export default function RegisterPage() {
                   name="fName"
                   required
                   maxLength={100}
-                  value={formValues.fName}
-                  // onChange={handleTextFieldChange}
-                  placeholder={fetchFormValues.fName}
+                  value={fetchFormValues.fName}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
                 <p
@@ -222,7 +238,7 @@ export default function RegisterPage() {
                   name="lName"
                   required
                   maxLength={100}
-                  value={formValues.lName}
+                  value={fetchFormValues.lName}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -242,7 +258,7 @@ export default function RegisterPage() {
                 )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <CustomizedDatePicker
-                    defaultValue={today}
+                    defaultValue={dayjs(fetchFormValues.birthDate)}
                     disableFuture
                     views={["year", "month", "day"]}
                     className="h-10 rounded-[10px] resize-none bg-mdd-text-field"
@@ -252,7 +268,7 @@ export default function RegisterPage() {
                         required: true
                       }
                     }}
-                    value={formValues.birthDate}
+                    value={dayjs(fetchFormValues.birthDate)}
                     onChange={(d) => {
                       d?.$d.setHours(7, 0, 0)
                       setFormValues({
@@ -286,7 +302,7 @@ export default function RegisterPage() {
                   name="phoneNumber"
                   required
                   maxLength={20}
-                  value={formValues.phoneNumber}
+                  value={fetchFormValues.phoneNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -400,7 +416,7 @@ export default function RegisterPage() {
                   name="email"
                   required
                   maxLength={200}
-                  value={formValues.email}
+                  value={fetchFormValues.email}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -420,7 +436,7 @@ export default function RegisterPage() {
                   type="password"
                   id="8"
                   name="password"
-                  required
+                  disabled
                   value={formValues.password}
                   onChange={(e) => handlePasswordChange(false, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
@@ -441,7 +457,7 @@ export default function RegisterPage() {
                   type="password"
                   id="passwordConfirm"
                   name="passwordConfirm"
-                  required
+                  disabled
                   value={confirmPassword}
                   onChange={(e) => handlePasswordChange(true, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
@@ -467,7 +483,7 @@ export default function RegisterPage() {
                   name="accountNumber"
                   required
                   maxLength={100}
-                  value={formValues.accountNumber}
+                  value={fetchFormValues.accountNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
@@ -485,7 +501,7 @@ export default function RegisterPage() {
                 )}
                 <CustomizedSelect
                   name="select-bank"
-                  value={formValues.bankName}
+                  value={String(fetchFormValues.bankName)}
                   onChange={handleBankChange}
                   inputProps={{ MenuProps: { disableScrollLock: true } }}
                   required
@@ -513,15 +529,19 @@ export default function RegisterPage() {
                 </CustomizedSelect>
               </div>
             </div>
-            <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
-              <button
-                type="submit"
-                onClick={(e) => handleSubmitButton(e)}
-                className="text-[#3B3B3B] text-xl font-semibold"
-              >
-                เสร็จสิ้น
-              </button>
-            </div>
+            {isEditing ? (
+              <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
+                <button
+                  type="submit"
+                  onClick={(e) => handleSubmitButton(e)}
+                  className="text-[#3B3B3B] text-xl font-semibold"
+                >
+                  เสร็จสิ้น
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
           </form>
         </div>
         {FTAlert && (
