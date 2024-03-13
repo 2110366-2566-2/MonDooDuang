@@ -19,5 +19,11 @@ export const environment = {
     secretKey: process.env.STRIPE_SECRET_KEY ?? "",
     publicKey: process.env.STRIPE_PUBLIC_KEY ?? "",
     apiVersion: "2020-08-27"
+  },
+  s3: {
+    bucketName: process.env.S3_BUCKET_NAME ?? "",
+    region: process.env.S3_BUCKET_REGION ?? "",
+    accessKeyId: process.env.AWS_ACCESS_KEY ?? "",
+    secretAccessKey: process.env.AWS_SECRET_KEY ?? ""
   }
 }

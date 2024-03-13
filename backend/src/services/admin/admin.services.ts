@@ -1,6 +1,6 @@
 import { adminRepository } from "../../repositories/admin.repository"
 import { TokenInfoSchema } from "../../types/jwtToken"
-import { assignToken } from "../../utils/jwt"
+import { JwtUtils } from "../../utils/jwt"
 import bcrypt from "bcrypt"
 
 export const adminService = {
@@ -26,7 +26,7 @@ export const adminService = {
       username: "admin"
     }
 
-    const token = assignToken(tokenInfo)
+    const token = JwtUtils.assignToken(tokenInfo)
     return { success: true, message: "Successfully log in", data: token }
   }
 }

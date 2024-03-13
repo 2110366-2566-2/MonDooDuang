@@ -10,6 +10,7 @@ import { Speciality } from "../../../../pages/FortuneTellerDetailPage/types/Pack
 import ReportModal from "../../../../pages/ConversationPage/components/ReportModal"
 import { AppointmentService } from "../../../services/AppointmentService"
 import { AppointmentStatusType } from "../../../types/Appointment"
+import { showFullDate, showTime } from "../../../utils/FormatUtils"
 
 const typeMapper: Record<AppointmentNotificationType, string> = {
   NEW: "ต้องการนัดหมาย",
@@ -37,33 +38,6 @@ export default function AppointmentNotification({
 
   function translateSpeciality(specialty: Speciality) {
     return specialityMapper[specialty]
-  }
-
-  function addTimes(date: Date, minutes: number, hours: number): Date {
-    const result = new Date(date)
-    result.setMinutes(result.getMinutes() + minutes)
-    result.setHours(result.getHours() + hours)
-    return result
-  }
-
-  function padTo2Digits(num: number): string {
-    return num.toString().padStart(2, "0")
-  }
-
-  function showDate(date: Date): string {
-    date = addTimes(date, 0, 7)
-    return (
-      padTo2Digits(date.getDate()) +
-      "/" +
-      padTo2Digits(date.getMonth() + 1) +
-      "/" +
-      date.getFullYear()
-    )
-  }
-
-  function showTime(date: Date, duration: number): string {
-    date = addTimes(date, duration, 7)
-    return padTo2Digits(date.getHours()) + "." + padTo2Digits(date.getMinutes())
   }
 
   const showReport = () => {
@@ -168,7 +142,7 @@ export default function AppointmentNotification({
           <div className="flex gap-1">
             <div>ในวันที่</div>
             <div className="text-mdd-yellow600">
-              {showDate(appointmentNotification.appointmentDate)}
+              {showFullDate(appointmentNotification.appointmentDate)}
             </div>
             <div>เวลา</div>
             <div className="text-mdd-yellow600">
@@ -197,7 +171,7 @@ export default function AppointmentNotification({
       )}
       <div className="flex self-end gap-1 text-gray-500 text-sm">
         <div>วันที่</div>
-        <div>{showDate(appointmentNotification.updatedAt)}</div>
+        <div>{showFullDate(appointmentNotification.updatedAt)}</div>
         <div>เวลา</div>
         <div>{showTime(appointmentNotification.updatedAt, 0)}</div>
         <div>น.</div>

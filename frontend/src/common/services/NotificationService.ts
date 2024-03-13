@@ -33,5 +33,12 @@ export const NotificationService = {
     })
     const data = await res.json()
     return { isSuccess: data.success, message: data.message }
+  },
+  getChatNotification: async (notificationId: string, userId: string) => {
+    const response = await fetch(
+      `${environment.backend.url}/notification/chat/${notificationId}/${userId}`
+    )
+    const chatNotification = await response.json()
+    return chatNotification.data
   }
 }

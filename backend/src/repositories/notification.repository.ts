@@ -7,19 +7,22 @@ import {
 } from "../models/notification/notification.model"
 
 export const notificationRepository = {
-  createNotification: async (userId: string, type: NotificationType): Promise<null> => {
+  createNotification: async (
+    userId: string,
+    type: NotificationType
+  ): Promise<{ isSuccess: boolean, notificationId: string }> => {
     try {
       const result = await db.query(
         `
-            INSERT INTO NOTIFICATION (user_id, type)
-            VALUES($1, $2)
-            RETURNING notification_id;
+        INSERT INTO NOTIFICATION (user_id, type)
+        VALUES($1, $2)
+        RETURNING *;
         `,
         [userId, type]
       )
-      return result.rows[0].notification_id
+      return { isSuccess: true, notificationId: result.rows[0].notification_id }
     } catch (err) {
-      return null
+      return { isSuccess: false, notificationId: "" }
     }
   },
   createAppointmentNotification: async (
@@ -35,9 +38,24 @@ export const notificationRepository = {
         `,
         [notificationId, type, appointmentId]
       )
-      return true
+      return { isSuccess: true }
     } catch (err) {
-      return false
+      return { isSuccess: false }
+    }
+  },
+  createChatNotification: async (notificationId: string, conversationId: string) => {
+    try {
+      await db.query(
+        `
+          INSERT INTO CHAT_NOTIFICATION (notification_id, conversation_id)
+          VALUES($1, $2)
+          RETURNING *;
+        `,
+        [notificationId, conversationId]
+      )
+      return { isSuccess: true }
+    } catch (err) {
+      return { isSuccess: false }
     }
   },
   getNotifications: async (userId: string): Promise<null | NotificationSchema[]> => {
@@ -51,7 +69,6 @@ export const notificationRepository = {
         `,
         [userId, "HIDDEN"]
       )
-
       const packages: NotificationSchema[] = result.rows.map((row) => ({
         notificationId: row.notification_id,
         userId: row.user_id,
@@ -132,6 +149,36 @@ export const notificationRepository = {
       return true
     } catch (err) {
       return false
+    }
+  },
+  getChatNotification: async (notificationId: string, userId: string) => {
+    try {
+      const result = await db.query(
+        `
+            WITH conversationId AS (
+              SELECT conversation_id, updated_at
+              FROM CHAT_NOTIFICATION
+              WHERE notification_id = $1
+          ), otherId AS (
+              SELECT
+                  CASE
+                      WHEN $2 = customer_id THEN fortune_teller_id
+                      WHEN $2 = fortune_teller_id THEN customer_id
+                  END AS other_id
+              FROM conversation
+          ), otherName AS (
+            SELECT CONCAT(fname,' ',lname) AS full_name
+            FROM USER_TABLE
+            WHERE user_id = (SELECT other_id FROM otherId WHERE other_id IS NOT NULL)
+          )
+          SELECT otherName.full_name, conversationId.updated_at
+          FROM otherName, conversationId;
+        `,
+        [notificationId, userId]
+      )
+      return { otherName: result.rows[0].full_name, updatedAt: result.rows[0].updated_at }
+    } catch (err) {
+      return null
     }
   }
 }

@@ -11,5 +11,9 @@ router.get(
 router.post("/update-notification-type",
   notificationController.updateNotificationType
 )
+router.get(
+  "/chat/:notificationId/:userId",
+  notificationController.getChatNotification
+)
 
 export default router

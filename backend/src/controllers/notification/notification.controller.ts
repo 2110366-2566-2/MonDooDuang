@@ -32,8 +32,21 @@ const updateNotificationType = async (req: TypedRequestBody<{ type: string, noti
   res.status(200).json({ success: isSuccess, message: "Notification type updated" })
 }
 
+const getChatNotification = async (req: Request, res: Response) => {
+  const notificationId = req.params.notificationId
+  const userId = req.params.userId
+
+  const notification = await notificationService.getChatNotification(notificationId, userId)
+  if (notification === null) {
+    return res.status(400).json({ success: false })
+  }
+
+  res.status(200).json({ success: true, data: notification })
+}
+
 export const notificationController = {
   getNotifications,
   getAppointmentNotification,
   updateNotificationType
+  getChatNotification
 }
