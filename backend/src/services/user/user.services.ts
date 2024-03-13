@@ -55,7 +55,7 @@ export const userService = {
     const token = assignToken(tokenInfo)
     return { success: true, message: "Successfully create new user", data: token }
   },
-  login: async (body: { email: string, password: string }) => {
+  login: async (body: { email: string; password: string }) => {
     const email = body.email
     const password = body.password
 
@@ -79,5 +79,23 @@ export const userService = {
 
     const token = assignToken(tokenInfo)
     return { success: true, message: "Successfully log in", data: token }
+  },
+
+  getUserInformation: async (userId: string) => {
+    const UserInformation = await userRepository.getUserInformation(userId)
+    if (UserInformation === null) return null
+    return {
+      userId: UserInformation.user_id,
+      fName: UserInformation.fname,
+      lName: UserInformation.lname,
+      gender: UserInformation.gender,
+      phoneNumber: UserInformation.phone_number,
+      email: UserInformation.email,
+      birthDate: UserInformation.birth_date,
+      profilePicture: UserInformation.profile_picture,
+      bankName: UserInformation.bank_name,
+      accountNumber: UserInformation.account_number,
+      userType: UserInformation.user_type
+    }
   }
 }

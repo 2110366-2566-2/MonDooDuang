@@ -66,7 +66,17 @@ const registerUser = async (req: Request, res: Response) => {
   }
 }
 
+const getUserInformation = async (req: Request, res: Response) => {
+  const userId: string = req.params.userId
+  const userDetail = await userService.getUserInformation(userId)
+  if (!userDetail) {
+    return res.status(400).json({ success: false, message: `User with Id ${userId} is not found` })
+  }
+  res.status(200).json({ success: true, data: userDetail })
+}
+
 export const userController = {
   loginUser,
-  registerUser
+  registerUser,
+  getUserInformation
 }

@@ -39,9 +39,18 @@ export const userRepository = {
     const result = await db.query(
       `SELECT user_id,fname,lname,phone_number,birth_date
       FROM user_table
-      WHERE user_id = $1;`, [userId]
+      WHERE user_id = $1;`,
+      [userId]
     )
 
     return result.rows[0]
+  },
+
+  getUserInformation: async (user_id: string) => {
+    const user = await db.query<UserDBSchema>(
+      "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
+      [user_id]
+    )
+    return user.rows[0]
   }
 }
