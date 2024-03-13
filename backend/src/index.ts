@@ -8,6 +8,7 @@ import fortuneTellerRouter from "./routes/fortuneTeller.routes"
 import notificationRouter from "./routes/notification.routes"
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
+import s3Router from "./routes/s3.routes"
 import reviewRouter from "./routes/review.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
@@ -44,6 +45,7 @@ app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
+app.use("/images", s3Router)
 app.use("/admin", adminRouter)
 app.use("/review", reviewRouter)
 app.use("/notification", notificationRouter)
