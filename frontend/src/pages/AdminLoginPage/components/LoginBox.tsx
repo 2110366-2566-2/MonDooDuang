@@ -46,7 +46,7 @@ export default function LoginBox() {
       return
     }
     LocalStorageUtils.setData("token", data.data)
-    navigate("/search")
+    navigate("/admin/report_management")
   }
 
   return (
