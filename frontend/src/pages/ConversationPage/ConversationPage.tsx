@@ -9,6 +9,7 @@ export default function ConversationPage() {
   const [isShowReport, setIsShowReport] = useState(false)
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
   const { userId, userType, username } = useContext(AuthContext)
+  const [isSystemReport, setIsSystemReport] = useState(false)
 
   const handleConversationSelect = (conversationId: string) => {
     setSelectedConversationId(conversationId)
@@ -16,6 +17,10 @@ export default function ConversationPage() {
 
   const showReport = () => {
     setIsShowReport(true)
+  }
+
+  const systemReport = (selectReportMode: boolean) => {
+    setIsSystemReport(selectReportMode)
   }
 
   return (
@@ -34,10 +39,11 @@ export default function ConversationPage() {
             userId={userId}
           />
         </div>
-        <div className="w-3/4 border-l-2 border-white">
+        <div className="w-3/4 bg-black bg-opacity-40 border border-white">
           <ConversationBox
             conversationId={selectedConversationId}
             showReport={showReport}
+            systemReport={systemReport}
             userId={userId}
             userType={userType}
           />
@@ -48,7 +54,7 @@ export default function ConversationPage() {
           isCustomer={userType === "CUSTOMER"}
           userId={userId}
           conversationId={selectedConversationId}
-          isSystemReport={false}
+          isSystemReport={isSystemReport}
         />
       </div>
     </>

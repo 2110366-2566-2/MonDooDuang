@@ -14,6 +14,7 @@ export type AppointmentNotificationType =
   | "CANCEL"
   | "REMINDER"
   | "COMPLETE"
+  | "NONE"
 
 export interface NotificationTypes {
   notificationId: string
