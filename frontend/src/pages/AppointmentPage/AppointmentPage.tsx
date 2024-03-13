@@ -5,15 +5,8 @@ import NavBar from "../../common/components/NavBar/NavBar"
 import { useContext } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
 
-export default function AppointmentPage({
-  fid,
-  pid
-}: {
-  fid: string | undefined
-  pid: string | undefined
-}) {
+export default function AppointmentPage() {
   const { userId, userType, username } = useContext(AuthContext)
-
   const previousPath = document.referrer
   const PageNavigation = () => {
     return (
@@ -64,8 +57,6 @@ export default function AppointmentPage({
               }
             }}
             user_id={userId}
-            fid={fid}
-            pid={pid}
           />
         </div>
       </div>
