@@ -85,6 +85,21 @@ export const conversationRepository = {
     )
     return result.rows
   },
+  getOtherId: async (conversationId: string, senderId: string) => {
+    const result = await db.query(
+      `
+        SELECT 
+        CASE 
+            WHEN fortune_teller_id = $2 THEN customer_id
+            WHEN customer_id = $2 THEN fortune_teller_id
+        END AS result
+        FROM 
+            CONVERSATION
+        WHERE conversation_id = $1
+      `, [conversationId, senderId]
+    )
+    return { otherId: result.rows[0].result }
+  },
   addMessage: async (conversationId: string, senderId: string, message: string) => {
     try {
       await db.query(

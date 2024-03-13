@@ -23,6 +23,11 @@ export interface NotificationTypes {
   updatedAt: Date
 }
 
+export interface ChatNotificationTypes {
+  otherName: string
+  updatedAt: Date
+}
+
 export interface AppointmentNotificationTypes {
   appointmentNotificationType: AppointmentNotificationType
   updatedAt: Date

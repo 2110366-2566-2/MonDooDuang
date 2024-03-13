@@ -79,14 +79,13 @@ export const appointmentService = {
   },
 
   createReminderNotification: async (userId: string, appointmentId: string) => {
-    const notificationId = await notificationRepository.createNotification(userId, "APPOINTMENT")
-    if (notificationId !== null) {
-      await notificationRepository.createAppointmentNotification(
-        notificationId,
-        "REMINDER",
-        appointmentId
-      )
-    }
+    const result = await notificationRepository.createNotification(userId, "APPOINTMENT")
+    if (!result.isSuccess) return
+    await notificationRepository.createAppointmentNotification(
+      result.notificationId,
+      "REMINDER",
+      appointmentId
+    )
   },
 
   autoRemindAppointment: async (
