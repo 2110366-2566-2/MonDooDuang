@@ -7,6 +7,8 @@ import { NotificationService } from "../../../services/NotificationService"
 import { specialityMapper } from "../../../../pages/FortuneTellerDetailPage/components/Packages/PackageList"
 import { Speciality } from "../../../../pages/FortuneTellerDetailPage/types/PackageTypes"
 import ReportModal from "../../../../pages/ConversationPage/components/ReportModal"
+import { AppointmentService } from "../../../services/AppointmentService"
+import { AppointmentStatusType } from "../../../types/Appointment"
 
 const typeMapper: Record<AppointmentNotificationType, string> = {
   NEW: "ต้องการนัดหมาย",
@@ -95,6 +97,10 @@ export default function AppointmentNotification({
     }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
+
+  const updateAppointmentStatus = async (status: AppointmentStatusType, appointmentId: string) => {
+    await AppointmentService.updateAppointmentStatus(status, appointmentId)
+  }
 
   if (appointmentNotification.appointmentNotificationType === "NONE") return <></>
   return (
