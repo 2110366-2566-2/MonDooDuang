@@ -15,7 +15,7 @@ export default function Notifications({ userId }: { userId: string }) {
   }, [])
 
   return (
-    <div className="z-50 absolute top-16 right-32 bg-white rounded-xl w-1/3 max-h-[500px] overflow-y-auto p-4">
+    <div className="z-50 absolute top-16 right-32 bg-white rounded-xl min-w-1/3 max-h-[500px] overflow-y-auto p-4 whitespace-nowrap">
       {notifications.length ? (
         notifications
           .map((notificationItem) => (

@@ -7,19 +7,22 @@ import {
 } from "../models/notification/notification.model"
 
 export const notificationRepository = {
-  createNotification: async (userId: string, type: NotificationType): Promise<null> => {
+  createNotification: async (
+    userId: string,
+    type: NotificationType
+  ): Promise<{ isSuccess: boolean, notificationId: string }> => {
     try {
       const result = await db.query(
         `
-            INSERT INTO NOTIFICATION (user_id, type)
-            VALUES($1, $2)
-            RETURNING notification_id;
+        INSERT INTO NOTIFICATION (user_id, type)
+        VALUES($1, $2)
+        RETURNING *;
         `,
         [userId, type]
       )
-      return result.rows[0].notification_id
+      return { isSuccess: true, notificationId: result.rows[0].notification_id }
     } catch (err) {
-      return null
+      return { isSuccess: false, notificationId: "" }
     }
   },
   createAppointmentNotification: async (
@@ -35,10 +38,9 @@ export const notificationRepository = {
         `,
         [notificationId, type, appointmentId]
       )
-      return true
+      return { isSuccess: true }
     } catch (err) {
-      console.log(err)
-      return { isSuccess: false, notificationId: "" }
+      return { isSuccess: false }
     }
   },
   createChatNotification: async (notificationId: string, conversationId: string) => {
@@ -48,7 +50,8 @@ export const notificationRepository = {
           INSERT INTO CHAT_NOTIFICATION (notification_id, conversation_id)
           VALUES($1, $2)
           RETURNING *;
-        `, [notificationId, conversationId]
+        `,
+        [notificationId, conversationId]
       )
       return { isSuccess: true }
     } catch (err) {
@@ -155,7 +158,8 @@ export const notificationRepository = {
           )
           SELECT otherName.full_name, conversationId.updated_at
           FROM otherName, conversationId;
-        `, [notificationId, userId]
+        `,
+        [notificationId, userId]
       )
       return { otherName: result.rows[0].full_name, updatedAt: result.rows[0].updated_at }
     } catch (err) {

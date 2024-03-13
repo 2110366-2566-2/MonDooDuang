@@ -92,12 +92,18 @@ export const conversationService = {
         console.error("Error sending message")
       }
       // if only 1 unread message -> add to notification + chat notification
-      const { otherId }: { otherId: string } = await conversationRepository.getOtherId(room, senderId)
-      const unreadMessages = await conversationService.getUnreadMessagesByConversationId(room, otherId)
+      const { otherId }: { otherId: string } = await conversationRepository.getOtherId(
+        room,
+        senderId
+      )
+      const unreadMessages = await conversationService.getUnreadMessagesByConversationId(
+        room,
+        otherId
+      )
       if (unreadMessages.count === "1") {
-        const notificationId = await notificationRepository.createNotification(otherId, "CHAT")
-        if (notificationId === null) return
-        await notificationRepository.createChatNotification(notificationId, room)
+        const result = await notificationRepository.createNotification(otherId, "CHAT")
+        if (!result.isSuccess) return
+        await notificationRepository.createChatNotification(result.notificationId, room)
       }
     })
   },
