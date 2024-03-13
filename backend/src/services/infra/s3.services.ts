@@ -1,9 +1,6 @@
 import { S3ObjectSchema } from "../../models/infra/s3.model"
-import dotenv from "dotenv"
 import S3 from "aws-sdk/clients/s3"
 import { environment } from "../../configs/environment"
-
-dotenv.config()
 
 const bucketName = environment.s3.bucketName
 const region = environment.s3.region
