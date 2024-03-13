@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react"
 import {
   AppointmentNotificationType,
-  AppointmentNotificationTypes
+  AppointmentNotificationTypes,
+  NotificationType
 } from "../../../types/NotificationTypes"
 import { NotificationService } from "../../../services/NotificationService"
 import { specialityMapper } from "../../../../pages/FortuneTellerDetailPage/components/Packages/PackageList"
 import { Speciality } from "../../../../pages/FortuneTellerDetailPage/types/PackageTypes"
 import ReportModal from "../../../../pages/ConversationPage/components/ReportModal"
+import { AppointmentService } from "../../../services/AppointmentService"
+import { AppointmentStatusType } from "../../../types/Appointment"
 import { showFullDate, showTime } from "../../../utils/FormatUtils"
 
 const typeMapper: Record<AppointmentNotificationType, string> = {
@@ -15,8 +18,7 @@ const typeMapper: Record<AppointmentNotificationType, string> = {
   DENY: "ได้ปฏิเสธการนัดหมาย",
   CANCEL: "ได้ยกเลิกการนัดหมาย",
   REMINDER: "",
-  COMPLETE: "",
-  NONE: ""
+  COMPLETE: ""
 }
 
 export default function AppointmentNotification({
@@ -58,6 +60,20 @@ export default function AppointmentNotification({
     }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
+
+  const updateAppointmentStatus = async (status: AppointmentStatusType, appointmentId: string) => {
+    await AppointmentService.updateAppointmentStatus(status, appointmentId)
+  }
+
+  const updateNotificationType = async (type: NotificationType, notificationId: string) => {
+    await NotificationService.updateNotificationType(type, notificationId)
+  }
+
+  const handleRequestButton = async (status: AppointmentStatusType) => {
+    await updateAppointmentStatus(status,appointmentNotification.appointmentId)
+    await updateNotificationType("HIDDEN",notificationId)
+    window.location.reload()
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -143,10 +159,10 @@ export default function AppointmentNotification({
           )}
           {appointmentNotification.appointmentNotificationType === "NEW" && (
             <div className="flex self-end gap-4">
-              <button className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
+              <button onClick={() => handleRequestButton("FORTUNE_TELLER_DECLINED")} className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
                 ปฏิเสธ
               </button>
-              <button className="rounded-[10px] border border-mdd-muted-green bg-mdd-muted-green text-white text-center p-1 w-28">
+              <button onClick={() => handleRequestButton("WAITING_FOR_PAYMENT")} className="rounded-[10px] border border-mdd-muted-green bg-mdd-muted-green text-white text-center p-1 w-28">
                 ตอบรับนัดหมาย
               </button>
             </div>

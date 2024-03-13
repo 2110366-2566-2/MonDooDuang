@@ -1,5 +1,5 @@
 import { environment } from "../constants/environment"
-import { AppointmentNotificationTypes, NotificationTypes } from "../types/NotificationTypes"
+import { AppointmentNotificationTypes, NotificationType, NotificationTypes } from "../types/NotificationTypes"
 
 export const NotificationService = {
   getNotifications: async (userId: string): Promise<NotificationTypes[]> => {
@@ -16,6 +16,23 @@ export const NotificationService = {
     )
     const appointmentNotification = await response.json()
     return appointmentNotification.data
+  },
+  updateNotificationType: async (
+    type: NotificationType,
+    notificationId: string
+  ) => {
+    const res = await fetch(`${environment.backend.url}/notification/update-notification-type`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        type,
+        notificationId
+      })
+    })
+    const data = await res.json()
+    return { isSuccess: data.success, message: data.message }
   },
   getChatNotification: async (notificationId: string, userId: string) => {
     const response = await fetch(
