@@ -1,13 +1,14 @@
 import { S3ObjectSchema } from "../../models/infra/s3.model"
 import dotenv from "dotenv"
 import S3 from "aws-sdk/clients/s3"
+import { environment } from "../../configs/environment"
 
 dotenv.config()
 
-const bucketName = process.env.S3_BUCKET_NAME?.toString() ?? ""
-const region = process.env.S3_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
+const bucketName = environment.s3.bucketName
+const region = environment.s3.region
+const accessKeyId = environment.s3.accessKeyId
+const secretAccessKey = environment.s3.secretAccessKey
 
 const s3Client = new S3({
   accessKeyId,
@@ -22,13 +23,13 @@ export const s3Service = {
       Body: s3Object.image,
       Key: `${s3Object.userId}/profilePicture.jpg`
     }
-    s3Client.upload(uploadParams, async (err: Error | null, data: any) => {
-      if (err) {
-        console.log(err)
-        return false
-      }
+    try {
+      await s3Client.upload(uploadParams).promise()
       return true
-    })
+    } catch (error) {
+      console.log(error)
+      return false
+    }
   },
 
   downloadProfilePicture: async (userId: string) => {
@@ -50,13 +51,13 @@ export const s3Service = {
       Bucket: bucketName,
       Key: `${userId}/profilePicture.jpg`
     }
-    s3Client.deleteObject(deleteParams, (err: Error | null, data: any) => {
-      if (err) {
-        console.log(err)
-        return false
-      }
+    try {
+      await s3Client.deleteObject(deleteParams).promise()
       return true
-    })
+    } catch (error) {
+      console.log(error)
+      return false
+    }
   },
 
   uploadIdCard: async (s3Object: S3ObjectSchema) => {
@@ -65,13 +66,13 @@ export const s3Service = {
       Body: s3Object.image,
       Key: `${s3Object.userId}/idCard.jpg`
     }
-    s3Client.upload(uploadParams, async (err: Error | null, data: any) => {
-      if (err) {
-        console.log(err)
-        return false
-      }
+    try {
+      await s3Client.upload(uploadParams).promise()
       return true
-    })
+    } catch (error) {
+      console.log(error)
+      return false
+    }
   },
 
   downloadIdCard: async (userId: string) => {
