@@ -8,5 +8,9 @@ router.get(
   "/appointment/:notificationId/:userId",
   notificationController.getAppointmentNotification
 )
+router.get(
+  "/chat/:notificationId/:userId",
+  notificationController.getChatNotification
+)
 
 export default router

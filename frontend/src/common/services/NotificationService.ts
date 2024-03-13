@@ -16,5 +16,12 @@ export const NotificationService = {
     )
     const appointmentNotification = await response.json()
     return appointmentNotification.data
+  },
+  getChatNotification: async (notificationId: string, userId: string) => {
+    const response = await fetch(
+      `${environment.backend.url}/notification/chat/${notificationId}/${userId}`
+    )
+    const chatNotification = await response.json()
+    return chatNotification.data
   }
 }
