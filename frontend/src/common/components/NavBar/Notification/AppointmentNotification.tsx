@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import {
   AppointmentNotificationType,
-  AppointmentNotificationTypes
+  AppointmentNotificationTypes,
+  NotificationType
 } from "../../../types/NotificationTypes"
 import { NotificationService } from "../../../services/NotificationService"
 import { specialityMapper } from "../../../../pages/FortuneTellerDetailPage/components/Packages/PackageList"
@@ -16,8 +17,7 @@ const typeMapper: Record<AppointmentNotificationType, string> = {
   DENY: "ได้ปฏิเสธการนัดหมาย",
   CANCEL: "ได้ยกเลิกการนัดหมาย",
   REMINDER: "",
-  COMPLETE: "",
-  NONE: ""
+  COMPLETE: ""
 }
 
 export default function AppointmentNotification({
@@ -70,31 +70,21 @@ export default function AppointmentNotification({
     setIsShowReport(true)
   }
 
-  useEffect(() => {
-    const fetchAppointmentNotification = async ({
+  const fetchAppointmentNotification = async ({
+    notificationId,
+    userId
+  }: {
+    notificationId: string
+    userId: string
+  }) => {
+    const appointmentNotification = await NotificationService.getAppointmentNotification(
       notificationId,
       userId
-    }: {
-      notificationId: string
-      userId: string
-    }) => {
-      const appointmentNotification = await NotificationService.getAppointmentNotification(
-        notificationId,
-        userId
-      )
-      appointmentNotification
-        ? setAppointmentNotification(appointmentNotification)
-        : setAppointmentNotification({
-          appointmentNotificationType: "NONE",
-          updatedAt: new Date(),
-          otherName: "",
-          appointmentDate: new Date(),
-          speciality: "RUNES",
-          duration: 0,
-          isCustomer: true,
-          conversationId: ""
-        })
-    }
+    )
+    setAppointmentNotification(appointmentNotification)
+  }
+
+  useEffect(() => {
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
 
@@ -102,7 +92,16 @@ export default function AppointmentNotification({
     await AppointmentService.updateAppointmentStatus(status, appointmentId)
   }
 
-  if (appointmentNotification.appointmentNotificationType === "NONE") return <></>
+  const updateNotificationType = async (type: NotificationType, notificationId: string) => {
+    await NotificationService.updateNotificationType(type, notificationId)
+  }
+
+  const handleRequestButton = async (status: AppointmentStatusType) => {
+    await updateAppointmentStatus(status,appointmentNotification.appointmentId)
+    await updateNotificationType("HIDDEN",notificationId)
+    window.location.reload()
+  }
+
   return (
     <div className="flex flex-col gap-2">
       {appointmentNotification.appointmentNotificationType === "REMINDER" ? (
@@ -187,10 +186,10 @@ export default function AppointmentNotification({
           )}
           {appointmentNotification.appointmentNotificationType === "NEW" && (
             <div className="flex self-end gap-4">
-              <button className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
+              <button onClick={() => handleRequestButton("FORTUNE_TELLER_DECLINED")} className="rounded-[10px] border border-mdd-red-success-text text-mdd-red-success-text text-center p-1 w-28">
                 ปฏิเสธ
               </button>
-              <button className="rounded-[10px] border border-mdd-muted-green bg-mdd-muted-green text-white text-center p-1 w-28">
+              <button onClick={() => handleRequestButton("WAITING_FOR_PAYMENT")} className="rounded-[10px] border border-mdd-muted-green bg-mdd-muted-green text-white text-center p-1 w-28">
                 ตอบรับนัดหมาย
               </button>
             </div>

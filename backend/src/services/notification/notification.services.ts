@@ -12,5 +12,10 @@ export const notificationService = {
       userId
     )
     return notification
+  },
+
+  updateNotificationType: async (notificationId: string, type: string) => {
+    const isSuccess = await notificationRepository.updateNotificationType(notificationId, type)
+    return isSuccess
   }
 }

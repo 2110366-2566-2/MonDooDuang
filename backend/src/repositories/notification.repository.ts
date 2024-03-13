@@ -71,7 +71,7 @@ export const notificationRepository = {
     try {
       const result = await db.query(
         `
-        SELECT AN.type, AN.updated_at, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality, P.duration, C.conversation_id FROM APPOINTMENT_NOTIFICATION AS AN
+        SELECT AN.appointment_id, AN.type, AN.updated_at, A.customer_id, A.fortune_teller_id, A.appointment_date, P.speciality, P.duration, C.conversation_id FROM APPOINTMENT_NOTIFICATION AS AN
         INNER JOIN APPOINTMENT AS A ON A.appointment_id = AN.appointment_id
         INNER JOIN PACKAGE AS P ON A.package_id = P.package_id
         INNER JOIN CONVERSATION AS C ON A.customer_id = C.customer_id AND A.fortune_teller_id = C.fortune_teller_id
@@ -106,6 +106,7 @@ export const notificationRepository = {
       }
 
       return {
+        appointmentId: result.rows[0].appointment_id,
         appointmentNotificationType: result.rows[0].type,
         updatedAt: result.rows[0].updated_at,
         otherName,
@@ -117,6 +118,20 @@ export const notificationRepository = {
       }
     } catch (err) {
       return null
+    }
+  },
+  updateNotificationType: async (notificationId: string, type: string) => {
+    try {
+      await db.query(
+        `
+          UPDATE NOTIFICATION
+          SET type = $1
+          WHERE notification_id = $2;
+        `, [type, notificationId]
+      )
+      return true
+    } catch (err) {
+      return false
     }
   }
 }

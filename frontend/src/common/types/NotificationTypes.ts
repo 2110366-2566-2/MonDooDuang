@@ -14,7 +14,6 @@ export type AppointmentNotificationType =
   | "CANCEL"
   | "REMINDER"
   | "COMPLETE"
-  | "NONE"
 
 export interface NotificationTypes {
   notificationId: string
@@ -24,6 +23,7 @@ export interface NotificationTypes {
 }
 
 export interface AppointmentNotificationTypes {
+  appointmentId: string
   appointmentNotificationType: AppointmentNotificationType
   updatedAt: Date
   otherName: string

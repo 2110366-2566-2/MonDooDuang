@@ -8,5 +8,8 @@ router.get(
   "/appointment/:notificationId/:userId",
   notificationController.getAppointmentNotification
 )
+router.post("/update-notification-type",
+  notificationController.updateNotificationType
+)
 
 export default router
