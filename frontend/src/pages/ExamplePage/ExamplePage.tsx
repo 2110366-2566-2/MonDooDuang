@@ -1,11 +1,24 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ExampleModal from "./components/ExampleModal"
 import { AuthContext } from "../../common/providers/AuthProvider"
 import NavBar from "../../common/components/NavBar/NavBar"
+import { ExampleService } from "./services/ExampleService"
 
 export default function ExamplePage() {
   const [isExampleModalOpen, setIsExampleModalOpen] = useState(false)
-  const { userId, userType, username } = useContext(AuthContext)
+  const { userId, userType, username, token } = useContext(AuthContext)
+
+  useEffect(() => {
+    const fetchAllTests = async () => {
+      const customer = ExampleService.testCustomer(token)
+      const fortuneTeller = ExampleService.testFortuneTeller(token)
+      const admin = ExampleService.testAdmin(token)
+      const results = await Promise.all([customer, fortuneTeller, admin])
+      console.log("results", results)
+      console.log("userType", userType)
+    }
+    fetchAllTests()
+  }, [userType, token])
 
   return (
     <>
