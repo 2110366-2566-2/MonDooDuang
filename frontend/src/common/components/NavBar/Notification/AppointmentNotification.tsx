@@ -70,21 +70,20 @@ export default function AppointmentNotification({
     setIsShowReport(true)
   }
 
-  const fetchAppointmentNotification = async ({
-    notificationId,
-    userId
-  }: {
-    notificationId: string
-    userId: string
-  }) => {
-    const appointmentNotification = await NotificationService.getAppointmentNotification(
+  useEffect(() => {
+    const fetchAppointmentNotification = async ({
       notificationId,
       userId
-    )
-    setAppointmentNotification(appointmentNotification)
-  }
-
-  useEffect(() => {
+    }: {
+      notificationId: string
+      userId: string
+    }) => {
+      const appointmentNotification = await NotificationService.getAppointmentNotification(
+        notificationId,
+        userId
+      )
+      setAppointmentNotification(appointmentNotification)
+    }
     fetchAppointmentNotification({ notificationId, userId })
   }, [])
 
