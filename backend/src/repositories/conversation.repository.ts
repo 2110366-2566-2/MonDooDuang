@@ -1,7 +1,7 @@
 import { db } from "../configs/pgdbConnection"
 
 export const conversationRepository = {
-  getConversationsByUserId: async (userId: string) => {
+  getConversationsByUserId: async (userId: string, role: "CUSTOMER" | "FORTUNE_TELLER") => {
     const result = await db.query(
       `
         SELECT c.conversation_id 
@@ -12,10 +12,13 @@ export const conversationRepository = {
           ORDER BY created_at DESC
           LIMIT 1
         ) m ON c.conversation_id = m.conversation_id
-        WHERE fortune_teller_id = $1 OR customer_id = $1
+        WHERE CASE 
+          WHEN $2 = 'CUSTOMER' THEN fortune_teller_id 
+          ELSE customer_id 
+        END = $1
         ORDER BY m.created_at
       `,
-      [userId]
+      [userId, role]
     )
     return result.rows
   },
@@ -106,7 +109,9 @@ export const conversationRepository = {
         `,
         [fortunetellerId, customerId]
       )
-      if (existedConversation.rows.length > 0) { return { isSuccess: true, data: existedConversation.rows[0].conversation_id } }
+      if (existedConversation.rows.length > 0) {
+        return { isSuccess: true, data: existedConversation.rows[0].conversation_id }
+      }
       await db.query(
         `
           INSERT INTO CONVERSATION(fortune_teller_id, customer_id)

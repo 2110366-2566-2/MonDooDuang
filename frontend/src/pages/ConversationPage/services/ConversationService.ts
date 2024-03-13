@@ -1,8 +1,8 @@
 import { environment } from "../../../common/constants/environment"
 
 export const ConversationService = {
-  getConversationsByUserId: async (userId: string) => {
-    const response = await fetch(`${environment.backend.url}/conversations/${userId}`)
+  getConversationsByUserId: async (userId: string, role: string) => {
+    const response = await fetch(`${environment.backend.url}/conversations/${userId}/${role}`)
     return await response.json()
   },
   getNameWithLastMessage: async (conversationId: string, userId: string) => {
