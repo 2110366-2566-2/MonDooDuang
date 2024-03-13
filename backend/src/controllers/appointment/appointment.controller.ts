@@ -70,6 +70,11 @@ const updateAppointmentStatus = async (req: TypedRequestBody<{ status: string, a
   res.status(200).json({ success: isSuccess, message: "Appointment status updated" })
 }
 
+const getIsReview = async (req: Request, res: Response) => {
+  const isReview = await appointmentService.getIsReview(req.params.appointmentId, req.params.customerId)
+  res.status(200).json({ success: true, data: isReview })
+}
+
 export const appointmentController = {
   createAppointment,
   getFortuneTeller,
@@ -78,5 +83,6 @@ export const appointmentController = {
   getFortuneTellerAppointment,
   getUserInfo,
   getAppointmentByConversationId,
-  updateAppointmentStatus
+  updateAppointmentStatus,
+  getIsReview
 }

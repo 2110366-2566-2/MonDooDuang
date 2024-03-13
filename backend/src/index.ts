@@ -1,5 +1,4 @@
 import express, { Request, Response, Application } from "express"
-import dotenv from "dotenv"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
 import requestRouter from "./routes/request.routes"
@@ -8,6 +7,7 @@ import fortuneTellerRouter from "./routes/fortuneTeller.routes"
 import notificationRouter from "./routes/notification.routes"
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
+import reviewRouter from "./routes/review.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
 import { connectToDatabase } from "./configs/pgdbConnection"
@@ -43,6 +43,7 @@ app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
 app.use("/admin", adminRouter)
+app.use("/review", reviewRouter)
 app.use("/notification", notificationRouter)
 
 connectToDatabase().catch((error) => {
