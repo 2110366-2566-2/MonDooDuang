@@ -38,3 +38,30 @@ export const formatDateTime = (isoDateTimeString: string) => {
 
   return [formattedDate, formattedTime]
 }
+
+const addTimes = (date: Date, minutes: number, hours: number) => {
+  const result = new Date(date)
+  result.setMinutes(result.getMinutes() + minutes)
+  result.setHours(result.getHours() + hours)
+  return result
+}
+
+const padTo2Digits = (num: number) => {
+  return num.toString().padStart(2, "0")
+}
+
+export const showFullDate = (date: Date) => {
+  date = addTimes(date, 0, 7)
+  return (
+    padTo2Digits(date.getDate()) +
+    "/" +
+    padTo2Digits(date.getMonth() + 1) +
+    "/" +
+    date.getFullYear()
+  )
+}
+
+export const showTime = (date: Date, duration: number) => {
+  date = addTimes(date, duration, 7)
+  return padTo2Digits(date.getHours()) + "." + padTo2Digits(date.getMinutes())
+}

@@ -1,4 +1,5 @@
 import express, { Request, Response, Application } from "express"
+import exampleRouter from "./routes/example.routes"
 import paymentRouter from "./routes/payment.routes"
 import reportRouter from "./routes/report.routes"
 import requestRouter from "./routes/request.routes"
@@ -7,6 +8,7 @@ import fortuneTellerRouter from "./routes/fortuneTeller.routes"
 import notificationRouter from "./routes/notification.routes"
 import conversationRouter from "./routes/conversation.routes"
 import appointmentRouter from "./routes/appointment.routes"
+import s3Router from "./routes/s3.routes"
 import reviewRouter from "./routes/review.routes"
 import cors from "cors"
 import { connectToSocket } from "./configs/socketConnection"
@@ -34,6 +36,7 @@ server.listen(port, () => {
   console.log(`Server is Fire at http://localhost:${port}`)
 })
 
+app.use("/example", exampleRouter)
 app.use("/user", userRouter)
 app.use("/report", reportRouter)
 app.use("/payment", paymentRouter)
@@ -42,6 +45,7 @@ app.use("/request", requestRouter)
 app.use("/search", searchRouter)
 app.use("/conversations", conversationRouter)
 app.use("/fortuneteller", fortuneTellerRouter)
+app.use("/images", s3Router)
 app.use("/admin", adminRouter)
 app.use("/review", reviewRouter)
 app.use("/notification", notificationRouter)
