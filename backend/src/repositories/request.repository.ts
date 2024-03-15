@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { RequestStatus, UserType } from "../models/request/request.model"
+import { RequestStatus } from "../models/request/request.model"
 
 export const requestRepository = {
   updateRequestStatus: async (requestId: string, status: RequestStatus) => {
@@ -49,25 +49,5 @@ export const requestRepository = {
         profilePic: data.profile_pic
       }
     })
-  },
-  updateUserType: async (requestId: string, userType: UserType) => {
-    try {
-      await db.query(
-        `
-            UPDATE user_table
-            SET user_type = $2
-            WHERE user_id = (
-              SELECT fortune_teller_id
-              FROM request
-              WHERE request_id = $1
-            )
-            `,
-        [requestId, userType]
-      )
-      return { isSuccess: true}
-    } catch (err) {
-      console.error(err)
-      return { isSuccess: false }
-    }
   }
 }

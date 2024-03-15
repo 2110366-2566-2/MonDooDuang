@@ -5,6 +5,5 @@ const router = express.Router()
 
 router.post("/update-status", requestController.updateRequestStatus)
 router.get("/get-pending", requestController.getPendingRequest)
-router.post("/update-userType", requestController.updateUserType)
 
 export default router

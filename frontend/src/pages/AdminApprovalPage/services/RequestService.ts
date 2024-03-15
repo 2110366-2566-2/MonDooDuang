@@ -1,7 +1,6 @@
 import { environment } from "../../../common/constants/environment"
 
 type UpdatedStatus = "ACCEPTED" | "REJECTED"
-type UserType = "CUSTOMER" | "FORTUNE_TELLER"
 
 export const RequestService = {
   updateRequestStatus: async (requestId: string, status: UpdatedStatus) => {
@@ -22,20 +21,5 @@ export const RequestService = {
     const res = await fetch(`${environment.backend.url}/request/get-pending`)
     const data = await res.json()
     return data
-  },
-
-  updateUserType: async (requestId:string, userType: UserType) =>{
-    const res = await fetch(`${environment.backend.url}/request/update-userType`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        requestId,
-        userType
-      })
-    })
-    const data = await res.json()
-    return { isSuccess: data.success, message: data.message }
   }
 }
