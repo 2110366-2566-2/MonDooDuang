@@ -64,7 +64,7 @@ export const requestRepository = {
             `,
         [requestId, userType]
       )
-      return { isSuccess: true}
+      return { isSuccess: true }
     } catch (err) {
       console.error(err)
       return { isSuccess: false }
