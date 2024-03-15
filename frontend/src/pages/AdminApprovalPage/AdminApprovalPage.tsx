@@ -108,6 +108,7 @@ export default function AdminApprovalPage() {
               if (focusRequest) {
                 if (confirmType == "APPROVE") {
                   RequestService.updateRequestStatus(focusRequest?.requestId, "ACCEPTED")
+                  RequestService.updateUserType(focusRequest?.requestId, "FORTUNE_TELLER")
                 } else {
                   RequestService.updateRequestStatus(focusRequest.requestId, "REJECTED")
                 }
