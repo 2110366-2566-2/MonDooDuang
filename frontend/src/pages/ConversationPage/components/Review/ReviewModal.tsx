@@ -48,7 +48,6 @@ export default function ReviewModal(props: {
       if (!response.isSuccess) {
         return alert(response.message)
       }
-      window.location.href = "/conversation"
     }
   }
 
