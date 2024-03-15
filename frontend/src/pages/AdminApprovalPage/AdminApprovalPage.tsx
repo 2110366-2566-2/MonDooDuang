@@ -97,7 +97,7 @@ export default function AdminApprovalPage() {
             }}
           />
           <ConfirmModal
-            fortuneTeller={focusRequest ? focusRequest.stagename : ""}
+            fullName={focusRequest ? focusRequest.fullName : ""}
             type={confirmType}
             isVisible={isConfirmModalOpen}
             onClose={() => {
