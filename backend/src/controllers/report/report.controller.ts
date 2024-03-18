@@ -32,7 +32,16 @@ const getReporteeId = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: reporteeId })
 }
 
+const getAllReport = async (req:Request, res: Response) => {
+  const reports = await reportService.getAllReport()
+  
+  if(reports === null) {return res.status(400).json({success:false})}
+
+  res.status(200).json({success:true, data:reports})
+}
+
 export const reportController = {
   createReport,
-  getReporteeId
+  getReporteeId,
+  getAllReport
 }

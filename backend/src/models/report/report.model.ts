@@ -9,3 +9,15 @@ export interface ReportSchema {
   reporterId: string
   reporteeId: string
 }
+
+
+export interface ReportInfoSchema {
+  reportId: string
+  reportType: ReportType
+  reporterId: string
+  reporteeId: string
+  description: string
+  reporterName : string
+  reporteeName : string
+  reporteeProfile : string
+}
