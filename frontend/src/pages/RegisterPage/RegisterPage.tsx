@@ -109,7 +109,7 @@ export default function RegisterPage() {
   }
 
   const handleTelChange = (tel: string) => {
-    if (/^[0-9]{10}$/.test(tel) && tel.length === 10) setTelError(false)
+    if (/^[0-9]{10}$/.test(tel)) setTelError(false)
     else setTelError(true)
   }
 
