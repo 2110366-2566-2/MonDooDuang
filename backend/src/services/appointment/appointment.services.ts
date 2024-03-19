@@ -75,6 +75,10 @@ export const appointmentService = {
 
     if (appointmentStatus === "CREATED") {
       await appointmentRepository.updateAppointmentStatus(appointmentId, "FORTUNE_TELLER_DECLINED")
+      const notificationId = await notificationRepository.getNotificationIdByAppointmentIdAndType(appointmentId, "NEW")
+      if (notificationId !== null) {
+        await notificationRepository.updateNotificationType(notificationId, "HIDDEN")
+      }
     }
   },
 

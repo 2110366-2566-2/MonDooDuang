@@ -180,5 +180,20 @@ export const notificationRepository = {
     } catch (err) {
       return null
     }
+  },
+  getNotificationIdByAppointmentIdAndType: async (appointmentId: string, type: AppointmentNotificationType): Promise<null | string> => {
+    try {
+      const result = await db.query(
+        `
+        SELECT notification_id FROM APPOINTMENT_NOTIFICATION 
+        WHERE appointment_id = $1
+        AND type = $2
+        `,
+        [appointmentId, type]
+      )
+      return result.rows[0].notification_id
+    } catch (err) {
+      return null
+    }
   }
 }
