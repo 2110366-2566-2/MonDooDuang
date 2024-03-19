@@ -191,6 +191,7 @@ export const notificationRepository = {
         `,
         [appointmentId, type]
       )
+      if (result.rows.length === 0) return null
       return result.rows[0].notification_id
     } catch (err) {
       return null
