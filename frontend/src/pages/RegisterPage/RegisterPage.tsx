@@ -275,6 +275,9 @@ export default function RegisterPage() {
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
+                {(formError[3] || telError) && (
+                  <span className="absolute mt-[72px] text-red-500 text-xs">เบอร์โทรศัพท์ควรเป็นตัวเลขและมี 10 หลัก</span>
+                )}
               </div>
               <div className="relative flex w-[45%] flex-col items-start">
                 <p
@@ -433,6 +436,9 @@ export default function RegisterPage() {
                   onChange={(e) => handlePasswordChange(true, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
+                {passwordError && (
+                  <span className="absolute mt-[72px] text-red-500 text-xs">รหัสผ่านไม่ตรงกัน</span>
+                )}
               </div>
             </div>
             <p className="text-center text-3xl mt-8 font-medium">กรอกข้อมูลบัตร</p>
@@ -458,6 +464,9 @@ export default function RegisterPage() {
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
+                {(formError[7] || accountNumberError) && (
+                  <span className="absolute mt-[72px] text-red-500 text-xs">เลขที่บัญชีควรเป็นตัวเลขและมี 10-15 หลัก</span>
+                )}
               </div>
               <div className="relative flex flex-col items-start w-[54%]">
                 <p
