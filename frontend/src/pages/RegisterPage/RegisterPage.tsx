@@ -5,7 +5,7 @@ import dayjs from "dayjs"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { styled } from "@mui/material/styles"
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 import { Gender, UserSchema } from "./types/RegisterType"
 import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
 import ConfirmAlert from "./components/ConfirmAlert"
@@ -61,6 +61,8 @@ export default function RegisterPage() {
   const [passwordError, setPasswordError] = useState<boolean>(false)
   const [dateError, setDateError] = useState<boolean>(false)
   const [emailError, setEmailError] = useState<boolean>(false)
+  const [telError, setTelError] = useState<boolean>(false)
+  const [accountNumberError, setAccountNumberError] = useState<boolean>(false)
   const [FTAlert, setFTAlert] = useState<boolean>(false)
   const [CFAlert, setCFAlert] = useState<boolean>(false)
   const [FAlert, setFAlert] = useState<boolean>(false)
@@ -73,7 +75,9 @@ export default function RegisterPage() {
       ...formValues,
       [name]: value
     })
-    if (name == "email") handleEmailChange(value)
+    if (name === "email") handleEmailChange(value)
+    if (name === "phoneNumber") handleTelChange(value)
+    if (name === "accountNumber") handleAccountNumberChange(value)
   }
 
   const handlePasswordChange = (isConfirm: boolean, password: string) => {
@@ -104,6 +108,16 @@ export default function RegisterPage() {
     else setEmailError(true)
   }
 
+  const handleTelChange = (tel: string) => {
+    if (/^[0-9]{10}$/.test(tel) && tel.length === 10) setTelError(false)
+    else setTelError(true)
+  }
+
+  const handleAccountNumberChange = (accountNumber: string) => {
+    if (/^[0-9]{10,15}$/.test(accountNumber)) setAccountNumberError(false)
+    else setAccountNumberError(true)
+  }
+
   const checkAllInput = () => {
     const newArray: boolean[] = []
     newArray.push(formValues.fName === undefined || formValues.fName === "")
@@ -119,10 +133,10 @@ export default function RegisterPage() {
     return newArray.reduce((sum, bool) => sum && !bool, true)
   }
 
-  const handleSubmitButton = async (event) => {
+  const handleSubmitButton = async (event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     const sum = checkAllInput()
-    if (!sum || dateError || passwordError || emailError) {
+    if (!sum || dateError || passwordError || emailError || telError || accountNumberError) {
       return
     }
     const data = await RegisterService.createUser(formValues)
@@ -243,12 +257,12 @@ export default function RegisterPage() {
               <div className="relative flex w-[24%] flex-col items-start">
                 <p
                   className={`ml-3 text-xl ${
-                    formError[3] ? "text-mdd-invalid-label" : "text-white"
+                    formError[3] || telError ? "text-mdd-invalid-label" : "text-white"
                   }`}
                 >
                   เบอร์โทรศัพท์*
                 </p>
-                {formError[3] && (
+                {(formError[3] || telError) && (
                   <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
@@ -256,7 +270,7 @@ export default function RegisterPage() {
                   id="3"
                   name="phoneNumber"
                   required
-                  maxLength={20}
+                  maxLength={10}
                   value={formValues.phoneNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
@@ -393,6 +407,7 @@ export default function RegisterPage() {
                   name="password"
                   required
                   value={formValues.password}
+                  maxLength={100}
                   onChange={(e) => handlePasswordChange(false, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -414,6 +429,7 @@ export default function RegisterPage() {
                   name="passwordConfirm"
                   required
                   value={confirmPassword}
+                  maxLength={100}
                   onChange={(e) => handlePasswordChange(true, e.target.value)}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -424,12 +440,12 @@ export default function RegisterPage() {
               <div className="relative flex flex-col items-start w-[42%]">
                 <p
                   className={`ml-3 text-xl ${
-                    formError[7] ? "text-mdd-invalid-label" : "text-white"
+                    formError[7] || accountNumberError ? "text-mdd-invalid-label" : "text-white"
                   }`}
                 >
                   เลขที่บัญชี*
                 </p>
-                {formError[7] && (
+                {(formError[7] || accountNumberError) && (
                   <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
@@ -437,7 +453,7 @@ export default function RegisterPage() {
                   id="7"
                   name="accountNumber"
                   required
-                  maxLength={100}
+                  maxLength={15}
                   value={formValues.accountNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
