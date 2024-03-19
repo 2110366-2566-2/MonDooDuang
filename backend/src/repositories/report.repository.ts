@@ -112,9 +112,9 @@ export const reportRepository = {
       reporterId: row.reporter_id,
       reporteeId: row.reportee_id,
       description: row.description,
-      reporterName : row.reporter_full_name,
-      reporteeName : row.reportee_full_name,
-      reporteeProfile : row.profile_picture
+      reporterName: row.reporter_full_name,
+      reporteeName: row.reportee_full_name,
+      reporteeProfile: row.profile_picture
     }))
     return reports
   }

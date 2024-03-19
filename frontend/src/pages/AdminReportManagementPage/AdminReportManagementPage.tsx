@@ -11,7 +11,7 @@ export default function AdminReportManagementPage() {
   const highlight = "font-semibold text-mdd-focus-yellow cursor-pointer ease-in-out duration-500"
   const unhighlight = "opacity-50 text-white cursor-pointer ease-in-out duration-500"
 
-  let defualtMenuList = [
+  const defualtMenuList = [
     "รายงานหมอดูไม่มาตามนัดหมาย",
     "รายงานพฤติกรรมที่ไม่เหมาะสม",
     "รายงานเกี่ยวกับระบบ"
@@ -54,7 +54,7 @@ export default function AdminReportManagementPage() {
     if (focusIndex === 1) {
       return
     }
-    let newMenuHandler = ["", "", ""]
+    const newMenuHandler = ["", "", ""]
     menuList.map((menu: string, index: number) => {
       if (focusIndex === 0) {
         newMenuHandler[(index + 1) % menuList.length] = menu
