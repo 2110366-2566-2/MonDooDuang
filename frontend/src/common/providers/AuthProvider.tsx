@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react"
+import React, { createContext } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 import { LocalStorageUtils } from "../utils/LocalStorageUtils"
@@ -22,7 +22,6 @@ const AuthContext = createContext<AuthContextType>({
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { userType } = useContext(AuthContext)
 
   const token = LocalStorageUtils.getData("token")
   if (!token) {
@@ -36,20 +35,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     navigate("/login")
     return
   }
-  else {
-    if(userType === "FORTUNE_TELLER" || userType === "CUSTOMER"){
-      if (
-        location.pathname === "/admin/fortuneteller_approvals" ||
-        location.pathname === "/admin/report_management"
-      ) {
-        navigate("/admin/login")
-        return
-      }
-    }
-  }
 
   const decodedToken = jwtDecode<Omit<AuthContextType, "token">>(token)
   const contextValue = { ...decodedToken, token }
+
+  if (contextValue.userType === "FORTUNE_TELLER" || contextValue.userType === "CUSTOMER") {
+    if (
+      location.pathname === "/admin/fortuneteller_approvals" ||
+      location.pathname === "/admin/report_management"
+    ) {
+      navigate("/admin/login")
+      return
+    }
+  }
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 }
