@@ -137,6 +137,48 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getSuspendedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การชำระเงินถูกระงับ</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากมีการรายงานว่าหมอดูไม่มาตามเวลานัดหมาย</p>
+        <p className="text-mdd-gray-success-text">
+          โปรดรอการตรวจสอบจากผู้ดูแลระบบ
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getRefundedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูไม่มาตามเวลานัดหมาย</p>
+        <p className="text-mdd-gray-success-text">
+          ระบบจะทำการคืนเงินให้กับลูกค้า
+        </p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getNoFraudDetectEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">ตรวจสอบไม่พบปัญหา</h1>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการโอนเงินให้หมอดูตามปกติ</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
   const getEventInProgressInfo = (appointmentId: string) => {
     const content = (
       <>
@@ -316,7 +358,55 @@ export default function ConversationHeader({
               systemReport={systemReport}
             />
           )
-        }
+        }  else if (
+          appointment.status === "SUSPENDED"
+        ) {
+          const { content, moreContent, button } = getSuspendedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (
+          appointment.status === "REFUNDED"
+        ) {
+          const { content, moreContent, button } = getRefundedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (
+          appointment.status === "NO_FRAUD_DETECTED"
+        ) {
+          const { content, moreContent, button } = getNoFraudDetectEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<SuccessIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } 
       })}
     </div>
   )
