@@ -13,5 +13,6 @@ router.delete("/profile-picture/:id", s3Controller.deleteProfilePicture)
 
 router.get("/id-card/:id", s3Controller.downloadIdCard)
 router.post("/id-card/:id", upload.single("image"), s3Controller.uploadIdCard)
+router.delete("/id-card/:id", s3Controller.deleteIdCard)
 
 export default router
