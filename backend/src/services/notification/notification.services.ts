@@ -14,6 +14,11 @@ export const notificationService = {
     return notification
   },
 
+  updateNotificationType: async (notificationId: string, type: string) => {
+    const isSuccess = await notificationRepository.updateNotificationType(notificationId, type)
+    return isSuccess
+  },
+
   getChatNotification: async (notificationId: string, userId: string) => {
     const notification = await notificationRepository.getChatNotification(
       notificationId,

@@ -222,7 +222,7 @@ export default function ConversationHeader({
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
-          if (appointmentDateTime > today) {
+          if (appointmentDateTime < today) {
             const { content, moreContent, button } = getEventInProgressInfo(
               appointment.appointmentId
             )
