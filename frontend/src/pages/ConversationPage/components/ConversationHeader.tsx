@@ -245,7 +245,7 @@ export default function ConversationHeader({
           "day"
         )
 
-        if (appointment.status === "WAITING_FOR_PAYMENT") {
+        if (appointment.status === "WAITING_FOR_PAYMENT" && userType === "CUSTOMER") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
             appointment.price,
             paymentDate,
