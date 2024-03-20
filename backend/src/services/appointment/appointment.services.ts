@@ -20,7 +20,7 @@ export const appointmentService = {
     }
 
     // Schedule the auto decline
-    appointmentService.autoDecline(result.appointmentId, 24)
+    appointmentService.autoDecline(result.appointmentId, 24, "FORTUNE_TELLER_CANCELED")
 
     // Schedule 10 minutes reminder
     const remindDate = new Date(appointment.appointmentDate)
@@ -65,12 +65,12 @@ export const appointmentService = {
     return userInfo
   },
 
-  autoDeclineAppointment: async (appointmentId: string) => {
+  autoDeclineAppointment: async (appointmentId: string, status: string) => {
     // Check if appointment is still CREATED or WAITING_FOR_PAYMENT over 24 hours
     const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
 
     if (appointmentStatus === "CREATED" || appointmentStatus === "WAITING_FOR_PAYMENT") {
-      await appointmentRepository.updateAppointmentStatus(appointmentId, "FORTUNE_TELLER_DECLINED")
+      await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     }
   },
 
@@ -114,7 +114,7 @@ export const appointmentService = {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     if (isSuccess && status === "WAITING_FOR_PAYMENT") {
       // Schedule the auto decline
-      appointmentService.autoDecline(appointmentId, 24)
+      appointmentService.autoDecline(appointmentId, 24, "NO_PAYMENT_CANCELED")
     }
     return isSuccess
   },
@@ -124,11 +124,11 @@ export const appointmentService = {
     return isReview
   },
 
-  autoDecline: (appointmentId: string, delayHour: number) => {
+  autoDecline: (appointmentId: string, delayHour: number, status: string) => {
     const declineDate = new Date()
     declineDate.setHours(declineDate.getHours() + delayHour)
     scheduleJob(declineDate, async () => {
-      await appointmentService.autoDeclineAppointment(appointmentId)
+      await appointmentService.autoDeclineAppointment(appointmentId, status)
     })
   }
 }
