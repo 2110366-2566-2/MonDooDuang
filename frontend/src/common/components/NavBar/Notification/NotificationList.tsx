@@ -1,5 +1,6 @@
 import { NotificationTypes } from "../../../types/NotificationTypes"
 import AppointmentNotification from "./AppointmentNotification"
+import ChatNotification from "./ChatNotification"
 
 export default function NotificationList({
   notificationItem,
@@ -17,6 +18,13 @@ export default function NotificationList({
             userId={userId}
           />
         </>
+      )}
+      {notificationItem.notificationType === "CHAT" && (
+        <ChatNotification
+          notificationId={notificationItem.notificationId}
+          userId={userId}
+        />
+
       )}
     </>
   )

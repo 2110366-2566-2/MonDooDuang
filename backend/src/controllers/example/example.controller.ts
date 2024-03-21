@@ -4,7 +4,7 @@ import { Request, Response } from "express"
 // Do call services instead
 
 const helloWorld = (req: Request, res: Response) => {
-  res.send("Hello World")
+  res.status(200).json({ message: "Hello World" })
 }
 
 export const exampleController = {

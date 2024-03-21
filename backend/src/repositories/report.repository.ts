@@ -52,11 +52,15 @@ export const reportRepository = {
   getAppointmentIds: async (customerId: string, fortuneTellerId: string) => {
     const result = await db.query(
       `
+        WITH now_datetime AS ( SELECT NOW() at time zone 'utc' at time zone 'Etc/GMT+7' )
+
         SELECT appointment_id
-        FROM APPOINTMENT
-        WHERE customer_id = $1
-        AND fortune_teller_id = $2
-        AND status = 'EVENT_COMPLETED';
+        FROM APPOINTMENT A, now_datetime
+        WHERE A.customer_id = $1
+        AND A.fortune_teller_id = $2
+        AND A.status IN ('WAITING_FOR_EVENT','EVENT_COMPLETED')
+        AND A.appointment_date <= now_datetime.timezone 
+        AND now_datetime.timezone <= A.appointment_date + INTERVAL '1 DAY';
       `,
       [customerId, fortuneTellerId]
     )

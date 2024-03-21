@@ -20,11 +20,7 @@ export const appointmentService = {
     }
 
     // Schedule the auto decline
-    const declineDate = new Date()
-    declineDate.setHours(declineDate.getHours() + 24)
-    scheduleJob(declineDate, async () => {
-      await appointmentService.autoDeclineAppointment(result.appointmentId)
-    })
+    appointmentService.autoDecline(result.appointmentId, 24, "FORTUNE_TELLER_DECLINED")
 
     // Schedule 10 minutes reminder
     const remindDate = new Date(appointment.appointmentDate)
@@ -69,24 +65,24 @@ export const appointmentService = {
     return userInfo
   },
 
-  autoDeclineAppointment: async (appointmentId: string) => {
-    // Check if appointment is still CREATED over 24 hours
+  autoDeclineAppointment: async (appointmentId: string, status: string) => {
+    // Check if appointment is still CREATED or WAITING_FOR_PAYMENT over 24 hours
     const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
 
-    if (appointmentStatus === "CREATED") {
-      await appointmentRepository.updateAppointmentStatus(appointmentId, "FORTUNE_TELLER_DECLINED")
+    if ((appointmentStatus === "CREATED" && status === "FORTUNE_TELLER_DECLINED") ||
+    (appointmentStatus === "WAITING_FOR_PAYMENT" && status === "NO_PAYMENT_CANCELED")) {
+      await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     }
   },
 
   createReminderNotification: async (userId: string, appointmentId: string) => {
-    const notificationId = await notificationRepository.createNotification(userId, "APPOINTMENT")
-    if (notificationId !== null) {
-      await notificationRepository.createAppointmentNotification(
-        notificationId,
-        "REMINDER",
-        appointmentId
-      )
-    }
+    const result = await notificationRepository.createNotification(userId, "APPOINTMENT")
+    if (!result.isSuccess) return
+    await notificationRepository.createAppointmentNotification(
+      result.notificationId,
+      "REMINDER",
+      appointmentId
+    )
   },
 
   autoRemindAppointment: async (
@@ -117,11 +113,23 @@ export const appointmentService = {
 
   updateAppointmentStatus: async (appointmentId: string, status: string) => {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
+    if (isSuccess && status === "WAITING_FOR_PAYMENT") {
+      // Schedule the auto decline
+      appointmentService.autoDecline(appointmentId, 24, "NO_PAYMENT_CANCELED")
+    }
     return isSuccess
   },
 
   getIsReview: async (appointmentId: string, customerId: string) => {
     const isReview = await appointmentRepository.getIsReview(appointmentId, customerId)
     return isReview
+  },
+
+  autoDecline: (appointmentId: string, delayHour: number, status: string) => {
+    const declineDate = new Date()
+    declineDate.setHours(declineDate.getHours() + delayHour)
+    scheduleJob(declineDate, async () => {
+      await appointmentService.autoDeclineAppointment(appointmentId, status)
+    })
   }
 }
