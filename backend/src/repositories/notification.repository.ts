@@ -166,6 +166,7 @@ export const notificationRepository = {
                       WHEN $2 = fortune_teller_id THEN customer_id
                   END AS other_id
               FROM conversation
+              WHERE conversation.conversation_id = (SELECT conversation_id FROM conversationId)
           ), otherName AS (
             SELECT CONCAT(fname,' ',lname) AS full_name
             FROM USER_TABLE
