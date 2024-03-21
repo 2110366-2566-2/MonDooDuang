@@ -24,15 +24,14 @@ export const RequestService = {
     return data
   },
 
-  updateUserType: async (requestId:string, userType: UserType) =>{
-    const res = await fetch(`${environment.backend.url}/request/update-userType`, {
+  updateFortuneTellerTypeAndVerified: async (requestId:string) =>{
+    const res = await fetch(`${environment.backend.url}/request/update-fortuneTellerTypeAndVerified`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        requestId,
-        userType
+        requestId
       })
     })
     const data = await res.json()

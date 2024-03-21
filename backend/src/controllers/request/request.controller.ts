@@ -1,6 +1,7 @@
 import { Response, Request } from "express"
 import { RequestStatus, UserType } from "../../models/request/request.model"
 import { requestService } from "../../services/request/request.services"
+import { String } from "aws-sdk/clients/apigateway"
 
 const updateRequestStatus = async (req: Request, res: Response) => {
   const { requestId, status }: { requestId: string, status: RequestStatus } = req.body
@@ -14,9 +15,9 @@ const getPendingRequest = async (req: Request, res: Response) => {
   res.status(200).json(requests)
 }
 
-const updateUserType = async (req: Request, res: Response) => {
-  const { requestId, userType }: { requestId: string, userType: UserType } = req.body
-  const result = await requestService.updateUserType(requestId, userType)
+const updateToFortuneTellerTypeAndVerified = async (req: Request, res: Response) => {
+  const { requestId }: { requestId: String } = req.body
+  const result = await requestService.updateToFortuneTellerTypeAndVerified(requestId)
   if (result.success) return res.status(200).json(result)
   res.status(400).json(result)
 }
@@ -24,5 +25,5 @@ const updateUserType = async (req: Request, res: Response) => {
 export const requestController = {
   updateRequestStatus,
   getPendingRequest,
-  updateUserType
+  updateToFortuneTellerTypeAndVerified
 }

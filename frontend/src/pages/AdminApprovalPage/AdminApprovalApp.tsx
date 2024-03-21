@@ -5,9 +5,9 @@ import AdminApprovalPage from "./AdminApprovalPage"
 export default function AdminApprovalApp() {
   return (
     <RootLayout>
-      <AuthProvider>
-        <AdminApprovalPage />
-      </AuthProvider>
+      {/* <AuthProvider> */}
+      <AdminApprovalPage />
+      {/* </AuthProvider> */}
     </RootLayout>
   )
 }

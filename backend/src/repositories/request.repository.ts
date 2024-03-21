@@ -49,19 +49,40 @@ export const requestRepository = {
       }
     })
   },
-  updateUserType: async (requestId: string, userType: UserType) => {
+  updateFortuneTellerType: async (requestId: string) => {
     try {
       await db.query(
         `
             UPDATE user_table
-            SET user_type = $2
+            SET user_type = 'FORTUNE_TELLER'
             WHERE user_id = (
               SELECT fortune_teller_id
               FROM request
               WHERE request_id = $1
-            )
+            );
             `,
-        [requestId, userType]
+        [requestId]
+      )
+      return { isSuccess: true }
+    } catch (err) {
+      console.error(err)
+      return { isSuccess: false }
+    }
+  },
+
+  updateFortuneTellerVerified: async (requestId: string) => {
+    try {
+      await db.query(
+        `
+            UPDATE fortune_teller
+            SET is_verified = true
+            WHERE fortune_teller_id = (
+              SELECT fortune_teller_id
+              FROM request
+              WHERE request_id = $1
+            );
+            `,
+        [requestId]
       )
       return { isSuccess: true }
     } catch (err) {
