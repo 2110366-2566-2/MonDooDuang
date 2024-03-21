@@ -38,7 +38,7 @@ export const s3Service = {
       const result = await s3Client.getObject(downloadParams).promise()
       return result
     } catch (error) {
-      console.log(error)
+      console.log("this fail")
       return null
     }
   },
