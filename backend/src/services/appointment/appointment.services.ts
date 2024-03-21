@@ -1,5 +1,5 @@
 import { appointmentRepository } from "../../repositories/appointment.repository"
-import { AppointmentSchema } from "../../models/appointment/appointment.model"
+import { AppointmentSchema, AppointmentStatus } from "../../models/appointment/appointment.model"
 import { fortuneTellerRepository } from "../../repositories/fortuneTeller.repository"
 import { packageRepository } from "../../repositories/package.repository"
 import { userRepository } from "../../repositories/user.repository"
@@ -118,7 +118,7 @@ export const appointmentService = {
     return appointments
   },
 
-  updateAppointmentStatus: async (appointmentId: string, status: string) => {
+  updateAppointmentStatus: async (appointmentId: string, status: AppointmentStatus) => {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     return isSuccess
   },

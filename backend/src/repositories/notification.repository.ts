@@ -137,7 +137,7 @@ export const notificationRepository = {
       return null
     }
   },
-  updateNotificationType: async (notificationId: string, type: string) => {
+  updateNotificationType: async (notificationId: string, type: NotificationType) => {
     try {
       await db.query(
         `
