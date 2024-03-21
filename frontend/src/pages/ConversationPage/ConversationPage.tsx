@@ -4,10 +4,13 @@ import ConversationBox from "./components/ConversationBox"
 import NavBar from "../../common/components/NavBar/NavBar"
 import { useContext, useState } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
+import { useParams } from "react-router-dom"
 
 export default function ConversationPage() {
+  const { cid } = useParams<{ cid: string }>()
   const [isShowReport, setIsShowReport] = useState(false)
-  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(cid || null)
+  console.log(selectedConversationId)
   const { userId, userType, username } = useContext(AuthContext)
   const [isSystemReport, setIsSystemReport] = useState(false)
 
@@ -37,6 +40,7 @@ export default function ConversationPage() {
             onConversationSelect={handleConversationSelect}
             selectedConversationId={selectedConversationId}
             userId={userId}
+            userType={userType}
           />
         </div>
         <div className="w-3/4 bg-black bg-opacity-40 border border-white">

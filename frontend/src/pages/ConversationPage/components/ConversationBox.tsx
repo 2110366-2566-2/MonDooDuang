@@ -20,7 +20,7 @@ export default function ConversationBox({
   showReport: () => void
   systemReport: (selectReportMode: boolean) => void
   userId: string
-  userType: string
+  userType: "CUSTOMER" | "FORTUNE_TELLER" | "ADMIN"
 }) {
   const [messages, setMessages] = useState<MessageInformation[]>([])
   const [messageText, setMessageText] = useState<string>("")
