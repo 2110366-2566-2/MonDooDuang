@@ -137,6 +137,18 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getNoPaymentInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมดเวลาในการชำระเงิน</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
   const getSuspendedEventInfo = () => {
     const content = (
       <>
@@ -331,6 +343,20 @@ export default function ConversationHeader({
           )
         } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
           const { content, moreContent, button } = getDeclinedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "NO_PAYMENT_CANCELED") {
+          const { content, moreContent, button } = getNoPaymentInfo()
           return (
             <BaseAppointmentCard
               icon={<ErrorIcon />}
