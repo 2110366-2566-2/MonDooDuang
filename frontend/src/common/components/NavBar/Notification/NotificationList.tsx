@@ -20,12 +20,11 @@ export default function NotificationList({
         </>
       )}
       {notificationItem.notificationType === "CHAT" && (
-        <ChatNotification
-          notificationId={notificationItem.notificationId}
-          userId={userId}
-        />
-
+        <ChatNotification notificationId={notificationItem.notificationId} userId={userId} />
       )}
+      {/* {notificationItem.notificationType === "VERIFICATION" && (
+        <ChatNotification notificationId={notificationItem.notificationId} userId={userId} />
+      )} */}
     </>
   )
 }
