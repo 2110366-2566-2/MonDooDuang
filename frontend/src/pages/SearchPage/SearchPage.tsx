@@ -93,7 +93,7 @@ export default function SearchPage(): JSX.Element {
     }
   }
   return (
-    <div className="">
+    <div>
       <NavBar
         isFortuneTeller={userType === "FORTUNE_TELLER"}
         menuFocus={"search"}
