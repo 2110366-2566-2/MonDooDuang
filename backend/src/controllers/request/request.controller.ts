@@ -17,8 +17,17 @@ const getPendingRequest = async (req: Request, res: Response) => {
   requests.forEach(req => {
     const getProfilePic = async () => {
       const data = await s3Service.downloadProfilePicture(req.fortuneTellerId)
-      return  data && data.ContentType !== undefined && data.ContentType !== null? "data:image/jpg;base64," + data.Body?.toString("base64") :null
-
+      const profilePic =  data && data.ContentType !== undefined && data.ContentType !== null? "data:image/jpg;base64," + data.Body?.toString("base64") :null
+      var new_req : RequestSchema = {requestId: req.requestId,
+      fortuneTellerId: req.fortuneTellerId,
+      stagename: req.stagename,
+      identityCardNumber: req.identityCardNumber,
+      fullName: req.fullName,
+      phoneNumber: req.phoneNumber,
+      approvalPic: req.approvalPic,
+      profilePic: profilePic}
+      console.log(new_req)
+      adjust_req.push(req)
     }
     const getIdCard = async () => {
       const data = await s3Service.downloadIdCard(req.fortuneTellerId)
@@ -28,17 +37,8 @@ const getPendingRequest = async (req: Request, res: Response) => {
       
     }
     getProfilePic();
-    const profilePic:string = getProfilePic();
-    var new_req : RequestSchema = {requestId: req.requestId,
-    fortuneTellerId: req.fortuneTellerId,
-    stagename: req.stagename,
-    identityCardNumber: req.identityCardNumber,
-    fullName: req.fullName,
-    phoneNumber: req.phoneNumber,
-    approvalPic: req.approvalPic,
-    profilePic: profilePic}
-    adjust_req.push(new_req)
     // getIdCard();
+    // adjust_req.push(req);
   });
   res.status(200).json(adjust_req)
 }
