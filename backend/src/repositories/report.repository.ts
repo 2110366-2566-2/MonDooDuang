@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { ReportSchema } from "../models/report/report.model"
+import { ReportInfoSchema, ReportSchema } from "../models/report/report.model"
 
 export const reportRepository = {
   createReport: async (report: ReportSchema) => {
@@ -52,11 +52,15 @@ export const reportRepository = {
   getAppointmentIds: async (customerId: string, fortuneTellerId: string) => {
     const result = await db.query(
       `
+        WITH now_datetime AS ( SELECT NOW() at time zone 'utc' at time zone 'Etc/GMT+7' )
+
         SELECT appointment_id
-        FROM APPOINTMENT
-        WHERE customer_id = $1
-        AND fortune_teller_id = $2
-        AND status = 'EVENT_COMPLETED';
+        FROM APPOINTMENT A, now_datetime
+        WHERE A.customer_id = $1
+        AND A.fortune_teller_id = $2
+        AND A.status IN ('WAITING_FOR_EVENT','EVENT_COMPLETED')
+        AND A.appointment_date <= now_datetime.timezone 
+        AND now_datetime.timezone <= A.appointment_date + INTERVAL '1 DAY';
       `,
       [customerId, fortuneTellerId]
     )
@@ -76,5 +80,42 @@ export const reportRepository = {
       `,
       [...appointmentIds]
     )
+  },
+  getAllReport: async () => {
+    const result = await db.query(
+      `SELECT 
+      r.report_id,
+      r.report_type,
+      r.reporter_id,
+      CASE 
+        WHEN r.report_type = 'SYSTEM_ERROR' THEN NULL
+          ELSE r.reportee_id 
+      END AS reportee_id,
+      r.description,
+      CONCAT(u1.fname, ' ', u1.lname) AS reporter_full_name,
+      u2.profile_picture,
+      CASE 
+          WHEN r.report_type = 'SYSTEM_ERROR' THEN NULL
+          ELSE CONCAT(u2.fname, ' ', u2.lname)
+      END AS reportee_full_name
+        
+          
+      FROM REPORT r
+      JOIN USER_TABLE u1 ON r.reporter_id = u1.user_id
+      LEFT JOIN USER_TABLE u2 ON r.reportee_id = u2.user_id
+      ORDER BY r.created_at; `
+    )
+    if (result.rows.length === 0) return null
+    const reports: ReportInfoSchema[] = result.rows.map((row) => ({
+      reportId: row.report_id,
+      reportType: row.report_type,
+      reporterId: row.reporter_id,
+      reporteeId: row.reportee_id,
+      description: row.description,
+      reporterName: row.reporter_full_name,
+      reporteeName: row.reportee_full_name,
+      reporteeProfile: row.profile_picture
+    }))
+    return reports
   }
 }
