@@ -52,9 +52,8 @@ const getUserTypeInConversation = async (req: Request, res: Response) => {
   const conversationId = req.params.conversationId
   const userType = await conversationService.getUserTypeInConversation(conversationId, userId)
 
-  if (userType === null)
-    return res.status(400).json({ success: false })
-  return res.status(200).json({ success: true, userType: userType })
+  if (userType === null) { return res.status(400).json({ success: false }) }
+  return res.status(200).json({ success: true, userType })
 }
 
 export const conversationController = {
