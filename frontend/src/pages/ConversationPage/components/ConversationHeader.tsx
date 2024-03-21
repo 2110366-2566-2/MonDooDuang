@@ -219,6 +219,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key = {appointment.appointmentId}
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
@@ -236,6 +237,7 @@ export default function ConversationHeader({
                 startTime={startTime}
                 endTime={endTime}
                 speciality={specialityMapper[appointment.speciality]}
+                key = {appointment.appointmentId}
               />
             )
           } else if (waiting_day < 3) {
@@ -254,6 +256,7 @@ export default function ConversationHeader({
                 startTime={startTime}
                 endTime={endTime}
                 speciality={specialityMapper[appointment.speciality]}
+                key = {appointment.appointmentId}
               />
             )
           }
@@ -268,6 +271,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key = {appointment.appointmentId}
             />
           )
         } else if (
@@ -285,6 +289,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key = {appointment.appointmentId}
             />
           )
         } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
@@ -299,6 +304,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key = {appointment.appointmentId}
             />
           )
         } else if (appointment.status === "EVENT_COMPLETED") {
@@ -314,6 +320,7 @@ export default function ConversationHeader({
               isCustomer={userType === "CUSTOMER"}
               showReport={showReport}
               systemReport={systemReport}
+              key = {appointment.appointmentId}
             />
           )
         }
