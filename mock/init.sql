@@ -252,6 +252,22 @@ CREATE TRIGGER chat_notification_updated_at
 BEFORE UPDATE ON CHAT_NOTIFICATION
 FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+CREATE OR REPLACE FUNCTION notify_verified_fortune_teller() RETURNS TRIGGER AS $$
+DECLARE
+    notification_id UUID;
+BEGIN
+    notification_id := uuid_generate_v4();
+	
+    INSERT INTO notification (notification_id, user_id, type)
+    VALUES (notification_id, NEW.customer_id, 'VERIFICATION');
+
+    -- INSERT INTO appointment_notification (notification_id, type, appointment_id)
+	-- VALUES (notification_id, 'NEW', NEW.appointment_id);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION notify_new_appointment() RETURNS TRIGGER AS $$
 DECLARE
     notification_id UUID;
@@ -355,6 +371,12 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER new_fortune_teller_notification
+AFTER INSERT ON USER_TABLE
+FOR EACH ROW
+WHEN (NEW.user_type = 'FORTUNETELLER')
+EXECUTE FUNCTION notify_verified_fortune_teller();
 
 CREATE OR REPLACE TRIGGER new_appointment_notification
 AFTER INSERT ON APPOINTMENT
