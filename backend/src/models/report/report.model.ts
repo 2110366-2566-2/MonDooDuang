@@ -5,9 +5,9 @@ export interface ReportSchema {
   description: string
   reportType: ReportType
   status: ReportStatus
-  appointmentId: string
+  appointmentId: string | null
   reporterId: string
-  reporteeId: string
+  reporteeId: string | null
 }
 
 export interface ReportInfoSchema {
