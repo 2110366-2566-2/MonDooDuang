@@ -23,7 +23,7 @@ export const requestService = {
     }
 
     const updateVerified = await requestRepository.updateFortuneTellerVerified(requestId)
-    if (! updateVerified.isSuccess) {
+    if (!updateVerified.isSuccess) {
       return { success: false, message: "error to change fortune teller verify" }
     }
     return { success: true, message: "user type and fortune teller verify have been changed" }
