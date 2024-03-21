@@ -55,10 +55,16 @@ const downloadIdCard = async (req: Request, res: Response) => {
   }
 }
 
+const deleteIdCard = async (req: Request, res: Response) => {
+  await s3Service.deleteIdCard(req.params.id)
+  res.status(200).json({ success: true, message: "ID card deleted" })
+}
+
 export const s3Controller = {
   uploadProfilePicture,
   downloadProfilePicture,
   deleteProfilePicture,
   uploadIdCard,
-  downloadIdCard
+  downloadIdCard,
+  deleteIdCard
 }
