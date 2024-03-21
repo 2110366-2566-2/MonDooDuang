@@ -24,7 +24,6 @@ export const s3Service = {
       await s3Client.upload(uploadParams).promise()
       return true
     } catch (error) {
-      console.log(error)
       return false
     }
   },
@@ -38,7 +37,6 @@ export const s3Service = {
       const result = await s3Client.getObject(downloadParams).promise()
       return result
     } catch (error) {
-      console.log("this fail")
       return null
     }
   },
@@ -52,7 +50,6 @@ export const s3Service = {
       await s3Client.deleteObject(deleteParams).promise()
       return true
     } catch (error) {
-      console.log(error)
       return false
     }
   },
@@ -67,7 +64,6 @@ export const s3Service = {
       await s3Client.upload(uploadParams).promise()
       return true
     } catch (error) {
-      console.log(error)
       return false
     }
   },
@@ -81,7 +77,6 @@ export const s3Service = {
       const result = await s3Client.getObject(downloadParams).promise()
       return result
     } catch (error) {
-      console.log(error)
       return null
     }
   }
