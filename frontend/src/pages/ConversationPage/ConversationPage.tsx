@@ -23,7 +23,6 @@ export default function ConversationPage() {
       userId
     )
     setSelectedUserType(userTypeInConversation)
-    console.log(userTypeInConversation)
   }
 
   const showReport = () => {
