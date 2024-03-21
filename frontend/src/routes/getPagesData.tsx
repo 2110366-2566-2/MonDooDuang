@@ -15,6 +15,7 @@ import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedA
 import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
+import TimetableApp from "../pages/TimetablePage/TimetableApp"
 
 export const getPagesData = (stripePromise: any) =>
   [
@@ -85,6 +86,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/payment/completed",
       element: <PaymentCompletedApp />
+    },
+    {
+      path: "/timetable/:id",
+      element: <TimetableApp />
     },
     {
       path: "/example",
