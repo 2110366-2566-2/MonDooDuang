@@ -47,11 +47,22 @@ const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
   res.status(200).send(data)
 }
 
+const getUserTypeInConversation = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversationId = req.params.conversationId
+  const userType = await conversationService.getUserTypeInConversation(conversationId, userId)
+
+  if (userType === null)
+    return res.status(400).json({ success: false })
+  return res.status(200).json({ success: true, userType: userType })
+}
+
 export const conversationController = {
   getConversationsByUserId,
   getNameWithLastMessage,
   getMessagesByConversationId,
   getNameByConversationId,
   createConversation,
-  getUnreadMessagesConversationId
+  getUnreadMessagesConversationId,
+  getUserTypeInConversation
 }

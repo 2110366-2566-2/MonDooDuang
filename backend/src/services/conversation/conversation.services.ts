@@ -141,5 +141,9 @@ export const conversationService = {
       return { count: 0 }
     }
     return { count: data }
+  },
+  getUserTypeInConversation: async (conversationId: string, userId: string) => {
+    const userType = await conversationRepository.getUserTypeInConversation(conversationId, userId)
+    return userType
   }
 }

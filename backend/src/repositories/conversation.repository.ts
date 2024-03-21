@@ -171,5 +171,25 @@ export const conversationRepository = {
       [conversationId, userId]
     )
     return result.rows[0].count
+  },
+  getUserTypeInConversation: async (conversationId: string, userId: string) => {
+    const result = await db.query(
+      `
+        SELECT fortune_teller_id, customer_id
+        FROM conversation
+        WHERE conversation_id = $1
+      `,
+      [conversationId])
+
+    if (result.rows.length == 0) return null
+
+    if (result.rows[0].fortune_teller_id === userId)
+      return "FORTUNE_TELLER"
+
+    if (result.rows[0].customer_id === userId)
+      return "CUSTOMER"
+
+    return null
   }
+
 }
