@@ -1,4 +1,5 @@
 import { db } from "../configs/pgdbConnection"
+import { UserType } from "../models/user/user.model"
 
 export const conversationRepository = {
   getConversationsByUserId: async (userId: string, role: "CUSTOMER" | "FORTUNE_TELLER") => {
@@ -172,7 +173,7 @@ export const conversationRepository = {
     )
     return result.rows[0].count
   },
-  getUserTypeInConversation: async (conversationId: string, userId: string) => {
+  getUserTypeInConversation: async (conversationId: string, userId: string): Promise<null | UserType> => {
     const result = await db.query(
       `
         SELECT fortune_teller_id, customer_id
