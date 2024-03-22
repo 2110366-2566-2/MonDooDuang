@@ -38,23 +38,19 @@ export default function AdminReportManagementPage() {
     },
     onConfirm: () => {
       setIsConfirmModalOpen(false)
-      if (menuList[1] === "รายงานหมอดูไม่มาตามนัดหมาย") {
-        setIsSuccessModalOpen(true)
-      }
     },
-    target: "หมาแดงดูดวง",
+    target: "",
     type: "REJECT",
-    title: "ต้องการแบนผู้ใช้",
-    message: "ใช่หรือไม่",
-    info: `ตอนนี้ระบบได้ระงับการโอนเงินไปยังหมอดูเอาไว้
-  \nหากกดยืนยัน ระบบจะดำเนินการโอนเงินให้หมอดูตามปกติ`
+    title: "",
+    message: "",
+    info: ``
   }
   const defaultSuccessProps: SuccessModalProps = {
     onClose: () => {
       setIsSuccessModalOpen(false)
     },
-    title: "ส่งคำขอจองไปที่หมอดูสำเร็จ",
-    info: `ผู้ใช้งานนี้จะไม่สามารถใช้งาน\nMonDooDuang ได้อีกต่อไป`
+    title: "",
+    info: ``
   }
   const banSuccessProps: SuccessModalProps = {
     onClose: () => {
