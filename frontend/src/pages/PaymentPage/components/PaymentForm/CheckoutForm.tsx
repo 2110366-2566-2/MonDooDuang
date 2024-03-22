@@ -2,7 +2,13 @@ import { PaymentElement } from "@stripe/react-stripe-js"
 import { useState } from "react"
 import { useStripe, useElements } from "@stripe/react-stripe-js"
 
-export default function CheckoutForm() {
+export default function CheckoutForm({
+  clientSecret,
+  conversationId
+}: {
+  clientSecret: string
+  conversationId: string
+}) {
   const stripe = useStripe()
   const elements = useElements()
 
@@ -24,7 +30,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/payment/completed`
+        return_url: `${window.location.origin}/payment/completed?conversationId=${conversationId}&credentials=${clientSecret}`
       }
     })
 

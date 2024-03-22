@@ -55,7 +55,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <FortuneTellerDetailApp />
     },
     {
-      path: "/conversation/:cid?",
+      path: "/conversation/:cid",
       element: <ConversationApp />
     },
     {
@@ -79,7 +79,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <AdminLoginApp />
     },
     {
-      path: "/payment/:payAmount",
+      path: "/payment/:cid/:payAmount",
       element: <PaymentApp stripePromise={stripePromise} />
     },
     {

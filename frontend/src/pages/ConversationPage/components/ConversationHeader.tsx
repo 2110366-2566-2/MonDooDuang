@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search"
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred"
 import BaseAppointmentCard from "../../../common/components/AppointmentCard/BaseAppointmentCard"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { AppointmentService } from "../services/AppointmentService"
 import { AppointmentInformation } from "../types/AppointmentInformation"
 import { specialityMapper } from "../../../common/types/Package"
@@ -34,6 +34,8 @@ export default function ConversationHeader({
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
 
+  const { cid } = useParams()
+
   useEffect(() => {
     const fetchAppointments = async () => {
       const appointments = await AppointmentService.getAppointmentsByConversationId(conversationId)
@@ -61,7 +63,7 @@ export default function ConversationHeader({
     const button = (
       <button
         className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5"
-        onClick={() => navigate(`/payment/${price}`)}
+        onClick={() => navigate(`/payment/${cid}/${price}`)}
       >
         ชำระเงินค่าดูดวง
       </button>
