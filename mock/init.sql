@@ -118,7 +118,7 @@ CREATE TABLE REVIEW (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE payment_method_enum AS ENUM('BANK', 'CREDIT_CARD');
+CREATE TYPE payment_method_enum AS ENUM('BANK', 'CREDIT_CARD', 'PROMPT_PAY');
 CREATE TYPE payment_status_enum AS ENUM('FROM_CUSTOMER', 'TO_FORTUNE_TELLER', 'REFUND');
 
 CREATE TABLE PAYMENT(
@@ -128,7 +128,6 @@ CREATE TABLE PAYMENT(
     amount INTEGER  CHECK(amount BETWEEN 10 AND 1000000 ),
     receiver_id CHAR(36) NOT NULL,
     appointment_id CHAR(36) NOT NULL,
-    FOREIGN KEY(receiver_id) REFERENCES USER_TABLE(user_id),
     FOREIGN KEY(appointment_id) REFERENCES APPOINTMENT(appointment_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -462,11 +461,11 @@ VALUES
     ('1234qrst-5678-90uv-wxyz-abcd34567890', 'Professional and accurate predictions.', 4.5, '5f0d68c8-7803-4d25-b80e-13d43a641791', '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '7890mnop-1234-5rst-uvwx-yzab34567890');
 
 -- PAYMENT
-INSERT INTO PAYMENT (payment_id, method, status, amount, receiver_id, appointment_id)
+INSERT INTO PAYMENT (payment_id, method, status, amount, appointment_id)
 VALUES
-    ('2345ijkl-6789-01mn-opqr-stuv23456789', 'BANK', 'FROM_CUSTOMER', 50, '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '5678ghij-9012-34kl-mnop-qrst12345678'),
-    ('3456mnop-7890-12st-uvwx-yzab34567890', 'CREDIT_CARD', 'TO_FORTUNE_TELLER', 75, '3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', '6789ijkl-0123-45mn-opqr-stuv23456789'),
-    ('4567qrst-9012-34uv-wxyz-abcd12345678', 'BANK', 'REFUND', 100, '0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', '7890mnop-1234-5rst-uvwx-yzab34567890');
+    ('2345ijkl-6789-01mn-opqr-stuv23456789', 'BANK', 'FROM_CUSTOMER', 50, '5678ghij-9012-34kl-mnop-qrst12345678'),
+    ('3456mnop-7890-12st-uvwx-yzab34567890', 'CREDIT_CARD', 'TO_FORTUNE_TELLER', 75, '6789ijkl-0123-45mn-opqr-stuv23456789'),
+    ('4567qrst-9012-34uv-wxyz-abcd12345678', 'BANK', 'REFUND', 100, '7890mnop-1234-5rst-uvwx-yzab34567890');
 
 -- REPORT
 INSERT INTO REPORT (report_id, description, report_type, status, appointment_id, reporter_id, reportee_id)
