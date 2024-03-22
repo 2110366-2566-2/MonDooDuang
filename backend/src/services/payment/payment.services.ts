@@ -15,5 +15,18 @@ export const paymentService = {
   },
   getPublicKey: () => {
     return environment.stripe.publicKey
+  },
+  confirmPaymentAndUpdateDB: async (paymentIntent: string) => {
+    try {
+      const paymentIntentDetail = await stripe.paymentIntents.retrieve(paymentIntent)
+      if (paymentIntentDetail.status === "succeeded") {
+        // Update the database
+        console.log("Update the database with the paymentIntent data")
+        return true
+      }
+      return false
+    } catch (err) {
+      throw new Error("Cant confirm payment intent")
+    }
   }
 }

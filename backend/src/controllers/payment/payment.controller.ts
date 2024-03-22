@@ -27,5 +27,21 @@ export const paymentController = {
   getPublicKey: (_: any, res: Response) => {
     const publicKey = paymentService.getPublicKey()
     res.status(200).json({ publishableKey: publicKey })
+  },
+
+  confirmPaymentAndUpdateDB: async (
+    req: TypedRequestBody<{ paymentIntent: string }>,
+    res: Response
+  ) => {
+    const paymentIntent = req.body.paymentIntent
+    try {
+      const result = await paymentService.confirmPaymentAndUpdateDB(paymentIntent)
+      res.status(200).json({ success: result })
+    } catch (error: Error | any) {
+      res.status(400).json({
+        success: false,
+        message: error?.message ?? "Something went wrong. Please try again later."
+      })
+    }
   }
 }
