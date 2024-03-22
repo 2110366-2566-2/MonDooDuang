@@ -59,6 +59,9 @@ export default function ConversationBox({
     if (!messageText.trim()) {
       return
     }
+    if (!conversationId) {
+      return
+    }
     socket.emit(
       "sendMessage",
       {
