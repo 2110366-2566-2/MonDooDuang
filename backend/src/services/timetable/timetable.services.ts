@@ -1,7 +1,7 @@
 import { timetableRepository } from "../../repositories/timetable.repository"
 
-const getTimetable = async (userID: string) => {
-  const timetable = await timetableRepository.getTimetable(userID)
+const getTimetable = async (userID: string, status: string, month: number, year: number) => {
+  const timetable = await timetableRepository.getTimetable(userID, status, month, year)
   return timetable
 }
 
