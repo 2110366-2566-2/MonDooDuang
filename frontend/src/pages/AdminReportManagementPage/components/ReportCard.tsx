@@ -1,6 +1,57 @@
 import { ReportInfoType } from "../types/ReportInfoType"
 
-export default function ReportCard({ report }: { report: ReportInfoType }) {
+export default function ReportCard({
+  report,
+  onClickFirstAction,
+  onClickSecondAction
+}: {
+  report: ReportInfoType
+  onClickFirstAction?: () => void
+  onClickSecondAction?: () => void
+}) {
+  const InappropiateButton = () => {
+    return (
+      <div className="flex flex-col items-end justify-items-center space-y-3">
+        <button
+          onClick={onClickFirstAction}
+          style={{ transition: "background-color 0.3s" }}
+          className="w-[130px] py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-sand-yellow hover:bg-mdd-sand-yellow-hover"
+        >
+          <div className="text-center">จัดการเรียบร้อย</div>
+        </button>
+
+        <button
+          onClick={onClickSecondAction}
+          style={{ transition: "background-color 0.3s" }}
+          className="w-[130px]  py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-cancel-red hover:bg-red-600"
+        >
+          <div className="text-center">แบนผู้ใช้</div>
+        </button>
+      </div>
+    )
+  }
+
+  const MoneySuspendButton = () => {
+    return (
+      <div className="flex flex-col items-end justify-items-center space-y-3">
+        <button
+          onClick={onClickFirstAction}
+          style={{ transition: "background-color 0.3s" }}
+          className="w-[130px] py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-sand-yellow hover:bg-mdd-sand-yellow-hover"
+        >
+          <div className="text-center">คืนเงินให้ลูกค้า</div>
+        </button>
+
+        <button
+          onClick={onClickSecondAction}
+          style={{ transition: "background-color 0.3s" }}
+          className="w-[130px]  py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-muted-green hover:bg-mdd-muted-green-hover"
+        >
+          <div className="text-center">จ่ายเงินให้หมอดู</div>
+        </button>
+      </div>
+    )
+  }
   return (
     <div className="w-[650px] h-[200px] bg-white bg-opacity-50 rounded-2xl px-4 py-4 mb-8">
       <div
@@ -13,9 +64,9 @@ export default function ReportCard({ report }: { report: ReportInfoType }) {
         <div className="w-[100px] h-[100px] rounded-full bg-yellow-400"></div>
         <div className="flex flex-col w-[320px] justify-items-center text-md">
           <div className="text-mdd-focus-yellow">Report ID : {report.reportId}</div>
-          <div className="text-white">ผู้ถูกรายงาน : {report.reporterName}</div>
+          <div className="text-white">ผู้ถูกรายงาน : {report.reporteeName}</div>
           {report.reportType === "SYSTEM_ERROR" ? null : (
-            <div className="text-white">รายงานโดย : {report.reporteeName}</div>
+            <div className="text-white">รายงานโดย : {report.reporterName}</div>
           )}
           <div className="text-white">ปัญหาที่ถูกรายงาน : </div>
           <div className="max-h-[120px] text-mdd-cancel-red bg-white bg-opacity-80 rounded px-1 overflow-hidden shadow-inner">
@@ -28,50 +79,6 @@ export default function ReportCard({ report }: { report: ReportInfoType }) {
           <InappropiateButton />
         ) : null}
       </div>
-    </div>
-  )
-}
-
-const InappropiateButton = () => {
-  return (
-    <div className="flex flex-col items-end justify-items-center space-y-3">
-      <button
-        onClick={() => {}}
-        style={{ transition: "background-color 0.3s" }}
-        className="w-[130px] py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-sand-yellow hover:bg-mdd-sand-yellow-hover"
-      >
-        <div className="text-center">จัดการเรียบร้อย</div>
-      </button>
-
-      <button
-        onClick={() => {}}
-        style={{ transition: "background-color 0.3s" }}
-        className="w-[130px]  py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-cancel-red hover:bg-red-600"
-      >
-        <div className="text-center">แบนผู้ใช้</div>
-      </button>
-    </div>
-  )
-}
-
-const MoneySuspendButton = () => {
-  return (
-    <div className="flex flex-col items-end justify-items-center space-y-3">
-      <button
-        onClick={() => {}}
-        style={{ transition: "background-color 0.3s" }}
-        className="w-[130px] py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-sand-yellow hover:bg-mdd-sand-yellow-hover"
-      >
-        <div className="text-center">คืนเงินให้ลูกค้า</div>
-      </button>
-
-      <button
-        onClick={() => {}}
-        style={{ transition: "background-color 0.3s" }}
-        className="w-[130px]  py-1 px-2 justify-items-center items-center rounded-[10px] text-gray-200 text-md bg-mdd-muted-green hover:bg-mdd-muted-green-hover"
-      >
-        <div className="text-center">จ่ายเงินให้หมอดู</div>
-      </button>
     </div>
   )
 }
