@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search"
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred"
 import BaseAppointmentCard from "../../../common/components/AppointmentCard/BaseAppointmentCard"
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { AppointmentService } from "../services/AppointmentService"
 import { AppointmentInformation } from "../types/AppointmentInformation"
 import { specialityMapper } from "../../../common/types/Package"
@@ -34,21 +34,25 @@ export default function ConversationHeader({
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
 
-  const { cid } = useParams()
-
   useEffect(() => {
     const fetchAppointments = async () => {
       const appointments = await AppointmentService.getAppointmentsByConversationId(conversationId)
       setAppointments(appointments)
     }
     fetchAppointments()
-  }, [name])
+  }, [name, conversationId])
 
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)
   }
 
-  const getWaitingForPaymentInfo = (price: number, paymentDate: string, paymentTime: string) => {
+  const getWaitingForPaymentInfo = (
+    price: number,
+    paymentDate: string,
+    paymentTime: string,
+    appointmentId: string,
+    conversationId: string
+  ) => {
     const content = (
       <>
         <h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังรอการชำระเงิน</h1>
@@ -63,7 +67,7 @@ export default function ConversationHeader({
     const button = (
       <button
         className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5"
-        onClick={() => navigate(`/payment/${cid}/${price}`)}
+        onClick={() => navigate(`/payment/${conversationId}/${appointmentId}/${price}`)}
       >
         ชำระเงินค่าดูดวง
       </button>
@@ -261,7 +265,9 @@ export default function ConversationHeader({
           const { content, moreContent, button } = getWaitingForPaymentInfo(
             appointment.price,
             paymentDate,
-            paymentTime
+            paymentTime,
+            appointment.appointmentId,
+            conversationId ?? "no-such-case-conversationId-is-null"
           )
           return (
             <BaseAppointmentCard

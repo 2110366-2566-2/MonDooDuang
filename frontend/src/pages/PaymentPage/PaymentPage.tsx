@@ -17,10 +17,10 @@ const appearance: Appearance = {
 
 export default function PaymentPage({ stripePromise }: { stripePromise: any }) {
   const { userId, userType, username } = useContext(AuthContext)
-  const { cid, payAmount } = useParams()
+  const { cid, aid, price } = useParams()
   const [clientSecret, setClientSecret] = useState("")
 
-  const amount = Number(payAmount)
+  const amount = Number(price)
 
   useEffect(() => {
     const handlePriceConfirm = async (amount: number) => {
@@ -39,11 +39,11 @@ export default function PaymentPage({ stripePromise }: { stripePromise: any }) {
       />
       <div className="flex flex-col w-full items-center pb-16 ">
         <div className="text-white pb-4 font-noto-sans text-xl font-thin">
-          - ราคา {payAmount} บาท -
+          - ราคา {amount} บาท -
         </div>
-        {stripePromise && clientSecret !== "" && cid && (
+        {stripePromise && clientSecret !== "" && cid && aid && (
           <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
-            <CheckoutForm clientSecret={clientSecret} conversationId={cid} />
+            <CheckoutForm clientSecret={clientSecret} conversationId={cid} appointmentId={aid} />
           </Elements>
         )}
       </div>

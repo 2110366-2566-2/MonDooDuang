@@ -19,14 +19,15 @@ export const StripeService = {
     const { clientSecret } = await response.json()
     return clientSecret
   },
-  confirmPayment: async (paymentIntent: string): Promise<boolean> => {
+  confirmPayment: async (paymentIntent: string, appointmentId: string): Promise<boolean> => {
     const response = await fetch(`${environment.backend.url}/payment/confirm-payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        paymentIntent
+        paymentIntent,
+        appointmentId
       })
     })
 

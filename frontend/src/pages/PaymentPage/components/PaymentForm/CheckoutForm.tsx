@@ -4,10 +4,12 @@ import { useStripe, useElements } from "@stripe/react-stripe-js"
 
 export default function CheckoutForm({
   clientSecret,
-  conversationId
+  conversationId,
+  appointmentId
 }: {
   clientSecret: string
   conversationId: string
+  appointmentId: string
 }) {
   const stripe = useStripe()
   const elements = useElements()
@@ -30,7 +32,7 @@ export default function CheckoutForm({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/payment/completed?conversationId=${conversationId}&credentials=${clientSecret}`
+        return_url: `${window.location.origin}/payment/completed?conversationId=${conversationId}&appointmentId=${appointmentId}&credentials=${clientSecret}`
       }
     })
 

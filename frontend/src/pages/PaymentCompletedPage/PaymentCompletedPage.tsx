@@ -10,13 +10,18 @@ export default function PaymentCompletedPage() {
   const queryParams = new URLSearchParams(location.search)
   const paymentIntent = queryParams.get("payment_intent")
   const conversationId = queryParams.get("conversationId")
+  const appointmentId = queryParams.get("appointmentId")
 
   const { userId, userType, username } = useContext(AuthContext)
 
   useEffect(() => {
-    const confirmPayment = async (paymentIntent: string, conversationId: string) => {
+    const confirmPayment = async (
+      paymentIntent: string,
+      conversationId: string,
+      appointmentId: string
+    ) => {
       try {
-        const result = await StripeService.confirmPayment(paymentIntent)
+        const result = await StripeService.confirmPayment(paymentIntent, appointmentId)
         if (result) {
           window.location.href = `/conversation/${conversationId}`
         }
@@ -25,10 +30,10 @@ export default function PaymentCompletedPage() {
       }
     }
 
-    if (paymentIntent && conversationId) {
-      confirmPayment(paymentIntent, conversationId)
+    if (paymentIntent && conversationId && appointmentId) {
+      confirmPayment(paymentIntent, conversationId, appointmentId)
     }
-  }, [paymentIntent, conversationId])
+  }, [paymentIntent, conversationId, appointmentId])
 
   return (
     <>

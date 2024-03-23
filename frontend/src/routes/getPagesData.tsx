@@ -79,7 +79,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <AdminLoginApp />
     },
     {
-      path: "/payment/:cid/:payAmount",
+      path: "/payment/:cid/:aid/:price",
       element: <PaymentApp stripePromise={stripePromise} />
     },
     {
