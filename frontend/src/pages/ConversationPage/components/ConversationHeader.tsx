@@ -28,7 +28,7 @@ export default function ConversationHeader({
   showReport: () => void
   conversationId: string | null
   systemReport: (selectReportMode: boolean) => void
-  userType: string
+  userType: "CUSTOMER" | "FORTUNE_TELLER" | "ADMIN"
 }) {
   const navigate = useNavigate()
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)

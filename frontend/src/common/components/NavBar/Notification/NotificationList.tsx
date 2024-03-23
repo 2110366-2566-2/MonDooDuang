@@ -20,11 +20,7 @@ export default function NotificationList({
         </>
       )}
       {notificationItem.notificationType === "CHAT" && (
-        <ChatNotification
-          notificationId={notificationItem.notificationId}
-          userId={userId}
-        />
-
+        <ChatNotification notificationId={notificationItem.notificationId} userId={userId} />
       )}
     </>
   )
