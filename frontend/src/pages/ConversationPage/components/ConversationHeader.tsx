@@ -153,10 +153,10 @@ export default function ConversationHeader({
     const content = (
       <>
         <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การชำระเงินถูกระงับ</h1>
-        <p className="text-mdd-gray-success-text">เนื่องจากมีการรายงานว่าหมอดูไม่มาตามเวลานัดหมาย</p>
         <p className="text-mdd-gray-success-text">
-          โปรดรอการตรวจสอบจากผู้ดูแลระบบ
+          เนื่องจากมีการรายงานว่าหมอดูไม่มาตามเวลานัดหมาย
         </p>
+        <p className="text-mdd-gray-success-text">โปรดรอการตรวจสอบจากผู้ดูแลระบบ</p>
       </>
     )
     const moreContent = ""
@@ -169,9 +169,7 @@ export default function ConversationHeader({
       <>
         <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
         <p className="text-mdd-gray-success-text">เนื่องจากหมอดูไม่มาตามเวลานัดหมาย</p>
-        <p className="text-mdd-gray-success-text">
-          ระบบจะทำการคืนเงินให้กับลูกค้า
-        </p>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการคืนเงินให้กับลูกค้า</p>
       </>
     )
     const moreContent = ""
@@ -273,7 +271,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
-              key = {appointment.appointmentId}
+              key={appointment.appointmentId}
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
@@ -291,7 +289,7 @@ export default function ConversationHeader({
                 startTime={startTime}
                 endTime={endTime}
                 speciality={specialityMapper[appointment.speciality]}
-                key = {appointment.appointmentId}
+                key={appointment.appointmentId}
               />
             )
           } else if (waiting_day < 3) {
@@ -310,7 +308,7 @@ export default function ConversationHeader({
                 startTime={startTime}
                 endTime={endTime}
                 speciality={specialityMapper[appointment.speciality]}
-                key = {appointment.appointmentId}
+                key={appointment.appointmentId}
               />
             )
           }
@@ -325,7 +323,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
-              key = {appointment.appointmentId}
+              key={appointment.appointmentId}
             />
           )
         } else if (
@@ -343,7 +341,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
-              key = {appointment.appointmentId}
+              key={appointment.appointmentId}
             />
           )
         } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
@@ -358,7 +356,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
-              key = {appointment.appointmentId}
+              key={appointment.appointmentId}
             />
           )
         } else if (appointment.status === "NO_PAYMENT_CANCELED") {
@@ -388,12 +386,10 @@ export default function ConversationHeader({
               isCustomer={userType === "CUSTOMER"}
               showReport={showReport}
               systemReport={systemReport}
-              key = {appointment.appointmentId}
+              key={appointment.appointmentId}
             />
           )
-        }  else if (
-          appointment.status === "SUSPENDED"
-        ) {
+        } else if (appointment.status === "SUSPENDED") {
           const { content, moreContent, button } = getSuspendedEventInfo()
           return (
             <BaseAppointmentCard
@@ -407,9 +403,7 @@ export default function ConversationHeader({
               speciality={specialityMapper[appointment.speciality]}
             />
           )
-        } else if (
-          appointment.status === "REFUNDED"
-        ) {
+        } else if (appointment.status === "REFUNDED") {
           const { content, moreContent, button } = getRefundedEventInfo()
           return (
             <BaseAppointmentCard
@@ -423,9 +417,7 @@ export default function ConversationHeader({
               speciality={specialityMapper[appointment.speciality]}
             />
           )
-        } else if (
-          appointment.status === "NO_FRAUD_DETECTED"
-        ) {
+        } else if (appointment.status === "NO_FRAUD_DETECTED") {
           const { content, moreContent, button } = getNoFraudDetectEventInfo()
           return (
             <BaseAppointmentCard
@@ -439,7 +431,7 @@ export default function ConversationHeader({
               speciality={specialityMapper[appointment.speciality]}
             />
           )
-        } 
+        }
       })}
     </div>
   )
