@@ -71,10 +71,10 @@ export const FortuneTellerRegisterService = {
 
   uploadIDCard: async (fortuneTellerId: string, formData: FormData) => {
     const res = await fetch(`${environment.backend.url}/images/id-card/${fortuneTellerId}`, 
-    {
-      method: "POST",
-      body: formData
-    })
+      {
+        method: "POST",
+        body: formData
+      })
     const data = await res.json()
     return { isSuccess: data.success, message: data.error }
   }
