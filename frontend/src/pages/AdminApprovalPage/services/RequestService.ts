@@ -1,7 +1,6 @@
 import { environment } from "../../../common/constants/environment"
 
 type UpdatedStatus = "ACCEPTED" | "REJECTED"
-type UserType = "CUSTOMER" | "FORTUNE_TELLER"
 
 export const RequestService = {
   updateRequestStatus: async (requestId: string, status: UpdatedStatus) => {

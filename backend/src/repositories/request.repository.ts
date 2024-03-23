@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { RequestStatus, UserType } from "../models/request/request.model"
+import { RequestStatus } from "../models/request/request.model"
 
 export const requestRepository = {
   updateRequestStatus: async (requestId: string, status: RequestStatus) => {

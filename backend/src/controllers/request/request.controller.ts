@@ -1,7 +1,6 @@
 import { Response, Request } from "express"
 import { RequestStatus, UserType } from "../../models/request/request.model"
 import { requestService } from "../../services/request/request.services"
-import { String } from "aws-sdk/clients/apigateway"
 
 const updateRequestStatus = async (req: Request, res: Response) => {
   const { requestId, status }: { requestId: string, status: RequestStatus } = req.body

@@ -1,4 +1,4 @@
-import { RequestStatus, UserType } from "../../models/request/request.model"
+import { RequestStatus } from "../../models/request/request.model"
 import { requestRepository } from "../../repositories/request.repository"
 import { notificationRepository } from "../../repositories/notification.repository"
 
