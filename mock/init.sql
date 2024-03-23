@@ -126,7 +126,6 @@ CREATE TABLE PAYMENT(
     method payment_method_enum NOT NULL,
     status payment_status_enum NOT NULL,
     amount INTEGER  CHECK(amount BETWEEN 10 AND 1000000 ),
-    receiver_id CHAR(36) NOT NULL,
     appointment_id CHAR(36) NOT NULL,
     FOREIGN KEY(appointment_id) REFERENCES APPOINTMENT(appointment_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
