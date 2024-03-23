@@ -16,7 +16,7 @@ export default function AppointmentToggleButton({toggle, handleToggle}:Appointme
       <div className={`w-[80px] h-[40px] flex items-center justify-center transition-transform duration-300 ease-in-out ${
         toggle !== 'upcoming' ? 'transform -translate-x-[38px]' : 'transform translate-x-0'
       }`}>
-        <p className={`text-[15px] font-medium mx-3 ${toggle === 'upcoming'? "text-left" : "text-right"} shadow-md`}>{toggle === 'upcoming' ? 'upcoming\nevent' : 'completed\nevent'}</p>
+        <p className={`text-[15px] font-medium mx-3 ${toggle === 'upcoming'? "text-left" : "text-right"}`}>{toggle === 'upcoming' ? 'upcoming\nevent' : 'completed\nevent'}</p>
       </div>
     </div>
   )
