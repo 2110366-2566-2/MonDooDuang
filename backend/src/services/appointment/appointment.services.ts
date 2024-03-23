@@ -1,5 +1,5 @@
 import { appointmentRepository } from "../../repositories/appointment.repository"
-import { AppointmentSchema } from "../../models/appointment/appointment.model"
+import { AppointmentSchema, AppointmentStatus } from "../../models/appointment/appointment.model"
 import { fortuneTellerRepository } from "../../repositories/fortuneTeller.repository"
 import { packageRepository } from "../../repositories/package.repository"
 import { userRepository } from "../../repositories/user.repository"
@@ -65,13 +65,24 @@ export const appointmentService = {
     return userInfo
   },
 
-  autoDeclineAppointment: async (appointmentId: string, status: string) => {
+  autoDeclineAppointment: async (appointmentId: string, status: AppointmentStatus) => {
     // Check if appointment is still CREATED or WAITING_FOR_PAYMENT over 24 hours
     const appointmentStatus = await appointmentRepository.getAppointmentStatus(appointmentId)
 
-    if ((appointmentStatus === "CREATED" && status === "FORTUNE_TELLER_DECLINED") ||
-    (appointmentStatus === "WAITING_FOR_PAYMENT" && status === "NO_PAYMENT_CANCELED")) {
+    if (
+      (appointmentStatus === "CREATED" && status === "FORTUNE_TELLER_DECLINED") ||
+      (appointmentStatus === "WAITING_FOR_PAYMENT" && status === "NO_PAYMENT_CANCELED")
+    ) {
       await appointmentRepository.updateAppointmentStatus(appointmentId, status)
+      if (status === "FORTUNE_TELLER_DECLINED") {
+        const notificationId = await notificationRepository.getNotificationIdByAppointmentIdAndType(
+          appointmentId,
+          "NEW"
+        )
+        if (notificationId !== null) {
+          await notificationRepository.updateNotificationType(notificationId, "HIDDEN")
+        }
+      }
     }
   },
 
@@ -111,7 +122,7 @@ export const appointmentService = {
     return appointments
   },
 
-  updateAppointmentStatus: async (appointmentId: string, status: string) => {
+  updateAppointmentStatus: async (appointmentId: string, status: AppointmentStatus) => {
     const isSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, status)
     if (isSuccess && status === "WAITING_FOR_PAYMENT") {
       // Schedule the auto decline
@@ -125,7 +136,7 @@ export const appointmentService = {
     return isReview
   },
 
-  autoDecline: (appointmentId: string, delayHour: number, status: string) => {
+  autoDecline: (appointmentId: string, delayHour: number, status: AppointmentStatus) => {
     const declineDate = new Date()
     declineDate.setHours(declineDate.getHours() + delayHour)
     scheduleJob(declineDate, async () => {

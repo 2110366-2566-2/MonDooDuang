@@ -40,7 +40,7 @@ export default function BaseAppointmentCard({
           <div className="w-[100px] flex flex-col cursor-pointer justify-center items-center mx-5" onClick={() => setIsSeeMore(!isSeeMore)}>
             <p className="text-mdd-gray-success-text">{isSeeMore ? "see less" : "see more"}</p>
             <div className={`w-0 h-0 border-l-[15px] border-l-transparent border-b-[15px] 
-          border-b-mdd-gray-success-text-500 border-r-[15px] border-r-transparent ${isSeeMore ? "transform rotate-180" : ""}`}></div>
+          border-b-mdd-gray-success-text-500 border-r-[15px] border-r-transparent ${isSeeMore ? "" : "transform rotate-180"}`}></div>
           </div>
         </div>
       </div>
