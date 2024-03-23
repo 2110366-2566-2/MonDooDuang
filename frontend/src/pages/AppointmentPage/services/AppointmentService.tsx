@@ -28,6 +28,20 @@ export const AppointmentService = {
     return
   },
 
+  createConversation: async (customerId: string, fortuneTellerId: string) => {
+    const res = await fetch(
+      `${environment.backend.url}/conversations/create/${customerId}/${fortuneTellerId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    )
+    const data = await res.json()
+    return { conversationId: data.data }
+  },
+
   getPackages: async (fortuneTellerId: string): Promise<Package[]> => {
     const res = await fetch(
       `${environment.backend.url}/appointment/find-packages/${fortuneTellerId}`
