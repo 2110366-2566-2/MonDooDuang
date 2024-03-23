@@ -26,7 +26,7 @@ export const paymentService = {
       if (paymentIntentDetail.status === "succeeded") {
         let paymentMethodId = paymentIntentDetail.payment_method as string
 
-        //Rechecking PaymentMethodId Type
+        // Rechecking PaymentMethodId Type
         const paymentMethod = paymentIntentDetail.payment_method
         if (typeof paymentMethod !== "string" && paymentMethod !== null) {
           const stripePaymentMethod = paymentIntentDetail.payment_method as Stripe.PaymentMethod
@@ -41,7 +41,7 @@ export const paymentService = {
           method: paymentMethodType.type === "card" ? "CREDIT_CARD" : "PROMPT_PAY",
           status: "FROM_CUSTOMER",
           amount: paymentIntentDetail.amount / 100,
-          appointmentId: appointmentId
+          appointmentId
         })
 
         // Update Appointment Status
@@ -61,8 +61,9 @@ export const paymentService = {
         return true
       }
       return false
-    } catch (err: Error | any) {
-      throw new Error(err?.message ?? "Cant confirm payment intent")
+    } catch (err: any) {
+      const error = err as Error
+      throw new Error(error.message ?? "Cant confirm payment intent")
     }
   }
 }

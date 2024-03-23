@@ -30,7 +30,7 @@ export const paymentController = {
   },
 
   confirmPaymentAndUpdateDB: async (
-    req: TypedRequestBody<{ paymentIntent: string; appointmentId: string }>,
+    req: TypedRequestBody<{ paymentIntent: string, appointmentId: string }>,
     res: Response
   ) => {
     const { paymentIntent, appointmentId } = req.body
