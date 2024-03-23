@@ -32,6 +32,7 @@ const deleteProfilePicture = async (req: Request, res: Response) => {
 }
 
 const uploadIdCard = async (req: Request, res: Response) => {
+  console.log(req)
   if (!req.file?.buffer) {
     return res.status(400).json({ success: false, error: "No file uploaded" })
   }
