@@ -96,6 +96,8 @@ export default function FormRegister(props: { userId: string }) {
             type="text"
             id="idNumber"
             name="idNumber"
+            required
+            maxLength={13}
             className="pl-7 w-1/2 h-12 rounded-lg bg-white/55 text-white"
             onChange={(e) => setIdNumber(e.target.value)}
           />
