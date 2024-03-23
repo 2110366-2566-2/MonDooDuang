@@ -10,7 +10,6 @@ export default function ConversationPage() {
   const { cid } = useParams<{ cid: string }>()
   const [isShowReport, setIsShowReport] = useState(false)
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(cid || null)
-  console.log(selectedConversationId)
   const { userId, userType, username } = useContext(AuthContext)
   const [isSystemReport, setIsSystemReport] = useState(false)
 
