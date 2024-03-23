@@ -400,14 +400,14 @@ VALUES
 -- USER_TABLE
 INSERT INTO USER_TABLE (user_id, fname, lname, gender, phone_number, email, birth_date, profile_picture, is_banned, bank_name, account_number, password, user_type)
 VALUES
-    ('84885c07-43d7-42b8-8919-88263a33fc74', 'John', 'Doe', 'MALE', '1234567890', 'john.doe@example.com', '1990-01-15', NULL, FALSE, 'ABC Bank', '123456789', 'user_password1', 'CUSTOMER'),
-    ('aad3b8fc-bb5f-46a5-b2c5-541f1f4c6a5b', 'Jane', 'Smith', 'FEMALE', '9876543210', 'jane.smith@example.com', '1985-05-20', NULL, FALSE, 'XYZ Bank', '987654321', 'user_password2', 'CUSTOMER'),
-    ('0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', 'Bob', 'Johnson', 'MALE', '5551234567', 'bob.johnson@example.com', '1980-11-10', NULL, FALSE, 'PQR Bank', '456789012', 'user_password3', 'FORTUNE_TELLER'),
-    ('1e801f2b-f9f0-493e-8a61-c9936e78fb9a', 'Alice', 'Williams', 'FEMALE', '3339876543', 'alice.williams@example.com', '1995-08-25', NULL, FALSE, 'DEF Bank', '654321098', 'user_password4', 'FORTUNE_TELLER'),
-    ('2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'Charlie', 'Brown', 'MALE', '1112223333', 'charlie.brown@example.com', '1975-04-05', NULL, FALSE, 'GHI Bank', '789012345', 'user_password5', 'FORTUNE_TELLER'),
-    ('3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', 'Emma', 'Davis', 'FEMALE', '4445556666', 'emma.davis@example.com', '1993-12-18', NULL, FALSE, 'JKL Bank', '234567890', 'user_password6', 'CUSTOMER'),
-    ('4e4894f4-6524-4937-8b7d-23d45b0e0c75', 'James', 'Miller', 'MALE', '6667778888', 'james.miller@example.com', '1982-09-30', NULL, FALSE, 'MNO Bank', '876543210', 'user_password7', 'FORTUNE_TELLER'),
-    ('5f0d68c8-7803-4d25-b80e-13d43a641791', 'Olivia', 'Moore', 'FEMALE', '9990001111', 'olivia.moore@example.com', '1998-06-22', NULL, FALSE, 'PQR Bank', '543210987', 'user_password8', 'CUSTOMER');
+    ('84885c07-43d7-42b8-8919-88263a33fc74', 'John', 'Doe', 'MALE', '1234567890', 'customer1@example.com', '1990-01-15', NULL, FALSE, 'ABC Bank', '123456789', 'user_password1', 'CUSTOMER'),
+    ('aad3b8fc-bb5f-46a5-b2c5-541f1f4c6a5b', 'Jane', 'Smith', 'FEMALE', '9876543210', 'customer2@example.com', '1985-05-20', NULL, FALSE, 'XYZ Bank', '987654321', 'user_password2', 'CUSTOMER'),
+    ('0b7cbf76-23f8-4a6a-8ac7-b7f13e3df07d', 'Bob', 'Johnson', 'MALE', '5551234567', 'fortune1@example.com', '1980-11-10', NULL, FALSE, 'PQR Bank', '456789012', 'user_password3', 'FORTUNE_TELLER'),
+    ('1e801f2b-f9f0-493e-8a61-c9936e78fb9a', 'Alice', 'Williams', 'FEMALE', '3339876543', 'customer3@example.com', '1995-08-25', NULL, FALSE, 'DEF Bank', '654321098', 'user_password4', 'FORTUNE_TELLER'),
+    ('2da1baf4-4291-493b-b8d4-8a6c7d65d6b1', 'Charlie', 'Brown', 'MALE', '1112223333', 'fortune2@example.com', '1975-04-05', NULL, FALSE, 'GHI Bank', '789012345', 'user_password5', 'FORTUNE_TELLER'),
+    ('3a1a96da-1cb0-4b06-bba5-5db0a9dbd4da', 'Emma', 'Davis', 'FEMALE', '4445556666', 'fortune3@example.com', '1993-12-18', NULL, FALSE, 'JKL Bank', '234567890', 'user_password6', 'CUSTOMER'),
+    ('4e4894f4-6524-4937-8b7d-23d45b0e0c75', 'James', 'Miller', 'MALE', '6667778888', 'fortune4@example.com', '1982-09-30', NULL, FALSE, 'MNO Bank', '876543210', 'user_password7', 'FORTUNE_TELLER'),
+    ('5f0d68c8-7803-4d25-b80e-13d43a641791', 'Olivia', 'Moore', 'FEMALE', '9990001111', 'customer4@example.com', '1998-06-22', NULL, FALSE, 'PQR Bank', '543210987', 'user_password8', 'CUSTOMER');
 
 -- FORTUNE_TELLER
 INSERT INTO FORTUNE_TELLER (fortune_teller_id, is_verified, description, identity_card_number, stage_name, identity_card_copy, total_score, total_review)
