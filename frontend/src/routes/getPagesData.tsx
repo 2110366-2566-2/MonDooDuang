@@ -15,9 +15,14 @@ import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedA
 import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
+import Redirect from "./Redirect"
 
 export const getPagesData = (stripePromise: any) =>
   [
+    {
+      path: "/",
+      element: <Redirect to={"/login"} />
+    },
     {
       path: "/login",
       element: <LoginApp />
