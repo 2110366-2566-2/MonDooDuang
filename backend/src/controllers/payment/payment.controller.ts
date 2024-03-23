@@ -30,12 +30,12 @@ export const paymentController = {
   },
 
   confirmPaymentAndUpdateDB: async (
-    req: TypedRequestBody<{ paymentIntent: string }>,
+    req: TypedRequestBody<{ paymentIntent: string; appointmentId: string }>,
     res: Response
   ) => {
-    const paymentIntent = req.body.paymentIntent
+    const { paymentIntent, appointmentId } = req.body
     try {
-      const result = await paymentService.confirmPaymentAndUpdateDB(paymentIntent)
+      const result = await paymentService.confirmPaymentAndUpdateDB(paymentIntent, appointmentId)
       res.status(200).json({ success: result })
     } catch (error: Error | any) {
       res.status(400).json({
