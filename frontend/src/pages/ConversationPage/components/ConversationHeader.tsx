@@ -256,8 +256,9 @@ export default function ConversationHeader({
         const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
 
         const today = new Date()
+        today.setHours(today.getHours() + 7)
         const waiting_day = dayjs(appointmentDateTime).diff(
-          dayjs(today).format("YYYY-MM-DD"),
+          dayjs(new Date()).format("YYYY-MM-DD"),
           "day"
         )
 
