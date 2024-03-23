@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { RequestStatus, UserType } from "../../models/request/request.model"
+import { RequestStatus } from "../../models/request/request.model"
 import { requestService } from "../../services/request/request.services"
 
 const updateRequestStatus = async (req: Request, res: Response) => {
