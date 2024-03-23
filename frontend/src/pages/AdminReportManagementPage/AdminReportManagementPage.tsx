@@ -13,7 +13,7 @@ import {
   SuccessModal,
   SuccessModalProps
 } from "../../common/components/SuccessOverlay/SuccessOverlay"
-import { ErrorModal } from "../../common/components/ErrorOverlay/ErrorOverlay"
+import { ErrorModal, ErrorModalProps } from "../../common/components/ErrorOverlay/ErrorOverlay"
 
 export default function AdminReportManagementPage() {
   const { username } = useContext(AuthContext)
@@ -30,6 +30,7 @@ export default function AdminReportManagementPage() {
   const [systemReports, setSystemReports] = useState<ReportInfoType[]>([])
   const [menuList, setMenuList] = useState(defualtMenuList)
   const [focusReports, setFocusReports] = useState<ReportInfoType[]>([])
+  const [isUpdate, setIsUpdate] = useState(false)
 
   //overlay
   const defaultConfirmProps: ConfirmOverlayProps = {
@@ -52,22 +53,35 @@ export default function AdminReportManagementPage() {
     title: "",
     info: ``
   }
-  const banSuccessProps: SuccessModalProps = {
+
+  const defaultErrorProps: ErrorModalProps = {
     onClose: () => {
       setIsSuccessModalOpen(false)
     },
-    title: "แบนผู้ใช้งานสำเร็จ",
-    info: `ผู้ใช้งานนี้จะไม่สามารถใช้งาน\nMonDooDuang ได้อีกต่อไป`
+    title: "",
+    info: ``
   }
+
   const setUnsuspendedConfirmProps = (report: ReportInfoType) => {
     const unsuspenedConfirmProps: ConfirmOverlayProps = {
       onClose: () => {
         setIsConfirmModalOpen(false)
       },
-      onConfirm: () => {
+      onConfirm: async () => {
         setIsConfirmModalOpen(false)
-        setUnsuspendedSuccessProps()
-        setIsSuccessModalOpen(true)
+        const isSuccess = await ReportManagementService.updateReportAndAppointment(
+          report.reportId,
+          "COMPLETED",
+          report.appointmentId,
+          "NO_FRAUD_DETECTED"
+        )
+        if (isSuccess) {
+          setUnsuspendedSuccessProps()
+          setIsSuccessModalOpen(true)
+        } else {
+          setUnsuspendedErrorProps()
+          setIsErrorsModalOpen(true)
+        }
       },
       target: report.reporteeName,
       type: "REJECT",
@@ -80,8 +94,9 @@ export default function AdminReportManagementPage() {
   }
 
   const setUnsuspendedSuccessProps = () => {
-    const unsuspendedSuccessProps = {
+    const unsuspendedSuccessProps: SuccessModalProps = {
       onClose: () => {
+        setIsUpdate(!isUpdate)
         setIsSuccessModalOpen(false)
       },
       title: "ระบบโอนเงินไปยังหมอดูสำเร็จ",
@@ -90,16 +105,37 @@ export default function AdminReportManagementPage() {
     setSuccessProps(unsuspendedSuccessProps)
   }
 
+  const setUnsuspendedErrorProps = () => {
+    const unsuspendedErrorProps: ErrorModalProps = {
+      onClose: () => {
+        setIsUpdate(!isUpdate)
+        setIsErrorsModalOpen(false)
+      },
+      title: "ไม่สามารถโอนเงินให้หมอดูได้",
+      info: `เกิดข้อผิดพลาดในระหว่างการโอนเงิน\nโปรดลองใหม่อีกครั้ง`
+    }
+    setErrorProps(unsuspendedErrorProps)
+  }
+
   const setRefundConfirmProps = (report: ReportInfoType) => {
     const refundConfirmProps: ConfirmOverlayProps = {
       onClose: () => {
         setIsConfirmModalOpen(false)
       },
-      onConfirm: () => {
+      onConfirm: async () => {
         setIsConfirmModalOpen(false)
-        if (menuList[1] === "รายงานหมอดูไม่มาตามนัดหมาย") {
+        const isSuccess = await ReportManagementService.updateReportAndAppointment(
+          report.reportId,
+          "COMPLETED",
+          report.appointmentId,
+          "REFUNDED"
+        )
+        if (isSuccess) {
           setRefundSuccsessProps(report)
           setIsSuccessModalOpen(true)
+        } else {
+          setRefundErrorProps()
+          setIsErrorsModalOpen(true)
         }
       },
       target: report.reporterName,
@@ -124,13 +160,27 @@ export default function AdminReportManagementPage() {
     setSuccessProps(refundSuccessProps)
   }
 
+  const setRefundErrorProps = () => {
+    const refundErrorProps: ErrorModalProps = {
+      onClose: () => {
+        setIsUpdate(!isUpdate)
+        setIsErrorsModalOpen(false)
+      },
+      title: "ไม่สามารถคืนเงินไปยังผู้ใช้ได้",
+      info: `เกิดข้อผิดพลาดในระหว่างการโอนเงิน\nโปรดลองใหม่อีกครั้ง`
+    }
+    setErrorProps(refundErrorProps)
+  }
+
   const setbanConfirmProps = (report: ReportInfoType) => {
     const banConfirmProps: ConfirmOverlayProps = {
       onClose: () => {
+        setIsUpdate(!isUpdate)
         setIsConfirmModalOpen(false)
       },
       onConfirm: () => {
         setIsConfirmModalOpen(false)
+        ReportManagementService.updateReportAndBan(report.reportId, "COMPLETED", report.reporteeId)
         setSuccessProps(banSuccessProps)
         setIsSuccessModalOpen(true)
       },
@@ -143,12 +193,23 @@ export default function AdminReportManagementPage() {
     setConfirmProps(banConfirmProps)
   }
 
+  const banSuccessProps: SuccessModalProps = {
+    onClose: () => {
+      setIsUpdate(!isUpdate)
+      setIsSuccessModalOpen(false)
+    },
+    title: "แบนผู้ใช้งานสำเร็จ",
+    info: `ผู้ใช้งานนี้จะไม่สามารถใช้งาน\nMonDooDuang ได้อีกต่อไป`
+  }
+
   const setFinishedConfirmProps = (report: ReportInfoType) => {
     const finishConfirmProps: ConfirmOverlayProps = {
       onClose: () => {
         setIsConfirmModalOpen(false)
       },
       onConfirm: () => {
+        ReportManagementService.updateReportStatus(report.reportId, "COMPLETED")
+        setIsUpdate(!isUpdate)
         setIsConfirmModalOpen(false)
       },
       target: "ReportID : " + report.reportId,
@@ -165,6 +226,7 @@ export default function AdminReportManagementPage() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [confirmProps, setConfirmProps] = useState<ConfirmOverlayProps>(defaultConfirmProps)
   const [successProps, setSuccessProps] = useState<SuccessModalProps>(defaultSuccessProps)
+  const [errorProps, setErrorProps] = useState<ErrorModalProps>(defaultErrorProps)
   //
 
   useEffect(() => {
@@ -185,14 +247,21 @@ export default function AdminReportManagementPage() {
             (report: ReportInfoType) => report.reportType === "SYSTEM_ERROR"
           )
           setSystemReports(systemReportData)
-          setFocusReports(behaviorReportData)
+
+          if (menuList[1] === "รายงานหมอดูไม่มาตามนัดหมาย") {
+            setFocusReports(moneyReportData)
+          } else if (menuList[1] === "รายงานพฤติกรรมที่ไม่เหมาะสม") {
+            setFocusReports(behaviorReportData)
+          } else {
+            setFocusReports(systemReportData)
+          }
         }
       } catch (err) {
         console.log(err)
       }
     }
     fetchReports()
-  }, [])
+  }, [isUpdate])
 
   const menuHandler = (focusIndex: number) => {
     if (focusIndex === 1) {
@@ -221,14 +290,7 @@ export default function AdminReportManagementPage() {
       <NavBarAdmin menuFocus={"reportManagement"} username={username} />
       <div className="px-20 py-8">
         <ConfirmOverlay isVisible={isConfirmModalOpen} confirmProps={confirmProps} />
-        <ErrorModal
-          isVisible={isErrorModalOpen}
-          onClose={() => {
-            setIsErrorsModalOpen(false)
-          }}
-          title={"ส่งคำขอจองไปที่หมอดูสำเร็จ"}
-          info={"ผู้ใช้งานนี้จะไม่สามารถใช้งาน\nMonDooDuang ได้อีกต่อไป"}
-        />
+        <ErrorModal isVisible={isErrorModalOpen} errorProps={errorProps} />
         <SuccessModal isVisible={isSuccessModalOpen} successProps={successProps} />
         <div className="w-auto h-auto">
           <div className="flex flex-col justify-items-center items-center space-y-8">

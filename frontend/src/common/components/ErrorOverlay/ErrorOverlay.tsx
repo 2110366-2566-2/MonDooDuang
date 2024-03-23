@@ -1,26 +1,28 @@
 import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 import ErrorIcon from "../AppointmentCard/Icon/ErrorIcon"
 
-export function ErrorModal({
-  isVisible,
-  onClose,
-  title,
-  info,
-  warning
-}: {
-  isVisible: boolean
+export type ErrorModalProps = {
   onClose: () => void
   title: string
   info?: string
   warning?: string
+}
+
+export function ErrorModal({
+  isVisible,
+  errorProps
+}: {
+  isVisible: boolean
+  errorProps: ErrorModalProps
 }) {
+  const { onClose, title, info, warning } = errorProps
   return (
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
       <div
         style={{ backgroundColor: "#E8E8E8", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
         className="rounded-md z-10 flex flex-col justify-items-center items-center py-4 px-12 space-y-1 font-noto-sans"
       >
-        <ErrorIcon/>
+        <ErrorIcon />
         <div className="font-black text-xl font-medium font-noto-sans">{title}</div>
         <div className="text-xs flex flex-col justify-items-center items-center">
           {info ? (

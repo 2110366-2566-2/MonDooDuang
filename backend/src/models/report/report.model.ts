@@ -1,5 +1,5 @@
-type ReportType = "INAPPROPRIATE_BEHAVIOR" | "MONEY_SUSPENSION" | "SYSTEM_ERROR"
-type ReportStatus = "PENDING" | "COMPLETED"
+export type ReportType = "INAPPROPRIATE_BEHAVIOR" | "MONEY_SUSPENSION" | "SYSTEM_ERROR"
+export type ReportStatus = "PENDING" | "COMPLETED"
 
 export interface ReportSchema {
   description: string
@@ -19,4 +19,5 @@ export interface ReportInfoSchema {
   reporterName: string
   reporteeName: string
   reporteeProfile: string
+  appointmentId: string
 }
