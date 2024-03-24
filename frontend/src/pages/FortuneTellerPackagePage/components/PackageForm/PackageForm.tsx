@@ -117,7 +117,7 @@ export default function EditForm(props: {
       <div className="w-5/6 min-h-60 bg-transparent mx-auto rounded-3xl border text-regular text-2xl py-11 px-12">
         <div className="flex flex-col-2 md:flex-row md:gap-x-12 ">
           <div className="flex flex-col w-1/2 md:gap-y-11">
-            <div className="items-center justify-center">
+            <div className="items-center justify-center h-32">
               <label className="ml-2.5 leading-normal">ศาสตร์การดูดวง</label>
               <select
                 value={isEdit ? fortune : undefined}
@@ -137,7 +137,7 @@ export default function EditForm(props: {
                 )}
               </div>
             </div>
-            <div className="items-center justify-center">
+            <div className="items-center justify-center h-32">
               <div className="flex flex-col row-span-2">
                 <label className="ml-2.5 leading-normal">เวลาที่ใช้โดยประมาณ</label>
                 <div>
@@ -170,7 +170,7 @@ export default function EditForm(props: {
             </div>
           </div>
           <div className="flex flex-col w-1/2 md:gap-y-11">
-            <div className="items-center justify-center">
+            <div className="items-center justify-center h-32">
               <label className="ml-2.5 leading-normal">อัตราการให้บริการ</label>
               <div className="flex flex-row h-12">
                 <form id="packageDeleteForm" onSubmit={deletePackage}>
