@@ -15,6 +15,7 @@ export default function ConversationList({
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
   const [unreadMessage, setUnreadMessage] = useState(0)
+  const [profilePicture, setProfilePicture] = useState<string>("")
   useEffect(() => {
     const fetchNameWithLastMessage = async () => {
       if (conversationId && userId) {
@@ -35,8 +36,15 @@ export default function ConversationList({
         setUnreadMessage(unreadMessage.count)
       }
     }
+    const fetchProfilePicture = async () => {
+      if (userId) {
+        const profilePicture = await ConversationService.getProfilePicture(userId)
+        setProfilePicture(profilePicture)
+      }
+    }
     fetchNameWithLastMessage()
     fetchUnreadMessage()
+    fetchProfilePicture()
   }, [conversationId, isSelected])
 
   const truncatedLastMessage =
@@ -50,7 +58,7 @@ export default function ConversationList({
       onClick={onSelect}
     >
       <img
-        src="https://media.licdn.com/dms/image/D5603AQHoVH_MPSIu3g/profile-displayphoto-shrink_800_800/0/1685943781433?e=2147483647&v=beta&t=D4ngFEsJ3_eqPW66rEZbf6-otKqeAA0h0hlOymqG3zs"
+        src={profilePicture}
         alt="Profile Picture"
         className="h-[60px] w-[60px] rounded-full bg-black mx-2"
       />

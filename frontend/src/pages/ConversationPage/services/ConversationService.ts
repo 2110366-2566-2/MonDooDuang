@@ -28,5 +28,9 @@ export const ConversationService = {
       `${environment.backend.url}/conversations/unread-messages/${conversationId}/${userId}`
     )
     return await response.json()
+  },
+  getProfilePicture: async (userId: string) => {
+    const response = await fetch(`${environment.backend.url}/images/profile-picture/${userId}`)
+    return await response.json()
   }
 }
