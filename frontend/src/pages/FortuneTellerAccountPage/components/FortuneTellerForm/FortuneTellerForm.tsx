@@ -55,6 +55,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
         return alert(response.message)
       }
       setEditState(false)
+      setIsStageNameValid(true)
     } else {
       setIsStageNameValid(false)
     }
