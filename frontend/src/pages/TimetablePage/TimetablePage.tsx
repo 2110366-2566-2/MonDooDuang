@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
 import CalendarModal from "./components/CalendarModal/CalendarModal"
 import AppointmentListModal from "./components/AppointmentListModal/AppointmentListModal"
@@ -6,6 +6,14 @@ import AppointmentListModal from "./components/AppointmentListModal/AppointmentL
 export default function TimetablePage(): JSX.Element {
   // const { userId, userType, username } = useContext(AuthContext)
   // console.log(userId, userType, username)
+  const [toggle, setToggle] = useState('upcoming')
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
+
+  const handleToggle = () => {
+    setToggle((toggle === 'upcoming') ? 'completed' : 'upcoming')
+  }
+
   const appointmentData: AppointmentData[] = [
     {
       "appointment_date": "2024-03-01T17:00:00.000Z",
@@ -43,12 +51,13 @@ export default function TimetablePage(): JSX.Element {
       "customer_fname": "Bob",
       "customer_lname": "Bamiloye",
       "fortune_teller_name": "Alice"
-    }]
+    }
+  ]
 
   return (
     <div className="flex flex-row justify-between">
-      <CalendarModal />
-      <AppointmentListModal upcomingAppointments={appointmentData} completedAppointment={appointmentData}/>
+      <CalendarModal currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} currentYear={currentYear} setCurrentYear={setCurrentYear} toggle={toggle} upcomingAppointments={appointmentData} completedAppointment={appointmentData}/>
+      <AppointmentListModal toggle={toggle} handleToggle={handleToggle} upcomingAppointments={appointmentData} completedAppointment={appointmentData}/>
     </div>
   )
 }
