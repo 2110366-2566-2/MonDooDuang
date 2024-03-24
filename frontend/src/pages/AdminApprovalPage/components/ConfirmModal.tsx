@@ -2,7 +2,7 @@ import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 import { ConfirmProps } from "../types/AdminApprovalTypes"
 
 export function ConfirmModal(props: ConfirmProps) {
-  const { isVisible, onClose, onConfirm, fortuneTeller, type } = props
+  const { isVisible, onClose, onConfirm, fullName, type } = props
   return (
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
       <div
@@ -16,7 +16,7 @@ export function ConfirmModal(props: ConfirmProps) {
         )}
 
         <div className="font-zinc-500 flex flex-col justify-items-center items-center">
-          <div className=" text-lg font-light">'{fortuneTeller}'</div>
+          <div className=" text-lg font-light">'{fullName}'</div>
           <div className="text-lg font-bold">เป็นหมอดูใช่หรือไม่</div>
         </div>
         <div className="flex flex-row justify-items-center items-center space-x-16">
