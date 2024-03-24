@@ -2,6 +2,9 @@
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
+    screens: {
+      "admin-report": "1664px"
+    },
     extend: {
       colors: {
         "example-color": "#ff0000",

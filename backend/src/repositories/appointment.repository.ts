@@ -105,5 +105,32 @@ export const appointmentRepository = {
     )
     if (result.rows.length === 0) return false
     return true
+  },
+  cancelAllFromBanFortuneTeller: async (userId: string) => {
+    try {
+      await db.query(
+        `UPDATE APPOINTMENT
+        SET status = 
+            CASE 
+                WHEN status = 'CREATED' THEN 'FORTUNE_TELLER_DECLINED'::appointment_status_enum
+                WHEN status = 'WAITING_FOR_PAYMENT' THEN 
+                    CASE 
+                        WHEN fortune_teller_id = $1 THEN 'NO_PAYMENT_CANCELED'::appointment_status_enum
+                        ELSE 'FORTUNE_TELLER_CANCELED'::appointment_status_enum
+                    END
+                WHEN status = 'WAITING_FOR_EVENT' THEN 'REFUNDED'::appointment_status_enum
+                WHEN status IN ('EVENT_COMPLETED', 'SUSPENDED') THEN 'REFUNDED'::appointment_status_enum
+            END
+        WHERE 
+            (customer_id = $1 AND status IN ('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT'))
+            OR (fortune_teller_id = $1 AND status IN ('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'SUSPENDED'));
+        
+      `, [userId]
+      )
+      return { isSuccess: true, userId }
+    } catch (err) {
+      console.error(err)
+      return { isSuccess: false }
+    }
   }
 }
