@@ -15,7 +15,7 @@ export default function VerificationNotification({
             <div className="font-semibold text-mdd-yellow600">รับรอง</div>
             <div>จากผู้ดูแล</div>
           </div>
-          <div>กรุณา log out เพื่อใช้งานในฐานะหมอดู</div>
+          <div>กรุณา log in ใหม่อีกครั้งเพื่อใช้งานในฐานะหมอดู</div>
         </>
       ) : (
         <>
@@ -24,7 +24,7 @@ export default function VerificationNotification({
             <div className="font-semibold text-mdd-yellow600">ปฏิเสธ</div>
             <div>จากผู้ดูแล</div>
           </div>
-          <div>กรุณาติดต่ออีกครั้งเพื่อยืนยันตัวตน</div>
+          <div>กรุณาลงทะเบียนใหม่อีกครั้งหากต้องการใช้งานในฐานะหมอดู</div>
         </>
       )}
       <div className="flex self-end gap-1 text-gray-500 text-sm">
