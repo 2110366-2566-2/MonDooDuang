@@ -5,9 +5,11 @@ import EditIcon from "../../../../assets/FortuneTellerAccountAssets/EditIcon.svg
 import { PackageTypes } from "../../types/PackageTypes"
 
 export default function FortuneTellerPackage({
-  fortuneTellerPackage
+  fortuneTellerPackage,
+  editState
 }: {
   fortuneTellerPackage: PackageTypes
+  editState: boolean
 }) {
   const timeSeparate = (): [number, string] => {
     let time = Number(fortuneTellerPackage.duration)
@@ -51,9 +53,13 @@ export default function FortuneTellerPackage({
         </div>
         <img
           src={EditIcon}
-          className="size-6 text-white right-0 self-center cursor-pointer"
+          className={`size-6 text-white right-0 self-center ${
+            editState ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
           onClick={() => {
-            editPackage()
+            if (!editState) {
+              editPackage()
+            }
           }}
         />
       </div>
