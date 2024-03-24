@@ -75,7 +75,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
       </button>
 
       <div className="flex flex-col">
-        <div className="flex flex-row items-center justify-between w-full px-16">
+        <div className="flex flex-row items-center justify-between w-full px-16 h-12">
           <div className="w-32"></div>
           <span className="font-medium text-4xl">ข้อมูลส่วนตัว</span>
 
@@ -94,7 +94,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
           )}
         </div>
 
-        <div className="font-regular flex flex-row mt-10 w-3/4 mx-auto">
+        <div className="font-regular flex flex-row mt-10 w-3/4 h-28 mx-auto">
           <div className="mr-20 w-1/3">
             <form id="completeSubmit" onSubmit={submitForm}>
               <label className="pl-2.5 text-2xl leading-normal ">ชื่อในวงการ</label>
