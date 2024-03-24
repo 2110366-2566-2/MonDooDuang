@@ -67,30 +67,36 @@ export const userRepository = {
       "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
       [userId]
     )
+    if (user.rows.length === 0) return null
     return user.rows[0]
   },
 
   updateUserInformation: async (userId: string, user: UpdateUserSchema) => {
-    await db.query(
-      `UPDATE user_table
+    try {
+      await db.query(
+        `UPDATE user_table
       SET fname = $1 ,lname = $2, gender = $3, phone_number =$4 , birth_date = $5, profile_picture = $6, bank_name = $7, account_number = $8
       WHERE user_id = $9`,
-      [
-        user.fName,
-        user.lName,
-        user.gender,
-        user.phoneNumber,
-        user.birthDate,
-        user.profilePicture,
-        user.bankName,
-        user.accountNumber,
-        userId
-      ]
-    )
-    const userUpdate = await db.query<UserDBSchema>(
-      "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
-      [userId]
-    )
-    return userUpdate.rows[0]
+        [
+          user.fName,
+          user.lName,
+          user.gender,
+          user.phoneNumber,
+          user.birthDate,
+          user.profilePicture,
+          user.bankName,
+          user.accountNumber,
+          userId
+        ]
+      )
+      const userUpdate = await db.query<UserDBSchema>(
+        "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
+        [userId]
+      )
+      return userUpdate.rows[0]
+    } catch (err) {
+      console.error(err)
+      return null
+    }
   }
 }

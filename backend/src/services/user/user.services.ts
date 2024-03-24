@@ -104,29 +104,10 @@ export const userService = {
   },
 
   updateUserInformation: async (userId: string, body: UpdateUserSchema) => {
-    const fName = body.fName
-    const lName = body.lName
-    const gender = body.gender
-    const phoneNumber = body.phoneNumber
-    const birthDate = body.birthDate
-    const profilePicture = body.profilePicture
-    const bankName = body.bankName
-    const accountNumber = body.accountNumber
-
-    const userInfo: UpdateUserSchema = {
-      fName,
-      lName,
-      gender,
-      phoneNumber,
-      birthDate,
-      profilePicture,
-      bankName,
-      accountNumber
-    }
-
+    const userInfo = body
     const updatedUser = await userRepository.updateUserInformation(userId, userInfo)
 
-    if (updatedUser === undefined) {
+    if (updatedUser === null) {
       return { success: false, message: "Cannot update information" }
     }
     return { success: true, message: "Successfully update information" }

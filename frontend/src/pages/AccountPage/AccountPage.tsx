@@ -149,7 +149,7 @@ export default function RegisterPage() {
     newArray.push(formValues.accountNumber === undefined || formValues.accountNumber === "")
     newArray.push(false)
     setFormError(newArray)
-    console.log(formValues)
+
     return newArray.reduce((sum, bool) => sum && !bool, true)
   }
 
