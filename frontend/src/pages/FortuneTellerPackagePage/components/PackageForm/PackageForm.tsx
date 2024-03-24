@@ -41,6 +41,7 @@ export default function EditForm(props: {
         setUnitTime("hour")
       } else {
         setTime(duration)
+        setUnitTime("minute")
       }
     }
     fetchPackageData()
