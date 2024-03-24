@@ -102,6 +102,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
               <input
                 type="text"
                 value={stageName}
+                required
                 className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 text-xl leading-normal ${
                   editState ? "cursor-text" : "cursor-not-allowed"
                 }`}
