@@ -29,6 +29,16 @@ export const ConversationService = {
     )
     return await response.json()
   },
+  getUserTypeInConversation: async (conversationId: string, userId: string) => {
+    const response = await fetch(`${environment.backend.url}/conversations/user-type-in-conversation/${conversationId}/${userId}`)
+    const data = await response.json()
+
+    // FORTUNE_TELLER by default
+    if (!data.success)
+      return "FORTUNE_TELLER"
+
+    return data.userType
+  },
   getProfilePicture: async (userId: string) => {
     const response = await fetch(`${environment.backend.url}/images/profile-picture/${userId}`)
     const data = await response.json()

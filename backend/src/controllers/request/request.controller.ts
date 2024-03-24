@@ -14,7 +14,15 @@ const getPendingRequest = async (req: Request, res: Response) => {
   res.status(200).json(requests)
 }
 
+const updateToFortuneTellerTypeAndVerified = async (req: Request, res: Response) => {
+  const { requestId }: { requestId: string } = req.body
+  const result = await requestService.updateToFortuneTellerTypeAndVerified(requestId)
+  if (result.success) return res.status(200).json(result)
+  res.status(400).json(result)
+}
+
 export const requestController = {
   updateRequestStatus,
-  getPendingRequest
+  getPendingRequest,
+  updateToFortuneTellerTypeAndVerified
 }

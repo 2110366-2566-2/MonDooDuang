@@ -97,7 +97,7 @@ export default function AdminApprovalPage() {
             }}
           />
           <ConfirmModal
-            fortuneTeller={focusRequest ? focusRequest.stagename : ""}
+            fullName={focusRequest ? focusRequest.fullName : ""}
             type={confirmType}
             isVisible={isConfirmModalOpen}
             onClose={() => {
@@ -108,6 +108,7 @@ export default function AdminApprovalPage() {
               if (focusRequest) {
                 if (confirmType == "APPROVE") {
                   RequestService.updateRequestStatus(focusRequest?.requestId, "ACCEPTED")
+                  RequestService.updateFortuneTellerTypeAndVerified(focusRequest?.requestId)
                 } else {
                   RequestService.updateRequestStatus(focusRequest.requestId, "REJECTED")
                 }
