@@ -172,12 +172,12 @@ export default function EditForm(props: {
           <div className="flex flex-col w-1/2 md:gap-y-11">
             <div className="items-center justify-center h-32">
               <label className="ml-2.5 leading-normal">อัตราการให้บริการ</label>
-              <div className="flex flex-row h-12">
+              <div className="flex flex-row">
                 <form id="packageDeleteForm" onSubmit={deletePackage}>
                   <input
                     type="number"
                     value={isEdit ? price : undefined}
-                    className="bg-white bg-opacity-[.54] placeholder-white rounded-lg text-center w-60 leading-normal"
+                    className="bg-white bg-opacity-[.54] placeholder-white rounded-lg text-center w-60 leading-normal h-12"
                     onChange={(e) => setPrice(Number(e.target.value))}
                   ></input>
                 </form>
