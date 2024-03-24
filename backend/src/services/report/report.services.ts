@@ -1,5 +1,8 @@
-import { ReportSchema } from "../../models/report/report.model"
+import { AppointmentStatus } from "../../models/appointment/appointment.model"
+import { ReportSchema, ReportStatus } from "../../models/report/report.model"
+import { appointmentRepository } from "../../repositories/appointment.repository"
 import { reportRepository } from "../../repositories/report.repository"
+import { userRepository } from "../../repositories/user.repository"
 
 export const reportService = {
   createReport: async (report: ReportSchema) => {
@@ -59,5 +62,33 @@ export const reportService = {
   getAllReport: async () => {
     const reports = await reportRepository.getAllReport()
     return reports
+  },
+
+  updateReportStatus: async (reportId: string, status: ReportStatus) => {
+    const result = await reportRepository.updateReportStatus(reportId, status)
+    if (result.isSuccess) {
+      return { success: true, message: "report status has been changed" }
+    }
+    return { success: false, message: "error to change report status" }
+  },
+
+  updateReportAndAppointmentStatus: async (reportId: string, reportStatus: ReportStatus, appointmentId: string, appointmentStatus: AppointmentStatus) => {
+    const updateResult = await reportRepository.updateReportStatus(reportId, reportStatus)
+    const unsuspendIsSuccess = await appointmentRepository.updateAppointmentStatus(appointmentId, appointmentStatus)
+    if (unsuspendIsSuccess && updateResult.isSuccess) {
+      return { success: true, message: "report and appointment status has been changed" }
+    }
+    return { success: false, message: "error to change report or appointment status" }
+  },
+
+  updateReportAndBan: async (reportId: string, reportStatus: ReportStatus, userId: string) => {
+    const cancelAllIssuccess = await appointmentRepository.cancelAllFromBanFortuneTeller(userId)
+    const banIsSuccess = await userRepository.banUser(userId)
+    const updateResult = await reportRepository.updateReportStatus(reportId, reportStatus)
+    if (cancelAllIssuccess.isSuccess && banIsSuccess.isSuccess && updateResult.isSuccess) {
+      return { success: true, message: "this user is banned" }
+    }
+    return { success: false, message: "error to ban this user" }
   }
+
 }

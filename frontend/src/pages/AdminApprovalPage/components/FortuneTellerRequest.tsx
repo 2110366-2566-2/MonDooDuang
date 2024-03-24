@@ -36,7 +36,6 @@ export function FortuneTellerRequest({
       </div>
       <div className="flex flex-col justify-items-center items-start text-white text-md font-noto-sans">
         <div>Username : {fortuneTellerRequest.fullName}</div>
-        <div>ชื่อหมอดู : {fortuneTellerRequest.stagename}</div>
         <div>เบอร์โทรศัพท์ : {formatPhoneNumber(fortuneTellerRequest.phoneNumber)}</div>
         <div>
           เลขบัตรประจำตัวประชาชน : <br /> {formatCitizenId(fortuneTellerRequest.identityCardNumber)}
