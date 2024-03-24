@@ -54,5 +54,10 @@ export const reportService = {
   getReporteeId: async (conversationId: string, reporterId: string) => {
     const reporteeId = await reportRepository.getReporteeId(conversationId, reporterId)
     return reporteeId
+  },
+
+  getAllReport: async () => {
+    const reports = await reportRepository.getAllReport()
+    return reports
   }
 }

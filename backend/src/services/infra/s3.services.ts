@@ -84,5 +84,19 @@ export const s3Service = {
       console.log(error)
       return null
     }
+  },
+
+  deleteIdCard: async (userId: string) => {
+    const deleteParams = {
+      Bucket: bucketName,
+      Key: `${userId}/idCard.jpg`
+    }
+    try {
+      await s3Client.deleteObject(deleteParams).promise()
+      return true
+    } catch (error) {
+      console.log(error)
+      return false
+    }
   }
 }

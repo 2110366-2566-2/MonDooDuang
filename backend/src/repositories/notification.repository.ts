@@ -137,7 +137,7 @@ export const notificationRepository = {
       return null
     }
   },
-  updateNotificationType: async (notificationId: string, type: string) => {
+  updateNotificationType: async (notificationId: string, type: NotificationType) => {
     try {
       await db.query(
         `
@@ -166,6 +166,7 @@ export const notificationRepository = {
                       WHEN $2 = fortune_teller_id THEN customer_id
                   END AS other_id
               FROM conversation
+              WHERE conversation.conversation_id = (SELECT conversation_id FROM conversationId)
           ), otherName AS (
             SELECT CONCAT(fname,' ',lname) AS full_name
             FROM USER_TABLE
@@ -177,6 +178,22 @@ export const notificationRepository = {
         [notificationId, userId]
       )
       return { otherName: result.rows[0].full_name, updatedAt: result.rows[0].updated_at }
+    } catch (err) {
+      return null
+    }
+  },
+  getNotificationIdByAppointmentIdAndType: async (appointmentId: string, type: AppointmentNotificationType): Promise<null | string> => {
+    try {
+      const result = await db.query(
+        `
+        SELECT notification_id FROM APPOINTMENT_NOTIFICATION 
+        WHERE appointment_id = $1
+        AND type = $2
+        `,
+        [appointmentId, type]
+      )
+      if (result.rows.length === 0) return null
+      return result.rows[0].notification_id
     } catch (err) {
       return null
     }

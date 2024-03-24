@@ -28,7 +28,7 @@ export default function ConversationHeader({
   showReport: () => void
   conversationId: string | null
   systemReport: (selectReportMode: boolean) => void
-  userType: string
+  userType: "CUSTOMER" | "FORTUNE_TELLER" | "ADMIN"
 }) {
   const navigate = useNavigate()
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
@@ -149,6 +149,46 @@ export default function ConversationHeader({
     return { content, moreContent, button }
   }
 
+  const getSuspendedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การชำระเงินถูกระงับ</h1>
+        <p className="text-mdd-gray-success-text">
+          เนื่องจากมีการรายงานว่าหมอดูไม่มาตามเวลานัดหมาย
+        </p>
+        <p className="text-mdd-gray-success-text">โปรดรอการตรวจสอบจากผู้ดูแลระบบ</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getRefundedEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-cancel-red font-semibold text-[28px]">การนัดหมายถูกยกเลิก</h1>
+        <p className="text-mdd-gray-success-text">เนื่องจากหมอดูไม่มาตามเวลานัดหมาย</p>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการคืนเงินให้กับลูกค้า</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
+  const getNoFraudDetectEventInfo = () => {
+    const content = (
+      <>
+        <h1 className="text-mdd-yellow600 font-semibold text-[28px]">ตรวจสอบไม่พบปัญหา</h1>
+        <p className="text-mdd-gray-success-text">ระบบจะทำการโอนเงินให้หมอดูตามปกติ</p>
+      </>
+    )
+    const moreContent = ""
+    const button = <></>
+    return { content, moreContent, button }
+  }
+
   const getEventInProgressInfo = (appointmentId: string) => {
     const content = (
       <>
@@ -215,7 +255,7 @@ export default function ConversationHeader({
           "day"
         )
 
-        if (appointment.status === "WAITING_FOR_PAYMENT") {
+        if (appointment.status === "WAITING_FOR_PAYMENT" && userType === "CUSTOMER") {
           const { content, moreContent, button } = getWaitingForPaymentInfo(
             appointment.price,
             paymentDate,
@@ -231,6 +271,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key={appointment.appointmentId}
             />
           )
         } else if (appointment.status === "WAITING_FOR_EVENT") {
@@ -248,6 +289,7 @@ export default function ConversationHeader({
                 startTime={startTime}
                 endTime={endTime}
                 speciality={specialityMapper[appointment.speciality]}
+                key={appointment.appointmentId}
               />
             )
           } else if (waiting_day < 3) {
@@ -266,6 +308,7 @@ export default function ConversationHeader({
                 startTime={startTime}
                 endTime={endTime}
                 speciality={specialityMapper[appointment.speciality]}
+                key={appointment.appointmentId}
               />
             )
           }
@@ -280,6 +323,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key={appointment.appointmentId}
             />
           )
         } else if (
@@ -297,6 +341,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key={appointment.appointmentId}
             />
           )
         } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
@@ -311,6 +356,7 @@ export default function ConversationHeader({
               startTime={startTime}
               endTime={endTime}
               speciality={specialityMapper[appointment.speciality]}
+              key={appointment.appointmentId}
             />
           )
         } else if (appointment.status === "NO_PAYMENT_CANCELED") {
@@ -340,6 +386,49 @@ export default function ConversationHeader({
               isCustomer={userType === "CUSTOMER"}
               showReport={showReport}
               systemReport={systemReport}
+              key={appointment.appointmentId}
+            />
+          )
+        } else if (appointment.status === "SUSPENDED") {
+          const { content, moreContent, button } = getSuspendedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "REFUNDED") {
+          const { content, moreContent, button } = getRefundedEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<ErrorIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
+            />
+          )
+        } else if (appointment.status === "NO_FRAUD_DETECTED") {
+          const { content, moreContent, button } = getNoFraudDetectEventInfo()
+          return (
+            <BaseAppointmentCard
+              icon={<SuccessIcon />}
+              content={content}
+              moreContent={moreContent}
+              button={button}
+              formattedDate={formattedDate}
+              startTime={startTime}
+              endTime={endTime}
+              speciality={specialityMapper[appointment.speciality]}
             />
           )
         }

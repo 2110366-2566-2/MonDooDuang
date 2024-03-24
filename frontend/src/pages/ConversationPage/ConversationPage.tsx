@@ -4,15 +4,27 @@ import ConversationBox from "./components/ConversationBox"
 import NavBar from "../../common/components/NavBar/NavBar"
 import { useContext, useState } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
+import { ConversationService } from "./services/ConversationService"
+import { useParams } from "react-router-dom"
 
 export default function ConversationPage() {
+  const { cid } = useParams<{ cid: string }>()
   const [isShowReport, setIsShowReport] = useState(false)
-  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(cid || null)
   const { userId, userType, username } = useContext(AuthContext)
   const [isSystemReport, setIsSystemReport] = useState(false)
+  const [selectedUserType, setSelectedUserType] = useState<"CUSTOMER" | "FORTUNE_TELLER">(
+    "FORTUNE_TELLER"
+  )
 
-  const handleConversationSelect = (conversationId: string) => {
+  const handleConversationSelect = async (conversationId: string) => {
     setSelectedConversationId(conversationId)
+
+    const userTypeInConversation = await ConversationService.getUserTypeInConversation(
+      conversationId,
+      userId
+    )
+    setSelectedUserType(userTypeInConversation)
   }
 
   const showReport = () => {
@@ -37,6 +49,7 @@ export default function ConversationPage() {
             onConversationSelect={handleConversationSelect}
             selectedConversationId={selectedConversationId}
             userId={userId}
+            userType={userType}
           />
         </div>
         <div className="w-3/4 bg-black bg-opacity-40 border border-white">
@@ -45,13 +58,13 @@ export default function ConversationPage() {
             showReport={showReport}
             systemReport={systemReport}
             userId={userId}
-            userType={userType}
+            userType={selectedUserType}
           />
         </div>
         <ReportModal
           isShowReport={isShowReport}
           setIsShowReport={setIsShowReport}
-          isCustomer={userType === "CUSTOMER"}
+          isCustomer={selectedUserType === "CUSTOMER"}
           userId={userId}
           conversationId={selectedConversationId}
           isSystemReport={isSystemReport}
