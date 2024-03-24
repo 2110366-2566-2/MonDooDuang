@@ -11,5 +11,14 @@ export const RegisterService = {
       }
     })
     return await response.json()
+  },
+  uploadProfilePicture: async (userId: string, formData: FormData) => {
+    const res = await fetch(`${environment.backend.url}/images/profile-picture/${userId}`, 
+      {
+        method: "POST",
+        body: formData
+      })
+    const data = await res.json()
+    return { isSuccess: data.success, message: data.error }
   }
 }
