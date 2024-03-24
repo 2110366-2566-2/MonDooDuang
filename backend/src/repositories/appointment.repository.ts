@@ -141,8 +141,8 @@ export const appointmentRepository = {
       JOIN PACKAGE P ON A.package_id = P.package_id
       JOIN USER_TABLE C ON A.customer_id = C.user_id
       JOIN USER_TABLE FT ON A.fortune_teller_id = FT.user_id
-      WHERE A.status = $1
-      `, ["EVENT_COMPLETED"]
+      WHERE A.status = $1 OR A.status = $2
+      `, ["EVENT_COMPLETED", "NO_FRAUD_DETECTED"]
     )
     if (result.rowCount === 0) return []
     return result.rows.map((row) => {
