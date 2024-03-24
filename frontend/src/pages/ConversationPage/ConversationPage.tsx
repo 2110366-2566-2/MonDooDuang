@@ -14,7 +14,7 @@ export default function ConversationPage() {
   const { userId, userType, username } = useContext(AuthContext)
   const [isSystemReport, setIsSystemReport] = useState(false)
   const [selectedUserType, setSelectedUserType] = useState<"CUSTOMER" | "FORTUNE_TELLER">(
-    "FORTUNE_TELLER"
+    "CUSTOMER"
   )
 
   const handleConversationSelect = async (conversationId: string) => {

@@ -46,6 +46,22 @@ export const userRepository = {
     return result.rows[0]
   },
 
+  banUser: async (userId: string) => {
+    try {
+      await db.query(
+        `UPDATE USER_TABLE
+        SET is_banned = true
+        WHERE user_id = $1;
+      `,
+        [userId]
+      )
+      return { isSuccess: true, userId }
+    } catch (err) {
+      console.error(err)
+      return { isSuccess: false }
+    }
+  },
+
   getUserInformation: async (userId: string) => {
     const user = await db.query<UserDBSchema>(
       "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
