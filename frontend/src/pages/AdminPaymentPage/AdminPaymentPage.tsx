@@ -90,6 +90,7 @@ export default function AdminPaymentPage() {
             bankName={focusPayment ? focusPayment.bankName : ""}
             accountNumber={focusPayment ? focusPayment.accountNumber : ""}
             amount={focusPayment ? ((focusPayment.price*0.9) | 0).toString() : ""}
+            phoneNumber={focusPayment ? focusPayment.phoneNumber : ""}
           />
         </div>
       </div>

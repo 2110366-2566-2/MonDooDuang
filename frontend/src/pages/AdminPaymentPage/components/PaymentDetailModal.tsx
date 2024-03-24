@@ -1,8 +1,9 @@
 import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 import { PaymentConfirmProps } from "../types/AdminPaymentTypes"
+import { PaymentQR } from "./PaymentQR"
 
 export function PaymentDetailModal(props: PaymentConfirmProps) {
-  const { isVisible, onClose, onConfirm, fullName, bankName, accountNumber, amount } = props
+  const { isVisible, onClose, onConfirm, fullName, bankName, accountNumber, amount, phoneNumber } = props
   return (
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
       <div
@@ -15,13 +16,7 @@ export function PaymentDetailModal(props: PaymentConfirmProps) {
           <div className="text-xs">{amount} บาท</div>
           <div className="text-xs">{bankName} {accountNumber}</div>
         </div>
-        <img
-          src="/mock_qrpayment.png"
-          alt="Payment QR code"
-          style={{
-            width: "50%"
-          }}
-        />
+        <PaymentQR phoneNumber={phoneNumber} amount={parseInt(amount)} />
         <div className="flex flex-col justify-items-center items-center text-mdd-cancel-red text-xs font-medium">
           <div>โปรดระวัง</div>
           <div>หากทำการชำระเงินแล้ว เงินจะถูกโอนไปยังหมอดูทันที</div>

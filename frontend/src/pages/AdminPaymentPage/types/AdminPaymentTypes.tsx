@@ -6,6 +6,7 @@ export type AdminPaymentType = {
   profilePicture: string
   bankName: string
   accountNumber: string
+  phoneNumber: string
 }
 
 export type PaymentConfirmProps = {
@@ -13,7 +14,13 @@ export type PaymentConfirmProps = {
   bankName: string
   accountNumber: string
   amount: string
+  phoneNumber: string
   isVisible: boolean
   onClose: () => void
   onConfirm: () => void
+}
+
+export type PaymentQRProps = {
+  phoneNumber: string
+  amount: number
 }
