@@ -21,5 +21,19 @@ export const RequestService = {
     const res = await fetch(`${environment.backend.url}/request/get-pending`)
     const data = await res.json()
     return data
+  },
+
+  updateFortuneTellerTypeAndVerified: async (requestId:string) =>{
+    const res = await fetch(`${environment.backend.url}/request/update-fortuneTellerTypeAndVerified`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        requestId
+      })
+    })
+    const data = await res.json()
+    return { isSuccess: data.success, message: data.message }
   }
 }

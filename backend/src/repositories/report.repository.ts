@@ -1,5 +1,5 @@
+import { ReportStatus, ReportInfoSchema, ReportSchema } from "../models/report/report.model"
 import { db } from "../configs/pgdbConnection"
-import { ReportInfoSchema, ReportSchema } from "../models/report/report.model"
 
 export const reportRepository = {
   createReport: async (report: ReportSchema) => {
@@ -81,12 +81,27 @@ export const reportRepository = {
       [...appointmentIds]
     )
   },
+  updateReportStatus: async (reportId: string, status: ReportStatus) => {
+    try {
+      await db.query(
+        `UPDATE REPORT
+      SET status = $1
+      WHERE report_id = $2;
+      `, [status, reportId]
+      )
+      return { isSuccess: true, reportId }
+    } catch (err) {
+      console.error(err)
+      return { isSuccess: false }
+    }
+  },
   getAllReport: async () => {
     const result = await db.query(
       `SELECT 
       r.report_id,
       r.report_type,
       r.reporter_id,
+      r.appointment_id,
       CASE 
         WHEN r.report_type = 'SYSTEM_ERROR' THEN NULL
           ELSE r.reportee_id 
@@ -103,6 +118,7 @@ export const reportRepository = {
       FROM REPORT r
       JOIN USER_TABLE u1 ON r.reporter_id = u1.user_id
       LEFT JOIN USER_TABLE u2 ON r.reportee_id = u2.user_id
+      WHERE r.status = 'PENDING' AND (r.report_type = 'SYSTEM_ERROR' OR u2.is_banned = false)
       ORDER BY r.created_at; `
     )
     if (result.rows.length === 0) return null
@@ -114,7 +130,8 @@ export const reportRepository = {
       description: row.description,
       reporterName: row.reporter_full_name,
       reporteeName: row.reportee_full_name,
-      reporteeProfile: row.profile_picture
+      reporteeProfile: row.profile_picture,
+      appointmentId: row.appointment_id
     }))
     return reports
   }

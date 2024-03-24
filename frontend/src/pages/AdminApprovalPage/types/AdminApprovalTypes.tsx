@@ -10,7 +10,7 @@ export type FortuneTellerRequestType = {
 
 export type ConfirmType = "APPROVE" | "REJECT"
 export type ConfirmProps = {
-  fortuneTeller: string
+  fullName: string
   type: ConfirmType
   isVisible: boolean
   onClose: () => void

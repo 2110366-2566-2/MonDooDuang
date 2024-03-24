@@ -15,5 +15,17 @@ export const requestService = {
   },
   getPendingRequest: async () => {
     return await requestRepository.getPendingRequest()
+  },
+  updateToFortuneTellerTypeAndVerified: async (requestId: string) => {
+    const updateType = await requestRepository.updateFortuneTellerType(requestId)
+    if (!updateType.isSuccess) {
+      return { success: false, message: "error to change user type" }
+    }
+
+    const updateVerified = await requestRepository.updateFortuneTellerVerified(requestId)
+    if (!updateVerified.isSuccess) {
+      return { success: false, message: "error to change fortune teller verify" }
+    }
+    return { success: true, message: "user type and fortune teller verify have been changed" }
   }
 }

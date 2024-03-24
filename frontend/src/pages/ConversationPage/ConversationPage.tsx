@@ -5,14 +5,16 @@ import NavBar from "../../common/components/NavBar/NavBar"
 import { useContext, useState } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
 import { ConversationService } from "./services/ConversationService"
+import { useParams } from "react-router-dom"
 
 export default function ConversationPage() {
+  const { cid } = useParams<{ cid: string }>()
   const [isShowReport, setIsShowReport] = useState(false)
-  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(cid || null)
   const { userId, userType, username } = useContext(AuthContext)
   const [isSystemReport, setIsSystemReport] = useState(false)
   const [selectedUserType, setSelectedUserType] = useState<"CUSTOMER" | "FORTUNE_TELLER">(
-    "FORTUNE_TELLER"
+    "CUSTOMER"
   )
 
   const handleConversationSelect = async (conversationId: string) => {
@@ -47,6 +49,7 @@ export default function ConversationPage() {
             onConversationSelect={handleConversationSelect}
             selectedConversationId={selectedConversationId}
             userId={userId}
+            userType={userType}
           />
         </div>
         <div className="w-3/4 bg-black bg-opacity-40 border border-white">
