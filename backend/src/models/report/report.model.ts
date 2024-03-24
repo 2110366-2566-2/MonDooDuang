@@ -5,7 +5,18 @@ export interface ReportSchema {
   description: string
   reportType: ReportType
   status: ReportStatus
-  appointmentId: string
+  appointmentId: string | null
+  reporterId: string
+  reporteeId: string | null
+}
+
+export interface ReportInfoSchema {
+  reportId: string
+  reportType: ReportType
   reporterId: string
   reporteeId: string
+  description: string
+  reporterName: string
+  reporteeName: string
+  reporteeProfile: string
 }

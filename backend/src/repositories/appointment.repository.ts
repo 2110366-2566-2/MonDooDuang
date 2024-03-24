@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { AppointmentSchema } from "../models/appointment/appointment.model"
+import { AppointmentSchema, AppointmentStatus } from "../models/appointment/appointment.model"
 
 export const appointmentRepository = {
   createAppointment: async (appointment: AppointmentSchema) => {
@@ -81,7 +81,7 @@ export const appointmentRepository = {
       }
     })
   },
-  updateAppointmentStatus: async (appointmentId: string, status: string) => {
+  updateAppointmentStatus: async (appointmentId: string, status: AppointmentStatus) => {
     try {
       await db.query(
         `
