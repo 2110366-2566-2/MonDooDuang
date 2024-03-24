@@ -16,7 +16,7 @@ export const fortuneTellerRepository = {
         WHERE user_id = $1
         `,
         [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
-      );
+      )
       return true
     } catch (err) {
       return false
