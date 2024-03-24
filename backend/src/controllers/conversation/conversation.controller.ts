@@ -40,10 +40,22 @@ const createConversation = async (req: Request, res: Response) => {
   }
 }
 
-const getUnreadMessagesConversationId = async (req: Request, res: Response) => {
+const getUnreadMessagesByConversationId = async (req: Request, res: Response) => {
   const userId = req.params.userId
   const conversationId = req.params.conversationId
   const data = await conversationService.getUnreadMessagesByConversationId(conversationId, userId)
+  res.status(200).send(data)
+}
+
+const getRecieverUserIdByConversationId = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const conversationId = req.params.conversationId
+  const role: "CUSTOMER" | "FORTUNE_TELLER" = req.params.role as "CUSTOMER" | "FORTUNE_TELLER"
+  const data = await conversationService.getRecieverUserIdByConversationId(
+    conversationId,
+    userId,
+    role
+  )
   res.status(200).send(data)
 }
 
@@ -62,6 +74,7 @@ export const conversationController = {
   getMessagesByConversationId,
   getNameByConversationId,
   createConversation,
-  getUnreadMessagesConversationId,
+  getUnreadMessagesByConversationId,
+  getRecieverUserIdByConversationId,
   getUserTypeInConversation
 }
