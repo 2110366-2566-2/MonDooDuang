@@ -115,7 +115,7 @@ export default function EditForm(props: {
         ข้อมูล Package
       </label>
       <div className="w-5/6 min-h-60 bg-transparent mx-auto rounded-3xl border text-regular text-2xl py-11 px-12">
-        <div className="flex flex-col md:flex-row md:gap-x-12 ">
+        <div className="flex flex-col-2 md:flex-row md:gap-x-12 ">
           <div className="flex flex-col w-1/2 md:gap-y-11">
             <div className="items-center justify-center">
               <label className="ml-2.5 leading-normal">ศาสตร์การดูดวง</label>
