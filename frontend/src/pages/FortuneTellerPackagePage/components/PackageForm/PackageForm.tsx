@@ -126,8 +126,8 @@ export default function EditForm(props: {
               >
                 <option value="" selected disabled hidden></option>
                 <option value="TAROT_CARD">ไพ่ทาโรต์</option>
-                <option value="NUMBER">โหราศาสตร์ไทย</option>
-                <option value="THAI">ศาสตร์ตัวเลข</option>
+                <option value="THAI">โหราศาสตร์ไทย</option>
+                <option value="NUMBER">ศาสตร์ตัวเลข</option>
                 <option value="ORACLE">ไพ่ออราเคิล</option>
                 <option value="RUNES">รูนส์</option>
               </select>
