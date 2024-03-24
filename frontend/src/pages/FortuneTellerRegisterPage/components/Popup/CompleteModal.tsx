@@ -1,4 +1,4 @@
-import CompleteIcon from "../../../../assets/FortuneTellerRegisterAssets/CompleteIcon.png"
+import CompleteIcon from "../Icon/CompleteIcon"
 
 export default function CompleteModal(props: {
   isShowComplete: boolean
@@ -14,7 +14,7 @@ export default function CompleteModal(props: {
      ${props.isShowComplete ? "flex" : "hidden"} justify-center items-center`}
     >
       <div className="flex flex-col w-1/3 h-64 bg-[#E8E8E8] rounded-3xl items-center m-auto">
-        <img src={CompleteIcon} className="size-20 mt-6" />
+        <CompleteIcon />
         <h1 className="text-[#0C0000] text-3xl font-medium mt-2">สร้างบัญชีผู้ใช้ใหม่สำเร็จ</h1>
         <button
           type="submit"

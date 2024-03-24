@@ -12,7 +12,8 @@ export const FortuneTellerRegisterService = {
       },
       body: JSON.stringify({
         fortuneTellerId,
-        identityCardNumber
+        identityCardNumber,
+        identityCardCopy:""
 
       })
     })
@@ -42,13 +43,14 @@ export const FortuneTellerRegisterService = {
     identityCardNumber: string
   ) => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/update-fortuneTeller`, {
-      method: "PATCH",
+      method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         fortuneTellerId,
-        identityCardNumber
+        identityCardNumber,
+        identityCardCopy:""
       })
     })
     const data = await res.json()

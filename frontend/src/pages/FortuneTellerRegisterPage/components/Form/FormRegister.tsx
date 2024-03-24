@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
-import UploadFile from "../../../../assets/FortuneTellerRegisterAssets/UploadFile.png"
-import CrossIcon from "../../../../assets/FortuneTellerRegisterAssets/CrossIcon.svg"
-import FileIcon from "../../../../assets/FortuneTellerRegisterAssets/FileIcon.svg"
+import UploadFileIcon from "../Icon/UploadFile"
+import FileIcon from "../Icon/FileIcon"
+import CrossIcon from "../Icon/CrossIcon"
 import CompleteModal from "../Popup/CompleteModal"
 import { FortuneTellerRegisterService } from "../../services/FortuneTellerRegisterService"
 
@@ -125,7 +125,7 @@ export default function FormRegister(props: { userId: string }) {
               className="flex flex-col items-center w-full h-60 rounded-lg bg-white/55 place-content-center"
               onClick={handleButtonClick}
             >
-              <img src={UploadFile} className="size-32" />
+              <UploadFileIcon />
               <span className="mx-auto justify-self-center">
                 ลากไฟล์และวางที่นี่ หรือ <u className="font-semibold ">คลิก</u>
                 เพื่ออัพโหลดไฟล์
@@ -136,10 +136,10 @@ export default function FormRegister(props: { userId: string }) {
         {isFileError && <span className="text-red-500 text-xs">กรุณาแนบไฟล์</span>}
         {file !== null && (
           <div className="flex gap-3 mt-1.5 content-center text-2xl font-normal">
-            <img src={FileIcon} className="h-10"></img>
+            <FileIcon />
             <span className="self-center underline">{file.name}</span>
             <button onClick={() => setFile(null)}>
-              <img src={CrossIcon} className="size-4 self-center"></img>
+              <CrossIcon />
             </button>
           </div>
         )}
