@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { CreateUserSchema, UserDBSchema } from "../models/user/user.model"
+import { CreateUserSchema, UpdateUserSchema, UserDBSchema } from "../models/user/user.model"
 
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
@@ -52,5 +52,29 @@ export const userRepository = {
       [user_id]
     )
     return user.rows[0]
+  },
+
+  updateUserInformation: async (user_id: string, user: UpdateUserSchema) => {
+    await db.query(
+      `UPDATE user_table
+      SET fname = $1 ,lname = $2, gender = $3, phone_number =$4 , birth_date = $5, profile_picture = $6, bank_name = $7, account_number = $8
+      WHERE user_id = $9`,
+      [
+        user.fName,
+        user.lName,
+        user.gender,
+        user.phoneNumber,
+        user.birthDate,
+        user.profilePicture,
+        user.bankName,
+        user.accountNumber,
+        user_id
+      ]
+    )
+    const userUpdate = await db.query<UserDBSchema>(
+      "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
+      [user_id]
+    )
+    return userUpdate.rows[0]
   }
 }

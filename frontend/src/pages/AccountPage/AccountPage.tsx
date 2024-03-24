@@ -5,19 +5,15 @@ import dayjs from "dayjs"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { styled } from "@mui/material/styles"
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 import { Gender, UserSchema } from "../RegisterPage/types/RegisterType"
-import FortuneTellerRegisterAlert from "../RegisterPage/components/FortuneTellerRegisterAlert"
-import ConfirmAlert from "../RegisterPage/components/ConfirmAlert"
-import FailedAlert from "../LoginPage/components/FailedAlert"
-import { RegisterService } from "../RegisterPage/services/RegisterService"
+import EditIcon from "../../assets/FortuneTellerAccountAssets/EditIcon.png"
 import { AccountService } from "./services/AccountService"
-import { LocalStorageUtils } from "../../common/utils/LocalStorageUtils"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
+
 import { AuthContext } from "../../common/providers/AuthProvider"
 import { useContext, useEffect } from "react"
 
-const today = dayjs()
 const CustomizedDatePicker = styled(DatePicker)`
   input {
     font-family: "Prompt", "sans-serif";
@@ -58,22 +54,17 @@ const CustomizedMenuItem = styled(MenuItem)`
 `
 
 export default function RegisterPage() {
-  const { userId } = useContext(AuthContext)
+  const { userId, userType } = useContext(AuthContext)
   const [fetchFormValues, setFetchFormValues] = useState<UserSchema>({} as UserSchema)
   const [formValues, setFormValues] = useState<UserSchema>({} as UserSchema)
   const [formError, setFormError] = useState<boolean[]>(Array(9).fill(false))
-  const [confirmPassword, setConfirmPassword] = useState<string>("")
-  const [passwordError, setPasswordError] = useState<boolean>(false)
   const [dateError, setDateError] = useState<boolean>(false)
   const [emailError, setEmailError] = useState<boolean>(false)
-  const [FTAlert, setFTAlert] = useState<boolean>(false)
-  const [CFAlert, setCFAlert] = useState<boolean>(false)
-  const [FAlert, setFAlert] = useState<boolean>(false)
+  const [telError, setTelError] = useState<boolean>(false)
+  const [accountNumberError, setAccountNumberError] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
-  // console.log(typeof today)
-  // console.log(birthDateAsDate)
-  console.log(isEditing)
+  console.log(fetchFormValues.gender, isEditing)
 
   useEffect(() => {
     const fetchUserInformation = async () => {
@@ -92,9 +83,23 @@ export default function RegisterPage() {
         accountNumber: response.accountNumber,
         password: response.password
       })
+
+      setFormValues({
+        ...formValues,
+        fName: response.fName,
+        lName: response.lName,
+        gender: response.gender,
+        phoneNumber: response.phoneNumber,
+        email: response.email,
+        birthDate: response.birthDate,
+        profilePicture: response.profilePicture,
+        bankName: response.bankName,
+        accountNumber: response.accountNumber,
+        password: response.password
+      })
     }
     fetchUserInformation()
-  }, [])
+  }, [isEditing])
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -104,22 +109,9 @@ export default function RegisterPage() {
       ...formValues,
       [name]: value
     })
-    if (name == "email") handleEmailChange(value)
-  }
-
-  const handlePasswordChange = (isConfirm: boolean, password: string) => {
-    if (!isConfirm) {
-      setFormValues({
-        ...fetchFormValues,
-        password: password
-      })
-      if (password === confirmPassword) setPasswordError(false)
-      else setPasswordError(true)
-    } else {
-      setConfirmPassword(password)
-      if (password === formValues.password) setPasswordError(false)
-      else setPasswordError(true)
-    }
+    if (name === "email") handleEmailChange(value)
+    if (name === "phoneNumber") handleTelChange(value)
+    if (name === "accountNumber") handleAccountNumberChange(value)
   }
 
   const handleBankChange = (event: SelectChangeEvent) => {
@@ -135,6 +127,16 @@ export default function RegisterPage() {
     else setEmailError(true)
   }
 
+  const handleTelChange = (tel: string) => {
+    if (/^[0-9]{10}$/.test(tel)) setTelError(false)
+    else setTelError(true)
+  }
+
+  const handleAccountNumberChange = (accountNumber: string) => {
+    if (/^[0-9]{10,15}$/.test(accountNumber)) setAccountNumberError(false)
+    else setAccountNumberError(true)
+  }
+
   const checkAllInput = () => {
     const newArray: boolean[] = []
     newArray.push(formValues.fName === undefined || formValues.fName === "")
@@ -145,28 +147,26 @@ export default function RegisterPage() {
     newArray.push(formValues.birthDate === undefined)
     newArray.push(formValues.bankName === undefined || formValues.bankName === "")
     newArray.push(formValues.accountNumber === undefined || formValues.accountNumber === "")
-    newArray.push(formValues.password === undefined || formValues.password === "")
+    newArray.push(false)
     setFormError(newArray)
+    console.log(formValues)
     return newArray.reduce((sum, bool) => sum && !bool, true)
   }
 
-  const handleSubmitButton = async (event) => {
+  const handleSubmitButton = async (event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault()
+    const sum = checkAllInput()
+    if (!sum || dateError || emailError || telError || accountNumberError) {
+      return
+    }
+    const data = await AccountService.updateUserInformation(userId, formValues)
+    if (data.success === false) {
+      return
+    }
     setIsEditing(false)
-    // event.preventDefault()
-    // const sum = checkAllInput()
-    // if (!sum || dateError || passwordError || emailError) {
-    //   return
-    // }
-    // const data = await RegisterService.createUser(formValues)
-    // if (data.success === false) {
-    //   setFAlert(true)
-    //   return
-    // }
-    // LocalStorageUtils.setData("token", data.data)
-    // setFTAlert(true)
   }
 
-  const handleEditButton = async (event) => {
+  const handleEditButton = async (event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     setIsEditing(true)
   }
@@ -181,18 +181,30 @@ export default function RegisterPage() {
           </div>
           <div className="z-10 w-[30%] bg-gradient-to-r from-black" />
         </div>
-        <div className="flex mt-24 mb-8 pt-14 pb-10 flex-col items-center text-white w-[90%] border border-white rounded-[30px]">
-          <p className="text-3xl font-medium">สร้างบัญชีใหม่</p>
-          <form className="flex flex-col w-[80%]">
-            <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
-              <button
-                type="submit"
+        <div className="flex mt-24 mb-8 pt-8 pb-10 flex-col items-center text-white w-[90%] border border-white rounded-[30px]">
+          <div className="w-[100%]">
+            <button
+              className="cursor-pointer ml-9 leading-normal font-semibold text-2xl"
+              onClick={() => (window.location.href = "/search")}
+            >
+              &lt; กลับสู่หน้าหลัก
+            </button>
+          </div>
+          <div className="relative w-[100%]">
+            <p className="text-3xl font-medium text-center">ข้อมูลส่วนตัว</p>
+            {isEditing ? (
+              <></>
+            ) : (
+              <div
                 onClick={(e) => handleEditButton(e)}
-                className="text-[#3B3B3B] text-xl font-semibold"
+                className="px-4 space-x-1  absolute top-0 right-[10%] flex text-center self-end content-center h-10 rounded-[10px] bg-white flex-wrap"
               >
-                แก้ไข
-              </button>
-            </div>
+                <button className="text-[#3B3B3B] text-xl font-semibold">แก้ไข</button>
+                <img src={EditIcon} className="size-7 align-middle inline-block" />
+              </div>
+            )}
+          </div>
+          <form className="flex flex-col w-[80%]">
             <div className="flex mt-5">
               <div className="flex w-[46%] flex-col items-center justify-center gap-2">
                 <div className="flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]">
@@ -217,9 +229,11 @@ export default function RegisterPage() {
                   type="text"
                   id="0"
                   name="fName"
+                  disabled={isEditing ? false : true}
                   required
                   maxLength={100}
-                  value={fetchFormValues.fName}
+                  value={isEditing ? formValues.fName : fetchFormValues.fName}
+                  onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
                 <p
@@ -236,9 +250,10 @@ export default function RegisterPage() {
                   type="text"
                   id="1"
                   name="lName"
+                  disabled={isEditing ? false : true}
                   required
                   maxLength={100}
-                  value={fetchFormValues.lName}
+                  value={isEditing ? formValues.lName : fetchFormValues.lName}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
@@ -268,7 +283,8 @@ export default function RegisterPage() {
                         required: true
                       }
                     }}
-                    value={dayjs(fetchFormValues.birthDate)}
+                    disabled={isEditing ? false : true}
+                    value={isEditing ? formValues.birthDate : dayjs(fetchFormValues.birthDate)}
                     onChange={(d) => {
                       d?.$d.setHours(7, 0, 0)
                       setFormValues({
@@ -288,12 +304,12 @@ export default function RegisterPage() {
               <div className="relative flex w-[24%] flex-col items-start">
                 <p
                   className={`ml-3 text-xl ${
-                    formError[3] ? "text-mdd-invalid-label" : "text-white"
+                    formError[3] || telError ? "text-mdd-invalid-label" : "text-white"
                   }`}
                 >
                   เบอร์โทรศัพท์*
                 </p>
-                {formError[3] && (
+                {(formError[3] || telError) && (
                   <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
@@ -301,11 +317,17 @@ export default function RegisterPage() {
                   id="3"
                   name="phoneNumber"
                   required
-                  maxLength={20}
-                  value={fetchFormValues.phoneNumber}
+                  disabled={isEditing ? false : true}
+                  maxLength={10}
+                  value={isEditing ? formValues.phoneNumber : fetchFormValues.phoneNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
+                {(formError[3] || telError) && (
+                  <span className="absolute mt-[72px] text-red-500 text-xs">
+                    เบอร์โทรศัพท์ควรเป็นตัวเลขและมี 10 หลัก
+                  </span>
+                )}
               </div>
               <div className="relative flex w-[45%] flex-col items-start">
                 <p
@@ -325,6 +347,16 @@ export default function RegisterPage() {
                       type="radio"
                       name="gender"
                       value="MALE"
+                      checked={
+                        isEditing
+                          ? formValues.gender === "MALE"
+                            ? true
+                            : undefined
+                          : fetchFormValues.gender === "MALE"
+                            ? true
+                            : false
+                      }
+                      disabled={isEditing ? false : true}
                       required
                       onChange={() => {
                         setFormValues({
@@ -344,6 +376,16 @@ export default function RegisterPage() {
                       type="radio"
                       name="gender"
                       value="FEMALE"
+                      checked={
+                        isEditing
+                          ? formValues.gender === "FEMALE"
+                            ? true
+                            : undefined
+                          : fetchFormValues.gender === "FEMALE"
+                            ? true
+                            : false
+                      }
+                      disabled={isEditing ? false : true}
                       required
                       onChange={() => {
                         setFormValues({
@@ -363,6 +405,16 @@ export default function RegisterPage() {
                       type="radio"
                       name="gender"
                       value="LGBTQA+"
+                      checked={
+                        isEditing
+                          ? formValues.gender === "LGBTQA+"
+                            ? true
+                            : undefined
+                          : fetchFormValues.gender === "LGBTQA+"
+                            ? true
+                            : false
+                      }
+                      disabled={isEditing ? false : true}
                       required
                       onChange={() => {
                         setFormValues({
@@ -382,6 +434,16 @@ export default function RegisterPage() {
                       type="radio"
                       name="gender"
                       value="NOT_TO_SAY"
+                      checked={
+                        isEditing
+                          ? formValues.gender === "NOT_TO_SAY"
+                            ? true
+                            : undefined
+                          : fetchFormValues.gender === "NOT_TO_SAY"
+                            ? true
+                            : false
+                      }
+                      disabled={isEditing ? false : true}
                       required
                       onChange={() => {
                         setFormValues({
@@ -400,13 +462,7 @@ export default function RegisterPage() {
             </div>
             <div className="flex mt-5 justify-between">
               <div className="relative flex flex-col items-start w-[42%]">
-                <p
-                  className={`ml-3 text-xl ${
-                    formError[4] || emailError ? "text-mdd-invalid-label" : "text-white"
-                  }`}
-                >
-                  อีเมล*
-                </p>
+                <p className="ml-3 text-xl text-mdd-grey">อีเมล*</p>
                 {(formError[4] || emailError) && (
                   <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
@@ -415,20 +471,15 @@ export default function RegisterPage() {
                   id="4"
                   name="email"
                   required
+                  disabled
                   maxLength={200}
-                  value={fetchFormValues.email}
+                  value={isEditing ? formValues.email : fetchFormValues.email}
                   onChange={handleTextFieldChange}
-                  className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
+                  className="px-7 py-2 text-[22px] text-mdd-grey w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
               </div>
               <div className="relative flex flex-col items-start w-[25%]">
-                <p
-                  className={`ml-3 text-xl ${
-                    formError[8] ? "text-mdd-invalid-label" : "text-white"
-                  }`}
-                >
-                  รหัสผ่าน*
-                </p>
+                <p className="ml-3 text-xl text-mdd-grey">รหัสผ่าน*</p>
                 {formError[8] && (
                   <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
@@ -437,29 +488,18 @@ export default function RegisterPage() {
                   id="8"
                   name="password"
                   disabled
-                  value={formValues.password}
-                  onChange={(e) => handlePasswordChange(false, e.target.value)}
+                  maxLength={100}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
               </div>
               <div className="relative flex flex-col items-start w-[25%]">
-                <p
-                  className={`ml-3 text-xl ${
-                    passwordError ? "text-mdd-invalid-label" : "text-white"
-                  }`}
-                >
-                  ยืนยันรหัสผ่าน*
-                </p>
-                {passwordError && (
-                  <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
-                )}
+                <p className="ml-3 text-xl  text-mdd-grey">ยืนยันรหัสผ่าน*</p>
                 <input
                   type="password"
                   id="passwordConfirm"
                   name="passwordConfirm"
                   disabled
-                  value={confirmPassword}
-                  onChange={(e) => handlePasswordChange(true, e.target.value)}
+                  maxLength={100}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
               </div>
@@ -469,12 +509,12 @@ export default function RegisterPage() {
               <div className="relative flex flex-col items-start w-[42%]">
                 <p
                   className={`ml-3 text-xl ${
-                    formError[7] ? "text-mdd-invalid-label" : "text-white"
+                    formError[7] || accountNumberError ? "text-mdd-invalid-label" : "text-white"
                   }`}
                 >
                   เลขที่บัญชี*
                 </p>
-                {formError[7] && (
+                {(formError[7] || accountNumberError) && (
                   <div className="absolute w-full h-10 mt-7 rounded-[10px] border-2 border-mdd-cancel-red pointer-events-none" />
                 )}
                 <input
@@ -482,11 +522,17 @@ export default function RegisterPage() {
                   id="7"
                   name="accountNumber"
                   required
-                  maxLength={100}
-                  value={fetchFormValues.accountNumber}
+                  disabled={isEditing ? false : true}
+                  maxLength={15}
+                  value={isEditing ? formValues.accountNumber : fetchFormValues.accountNumber}
                   onChange={handleTextFieldChange}
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
+                {(formError[7] || accountNumberError) && (
+                  <span className="absolute mt-[72px] text-red-500 text-xs">
+                    เลขที่บัญชีควรเป็นตัวเลขและมี 10-15 หลัก
+                  </span>
+                )}
               </div>
               <div className="relative flex flex-col items-start w-[54%]">
                 <p
@@ -501,7 +547,8 @@ export default function RegisterPage() {
                 )}
                 <CustomizedSelect
                   name="select-bank"
-                  value={String(fetchFormValues.bankName)}
+                  value={isEditing ? formValues.bankName : String(fetchFormValues.bankName)}
+                  disabled={isEditing ? false : true}
                   onChange={handleBankChange}
                   inputProps={{ MenuProps: { disableScrollLock: true } }}
                   required
@@ -529,6 +576,7 @@ export default function RegisterPage() {
                 </CustomizedSelect>
               </div>
             </div>
+
             {isEditing ? (
               <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
                 <button
@@ -542,17 +590,23 @@ export default function RegisterPage() {
             ) : (
               <></>
             )}
+
+            {!isEditing && userType === "FORTUNE_TELLER" ? (
+              <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
+                <button
+                  className="text-[#3B3B3B] text-xl font-semibold"
+                  onClick={() => (window.location.href = "/account/fortuneteller")}
+                >
+                  ถัดไป &gt;
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
+
+            {!isEditing && userType === "CUSTOMER" ? <div className="mt-8 h-10"></div> : <></>}
           </form>
         </div>
-        {FTAlert && (
-          <FortuneTellerRegisterAlert
-            FTAlert={FTAlert}
-            setFTAlert={setFTAlert}
-            setCFAlert={setCFAlert}
-          />
-        )}
-        {CFAlert && <ConfirmAlert CFAlert={CFAlert} setCFAlert={setCFAlert} />}
-        {FAlert && <FailedAlert FAlert={FAlert} setFAlert={setFAlert} />}
       </div>
     </RootLayout>
   )

@@ -1,4 +1,8 @@
-import { CreateUserSchema, RegisterUserSchema } from "../../models/user/user.model"
+import {
+  CreateUserSchema,
+  RegisterUserSchema,
+  UpdateUserSchema
+} from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { TokenInfoSchema } from "../../types/jwtToken"
 import { JwtUtils } from "../../utils/jwt"
@@ -55,7 +59,7 @@ export const userService = {
     const token = JwtUtils.assignToken(tokenInfo)
     return { success: true, message: "Successfully create new user", data: token }
   },
-  login: async (body: { email: string; password: string }) => {
+  login: async (body: { email: string, password: string }) => {
     const email = body.email
     const password = body.password
 
@@ -97,5 +101,34 @@ export const userService = {
       accountNumber: UserInformation.account_number,
       userType: UserInformation.user_type
     }
+  },
+
+  updateUserInformation: async (userId: string, body: UpdateUserSchema) => {
+    const fName = body.fName
+    const lName = body.lName
+    const gender = body.gender
+    const phoneNumber = body.phoneNumber
+    const birthDate = body.birthDate
+    const profilePicture = body.profilePicture
+    const bankName = body.bankName
+    const accountNumber = body.accountNumber
+
+    const userInfo: UpdateUserSchema = {
+      fName,
+      lName,
+      gender,
+      phoneNumber,
+      birthDate,
+      profilePicture,
+      bankName,
+      accountNumber
+    }
+
+    const updatedUser = await userRepository.updateUserInformation(userId, userInfo)
+
+    if (updatedUser === undefined) {
+      return { success: false, message: "Cannot update information" }
+    }
+    return { success: true, message: "Successfully update information" }
   }
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { userService } from "../../services/user/user.services"
-import { LoginUserSchema, RegisterUserSchema } from "../../models/user/user.model"
+import { LoginUserSchema, RegisterUserSchema, UpdateUserSchema } from "../../models/user/user.model"
 
 const loginUser = async (req: Request, res: Response) => {
   const loginUser: LoginUserSchema = {
@@ -75,8 +75,47 @@ const getUserInformation = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: userDetail })
 }
 
+const updateUserInformation = async (req: Request, res: Response) => {
+  const userId: string = req.params.userId
+  const updateUser: UpdateUserSchema = {
+    fName: req.body.fName,
+    lName: req.body.lName,
+    gender: req.body.gender,
+    phoneNumber: req.body.phoneNumber,
+    birthDate: req.body.birthDate,
+    profilePicture: req.body.profilePicture,
+    bankName: req.body.bankName,
+    accountNumber: req.body.accountNumber
+  }
+
+  if (
+    req.body.fName === undefined ||
+    req.body.lName === undefined ||
+    req.body.gender === undefined ||
+    req.body.phoneNumber === undefined ||
+    req.body.birthDate === undefined ||
+    req.body.bankName === undefined ||
+    req.body.accountNumber === undefined
+  ) {
+    return res.status(400).json({
+      message: "Cannot register, information is missing",
+      success: false
+    })
+  }
+
+  const result = await userService.updateUserInformation(userId, updateUser)
+  const isSuccess = result.success
+
+  if (!isSuccess) {
+    return res.status(400).json(result)
+  } else {
+    return res.status(201).json(result)
+  }
+}
+
 export const userController = {
   loginUser,
   registerUser,
-  getUserInformation
+  getUserInformation,
+  updateUserInformation
 }
