@@ -5,9 +5,9 @@ import TimetablePage from "./TimetablePage"
 export default function TimetableApp() {
   return (
     <RootLayout>
-      {/* <AuthProvider> */}
-      <TimetablePage />
-      {/* </AuthProvider> */}
+      <AuthProvider>
+        <TimetablePage />
+      </AuthProvider>
     </RootLayout>
   )
 }

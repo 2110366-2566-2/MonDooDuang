@@ -36,15 +36,15 @@ export default function AppointmentListModal({toggle, handleToggle, upcomingAppo
 
   return (
     <div className="w-[55%] h-[100%] mt-10 mb-5 mr-5 p-3">
-      <div className="absolute top-5 right-[32px]">
+      <div className="absolute top-20 right-[32px]">
         <AppointmentToggleButton toggle={toggle} handleToggle={handleToggle}/>
       </div>
       {toggle === 'upcoming' && upcomingAppointments.length === 0 && (
-        <div className="w-full h-[90%] flex items-center justify-center pt-12">
+        <div className="w-full h-[90%] flex items-center justify-center pt-7">
           <p className="text-white text-2xl">ไม่มีนัดหมายที่กำลังจะถึง</p>
         </div>)}
       {toggle === 'completed' && completedAppointment.length === 0 && (
-        <div className="w-full h-[90%] flex items-center justify-center pt-12">
+        <div className="w-full h-[90%] flex items-center justify-center pt-7">
           <p className="text-white text-2xl">ไม่มีนัดหมายที่เสร็จสิ้นแล้ว</p>
         </div>)}
       <div className="w-full max-h-screen overflow-y-auto">

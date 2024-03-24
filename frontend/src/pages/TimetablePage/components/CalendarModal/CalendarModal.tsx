@@ -51,7 +51,6 @@ export default function CalendarModal({
     const isCurrentDay = currentDate.toDateString() === new Date().toDateString()
     const customerApp = appointments.filter(appointment => appointment.event_role === "CUSTOMER" && new Date(appointment.appointment_date).toDateString() === currentDate.toDateString()).length > 0
     const fortuneTellerApp = appointments.filter(appointment => appointment.event_role === "FORTUNETELLER" && new Date(appointment.appointment_date).toDateString() === currentDate.toDateString()).length > 0
-    console.log(customerApp, fortuneTellerApp, currentDate.toDateString())
     week.push(
       <td
         key={day}
