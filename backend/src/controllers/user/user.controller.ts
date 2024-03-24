@@ -98,7 +98,7 @@ const updateUserInformation = async (req: Request, res: Response) => {
     req.body.accountNumber === undefined
   ) {
     return res.status(400).json({
-      message: "Cannot register, information is missing",
+      message: "Cannot update, information is missing",
       success: false
     })
   }
