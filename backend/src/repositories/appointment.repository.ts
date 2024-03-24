@@ -112,11 +112,7 @@ export const appointmentRepository = {
         `UPDATE APPOINTMENT
         SET status = 
             CASE 
-                WHEN status = 'CREATED' THEN 
-                    CASE 
-                        WHEN fortune_teller_id = $1 THEN 'FORTUNE_TELLER_DECLINED'::appointment_status_enum
-                        ELSE 'FORTUNE_TELLER_DECLINED'::appointment_status_enum
-                    END
+                WHEN status = 'CREATED' THEN 'FORTUNE_TELLER_DECLINED'::appointment_status_enum
                 WHEN status = 'WAITING_FOR_PAYMENT' THEN 
                     CASE 
                         WHEN fortune_teller_id = $1 THEN 'NO_PAYMENT_CANCELED'::appointment_status_enum
