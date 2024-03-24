@@ -46,15 +46,15 @@ export const userRepository = {
     return result.rows[0]
   },
 
-  getUserInformation: async (user_id: string) => {
+  getUserInformation: async (userId: string) => {
     const user = await db.query<UserDBSchema>(
       "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
-      [user_id]
+      [userId]
     )
     return user.rows[0]
   },
 
-  updateUserInformation: async (user_id: string, user: UpdateUserSchema) => {
+  updateUserInformation: async (userId: string, user: UpdateUserSchema) => {
     await db.query(
       `UPDATE user_table
       SET fname = $1 ,lname = $2, gender = $3, phone_number =$4 , birth_date = $5, profile_picture = $6, bank_name = $7, account_number = $8
@@ -68,12 +68,12 @@ export const userRepository = {
         user.profilePicture,
         user.bankName,
         user.accountNumber,
-        user_id
+        userId
       ]
     )
     const userUpdate = await db.query<UserDBSchema>(
       "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
-      [user_id]
+      [userId]
     )
     return userUpdate.rows[0]
   }

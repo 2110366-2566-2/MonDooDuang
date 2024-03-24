@@ -13,6 +13,7 @@ import RootLayout from "../../common/components/RootLayout/RootLayout"
 
 import { AuthContext } from "../../common/providers/AuthProvider"
 import { useContext, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 const CustomizedDatePicker = styled(DatePicker)`
   input {
@@ -54,6 +55,7 @@ const CustomizedMenuItem = styled(MenuItem)`
 `
 
 export default function RegisterPage() {
+  const navigate = useNavigate()
   const { userId, userType } = useContext(AuthContext)
   const [fetchFormValues, setFetchFormValues] = useState<UserSchema>({} as UserSchema)
   const [formValues, setFormValues] = useState<UserSchema>({} as UserSchema)
@@ -63,8 +65,6 @@ export default function RegisterPage() {
   const [telError, setTelError] = useState<boolean>(false)
   const [accountNumberError, setAccountNumberError] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
-
-  console.log(fetchFormValues.gender, isEditing)
 
   useEffect(() => {
     const fetchUserInformation = async () => {
@@ -595,7 +595,9 @@ export default function RegisterPage() {
               <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
                 <button
                   className="text-[#3B3B3B] text-xl font-semibold"
-                  onClick={() => (window.location.href = "/account/fortuneteller")}
+                  onClick={() => {
+                    navigate("/account/fortuneteller")
+                  }}
                 >
                   ถัดไป &gt;
                 </button>
