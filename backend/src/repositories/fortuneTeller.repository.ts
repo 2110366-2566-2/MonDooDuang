@@ -1,20 +1,22 @@
 import { db } from "../configs/pgdbConnection"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
-import { PackageWithIdSchema } from "../models/package/package.model"
 
 export const fortuneTellerRepository = {
 
   // create fortuneTeller
   createFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
+    console.log("hu")
     try {
       await db.query(
         `
-            INSERT INTO FORTUNE_TELLER (fortune_teller_id, identity_card_number, identity_card_copy)
-            VALUES($1, $2, $3);
+        INSERT INTO FORTUNE_TELLER (fortune_teller_id, identity_card_number, identity_card_copy, stage_name)
+        SELECT $1, $2, $3, CONCAT(fname, ' ', lname)
+        FROM USER_TABLE
+        WHERE user_id = $1
         `,
         [fortuneTeller.fortuneTellerId, fortuneTeller.identityCardNumber, fortuneTeller.identityCardCopy]
-      )
+      );
       return true
     } catch (err) {
       return false
