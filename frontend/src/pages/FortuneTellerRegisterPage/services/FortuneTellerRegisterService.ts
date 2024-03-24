@@ -43,7 +43,7 @@ export const FortuneTellerRegisterService = {
     identityCardNumber: string
   ) => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/update-fortuneTeller`, {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json"
       },
