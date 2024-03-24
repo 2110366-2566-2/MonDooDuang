@@ -141,5 +141,20 @@ export const conversationService = {
       return { count: 0 }
     }
     return { count: data }
+  },
+  getRecieverUserIdByConversationId: async (
+    conversationId: string,
+    userId: string,
+    role: "CUSTOMER" | "FORTUNE_TELLER"
+  ) => {
+    const data = await conversationRepository.getRecieverUserIdByConversationId(
+      conversationId,
+      userId,
+      role
+    )
+    if (data === null) {
+      return { recieverUserId: "" }
+    }
+    return { recieverUserId: data }
   }
 }

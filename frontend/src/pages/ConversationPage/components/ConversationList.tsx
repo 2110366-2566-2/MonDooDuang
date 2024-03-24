@@ -5,12 +5,14 @@ export default function ConversationList({
   conversationId,
   onSelect,
   isSelected,
-  userId
+  userId,
+  role
 }: {
   conversationId: string
   onSelect: () => void
   isSelected: boolean
   userId: string
+  role: "CUSTOMER" | "FORTUNE_TELLER"
 }) {
   const [name, setName] = useState<string>("")
   const [lastMessage, setLastMessage] = useState<string>("")
@@ -37,8 +39,12 @@ export default function ConversationList({
       }
     }
     const fetchProfilePicture = async () => {
-      if (userId) {
-        const profilePicture = await ConversationService.getProfilePicture(userId)
+      if (conversationId && userId) {
+        const profilePicture = await ConversationService.getProfilePicture(
+          conversationId,
+          userId,
+          role
+        )
         setProfilePicture(profilePicture)
       }
     }
