@@ -15,6 +15,7 @@ import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedA
 import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
+import AdminPaymentApp from "../pages/AdminPaymentPage/AdminPaymentApp"
 
 export const getPagesData = (stripePromise: any) =>
   [
@@ -73,6 +74,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/admin/report_management",
       element: <AdminReportManagementApp />
+    },
+    {
+      path: "/admin/payment",
+      element: <AdminPaymentApp />
     },
     {
       path: "/admin/login",
