@@ -2,7 +2,7 @@ import ModalOverlay from "../../../common/components/ModalOverlay/ModalOverlay"
 import { PaymentConfirmProps } from "../types/AdminPaymentTypes"
 
 export function PaymentDetailModal(props: PaymentConfirmProps) {
-  const { isVisible, onClose, onConfirm, fullName, bankName, accountNumber } = props
+  const { isVisible, onClose, onConfirm, fullName, bankName, accountNumber, amount } = props
   return (
     <ModalOverlay isVisible={isVisible} onClose={onClose}>
       <div
@@ -12,6 +12,7 @@ export function PaymentDetailModal(props: PaymentConfirmProps) {
         <div className="flex flex-col justify-items-center items-center">
           <div className="text-lg font-bold">จ่ายเงินให้หมอดู</div>
           <div className="text-xs">{fullName}</div>
+          <div className="text-xs">{amount} บาท</div>
           <div className="text-xs">{bankName} {accountNumber}</div>
         </div>
         <img

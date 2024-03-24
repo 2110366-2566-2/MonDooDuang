@@ -12,6 +12,7 @@ export type PaymentConfirmProps = {
   fullName: string
   bankName: string
   accountNumber: string
+  amount: string
   isVisible: boolean
   onClose: () => void
   onConfirm: () => void

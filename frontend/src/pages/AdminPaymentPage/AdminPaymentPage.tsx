@@ -8,7 +8,6 @@ import { AdminPaymentService } from "./services/AdminPaymentService"
 import { AdminPaymentType } from "./types/AdminPaymentTypes"
 import AdminPayment from "./components/AdminPayment"
 import { PaymentDetailModal } from "./components/PaymentDetailModal"
-import { AppointmentService } from "../../common/services/AppointmentService"
 
 export default function AdminPaymentPage() {
   const { username } = useContext(AuthContext)
@@ -81,16 +80,16 @@ export default function AdminPaymentPage() {
             onClose={() => {
               setIsPaymentDetailModalOpen(false)
             } }
-            onConfirm={() => {
+            onConfirm={async () => {
               setIsPaymentDetailModalOpen(false)
               if (focusPayment) {
-                AppointmentService.updateAppointmentStatus('PAYMENT_COMPLETED', focusPayment.appointmentId)
-                console.log("add new payment")
+                await AdminPaymentService.payToFortuneTellerAndUpdateDB((focusPayment.price*0.9) | 0, focusPayment.appointmentId)
               }
               setIsUpdate(!isUpdate)
             }} 
             bankName={focusPayment ? focusPayment.bankName : ""}
             accountNumber={focusPayment ? focusPayment.accountNumber : ""}
+            amount={focusPayment ? ((focusPayment.price*0.9) | 0).toString() : ""}
           />
         </div>
       </div>
