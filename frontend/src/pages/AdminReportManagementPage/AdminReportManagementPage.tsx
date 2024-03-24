@@ -314,8 +314,8 @@ export default function AdminReportManagementPage() {
             <div className={`overflow-y-auto flex-grow-0 h-[480px]`}>
               {focusReports ? (
                 <div
-                  className={`flex flex-row max-w-[1500px] justify-between flex-wrap content-around px-16 py-4 m-4 ${
-                    focusReports.length === 2 ? "space-x-8" : ""
+                  className={`flex flex-row max-w-[1648px] justify-between flex-wrap content-around px-16 py-4 m-4 ${
+                    focusReports.length === 2 ? "admin-report:space-x-8" : ""
                   }`}
                 >
                   {focusReports.map((report: ReportInfoType) => (
