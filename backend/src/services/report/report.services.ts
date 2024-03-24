@@ -61,20 +61,6 @@ export const reportService = {
 
   getAllReport: async () => {
     const reports = await reportRepository.getAllReport()
-<<<<<<< HEAD
-    if(reports === null){return null;}
-    const updatedRequests = await Promise.all(reports.map(async (report) => {
-      const fortuneTellerId = report.reporteeId?.toString() ?? ""
-      const profilePicData = await s3Service.downloadProfilePicture(fortuneTellerId as string)
-      if (profilePicData && profilePicData.ContentType !== undefined && profilePicData.ContentType !== null) {
-        report.reporteeProfile = "data:image/jpg;base64," + profilePicData.Body?.toString("base64")
-      }
-      return report
-    }))
-    return updatedRequests
-||||||| 04c230a
-    return reports
-=======
     return reports
   },
 
@@ -103,7 +89,6 @@ export const reportService = {
       return { success: true, message: "this user is banned" }
     }
     return { success: false, message: "error to ban this user" }
->>>>>>> dev
   }
 
 }
