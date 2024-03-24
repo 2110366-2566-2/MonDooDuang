@@ -314,6 +314,7 @@ export default function AppointmentPanel({
               fortuneTellerId,
               appointmentDate
             )
+            AppointmentService.createConversation(userInfo.user_id, fortuneTellerId)
           }
           setIsConfirmModalOpen(false)
           setIsSuccessModalOpen(true)

@@ -22,6 +22,7 @@ export default function NotificationList({
       )}
       {notificationItem.notificationType === "CHAT" && (
         <ChatNotification notificationId={notificationItem.notificationId} userId={userId} />
+
       )}
       {(notificationItem.notificationType === "VERIFICATION" ||
         notificationItem.notificationType === "CANCELED_VERIFICATION") && (
