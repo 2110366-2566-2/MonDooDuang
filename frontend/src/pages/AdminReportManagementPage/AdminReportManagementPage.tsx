@@ -88,7 +88,6 @@ export default function AdminReportManagementPage() {
       title: "ต้องการจ่ายเงินให้หมอดูตามปกติ",
       message: "ใช่หรือไม่",
       info: `ตอนนี้ระบบได้ระงับการโอนเงินไปยังหมอดูเอาไว้\nหากกดยืนยัน ระบบจะดำเนินการโอนเงินให้หมอดูตามปกติ`,
-      warning: `หากกดแบนไปแล้วผู้ใช้จะไม่สามารถใช้งาน MonDooDuang ได้อีก`
     }
     setConfirmProps(unsuspenedConfirmProps)
   }
