@@ -2,7 +2,7 @@ import { AppointmentStatus } from "../../models/appointment/appointment.model"
 import { ReportSchema, ReportStatus } from "../../models/report/report.model"
 import { appointmentRepository } from "../../repositories/appointment.repository"
 import { reportRepository } from "../../repositories/report.repository"
-import { s3Service } from "../infra/s3.services"
+import { userRepository } from "../../repositories/user.repository"
 
 export const reportService = {
   createReport: async (report: ReportSchema) => {
