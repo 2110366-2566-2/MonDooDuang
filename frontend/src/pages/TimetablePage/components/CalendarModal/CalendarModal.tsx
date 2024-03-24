@@ -18,6 +18,7 @@ export default function CalendarModal({
   setCurrentYear,
   toggle,
   upcomingAppointments,
+  completedAppointment
 }: CalendarModalProps): JSX.Element {
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"]
   const monthNames = [
@@ -45,42 +46,33 @@ export default function CalendarModal({
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
+    const appointments = toggle === 'upcoming' ? upcomingAppointments : completedAppointment
     const currentDate = new Date(currentYear, currentMonth - 1, day)
     const isCurrentDay = currentDate.toDateString() === new Date().toDateString()
-    const isSelectedStartDate =
-      false
-    const isSelectedEndDate =
-      false
-    const isWithinRange =
-     false
+    const customerApp = appointments.filter(appointment => appointment.event_role === "CUSTOMER" && new Date(appointment.appointment_date).toDateString() === currentDate.toDateString()).length > 0
+    const fortuneTellerApp = appointments.filter(appointment => appointment.event_role === "FORTUNETELLER" && new Date(appointment.appointment_date).toDateString() === currentDate.toDateString()).length > 0
+    console.log(customerApp, fortuneTellerApp, currentDate.toDateString())
     week.push(
       <td
         key={day}
-        className={`text-center ${
-          isSelectedStartDate && isSelectedEndDate !== null ? "bg-yellow-100 rounded-l-full" : ""
-        } ${isSelectedEndDate ? "bg-yellow-100 rounded-r-full" : ""}  ${
-          isWithinRange && !isSelectedEndDate && !isSelectedStartDate && week.length === 0
-            ? "bg-yellow-100 rounded-l-full"
-            : ""
-        }  ${
-          isWithinRange && !isSelectedEndDate && !isSelectedStartDate && week.length === 6
-            ? "bg-yellow-100 rounded-r-full"
-            : ""
-        } ${isWithinRange ? "bg-yellow-100" : ""} text-blck font-sans text-sm w-[24px] h-[34px]`}
+        className={`text-center text-black font-sans text-sm w-[24px] h-[42px]`}
       >
         <div
           className={`${
-            isSelectedStartDate || isSelectedEndDate
-              ? "bg-yellow-400 text-white font-bold"
-              : isCurrentDay
-                ? "bg-white border border-[#FBBF24] font-bold"
-                : ""
+            isCurrentDay
+              ? "bg-white border border-[#FBBF24] font-bold"
+              : ""
           } rounded-full h-full flex items-center justify-center ${
-            isCurrentDay && isSelectedStartDate ? "border border-black" : ""
+            isCurrentDay ? "border-[1.5px] border-black" : ""
           }`}
         >
           {day}
         </div>
+        <div className="absolute flex flex-row w-[42px] justify-center -translate-y-3">
+          {customerApp && <div className={`h-2 w-2 ${isCurrentDay ? "bg-[#E79900]" : "bg-[#FFE483]"} rounded-full mx-[2px]`} />}
+          {fortuneTellerApp && <div className={`h-2 w-2 ${isCurrentDay ? "bg-[#417D9F]" : "bg-[#B7FFFF]"} rounded-full mx-[2px]`} />}
+        </div>
+        
       </td>
     )
     if (week.length === 7) {
@@ -95,9 +87,18 @@ export default function CalendarModal({
     }
     weeks.push(<tr key={weeks.length}>{week}</tr>)
   }
+
+  for (let i = weeks.length; i < 6; i++) {
+    const week = []
+    for (let j = 0; j < 7; j++) {
+      week.push(<td key={`empty-${j}`} className="text-center h-[42px]"></td>)
+    }
+    weeks.push(<tr key={weeks.length}>{week}</tr>)
+  }
+  
   useEffect(() => {}, [])
   return (
-    <div className="w-[40%] h-full self-center">
+    <div className="w-full h-full flex justify-center">
       <div className="w-[23rem] h-full bg-[#D9D9D9]/70 rounded-xl shadow-lg px-4 pb-2 flex flex-col justify-center justify-items-center items-center">
         <div className="w-[23rem] flex justify-between mb-4 bg-white p-5 rounded-t-xl shadow-lg">
           <div className="text-[#585958] font-semibold">

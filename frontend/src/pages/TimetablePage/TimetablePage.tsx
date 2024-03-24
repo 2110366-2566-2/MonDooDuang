@@ -56,7 +56,9 @@ export default function TimetablePage(): JSX.Element {
 
   return (
     <div className="flex flex-row justify-between">
-      <CalendarModal currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} currentYear={currentYear} setCurrentYear={setCurrentYear} toggle={toggle} upcomingAppointments={appointmentData} completedAppointment={appointmentData}/>
+      <div className="w-[45%] self-start mt-32">
+        <CalendarModal currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} currentYear={currentYear} setCurrentYear={setCurrentYear} toggle={toggle} upcomingAppointments={appointmentData} completedAppointment={appointmentData}/>
+      </div>
       <AppointmentListModal toggle={toggle} handleToggle={handleToggle} upcomingAppointments={appointmentData} completedAppointment={appointmentData}/>
     </div>
   )

@@ -35,7 +35,7 @@ export default function AppointmentListModal({toggle, handleToggle, upcomingAppo
   }
 
   return (
-    <div className="w-[55%] h-[100%] mt-10 mb-5 mx-5 p-3">
+    <div className="w-[55%] h-[100%] mt-10 mb-5 mr-5 p-3">
       <div className="absolute top-5 right-[32px]">
         <AppointmentToggleButton toggle={toggle} handleToggle={handleToggle}/>
       </div>
