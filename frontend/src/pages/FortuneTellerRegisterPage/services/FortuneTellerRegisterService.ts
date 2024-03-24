@@ -3,8 +3,7 @@ import { environment } from "../../../common/constants/environment"
 export const FortuneTellerRegisterService = {
   createFortuneTeller: async (
     fortuneTellerId: string,
-    identityCardNumber: string,
-    identityCardCopy: string
+    identityCardNumber: string
   ) => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/create-fortuneTeller`, {
       method: "POST",
@@ -14,7 +13,8 @@ export const FortuneTellerRegisterService = {
       body: JSON.stringify({
         fortuneTellerId,
         identityCardNumber,
-        identityCardCopy
+        identityCardCopy:""
+
       })
     })
     const data = await res.json()
@@ -40,8 +40,7 @@ export const FortuneTellerRegisterService = {
 
   updateFortuneTeller: async (
     fortuneTellerId: string,
-    identityCardNumber: string,
-    identityCardCopy: string
+    identityCardNumber: string
   ) => {
     const res = await fetch(`${environment.backend.url}/fortuneTeller/update-fortuneTeller`, {
       method: "PATCH",
@@ -51,7 +50,7 @@ export const FortuneTellerRegisterService = {
       body: JSON.stringify({
         fortuneTellerId,
         identityCardNumber,
-        identityCardCopy
+        identityCardCopy:""
       })
     })
     const data = await res.json()
@@ -70,5 +69,15 @@ export const FortuneTellerRegisterService = {
     })
     const data = await res.json()
     return data.data
+  },
+
+  uploadIDCard: async (fortuneTellerId: string, formData: FormData) => {
+    const res = await fetch(`${environment.backend.url}/images/id-card/${fortuneTellerId}`, 
+      {
+        method: "POST",
+        body: formData
+      })
+    const data = await res.json()
+    return { isSuccess: data.success, message: data.error }
   }
 }
