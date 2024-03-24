@@ -1,3 +1,4 @@
+import { NotificationType } from "../../models/notification/notification.model"
 import { notificationRepository } from "../../repositories/notification.repository"
 
 export const notificationService = {
@@ -14,7 +15,7 @@ export const notificationService = {
     return notification
   },
 
-  updateNotificationType: async (notificationId: string, type: string) => {
+  updateNotificationType: async (notificationId: string, type: NotificationType) => {
     const isSuccess = await notificationRepository.updateNotificationType(notificationId, type)
     return isSuccess
   },

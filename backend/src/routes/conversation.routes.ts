@@ -14,5 +14,6 @@ router.get(
   "/unread-messages/:conversationId/:userId",
   conversationController.getUnreadMessagesConversationId
 )
+router.get("/user-type-in-conversation/:conversationId/:userId", conversationController.getUserTypeInConversation)
 router.post("/create/:userId/:fortunetellerId", conversationController.createConversation)
 export default router

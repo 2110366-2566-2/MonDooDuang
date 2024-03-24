@@ -16,9 +16,14 @@ import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
 import TimetableApp from "../pages/TimetablePage/TimetableApp"
+import Redirect from "./Redirect"
 
 export const getPagesData = (stripePromise: any) =>
   [
+    {
+      path: "/",
+      element: <Redirect to={"/login"} />
+    },
     {
       path: "/login",
       element: <LoginApp />
@@ -56,7 +61,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <FortuneTellerDetailApp />
     },
     {
-      path: "/conversation/:cid?",
+      path: "/conversation/:cid",
       element: <ConversationApp />
     },
     {
@@ -80,7 +85,7 @@ export const getPagesData = (stripePromise: any) =>
       element: <AdminLoginApp />
     },
     {
-      path: "/payment/:payAmount",
+      path: "/payment/:cid/:aid/:price",
       element: <PaymentApp stripePromise={stripePromise} />
     },
     {
