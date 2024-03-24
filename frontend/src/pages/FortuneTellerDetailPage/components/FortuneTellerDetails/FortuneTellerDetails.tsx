@@ -34,7 +34,7 @@ export default function FortuneTellerDetails() {
       const fortuneTellerStageName = response.stageName
       const fortuneTellerDescription = response.description
       const fortuneTellerAverageStar = response.averageStar
-      const fortuneTellerProfile = await FortuneTellerService.getProfilePicture(userId)
+      const fortuneTellerProfile = await FortuneTellerService.getProfilePicture(fortuneTellerId)
 
       setFortuneTellerStageName(fortuneTellerStageName)
       setFortuneTellerDescription(fortuneTellerDescription)
