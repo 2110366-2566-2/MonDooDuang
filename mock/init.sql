@@ -40,7 +40,7 @@ CREATE TABLE FORTUNE_TELLER (
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     description VARCHAR(300),
     identity_card_number VARCHAR(30) NOT NULL,
-    stage_name VARCHAR(100) UNIQUE,
+    stage_name VARCHAR(100) UNIQUE NOT NULL,
     identity_card_copy VARCHAR(300) NOT NULL,
     total_score INTEGER NOT NULL DEFAULT 0,
     total_review INTEGER NOT NULL DEFAULT 0,
