@@ -54,7 +54,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
       if (!response.isSuccess) {
         return alert(response.message)
       }
-      window.location.href = "/account/fortuneteller"
+      setEditState(false)
     } else {
       setIsStageNameValid(false)
     }
