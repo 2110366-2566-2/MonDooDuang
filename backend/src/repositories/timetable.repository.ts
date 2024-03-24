@@ -42,7 +42,8 @@ const getTimetable = async (userID: string, status: string, month: number, year:
                     JOIN user_table u
                     ON f.fortune_teller_id = u.user_id
                 )
-                SELECT * FROM EVENT_FORTUNETELLER_NAME`
+                SELECT * FROM EVENT_FORTUNETELLER_NAME
+                ORDER BY appointment_date, appointment_start_time;`
   const result = await db.query(query)
   if (result.rowCount === 0) { return null }
   return result.rows
