@@ -14,7 +14,7 @@ import { RegisterService } from "./services/RegisterService"
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtils"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
 import { jwtDecode } from "jwt-decode"
-import { UserType } from "../../common/providers/AuthProvider"
+import { AuthContextType } from "../../common/providers/AuthProvider"
 
 const today = dayjs()
 const CustomizedDatePicker = styled(DatePicker)`
@@ -55,12 +55,6 @@ const CustomizedMenuItem = styled(MenuItem)`
     width: 100vw;
   }
 `
-
-type TokenType = {
-  userId: string
-  userType: UserType
-  username: string
-}
 
 export default function RegisterPage() {
   const [formValues, setFormValues] = useState<UserSchema>({} as UserSchema)
@@ -174,7 +168,7 @@ export default function RegisterPage() {
       const formData = new FormData()
       formData.append("image", file)
 
-      const decodedToken = jwtDecode<TokenType>(token)
+      const decodedToken = jwtDecode<Omit<AuthContextType, "token">>(token)
 
       const response = await RegisterService.uploadProfilePicture(decodedToken.userId, formData)
       if (!response.isSuccess) {

@@ -5,7 +5,7 @@ import { LocalStorageUtils } from "../utils/LocalStorageUtils"
 
 export type UserType = "CUSTOMER" | "FORTUNE_TELLER" | "ADMIN"
 
-type AuthContextType = {
+export type AuthContextType = {
   userId: string
   userType: UserType
   username: string
