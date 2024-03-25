@@ -12,5 +12,6 @@ router.get("/find-appointment-by-conversationId/:conversationId", appointmentCon
 router.post("/create-appointment", appointmentController.createAppointment)
 router.post("/update-appointment-status", appointmentController.updateAppointmentStatus)
 router.get("/getIsReview/:appointmentId/:customerId", appointmentController.getIsReview)
+router.get("/find-event-completed-appointments", appointmentController.getEventCompletedAppointments)
 
 export default router
