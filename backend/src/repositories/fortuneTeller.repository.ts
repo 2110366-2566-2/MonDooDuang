@@ -6,7 +6,6 @@ export const fortuneTellerRepository = {
 
   // create fortuneTeller
   createFortuneTeller: async (fortuneTeller: FortuneTellerRegisterSchema) => {
-    console.log("hu")
     try {
       await db.query(
         `
