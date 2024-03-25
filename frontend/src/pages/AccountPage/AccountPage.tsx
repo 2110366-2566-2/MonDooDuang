@@ -68,35 +68,41 @@ export default function RegisterPage() {
 
   useEffect(() => {
     const fetchUserInformation = async () => {
-      const response = await AccountService.getUserInformation(userId)
+      try {
+        const response = await AccountService.getUserInformation(userId)
 
-      setFetchFormValues({
-        ...fetchFormValues,
-        fName: response.fName,
-        lName: response.lName,
-        gender: response.gender,
-        phoneNumber: response.phoneNumber,
-        email: response.email,
-        birthDate: response.birthDate,
-        profilePicture: response.profilePicture,
-        bankName: response.bankName,
-        accountNumber: response.accountNumber,
-        password: response.password
-      })
+        setFetchFormValues({
+          ...fetchFormValues,
+          fName: response.fName,
+          lName: response.lName,
+          gender: response.gender,
+          phoneNumber: response.phoneNumber,
+          email: response.email,
+          birthDate: response.birthDate,
+          profilePicture: response.profilePicture,
+          bankName: response.bankName,
+          accountNumber: response.accountNumber,
+          password: response.password
+        })
 
-      setFormValues({
-        ...formValues,
-        fName: response.fName,
-        lName: response.lName,
-        gender: response.gender,
-        phoneNumber: response.phoneNumber,
-        email: response.email,
-        birthDate: response.birthDate,
-        profilePicture: response.profilePicture,
-        bankName: response.bankName,
-        accountNumber: response.accountNumber,
-        password: response.password
-      })
+        setFormValues({
+          ...formValues,
+          fName: response.fName,
+          lName: response.lName,
+          gender: response.gender,
+          phoneNumber: response.phoneNumber,
+          email: response.email,
+          birthDate: response.birthDate,
+          profilePicture: response.profilePicture,
+          bankName: response.bankName,
+          accountNumber: response.accountNumber,
+          password: response.password
+        })
+      } catch (error) {
+        console.error("Error fetching user information:", error)
+        alert("Failed to fetch user information. Please try again.")
+        window.location.href = "/search"
+      }
     }
     fetchUserInformation()
   }, [isEditing])
@@ -159,11 +165,14 @@ export default function RegisterPage() {
     if (!sum || dateError || emailError || telError || accountNumberError) {
       return
     }
-    const data = await AccountService.updateUserInformation(userId, formValues)
-    if (data.success === false) {
-      return
+
+    try {
+      await AccountService.updateUserInformation(userId, formValues)
+      setIsEditing(false)
+    } catch (error) {
+      console.error("Error updating user information:", error)
+      alert("Failed to update user information. Please try again.")
     }
-    setIsEditing(false)
   }
 
   const handleEditButton = async (event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
