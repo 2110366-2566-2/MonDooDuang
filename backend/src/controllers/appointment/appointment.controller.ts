@@ -80,7 +80,7 @@ const getAppointmentByConversationId = async (req: Request, res: Response) => {
 }
 
 const updateAppointmentStatus = async (
-  req: TypedRequestBody<{ status: AppointmentStatus; appointmentId: string }>,
+  req: TypedRequestBody<{ status: AppointmentStatus, appointmentId: string }>,
   res: Response
 ) => {
   const { status, appointmentId } = req.body
