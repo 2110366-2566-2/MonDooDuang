@@ -142,5 +142,10 @@ export const appointmentService = {
     scheduleJob(declineDate, async () => {
       await appointmentService.autoDeclineAppointment(appointmentId, status)
     })
+  },
+
+  getEventCompletedAppointments: async () => {
+    const appointments = await appointmentRepository.getEventCompletedAppointments()
+    return appointments
   }
 }

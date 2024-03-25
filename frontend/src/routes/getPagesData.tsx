@@ -16,6 +16,7 @@ import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
 import TimetableApp from "../pages/TimetablePage/TimetableApp"
+import AdminPaymentApp from "../pages/AdminPaymentPage/AdminPaymentApp"
 import Redirect from "./Redirect"
 
 export const getPagesData = (stripePromise: any) =>
@@ -79,6 +80,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/admin/report_management",
       element: <AdminReportManagementApp />
+    },
+    {
+      path: "/admin/payment",
+      element: <AdminPaymentApp />
     },
     {
       path: "/admin/login",
