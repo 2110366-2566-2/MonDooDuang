@@ -3,7 +3,7 @@ import { LocalStorageUtils } from "../../utils/LocalStorageUtils"
 import LogoIcon from "./LogoIcon"
 import LogoutIcon from "./LogoutIcon"
 
-type MenuFocus = "adminApproval" | "reportManagement" | "none"
+type MenuFocus = "adminApproval" | "reportManagement" | "adminPayment" | "none"
 
 export default function NavBarAdmin({
   menuFocus,
@@ -21,6 +21,11 @@ export default function NavBarAdmin({
       name: "คำร้องขออนุญาตเป็นหมอดู",
       focus: "adminApproval",
       href: "/admin/fortuneteller_approvals"
+    },
+    {
+      name: "การชำระเงิน",
+      focus: "adminPayment",
+      href: "/admin/payment"
     }
   ]
 
