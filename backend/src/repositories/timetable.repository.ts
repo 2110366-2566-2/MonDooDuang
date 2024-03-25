@@ -11,10 +11,9 @@ const getTimetable = async (userID: string, status: string, month: number, year:
                     FROM appointment
                     WHERE appointment_date + (7 || ' hours')::interval >= '${year.toString()}-${month.toString()}-1 00:00:00'::timestamp
                     AND appointment_date + (7 || ' hours')::interval< '${month === 12 ? (year + 1).toString() : year.toString()}-${month === 12 ? "1" : (month + 1).toString()}-1 00:00:00'::timestamp
-                    AND status IN ('WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'NO_FRAUD_DETECTED')
                     ${status === "upcoming"
     ? "AND status = 'WAITING_FOR_EVENT'"
-    : status === "completed" ? "AND status IN ('EVENT_COMPLETED', 'NO_FRAUD_DETECTED')" : ""}
+    : status === "completed" ? "AND status IN ('EVENT_COMPLETED', 'NO_FRAUD_DETECTED', 'PAYMENT_COMPLETED', 'SUSPENDED')" : ""}
                     AND ( '${userID}' = fortune_teller_id
                         OR '${userID}' = customer_id )
                 ), EVENT_TIME AS (
