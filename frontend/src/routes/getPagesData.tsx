@@ -16,6 +16,7 @@ import PaymentHistoryApp from "../pages/PaymentHistoryPage/PaymentHistoryApp"
 import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
+import TimetableApp from "../pages/TimetablePage/TimetableApp"
 import AdminPaymentApp from "../pages/AdminPaymentPage/AdminPaymentApp"
 import Redirect from "./Redirect"
 
@@ -100,6 +101,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/payment/history",
       element: <PaymentHistoryApp />
+    },
+    {
+      path: "/timetable/:id",
+      element: <TimetableApp />
     },
     {
       path: "/example",
