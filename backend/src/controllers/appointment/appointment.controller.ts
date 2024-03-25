@@ -14,7 +14,9 @@ const createAppointment = async (req: Request, res: Response) => {
   }
 
   const isSuccess = await appointmentService.createAppointment(appointment)
-  if (!isSuccess) { return res.status(400).json({ success: isSuccess }) }
+  if (!isSuccess) {
+    return res.status(400).json({ success: isSuccess })
+  }
 
   res.status(201).json({ success: isSuccess })
 }
@@ -23,14 +25,18 @@ const getFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTellerId = req.params.fortuneTellerId
 
   const fortuneTeller = await appointmentService.getFortuneTeller(fortuneTellerId)
-  if (fortuneTeller === null) { return res.status(400).json({ success: false }) }
+  if (fortuneTeller === null) {
+    return res.status(400).json({ success: false })
+  }
 
   res.status(200).json({ success: true, data: fortuneTeller })
 }
 
 const getAllFortuneTeller = async (req: Request, res: Response) => {
   const fortuneTellers = await appointmentService.getAllFortuneTeller()
-  if (fortuneTellers === null) { return res.status(400).json({ success: false }) }
+  if (fortuneTellers === null) {
+    return res.status(400).json({ success: false })
+  }
 
   res.status(200).json({ success: true, data: fortuneTellers })
 }
@@ -38,14 +44,20 @@ const getAllFortuneTeller = async (req: Request, res: Response) => {
 const getPackages = async (req: Request, res: Response) => {
   const packages = await appointmentService.getPackages(req.params.fortuneTellerId)
 
-  if (packages === null) { return res.status(400).json({ success: false }) }
+  if (packages === null) {
+    return res.status(400).json({ success: false })
+  }
 
   res.status(200).json({ success: true, data: packages })
 }
 
 const getFortuneTellerAppointment = async (req: Request, res: Response) => {
-  const appointments = await appointmentService.getFortuneTellerAppointment(req.params.fortuneTellerId)
-  if (appointments === null) { return res.status(400).json({ success: false }) }
+  const appointments = await appointmentService.getFortuneTellerAppointment(
+    req.params.fortuneTellerId
+  )
+  if (appointments === null) {
+    return res.status(400).json({ success: false })
+  }
 
   res.status(200).json({ success: true, data: appointments })
 }
@@ -53,31 +65,54 @@ const getFortuneTellerAppointment = async (req: Request, res: Response) => {
 const getUserInfo = async (req: Request, res: Response) => {
   const userInfo = await appointmentService.getUserInfo(req.params.userId)
 
-  if (userInfo === null) { return res.status(400).json({ success: false }) }
+  if (userInfo === null) {
+    return res.status(400).json({ success: false })
+  }
 
   res.status(200).json({ success: true, data: userInfo })
 }
 
 const getAppointmentByConversationId = async (req: Request, res: Response) => {
-  const appointments = await appointmentService.getAppointmentByConversationId(req.params.conversationId)
+  const appointments = await appointmentService.getAppointmentByConversationId(
+    req.params.conversationId
+  )
   return res.status(200).json({ success: true, data: appointments })
 }
 
-const updateAppointmentStatus = async (req: TypedRequestBody<{ status: AppointmentStatus, appointmentId: string }>, res: Response) => {
+const updateAppointmentStatus = async (
+  req: TypedRequestBody<{ status: AppointmentStatus; appointmentId: string }>,
+  res: Response
+) => {
   const { status, appointmentId } = req.body
   const isSuccess = await appointmentService.updateAppointmentStatus(appointmentId, status)
-  if (!isSuccess) return res.status(400).json({ success: false, message: "Failed to update appointment status" })
+  if (!isSuccess)
+    return res.status(400).json({ success: false, message: "Failed to update appointment status" })
   res.status(200).json({ success: isSuccess, message: "Appointment status updated" })
 }
 
 const getIsReview = async (req: Request, res: Response) => {
-  const isReview = await appointmentService.getIsReview(req.params.appointmentId, req.params.customerId)
+  const isReview = await appointmentService.getIsReview(
+    req.params.appointmentId,
+    req.params.customerId
+  )
   res.status(200).json({ success: true, data: isReview })
 }
 
 const getEventCompletedAppointments = async (req: Request, res: Response) => {
   const appointments = await appointmentService.getEventCompletedAppointments()
-  if (appointments === null) { return res.status(400).json({ success: false }) }
+  if (appointments === null) {
+    return res.status(400).json({ success: false })
+  }
+  return res.status(200).json({ success: true, data: appointments })
+}
+
+const getAppointmentsByStatus = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const status = req.params.status as AppointmentStatus
+  const appointments = await appointmentService.getAppointmentsByStatus(userId, status)
+  if (appointments === null) {
+    return res.status(400).json({ success: false })
+  }
   return res.status(200).json({ success: true, data: appointments })
 }
 
@@ -91,5 +126,6 @@ export const appointmentController = {
   getAppointmentByConversationId,
   updateAppointmentStatus,
   getIsReview,
-  getEventCompletedAppointments
+  getEventCompletedAppointments,
+  getAppointmentsByStatus
 }
