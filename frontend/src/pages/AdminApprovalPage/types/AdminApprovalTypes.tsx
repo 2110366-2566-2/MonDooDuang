@@ -1,7 +1,7 @@
 export type FortuneTellerRequestType = {
   requestId: string
   fullName: string
-  stagename: string
+  stageName: string
   phoneNumber: string
   identityCardNumber: string
   profilePic: string
