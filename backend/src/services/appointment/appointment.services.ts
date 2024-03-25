@@ -5,6 +5,7 @@ import { packageRepository } from "../../repositories/package.repository"
 import { userRepository } from "../../repositories/user.repository"
 import { scheduleJob } from "node-schedule"
 import { notificationRepository } from "../../repositories/notification.repository"
+import { s3Service } from "../infra/s3.services"
 
 export const appointmentService = {
   createAppointment: async (appointment: AppointmentSchema) => {
@@ -146,6 +147,15 @@ export const appointmentService = {
 
   getEventCompletedAppointments: async () => {
     const appointments = await appointmentRepository.getEventCompletedAppointments()
-    return appointments
+    if (appointments === null) return null
+    const updatedAppointments = await Promise.all(appointments.map(async (appointment) => {
+      const fortuneTellerId = appointment.fortuneTellerId?.toString() ?? ""
+      const profilePicData = await s3Service.downloadProfilePicture(fortuneTellerId as string)
+      if (profilePicData && profilePicData.ContentType !== undefined && profilePicData.ContentType !== null) {
+        appointment.profilePicture = "data:image/jpg;base64," + profilePicData.Body?.toString("base64")
+      }
+      return appointment
+    }))
+    return updatedAppointments
   }
 }
