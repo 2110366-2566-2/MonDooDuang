@@ -85,8 +85,9 @@ const updateAppointmentStatus = async (
 ) => {
   const { status, appointmentId } = req.body
   const isSuccess = await appointmentService.updateAppointmentStatus(appointmentId, status)
-  if (!isSuccess)
+  if (!isSuccess) {
     return res.status(400).json({ success: false, message: "Failed to update appointment status" })
+  }
   res.status(200).json({ success: isSuccess, message: "Appointment status updated" })
 }
 
