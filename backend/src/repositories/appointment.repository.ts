@@ -132,5 +132,30 @@ export const appointmentRepository = {
       console.error(err)
       return { isSuccess: false }
     }
+  },
+  getEventCompletedAppointments: async () => {
+    const result = await db.query(
+      `
+      SELECT A.appointment_id, P.price, CONCAT(C.fname,' ',C.lname) as c_full_name, CONCAT(FT.fname,' ',FT.lname) as ft_full_name, FT.profile_picture, FT.bank_name, FT.account_number, FT.phone_number
+      FROM APPOINTMENT A
+      JOIN PACKAGE P ON A.package_id = P.package_id
+      JOIN USER_TABLE C ON A.customer_id = C.user_id
+      JOIN USER_TABLE FT ON A.fortune_teller_id = FT.user_id
+      WHERE A.status = $1 OR A.status = $2
+      `, ["EVENT_COMPLETED", "NO_FRAUD_DETECTED"]
+    )
+    if (result.rowCount === 0) return []
+    return result.rows.map((row) => {
+      return {
+        appointmentId: row.appointment_id,
+        price: row.price,
+        customerName: row.c_full_name,
+        fortuneTellerName: row.ft_full_name,
+        profilePicture: row.profile_picture,
+        bankName: row.bank_name,
+        accountNumber: row.account_number,
+        phoneNumber: row.phone_number
+      }
+    })
   }
 }
