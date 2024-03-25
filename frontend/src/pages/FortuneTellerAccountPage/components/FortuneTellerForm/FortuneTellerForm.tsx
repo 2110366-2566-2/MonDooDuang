@@ -54,7 +54,8 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
       if (!response.isSuccess) {
         return alert(response.message)
       }
-      window.location.href = "/account/fortuneteller"
+      setEditState(false)
+      setIsStageNameValid(true)
     } else {
       setIsStageNameValid(false)
     }
@@ -75,7 +76,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
       </button>
 
       <div className="flex flex-col">
-        <div className="flex flex-row items-center justify-between w-full px-16">
+        <div className="flex flex-row items-center justify-between w-full px-16 h-12">
           <div className="w-32"></div>
           <span className="font-medium text-4xl">ข้อมูลส่วนตัว</span>
 
@@ -94,7 +95,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
           )}
         </div>
 
-        <div className="font-regular flex flex-row mt-10 w-3/4 mx-auto">
+        <div className="font-regular flex flex-row mt-10 w-3/4 h-28 mx-auto">
           <div className="mr-20 w-1/3">
             <form id="completeSubmit" onSubmit={submitForm}>
               <label className="pl-2.5 text-2xl leading-normal ">ชื่อในวงการ</label>
@@ -102,6 +103,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
               <input
                 type="text"
                 value={stageName}
+                required
                 className={`bg-white bg-opacity-50 placeholder-white placeholder-opacity-75 rounded-xl w-full h-12 pl-8 text-xl leading-normal ${
                   editState ? "cursor-text" : "cursor-not-allowed"
                 }`}
@@ -131,7 +133,10 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
 
         <div className="w-3/4 min-h-60 bg-transparent mx-auto rounded-3xl mt-3.5 flex flex-col border">
           <button
-            className=" self-end bg-[#76AA7B] w-24 h-10 rounded-xl text-xl mt-4 mr-5 font-medium leading-normal"
+            className={`self-end bg-[#76AA7B] w-24 h-10 rounded-xl text-xl mt-4 mr-5 font-medium leading-normal ${
+              editState ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={editState}
             onClick={() => {
               {
                 createPackage()
@@ -153,6 +158,7 @@ export default function FortuneTellerForm(props: { fortuneTellerId: string }) {
                     <FortuneTellerPackage
                       key={req.packageId}
                       fortuneTellerPackage={req}
+                      editState={editState}
                     ></FortuneTellerPackage>
                   )
                 })}

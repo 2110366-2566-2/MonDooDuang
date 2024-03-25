@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import UploadFileIcon from "../Icon/UploadFile"
+import UploadFileIcon from "../Icon/UploadFiles"
 import FileIcon from "../Icon/FileIcon"
 import CrossIcon from "../Icon/CrossIcon"
 import CompleteModal from "../Popup/CompleteModal"
