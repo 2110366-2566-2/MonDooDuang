@@ -75,6 +75,12 @@ const getIsReview = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, data: isReview })
 }
 
+const getEventCompletedAppointments = async (req: Request, res: Response) => {
+  const appointments = await appointmentService.getEventCompletedAppointments()
+  if (appointments === null) { return res.status(400).json({ success: false }) }
+  return res.status(200).json({ success: true, data: appointments })
+}
+
 export const appointmentController = {
   createAppointment,
   getFortuneTeller,
@@ -84,5 +90,6 @@ export const appointmentController = {
   getUserInfo,
   getAppointmentByConversationId,
   updateAppointmentStatus,
-  getIsReview
+  getIsReview,
+  getEventCompletedAppointments
 }
