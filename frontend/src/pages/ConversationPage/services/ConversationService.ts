@@ -51,7 +51,7 @@ export const ConversationService = {
     const UserId = recieverUserId.recieverUserId
     const response = await fetch(`${environment.backend.url}/images/profile-picture/${UserId}`)
     const data = await response.json()
-
+    if (!data.success) return null
     return data.data
   }
 }

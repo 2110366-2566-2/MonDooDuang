@@ -64,7 +64,7 @@ export const reportService = {
     const reports = await reportRepository.getAllReport()
     if (reports === null) { return null }
     const updatedRequests = await Promise.all(reports.map(async (report) => {
-      const fortuneTellerId = report.reporteeId?.toString() ?? ""
+      const fortuneTellerId = report.reporteeId
       const profilePicData = await s3Service.downloadProfilePicture(fortuneTellerId)
       if (profilePicData && profilePicData.ContentType !== undefined && profilePicData.ContentType !== null) {
         report.reporteeProfile = "data:image/jpg;base64," + profilePicData.Body?.toString("base64")

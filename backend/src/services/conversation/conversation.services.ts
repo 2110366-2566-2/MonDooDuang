@@ -147,7 +147,7 @@ export const conversationService = {
     userId: string,
     role: "CUSTOMER" | "FORTUNE_TELLER"
   ) => {
-    const data = await conversationRepository.getRecieverUserIdByConversationId(
+    const data = await conversationRepository.getReceiverUserIdByConversationId(
       conversationId,
       userId,
       role

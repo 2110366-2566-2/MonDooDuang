@@ -3,7 +3,7 @@ export type UserType = "CUSTOMER" | "FORTUNE_TELLER"
 export interface RequestSchema {
   requestId: string
   fortuneTellerId: string
-  stagename: string
+  stageName: string
   identityCardNumber: string
   fullName: string
   phoneNumber: string
