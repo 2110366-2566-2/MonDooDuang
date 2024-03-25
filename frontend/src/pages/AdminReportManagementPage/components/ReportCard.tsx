@@ -1,3 +1,4 @@
+import { DefaultProfilePic } from "../../AdminApprovalPage/components/Icon"
 import { ReportInfoType } from "../types/ReportInfoType"
 
 export default function ReportCard({
@@ -61,7 +62,22 @@ export default function ReportCard({
             : "justify-between"
         } items-center`}
       >
-        <div className="w-[100px] h-[100px] rounded-full bg-yellow-400"></div>
+        <div className="rounded-full w-[100px] h-[100px]">
+          {report.reporteeProfile ? (
+            <img
+              src={report.reporteeProfile}
+              alt="Profile"
+              style={{
+                objectFit: "cover",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%"
+              }}
+            />
+          ) : (
+            <DefaultProfilePic />
+          )}
+        </div>
         <div className="flex flex-col w-[320px] justify-items-center text-md">
           <div className="text-mdd-focus-yellow">Report ID : {report.reportId}</div>
           {report.reportType === "SYSTEM_ERROR" ? null : (

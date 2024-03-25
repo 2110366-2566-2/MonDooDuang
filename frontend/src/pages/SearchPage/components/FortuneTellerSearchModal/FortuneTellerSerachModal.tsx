@@ -46,9 +46,9 @@ export default function FortuneTellerSerachModal({
         />
         {image ? (
           <img
-            src="https://i.pinimg.com/236x/67/99/96/67999633eca4a4458fb52d556d3f4ff2.jpg"
+            src={image}
             alt="Fortune Teller"
-            className="bg-contain w-40 h-40 rounded-full flex justify-items-center mx-auto"
+            className="object-cover w-40 h-40 rounded-full flex justify-items-center mx-auto"
           />
         ) : (
           <div>
