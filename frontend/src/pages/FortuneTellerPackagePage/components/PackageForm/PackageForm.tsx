@@ -41,6 +41,7 @@ export default function EditForm(props: {
         setUnitTime("hour")
       } else {
         setTime(duration)
+        setUnitTime("minute")
       }
     }
     fetchPackageData()
@@ -115,9 +116,9 @@ export default function EditForm(props: {
         ข้อมูล Package
       </label>
       <div className="w-5/6 min-h-60 bg-transparent mx-auto rounded-3xl border text-regular text-2xl py-11 px-12">
-        <div className="flex flex-col md:flex-row md:gap-x-12 ">
+        <div className="flex flex-col-2 md:flex-row md:gap-x-12 ">
           <div className="flex flex-col w-1/2 md:gap-y-11">
-            <div className="items-center justify-center">
+            <div className="items-center justify-center h-32">
               <label className="ml-2.5 leading-normal">ศาสตร์การดูดวง</label>
               <select
                 value={isEdit ? fortune : undefined}
@@ -126,8 +127,8 @@ export default function EditForm(props: {
               >
                 <option value="" selected disabled hidden></option>
                 <option value="TAROT_CARD">ไพ่ทาโรต์</option>
-                <option value="NUMBER">โหราศาสตร์ไทย</option>
-                <option value="THAI">ศาสตร์ตัวเลข</option>
+                <option value="THAI">โหราศาสตร์ไทย</option>
+                <option value="NUMBER">ศาสตร์ตัวเลข</option>
                 <option value="ORACLE">ไพ่ออราเคิล</option>
                 <option value="RUNES">รูนส์</option>
               </select>
@@ -137,7 +138,7 @@ export default function EditForm(props: {
                 )}
               </div>
             </div>
-            <div className="items-center justify-center">
+            <div className="items-center justify-center h-32">
               <div className="flex flex-col row-span-2">
                 <label className="ml-2.5 leading-normal">เวลาที่ใช้โดยประมาณ</label>
                 <div>
@@ -170,14 +171,14 @@ export default function EditForm(props: {
             </div>
           </div>
           <div className="flex flex-col w-1/2 md:gap-y-11">
-            <div className="items-center justify-center">
+            <div className="items-center justify-center h-32">
               <label className="ml-2.5 leading-normal">อัตราการให้บริการ</label>
-              <div className="flex flex-row h-12">
+              <div className="flex flex-row">
                 <form id="packageDeleteForm" onSubmit={deletePackage}>
                   <input
                     type="number"
                     value={isEdit ? price : undefined}
-                    className="bg-white bg-opacity-[.54] placeholder-white rounded-lg text-center w-60 leading-normal"
+                    className="bg-white bg-opacity-[.54] placeholder-white rounded-lg text-center w-60 leading-normal h-12"
                     onChange={(e) => setPrice(Number(e.target.value))}
                   ></input>
                 </form>
