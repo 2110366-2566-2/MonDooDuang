@@ -1,3 +1,4 @@
+import { integer } from "aws-sdk/clients/cloudfront"
 import { db } from "../configs/pgdbConnection"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
@@ -173,5 +174,22 @@ export const fortuneTellerRepository = {
       `
     )
     return result.rows
+  },
+
+  updateReviewScore: async (fortuneTellerId: string, score:number) =>  {
+    try {
+      await db.query(
+        `
+        UPDATE fortune_teller
+        SET total_score = total_score + $2, total_review = total_review + 1
+        WHERE fortune_teller_id = $1 
+        `,
+        [fortuneTellerId, score]
+      )
+
+      return true
+    } catch (err) {
+      return false
+    }
   }
 }
