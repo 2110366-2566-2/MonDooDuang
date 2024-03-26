@@ -33,10 +33,8 @@ export default function ReviewModal(props: {
     }
     return true
   }
-  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const submitForm = async () => {
     if (validation()) {
-      closeCompleteModal()
       const response = await ReviewService.createReview(
         reviewMessage,
         score,
@@ -44,10 +42,10 @@ export default function ReviewModal(props: {
         props.fortuneTellerId,
         props.appointmentId
       )
-
       if (!response.isSuccess) {
         return alert(response.message)
       }
+      closeCompleteModal()
     }
   }
 
@@ -76,7 +74,7 @@ export default function ReviewModal(props: {
         <div className="flex justify-items-center">
           {isScoreError && <span className="text-red-500 text-xs mx-auto">กรุณาระบุคะแนน</span>}
         </div>
-        <form id="completeSubmit" onSubmit={submitForm} className="w-full h-20 my-4">
+        <form className="w-full h-20 my-4">
           <textarea
             className=" p-2 h-full w-full rounded-xl"
             onChange={(e) => setReviewMessage(e.target.value)}
@@ -87,14 +85,15 @@ export default function ReviewModal(props: {
             className="bg-[#757575] text-white text-base w-32 h-8 rounded-xl leading-normal cursor-pointer"
             onClick={() => {
               closeCompleteModal()
-              window.location.href = "/conversation"
             }}
           >
             ยกเลิก
           </button>
           <button
             className="bg-[#DD9F00] text-white text-base w-32 h-8 ml-6 rounded-xl place-self-end leading-normal cursor-pointer"
-            form="completeSubmit"
+            onClick={() => {
+              submitForm()
+            }}
           >
             รีวิวหมอดู
           </button>
