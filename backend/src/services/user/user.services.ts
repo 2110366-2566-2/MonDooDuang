@@ -1,4 +1,8 @@
-import { CreateUserSchema, RegisterUserSchema } from "../../models/user/user.model"
+import {
+  CreateUserSchema,
+  RegisterUserSchema,
+  UpdateUserSchema
+} from "../../models/user/user.model"
 import { userRepository } from "../../repositories/user.repository"
 import { TokenInfoSchema } from "../../types/jwtToken"
 import { JwtUtils } from "../../utils/jwt"
@@ -79,5 +83,33 @@ export const userService = {
 
     const token = JwtUtils.assignToken(tokenInfo)
     return { success: true, message: "Successfully log in", data: token }
+  },
+
+  getUserInformation: async (userId: string) => {
+    const UserInformation = await userRepository.getUserInformation(userId)
+    if (UserInformation === null) return null
+    return {
+      userId: UserInformation.user_id,
+      fName: UserInformation.fname,
+      lName: UserInformation.lname,
+      gender: UserInformation.gender,
+      phoneNumber: UserInformation.phone_number,
+      email: UserInformation.email,
+      birthDate: UserInformation.birth_date,
+      profilePicture: UserInformation.profile_picture,
+      bankName: UserInformation.bank_name,
+      accountNumber: UserInformation.account_number,
+      userType: UserInformation.user_type
+    }
+  },
+
+  updateUserInformation: async (userId: string, body: UpdateUserSchema) => {
+    const userInfo = body
+    const updatedUser = await userRepository.updateUserInformation(userId, userInfo)
+
+    if (updatedUser === null) {
+      return { success: false, message: "Cannot update information" }
+    }
+    return { success: true, message: "Successfully update information" }
   }
 }
