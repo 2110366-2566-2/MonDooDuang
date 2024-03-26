@@ -208,21 +208,23 @@ export default function RegisterPage() {
           <form className="flex flex-col w-[80%]">
             <div className="flex mt-5">
               <div className="flex w-[46%] flex-col items-center justify-center gap-2">
-                <input
-                  id="fileForm"
-                  name="fileForm"
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={handlePictureChange}
-                  className="absolute w-full h-full opacity-0 cursor-pointer"
-                />
                 <button
-                  className="flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]"
+                  className="relative flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]"
                   onClick={handleUploadPictureButtonClick}
                 >
+                  <input
+                    id="fileForm"
+                    name="fileForm"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={handlePictureChange}
+                    className="absolute w-full h-full opacity-0 cursor-pointer"
+                  />
                   {previewFile !== null ? (
-                    <img src={previewFile} className="h-full w-full rounded-full object-cover"/>) : <CameraIcon />
-                  }
+                    <img src={previewFile} className="h-full w-full rounded-full object-cover" />
+                  ) : (
+                    <CameraIcon />
+                  )}
                 </button>
                 <p className="text-sm">
                   <span className="text-xl">รูปโปรไฟล์ </span>(ไม่จำเป็น)

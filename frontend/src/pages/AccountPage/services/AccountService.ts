@@ -24,5 +24,26 @@ export const AccountService = {
     }
     const data = await res.json()
     return data
+  },
+
+  uploadProfilePicture: async (userId: string, formData: FormData) => {
+    const res = await fetch(`${environment.backend.url}/images/profile-picture/${userId}`, {
+      method: "POST",
+      body: formData
+    })
+    if (!res.ok) {
+      throw new Error("Failed to update user information")
+    }
+    const data = await res.json()
+    return data
+  },
+
+  getProfilePicture: async (userId: string) => {
+    const res = await fetch(`${environment.backend.url}/images/profile-picture/${userId}`)
+    if (!res.ok) {
+      return null
+    }
+    const data = await res.json()
+    return data.data
   }
 }
