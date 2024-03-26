@@ -9,8 +9,8 @@ const getTimetable = async (userID: string, status: string, day: number, month: 
                             WHEN '${userID}' = customer_id THEN 'CUSTOMER'
                         END AS event_role
                     FROM appointment
-                    WHERE appointment_date + (7 || ' hours')::interval >= '${year.toString()}-${month.toString()}-${day === -1 ? "1" : day.toString()} 00:00:00'::timestamp
-                    AND appointment_date + (7 || ' hours')::interval< '${month === 12 ? (year + 1).toString() : year.toString()}-${month === 12 ? "1" : (month + 1).toString()}-1 00:00:00'::timestamp
+                    WHERE (appointment_date + (7 || ' hours')::interval)::date > '${year.toString()}-${month.toString()}-${day === -1 ? "1" : day.toString()} 00:00:00'::timestamp
+                    AND (appointment_date + (7 || ' hours')::interval)::date < '${month === 12 ? (year + 1).toString() : year.toString()}-${month === 12 ? "1" : (month + 1).toString()}-1 00:00:00'::timestamp
                     ${status === "upcoming"
     ? "AND status = 'WAITING_FOR_EVENT'"
     : status === "completed" ? "AND status IN ('EVENT_COMPLETED', 'NO_FRAUD_DETECTED', 'PAYMENT_COMPLETED', 'SUSPENDED')" : ""}
