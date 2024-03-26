@@ -18,14 +18,14 @@ export default function TimetablePage(): JSX.Element {
   }
 
   useEffect(() => {
-    TimetableService.getTimetable(currentMonth, currentYear, userId, "upcoming").then((data) => {
+    TimetableService.getTimetable(-1, currentMonth, currentYear, userId, "upcoming").then((data) => {
       if (data) {
         setUpcomingAppointmentData(data)
       } else {
         setUpcomingAppointmentData([])
       }
     })
-    TimetableService.getTimetable(currentMonth, currentYear, userId, "completed").then((data) => {
+    TimetableService.getTimetable(-1, currentMonth, currentYear, userId, "completed").then((data) => {
       if (data) {
         setCompletedAppointmentData(data)
       } else {

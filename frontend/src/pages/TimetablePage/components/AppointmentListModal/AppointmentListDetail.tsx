@@ -44,8 +44,8 @@ export default function AppointmentListDetail({
             <p className={`${ (event_role === "CUSTOMER") ? "text-[#E79900]" : "text-[#417D9F]"} `}>{showedTime(appointment_start_time)} - {showedTime(appointment_end_time)} น.</p>
           </div>
         </div>
-        <div className="flex flex-row justify-center place-items-end">
-          <p className="font-medium">สถานะ :&nbsp;</p>
+        <div className="flex flex-row justify-center place-items-end text-base font-normal">
+          <p className="text-[#414141] font-medium">สถานะ :&nbsp;</p>
           <div className={`${ (event_status === "upcoming")?(event_role === "CUSTOMER") ? "bg-[#E79900]" : "bg-[#417D9F]" : "bg-[#5FAE67]"} text-white px-2 py-[2px] shadow-inner rounded-lg`}>{event_status === "upcoming" ? "นัดหมายสำเร็จ" : "เสร็จสิ้น"}</div>
         </div>
       </div>
