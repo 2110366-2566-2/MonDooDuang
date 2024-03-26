@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer"
 import NavBar from "../../common/components/NavBar/NavBar"
 import { useContext } from "react"
 import { AuthContext } from "../../common/providers/AuthProvider"
+import FortuneTellerTimetable from "./components/Timetable/FortunetellerTimetable"
 
 export default function FortuneTellerDetailPage() {
   const { userId, userType, username } = useContext(AuthContext)
@@ -27,6 +28,7 @@ export default function FortuneTellerDetailPage() {
             <FortuneTellerDetails></FortuneTellerDetails>
             <Packages></Packages>
           </div>
+          <FortuneTellerTimetable></FortuneTellerTimetable>
           <Reviews></Reviews>
           <RecommendedFortuneTellers />
           <Footer></Footer>

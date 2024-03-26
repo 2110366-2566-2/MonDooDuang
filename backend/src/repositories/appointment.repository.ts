@@ -79,6 +79,7 @@ export const appointmentRepository = {
         FROM APPOINTMENT A
         JOIN PACKAGE P ON A.package_id = P.package_id
         WHERE (A.customer_id = $1 AND A.fortune_teller_id = $2)
+        ORDER BY A.appointment_date
       `,
       [customerId, fortuneTellerId]
     )

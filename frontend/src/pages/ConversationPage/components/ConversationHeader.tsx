@@ -33,6 +33,7 @@ export default function ConversationHeader({
   const navigate = useNavigate()
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState<boolean>(true)
   const [appointments, setAppointments] = useState<AppointmentInformation[]>([])
+  const [isSeeAll, setIsSeeAll] = useState(false)
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -238,6 +239,25 @@ export default function ConversationHeader({
           )}
         </div>
         <div className="flex items-center">
+          {isSeeAll ? (
+            <div
+              className="cursor-pointer mr-2 underline text-mdd-grey"
+              onClick={() => {
+                setIsSeeAll(false)
+              }}
+            >
+              hide appointments
+            </div>
+          ) : (
+            <div
+              className="cursor-pointer mr-2 underline text-mdd-grey"
+              onClick={() => {
+                setIsSeeAll(true)
+              }}
+            >
+              see all appointments
+            </div>
+          )}
           <SearchIcon className="mr-2" />
           <ReportGmailerrorredIcon
             onClick={() => {
@@ -247,201 +267,210 @@ export default function ConversationHeader({
           />
         </div>
       </div>
-      {appointments.map((appointment) => {
-        const [formattedDate, startTime] = formatDateTime(appointment.appointmentDate)
-        const appointmentDateTime = new Date(appointment.appointmentDate)
-        const endDateTime = new Date(appointmentDateTime.getTime() + appointment.duration * 60000)
-        const endTime = formatDateTime(endDateTime.toISOString())[1]
-        const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
-        const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
+      <div className="max-h-[400px] overflow-auto">
+        {(isSeeAll || appointments.length == 0 ? appointments : [appointments[0]]).map(
+          (appointment) => {
+            const [formattedDate, startTime] = formatDateTime(appointment.appointmentDate)
+            const appointmentDateTime = new Date(appointment.appointmentDate)
+            const endDateTime = new Date(
+              appointmentDateTime.getTime() + appointment.duration * 60000
+            )
+            const endTime = formatDateTime(endDateTime.toISOString())[1]
+            const paymentDateTime = new Date(appointmentDateTime.getTime() + 24 * 60 * 60 * 1000)
+            const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
 
-        const today = new Date()
-        today.setHours(today.getHours() + 7)
-        const waiting_day = dayjs(appointmentDateTime).diff(
-          dayjs(new Date()).format("YYYY-MM-DD"),
-          "day"
-        )
+            const today = new Date()
+            today.setHours(today.getHours() + 7)
+            const waiting_day = dayjs(appointmentDateTime).diff(
+              dayjs(new Date()).format("YYYY-MM-DD"),
+              "day"
+            )
 
-        if (appointment.status === "WAITING_FOR_PAYMENT" && userType === "CUSTOMER") {
-          const { content, moreContent, button } = getWaitingForPaymentInfo(
-            appointment.price,
-            paymentDate,
-            paymentTime,
-            appointment.appointmentId,
-            conversationId ?? "no-such-case-conversationId-is-null"
-          )
-          return (
-            <BaseAppointmentCard
-              icon={<PaymentIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-              key={appointment.appointmentId}
-            />
-          )
-        } else if (appointment.status === "WAITING_FOR_EVENT") {
-          if (appointmentDateTime < today) {
-            const { content, moreContent, button } = getEventInProgressInfo(
-              appointment.appointmentId
-            )
-            return (
-              <BaseAppointmentCard
-                icon={<WandIcon />}
-                content={content}
-                moreContent={moreContent}
-                button={button}
-                formattedDate={formattedDate}
-                startTime={startTime}
-                endTime={endTime}
-                speciality={specialityMapper[appointment.speciality]}
-                key={appointment.appointmentId}
-              />
-            )
-          } else if (waiting_day < 3) {
-            const { content, moreContent, button } = getUpComingEventInfo(
-              startTime,
-              endTime,
-              formattedDate
-            )
-            return (
-              <BaseAppointmentCard
-                icon={<NotiIcon />}
-                content={content}
-                moreContent={moreContent}
-                button={button}
-                formattedDate={formattedDate}
-                startTime={startTime}
-                endTime={endTime}
-                speciality={specialityMapper[appointment.speciality]}
-                key={appointment.appointmentId}
-              />
-            )
+            if (appointment.status === "WAITING_FOR_PAYMENT" && userType === "CUSTOMER") {
+              const { content, moreContent, button } = getWaitingForPaymentInfo(
+                appointment.price,
+                paymentDate,
+                paymentTime,
+                appointment.appointmentId,
+                conversationId ?? "no-such-case-conversationId-is-null"
+              )
+              return (
+                <BaseAppointmentCard
+                  icon={<PaymentIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                  key={appointment.appointmentId}
+                />
+              )
+            } else if (appointment.status === "WAITING_FOR_EVENT") {
+              if (appointmentDateTime < today) {
+                const { content, moreContent, button } = getEventInProgressInfo(
+                  appointment.appointmentId
+                )
+                return (
+                  <BaseAppointmentCard
+                    icon={<WandIcon />}
+                    content={content}
+                    moreContent={moreContent}
+                    button={button}
+                    formattedDate={formattedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    speciality={specialityMapper[appointment.speciality]}
+                    key={appointment.appointmentId}
+                  />
+                )
+              } else if (waiting_day < 3) {
+                const { content, moreContent, button } = getUpComingEventInfo(
+                  startTime,
+                  endTime,
+                  formattedDate
+                )
+                return (
+                  <BaseAppointmentCard
+                    icon={<NotiIcon />}
+                    content={content}
+                    moreContent={moreContent}
+                    button={button}
+                    formattedDate={formattedDate}
+                    startTime={startTime}
+                    endTime={endTime}
+                    speciality={specialityMapper[appointment.speciality]}
+                    key={appointment.appointmentId}
+                  />
+                )
+              }
+              const { content, moreContent, button } = getWaitingForEventInfo(
+                appointment.appointmentId
+              )
+              return (
+                <BaseAppointmentCard
+                  icon={<SuccessIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                  key={appointment.appointmentId}
+                />
+              )
+            } else if (
+              appointment.status === "FORTUNE_TELLER_CANCELED" ||
+              appointment.status === "CUSTOMER_CANCELED"
+            ) {
+              const { content, moreContent, button } = getCanceledEventInfo()
+              return (
+                <BaseAppointmentCard
+                  icon={<ErrorIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                  key={appointment.appointmentId}
+                />
+              )
+            } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
+              const { content, moreContent, button } = getDeclinedEventInfo()
+              return (
+                <BaseAppointmentCard
+                  icon={<ErrorIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                  key={appointment.appointmentId}
+                />
+              )
+            } else if (appointment.status === "NO_PAYMENT_CANCELED") {
+              const { content, moreContent, button } = getNoPaymentInfo()
+              return (
+                <BaseAppointmentCard
+                  icon={<ErrorIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                />
+              )
+            } else if (appointment.status === "EVENT_COMPLETED") {
+              return (
+                <EventCompleteCard
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                  appointmentId={appointment.appointmentId}
+                  fortuneTellerId={appointment.fortuneTellerId}
+                  customerId={appointment.customerId}
+                  isCustomer={userType === "CUSTOMER"}
+                  showReport={showReport}
+                  systemReport={systemReport}
+                  key={appointment.appointmentId}
+                />
+              )
+            } else if (appointment.status === "SUSPENDED") {
+              const { content, moreContent, button } = getSuspendedEventInfo()
+              return (
+                <BaseAppointmentCard
+                  icon={<ErrorIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                />
+              )
+            } else if (appointment.status === "REFUNDED") {
+              const { content, moreContent, button } = getRefundedEventInfo()
+              return (
+                <BaseAppointmentCard
+                  icon={<ErrorIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                />
+              )
+            } else if (appointment.status === "NO_FRAUD_DETECTED") {
+              const { content, moreContent, button } = getNoFraudDetectEventInfo()
+              return (
+                <BaseAppointmentCard
+                  icon={<SuccessIcon />}
+                  content={content}
+                  moreContent={moreContent}
+                  button={button}
+                  formattedDate={formattedDate}
+                  startTime={startTime}
+                  endTime={endTime}
+                  speciality={specialityMapper[appointment.speciality]}
+                />
+              )
+            }
+            console.log(appointment.status)
           }
-          const { content, moreContent, button } = getWaitingForEventInfo(appointment.appointmentId)
-          return (
-            <BaseAppointmentCard
-              icon={<SuccessIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-              key={appointment.appointmentId}
-            />
-          )
-        } else if (
-          appointment.status === "FORTUNE_TELLER_CANCELED" ||
-          appointment.status === "CUSTOMER_CANCELED"
-        ) {
-          const { content, moreContent, button } = getCanceledEventInfo()
-          return (
-            <BaseAppointmentCard
-              icon={<ErrorIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-              key={appointment.appointmentId}
-            />
-          )
-        } else if (appointment.status === "FORTUNE_TELLER_DECLINED") {
-          const { content, moreContent, button } = getDeclinedEventInfo()
-          return (
-            <BaseAppointmentCard
-              icon={<ErrorIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-              key={appointment.appointmentId}
-            />
-          )
-        } else if (appointment.status === "NO_PAYMENT_CANCELED") {
-          const { content, moreContent, button } = getNoPaymentInfo()
-          return (
-            <BaseAppointmentCard
-              icon={<ErrorIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-            />
-          )
-        } else if (appointment.status === "EVENT_COMPLETED") {
-          return (
-            <EventCompleteCard
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-              appointmentId={appointment.appointmentId}
-              fortuneTellerId={appointment.fortuneTellerId}
-              customerId={appointment.customerId}
-              isCustomer={userType === "CUSTOMER"}
-              showReport={showReport}
-              systemReport={systemReport}
-              key={appointment.appointmentId}
-            />
-          )
-        } else if (appointment.status === "SUSPENDED") {
-          const { content, moreContent, button } = getSuspendedEventInfo()
-          return (
-            <BaseAppointmentCard
-              icon={<ErrorIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-            />
-          )
-        } else if (appointment.status === "REFUNDED") {
-          const { content, moreContent, button } = getRefundedEventInfo()
-          return (
-            <BaseAppointmentCard
-              icon={<ErrorIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-            />
-          )
-        } else if (appointment.status === "NO_FRAUD_DETECTED") {
-          const { content, moreContent, button } = getNoFraudDetectEventInfo()
-          return (
-            <BaseAppointmentCard
-              icon={<SuccessIcon />}
-              content={content}
-              moreContent={moreContent}
-              button={button}
-              formattedDate={formattedDate}
-              startTime={startTime}
-              endTime={endTime}
-              speciality={specialityMapper[appointment.speciality]}
-            />
-          )
-        }
-      })}
+        )}
+      </div>
     </div>
   )
 }
