@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AppointmentInformation } from "../types/AppointmentInformation"
-import { PaymentHistoryService } from "../services/PaymentHistoryService"
+import { AppointmentService } from "../services/PaymentHistoryService"
 import { AppointmentStatusType } from "../../../common/types/Appointment"
 import PaymentIcon from "../../../common/components/AppointmentCard/Icon/PaymentIcon"
 import { Specialities, specialitiesName } from "../../SearchPage/types/SpecialityType"
@@ -16,7 +16,7 @@ export default function WatingForPayment({
   const [AppointmentInformation, setAppointmentInformation] = useState<AppointmentInformation[]>([])
   useEffect(() => {
     const fetchAppointmentInformation = async () => {
-      const appointmentInformation = await PaymentHistoryService.getAppointmentsByStatus(
+      const appointmentInformation = await AppointmentService.getAppointmentsByStatus(
         userId,
         status
       )

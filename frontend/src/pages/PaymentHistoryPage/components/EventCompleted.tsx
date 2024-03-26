@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AppointmentInformation } from "../types/AppointmentInformation"
-import { PaymentHistoryService } from "../services/PaymentHistoryService"
+import { AppointmentService } from "../services/PaymentHistoryService"
 import { AppointmentStatusType } from "../../../common/types/Appointment"
 import { Specialities, specialitiesName } from "../../SearchPage/types/SpecialityType"
 import { showFullDate, showTime } from "../../../common/utils/FormatUtils"
@@ -15,7 +15,7 @@ export default function EventCompleted({
   const [AppointmentInformation, setAppointmentInformation] = useState<AppointmentInformation[]>([])
   useEffect(() => {
     const fetchAppointmentInformation = async () => {
-      const appointmentInformation = await PaymentHistoryService.getAppointmentsByStatus(
+      const appointmentInformation = await AppointmentService.getAppointmentsByStatus(
         userId,
         status
       )

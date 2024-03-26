@@ -1,6 +1,6 @@
 import { environment } from "../../../common/constants/environment"
 import { AppointmentStatusType } from "../../../common/types/Appointment"
-export const PaymentHistoryService = {
+export const AppointmentService = {
   getAppointmentsByStatus: async (userId: string, status: AppointmentStatusType) => {
     const response = await fetch(
       `${environment.backend.url}/appointment/find-appointments-by-status/${userId}/${status}`
