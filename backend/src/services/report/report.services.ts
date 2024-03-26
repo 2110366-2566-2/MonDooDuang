@@ -6,7 +6,7 @@ import { userRepository } from "../../repositories/user.repository"
 
 export const reportService = {
   createReport: async (report: ReportSchema) => {
-    if (report.description == null || report.description.trim().length === 0) {
+    if (!report.description || report.description.trim().length === 0) {
       return { success: false, message: "No report description to be submitted" }
     }
     report.description = report.description.trim()
@@ -20,7 +20,9 @@ export const reportService = {
     if (report.reportType === "INAPPROPRIATE_BEHAVIOR") {
       report.appointmentId = null
 
-      if (report.reporteeId == null || report.reporteeId.trim().length === 0) { return { success: false, message: "No reportee to be reported" } }
+      if ((report.reporteeId === undefined || report.reporteeId === null) || report.reporteeId.trim().length === 0) {
+        return { success: false, message: "No reportee to be reported" }
+      }
     }
 
     if (report.reportType === "SYSTEM_ERROR") {
@@ -33,7 +35,9 @@ export const reportService = {
   },
 
   createMoneySuspensionReport: async (report: ReportSchema) => {
-    if (report.reporteeId == null || report.reporteeId.trim().length === 0) { return { success: false, message: "No appointment to be reported" } }
+    if ((report.reporteeId === undefined || report.reporteeId === null) || report.reporteeId.trim().length === 0) {
+      return { success: false, message: "No appointment to be reported" }
+    }
 
     // get appointment ids
     const appointmentIds: string[] = await reportRepository.getAppointmentIds(report.reporterId, report.reporteeId)
