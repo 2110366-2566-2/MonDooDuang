@@ -87,7 +87,6 @@ export default function ReviewModal(props: {
             className="bg-[#757575] text-white text-base w-32 h-8 rounded-xl leading-normal cursor-pointer"
             onClick={() => {
               closeCompleteModal()
-              window.location.href = "/conversation"
             }}
           >
             ยกเลิก
