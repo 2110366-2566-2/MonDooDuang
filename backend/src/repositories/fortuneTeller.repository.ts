@@ -176,7 +176,7 @@ export const fortuneTellerRepository = {
     return result.rows
   },
 
-  updateReviewScore: async (fortuneTellerId: string, score:number) =>  {
+  updateReviewScore: async (fortuneTellerId: string, score: number) => {
     try {
       await db.query(
         `
