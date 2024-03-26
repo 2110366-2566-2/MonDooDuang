@@ -1,4 +1,3 @@
-import { integer } from "aws-sdk/clients/cloudfront"
 import { db } from "../configs/pgdbConnection"
 import { FortuneTellerRegisterSchema, RequestSchema, FortuneTellerAccountDetailSchema } from "../models/fortuneTeller/fortuneTeller.model"
 import { FortuneTellerDetailSchema } from "../models/fortuneTellerDetail/fortuneTellerDetail.model"
