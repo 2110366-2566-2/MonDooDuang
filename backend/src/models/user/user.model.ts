@@ -51,3 +51,14 @@ export interface UserDBSchema {
   created_at: Date
   updated_at: Date
 }
+
+export interface UpdateUserSchema {
+  fName: string
+  lName: string
+  gender: Gender
+  phoneNumber: string
+  birthDate: Date
+  profilePicture: string
+  bankName: string
+  accountNumber: string
+}

@@ -147,5 +147,17 @@ export const appointmentService = {
   getEventCompletedAppointments: async () => {
     const appointments = await appointmentRepository.getEventCompletedAppointments()
     return appointments
+  },
+
+  getAppointmentsByStatus: async (userId: string, status: AppointmentStatus) => {
+    const appointments = await appointmentRepository.getAppointmentsByStatus(userId, status)
+    appointments.forEach((appointment) => {
+      appointment.appointmentDate = new Date(
+        (appointment.appointmentDate as Date).setUTCHours(
+          (appointment.appointmentDate as Date).getUTCHours() - 7
+        )
+      )
+    })
+    return appointments
   }
 }

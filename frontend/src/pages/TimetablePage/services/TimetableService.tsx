@@ -1,8 +1,9 @@
 import { environment } from "../../../common/constants/environment"
 
 export const TimetableService = {
-  getTimetable: async (month: number, year: number, userId: string, status: string):Promise<AppointmentData[] | null>  => {
+  getTimetable: async (day: number , month: number, year: number, userId: string, status: string):Promise<AppointmentData[] | null>  => {
     const query = {
+      day: day,
       month: month,
       year: year
     }
