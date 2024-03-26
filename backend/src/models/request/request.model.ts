@@ -1,5 +1,4 @@
 export type RequestStatus = "PENDING" | "ACCEPTED" | "REJECTED"
-export type UserType = "CUSTOMER" | "FORTUNE_TELLER"
 export interface RequestSchema {
   requestId: string
   fortuneTellerId: string

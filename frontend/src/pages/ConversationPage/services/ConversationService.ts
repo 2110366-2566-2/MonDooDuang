@@ -48,6 +48,7 @@ export const ConversationService = {
       `${environment.backend.url}/conversations/recieverUserId/${conversationId}/${userId}/${role}`
     )
     const recieverUserId = await res.json()
+    if (!recieverUserId.success) return null
     const UserId = recieverUserId.recieverUserId
     const response = await fetch(`${environment.backend.url}/images/profile-picture/${UserId}`)
     const data = await response.json()
