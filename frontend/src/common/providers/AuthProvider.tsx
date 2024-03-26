@@ -27,7 +27,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   if (!token) {
     if (
       location.pathname === "/admin/fortuneteller_approvals" ||
-      location.pathname === "/admin/report_management"
+      location.pathname === "/admin/report_management" ||
+      location.pathname === "/admin/payment"
     ) {
       navigate("/admin/login")
       return
@@ -41,7 +42,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (
     location.pathname === "/admin/fortuneteller_approvals" ||
-    location.pathname === "/admin/report_management"
+    location.pathname === "/admin/report_management" ||
+    location.pathname === "/admin/payment"
   ) {
     if (contextValue.userType === "FORTUNE_TELLER" || contextValue.userType === "CUSTOMER") {
       navigate("/admin/login")

@@ -1,5 +1,5 @@
 import { db } from "../configs/pgdbConnection"
-import { CreateUserSchema, UserDBSchema } from "../models/user/user.model"
+import { CreateUserSchema, UpdateUserSchema, UserDBSchema } from "../models/user/user.model"
 
 export const userRepository = {
   findUser: async (email: string, fName: string, lName: string) => {
@@ -39,9 +39,64 @@ export const userRepository = {
     const result = await db.query(
       `SELECT user_id,fname,lname,phone_number,birth_date
       FROM user_table
-      WHERE user_id = $1;`, [userId]
+      WHERE user_id = $1;`,
+      [userId]
     )
 
     return result.rows[0]
+  },
+
+  banUser: async (userId: string) => {
+    try {
+      await db.query(
+        `UPDATE USER_TABLE
+        SET is_banned = true
+        WHERE user_id = $1;
+      `,
+        [userId]
+      )
+      return { isSuccess: true, userId }
+    } catch (err) {
+      console.error(err)
+      return { isSuccess: false }
+    }
+  },
+
+  getUserInformation: async (userId: string) => {
+    const user = await db.query<UserDBSchema>(
+      "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
+      [userId]
+    )
+    if (user.rows.length === 0) return null
+    return user.rows[0]
+  },
+
+  updateUserInformation: async (userId: string, user: UpdateUserSchema) => {
+    try {
+      await db.query(
+        `UPDATE user_table
+      SET fname = $1 ,lname = $2, gender = $3, phone_number =$4 , birth_date = $5, profile_picture = $6, bank_name = $7, account_number = $8
+      WHERE user_id = $9`,
+        [
+          user.fName,
+          user.lName,
+          user.gender,
+          user.phoneNumber,
+          user.birthDate,
+          user.profilePicture,
+          user.bankName,
+          user.accountNumber,
+          userId
+        ]
+      )
+      const userUpdate = await db.query<UserDBSchema>(
+        "SELECT user_id, email, password, user_type, fname, lname, gender, phone_number, birth_date, profile_picture, bank_name, account_number FROM user_table WHERE user_id = $1",
+        [userId]
+      )
+      return userUpdate.rows[0]
+    } catch (err) {
+      console.error(err)
+      return null
+    }
   }
 }

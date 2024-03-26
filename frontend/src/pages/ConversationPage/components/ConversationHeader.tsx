@@ -40,13 +40,19 @@ export default function ConversationHeader({
       setAppointments(appointments)
     }
     fetchAppointments()
-  }, [name])
+  }, [name, conversationId])
 
   const toggleNotifications = () => {
     setIsNotificationsEnabled((prev) => !prev)
   }
 
-  const getWaitingForPaymentInfo = (price: number, paymentDate: string, paymentTime: string) => {
+  const getWaitingForPaymentInfo = (
+    price: number,
+    paymentDate: string,
+    paymentTime: string,
+    appointmentId: string,
+    conversationId: string
+  ) => {
     const content = (
       <>
         <h1 className="text-mdd-yellow600 font-semibold text-[28px]">กำลังรอการชำระเงิน</h1>
@@ -61,7 +67,7 @@ export default function ConversationHeader({
     const button = (
       <button
         className="h-[37px] rounded-[10px] px-2 text-white bg-mdd-muted-green mx-5"
-        onClick={() => navigate(`/payment/${price}`)}
+        onClick={() => navigate(`/payment/${conversationId}/${appointmentId}/${price}`)}
       >
         ชำระเงินค่าดูดวง
       </button>
@@ -250,8 +256,9 @@ export default function ConversationHeader({
         const [paymentDate, paymentTime] = formatDateTime(paymentDateTime.toISOString())
 
         const today = new Date()
+        today.setHours(today.getHours() + 7)
         const waiting_day = dayjs(appointmentDateTime).diff(
-          dayjs(today).format("YYYY-MM-DD"),
+          dayjs(new Date()).format("YYYY-MM-DD"),
           "day"
         )
 
@@ -259,7 +266,9 @@ export default function ConversationHeader({
           const { content, moreContent, button } = getWaitingForPaymentInfo(
             appointment.price,
             paymentDate,
-            paymentTime
+            paymentTime,
+            appointment.appointmentId,
+            conversationId ?? "no-such-case-conversationId-is-null"
           )
           return (
             <BaseAppointmentCard
