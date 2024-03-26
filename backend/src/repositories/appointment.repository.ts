@@ -9,7 +9,14 @@ export const appointmentRepository = {
           INSERT INTO APPOINTMENT (status, package_id, customer_id, fortune_teller_id, appointment_date) 
           VALUES($1, $2, $3, $4, $5)
           RETURNING *;
-        `, [appointment.status, appointment.packageId, appointment.customerId, appointment.fortuneTellerId, appointment.appointmentDate]
+        `,
+        [
+          appointment.status,
+          appointment.packageId,
+          appointment.customerId,
+          appointment.fortuneTellerId,
+          appointment.appointmentDate
+        ]
       )
 
       return { isSuccess: true, appointmentId: result.rows[0].appointment_id }
@@ -23,7 +30,8 @@ export const appointmentRepository = {
       `SELECT A.appointment_date , P.duration
       FROM appointment A,package P
       WHERE A.package_id = P.package_id and A.fortune_teller_id = $1 
-      and A.status = 'WAITING_FOR_EVENT';`, [fortuneTellerId]
+      and A.status = 'WAITING_FOR_EVENT';`,
+      [fortuneTellerId]
     )
     return result.rows
   },
@@ -34,10 +42,13 @@ export const appointmentRepository = {
         SELECT status
         FROM APPOINTMENT
         WHERE appointment_id = $1;
-      `, [appointmentId]
+      `,
+      [appointmentId]
     )
 
-    if (result.rowCount === 0) { return null }
+    if (result.rowCount === 0) {
+      return null
+    }
     return result.rows[0].status
   },
 
@@ -45,7 +56,8 @@ export const appointmentRepository = {
     const result = await db.query(
       `SELECT user_id,fname,lname,phone_number,birth_date
       FROM user_table
-      WHERE user_id = $1;`, [userId]
+      WHERE user_id = $1;`,
+      [userId]
     )
 
     return result.rows[0]
@@ -56,7 +68,8 @@ export const appointmentRepository = {
         SELECT customer_id, fortune_teller_id
         FROM conversation
         WHERE conversation_id = $1
-      `, [conversationId]
+      `,
+      [conversationId]
     )
     if (userId.rowCount === 0) return []
     const { customer_id: customerId, fortune_teller_id: fortuneTellerId } = userId.rows[0]
@@ -66,7 +79,9 @@ export const appointmentRepository = {
         FROM APPOINTMENT A
         JOIN PACKAGE P ON A.package_id = P.package_id
         WHERE (A.customer_id = $1 AND A.fortune_teller_id = $2)
-      `, [customerId, fortuneTellerId]
+        ORDER BY A.appointment_date
+      `,
+      [customerId, fortuneTellerId]
     )
     return result.rows.map((row) => {
       return {
@@ -88,7 +103,8 @@ export const appointmentRepository = {
           UPDATE APPOINTMENT
           SET status = $1
           WHERE appointment_id = $2;
-        `, [status, appointmentId]
+        `,
+        [status, appointmentId]
       )
       return true
     } catch (err) {
@@ -125,7 +141,8 @@ export const appointmentRepository = {
             (customer_id = $1 AND status IN ('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT'))
             OR (fortune_teller_id = $1 AND status IN ('CREATED', 'WAITING_FOR_PAYMENT', 'WAITING_FOR_EVENT', 'EVENT_COMPLETED', 'SUSPENDED'));
         
-      `, [userId]
+      `,
+        [userId]
       )
       return { isSuccess: true, userId }
     } catch (err) {
@@ -142,7 +159,8 @@ export const appointmentRepository = {
       JOIN USER_TABLE C ON A.customer_id = C.user_id
       JOIN USER_TABLE FT ON A.fortune_teller_id = FT.user_id
       WHERE A.status = $1 OR A.status = $2
-      `, ["EVENT_COMPLETED", "NO_FRAUD_DETECTED"]
+      `,
+      ["EVENT_COMPLETED", "NO_FRAUD_DETECTED"]
     )
     if (result.rowCount === 0) return []
     return result.rows.map((row) => {
