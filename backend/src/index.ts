@@ -16,6 +16,7 @@ import { connectToDatabase } from "./configs/pgdbConnection"
 import logger from "morgan"
 import userRouter from "./routes/user.routes"
 import adminRouter from "./routes/admin.routes"
+import timetableRouter from "./routes/timetable.routes"
 import { environment } from "./configs/environment"
 
 const app: Application = express()
@@ -49,6 +50,7 @@ app.use("/images", s3Router)
 app.use("/admin", adminRouter)
 app.use("/review", reviewRouter)
 app.use("/notification", notificationRouter)
+app.use("/timetable", timetableRouter)
 
 connectToDatabase().catch((error) => {
   console.error("Error connecting to the database:", error)
