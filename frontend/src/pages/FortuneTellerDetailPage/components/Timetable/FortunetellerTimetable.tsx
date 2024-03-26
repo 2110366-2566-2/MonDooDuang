@@ -1,34 +1,32 @@
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import CalendarModal from "../../../TimetablePage/components/CalendarModal/CalendarModal"
 import ReviewHeaderLine from "../Reviews/ReviewHeaderLine"
 import AppointmentListDetail from "../../../TimetablePage/components/AppointmentListModal/AppointmentListDetail"
+import { TimetableService } from "../../../TimetablePage/services/TimetableService"
+import { useParams } from "react-router-dom"
+import { environment } from "../../../../common/constants/environment"
 
 export default function FortuneTellerTimetable() {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
+  const [upcomingAppointmentData, setUpcomingAppointmentData]= useState<AppointmentData[]>([])
+  const { fid } = useParams()
 
-  const upcomingAppointmentData = [
-    {
-      "appointment_date": "2024-03-01T17:00:00.000Z",
-      "appointment_start_time": "01:45:00",
-      "appointment_end_time": "02:45:00",
-      "event_role": "FORTUNETELLER",
-      "speciality": "ORACLE",
-      "customer_fname": "Olivia",
-      "customer_lname": "Moore",
-      "fortune_teller_name": "Mystic Bob"
-    },
-    {
-      "appointment_date": "2024-03-01T17:00:00.000Z",
-      "appointment_start_time": "01:45:00",
-      "appointment_end_time": "02:45:00",
-      "event_role": "FORTUNETELLER",
-      "speciality": "ORACLE",
-      "customer_fname": "Olivia",
-      "customer_lname": "Moore",
-      "fortune_teller_name": "Mystic Bob"
-    }
-  ]
+  if (fid == undefined) {
+    window.location.href = environment.frontend.url + "/search"
+  }
+  const fortuneTellerId = fid ?? ""
+
+  useEffect(() => {
+    TimetableService.getTimetable(new Date().getDate(), currentMonth, currentYear, fortuneTellerId, "upcoming").then((data) => {
+      if (data) {
+        setUpcomingAppointmentData(data.filter((appointment) => appointment.event_role === "FORTUNETELLER"))
+      } else {
+        setUpcomingAppointmentData([])
+      }
+    })
+  },[currentMonth, currentYear])
+
   const AppList = () => { 
     let prevDate: string | null = null
 
