@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AppointmentInformation } from "../types/AppointmentInformation"
-import { AppointmentService } from "../services/PaymentHistoryService"
+import { AppointmentService } from "../services/AppointmentService"
 import { AppointmentStatusType } from "../../../common/types/Appointment"
 import { Specialities, specialitiesName } from "../../SearchPage/types/SpecialityType"
 import { showFullDate, showTime } from "../../../common/utils/FormatUtils"
