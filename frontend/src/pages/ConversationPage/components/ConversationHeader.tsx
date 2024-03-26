@@ -39,9 +39,6 @@ export default function ConversationHeader({
     const fetchAppointments = async () => {
       const appointments = await AppointmentService.getAppointmentsByConversationId(conversationId)
       setAppointments(appointments)
-
-      console.log(appointments)
-      console.log(Array(appointments[0]))
     }
     fetchAppointments()
   }, [name, conversationId])
