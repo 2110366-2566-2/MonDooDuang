@@ -175,5 +175,29 @@ export const appointmentRepository = {
         phoneNumber: row.phone_number
       }
     })
+  },
+  getAppointmentsByStatus: async (userId: string, status: AppointmentStatus) => {
+    const result = await db.query(
+      `
+      SELECT A.appointment_id, P.price, P.speciality, P.duration, A.appointment_date, A.updated_at, FT.stage_name
+      FROM APPOINTMENT A
+      JOIN PACKAGE P ON A.package_id = P.package_id
+      JOIN FORTUNE_TELLER FT ON A.fortune_teller_id = FT.fortune_teller_id
+      WHERE A.customer_id = $1 AND A.status = $2
+      `,
+      [userId, status]
+    )
+    if (result.rowCount === 0) return []
+    return result.rows.map((row) => {
+      return {
+        appointmentId: row.appointment_id,
+        price: row.price,
+        speciality: row.speciality,
+        duration: row.duration,
+        appointmentDate: row.appointment_date,
+        updatedAt: row.updated_at,
+        stageName: row.stage_name
+      }
+    })
   }
 }
