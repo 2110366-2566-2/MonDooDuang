@@ -6,7 +6,7 @@ import NotificationIcon from "./NotificationIcon"
 import { useState } from "react"
 import Notifications from "./Notification/Notifications"
 
-type MenuFocus = "search" | "schedule" | "conversation" | "none"
+type MenuFocus = "search" | "schedule" | "conversation" | "payment" | "none"
 
 export default function NavBar({
   isFortuneTeller,
@@ -27,7 +27,8 @@ export default function NavBar({
   const menuList: { name: string; focus: MenuFocus; href: string }[] = [
     { name: "ค้นหาหมอดู", focus: "search", href: "/search" },
     { name: "เช็คตารางเวลา", focus: "schedule", href: `/timetable/${userId}` },
-    { name: "ประวัติการสนทนา", focus: "conversation", href: "/conversation" }
+    { name: "ประวัติการสนทนา", focus: "conversation", href: "/conversation" },
+    { name: "ประวัติการชำระเงิน", focus: "payment", href: "/payment/history" }
   ]
 
   const handleNotification = () => {

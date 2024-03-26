@@ -36,7 +36,7 @@ export default function PaymentHistoryPage() {
     <>
       <NavBar
         isFortuneTeller={userType === "FORTUNE_TELLER"}
-        menuFocus="conversation"
+        menuFocus="payment"
         username={username}
         userId={userId}
       />
