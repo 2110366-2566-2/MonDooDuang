@@ -3,6 +3,7 @@ import { ReportSchema, ReportStatus } from "../../models/report/report.model"
 import { appointmentRepository } from "../../repositories/appointment.repository"
 import { reportRepository } from "../../repositories/report.repository"
 import { userRepository } from "../../repositories/user.repository"
+import { s3Service } from "../infra/s3.services"
 
 export const reportService = {
   createReport: async (report: ReportSchema) => {
@@ -65,7 +66,16 @@ export const reportService = {
 
   getAllReport: async () => {
     const reports = await reportRepository.getAllReport()
-    return reports
+    if (reports === null) { return null }
+    const updatedRequests = await Promise.all(reports.map(async (report) => {
+      const fortuneTellerId = report.reporteeId
+      const profilePicData = await s3Service.downloadProfilePicture(fortuneTellerId)
+      if (profilePicData && profilePicData.ContentType !== undefined && profilePicData.ContentType !== null) {
+        report.reporteeProfile = "data:image/jpg;base64," + profilePicData.Body?.toString("base64")
+      }
+      return report
+    }))
+    return updatedRequests
   },
 
   updateReportStatus: async (reportId: string, status: ReportStatus) => {

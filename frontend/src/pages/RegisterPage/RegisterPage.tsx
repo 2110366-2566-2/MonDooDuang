@@ -5,7 +5,7 @@ import dayjs from "dayjs"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { styled } from "@mui/material/styles"
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { MouseEvent, useState } from "react"
+import { MouseEvent, SetStateAction, useEffect, useRef, useState } from "react"
 import { Gender, UserSchema } from "./types/RegisterType"
 import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
 import ConfirmAlert from "./components/ConfirmAlert"
@@ -13,6 +13,8 @@ import FailedAlert from "./components/FailedAlert"
 import { RegisterService } from "./services/RegisterService"
 import { LocalStorageUtils } from "../../common/utils/LocalStorageUtils"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
+import { jwtDecode } from "jwt-decode"
+import { AuthContextType } from "../../common/providers/AuthProvider"
 
 const today = dayjs()
 const CustomizedDatePicker = styled(DatePicker)`
@@ -57,6 +59,9 @@ const CustomizedMenuItem = styled(MenuItem)`
 export default function RegisterPage() {
   const [formValues, setFormValues] = useState<UserSchema>({} as UserSchema)
   const [formError, setFormError] = useState<boolean[]>(Array(9).fill(false))
+  const [file, setFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [previewFile, setPreviewFile] = useState<string | null>(null)
   const [confirmPassword, setConfirmPassword] = useState<string>("")
   const [passwordError, setPasswordError] = useState<boolean>(false)
   const [dateError, setDateError] = useState<boolean>(false)
@@ -66,6 +71,20 @@ export default function RegisterPage() {
   const [FTAlert, setFTAlert] = useState<boolean>(false)
   const [CFAlert, setCFAlert] = useState<boolean>(false)
   const [FAlert, setFAlert] = useState<boolean>(false)
+
+  const handleUploadPictureButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "" // Reset the value of the file input
+      fileInputRef.current.click()
+    }
+  }
+
+  const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files
+    if (fileList && fileList.length > 0) {
+      setFile(fileList[0])
+    }
+  }
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -144,9 +163,35 @@ export default function RegisterPage() {
       setFAlert(true)
       return
     }
-    LocalStorageUtils.setData("token", data.data)
+    const token = data.data
+    if (file !== null) {
+      const formData = new FormData()
+      formData.append("image", file)
+
+      const decodedToken = jwtDecode<Omit<AuthContextType, "token">>(token)
+
+      const response = await RegisterService.uploadProfilePicture(decodedToken.userId, formData)
+      if (!response.isSuccess) {
+        alert(response.message)
+        return
+      }
+    }
+    LocalStorageUtils.setData("token", token)
     setFTAlert(true)
   }
+
+  useEffect(() => {
+    // create the preview
+    let objectUrl: SetStateAction<string | null> = null
+    if (file) {
+      objectUrl = URL.createObjectURL(file)
+    }
+
+    setPreviewFile(objectUrl)
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [file])
 
   return (
     <RootLayout>
@@ -163,9 +208,24 @@ export default function RegisterPage() {
           <form className="flex flex-col w-[80%]">
             <div className="flex mt-5">
               <div className="flex w-[46%] flex-col items-center justify-center gap-2">
-                <div className="flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]">
-                  <CameraIcon />
-                </div>
+                <button
+                  className="relative flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]"
+                  onClick={handleUploadPictureButtonClick}
+                >
+                  <input
+                    id="fileForm"
+                    name="fileForm"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={handlePictureChange}
+                    className="absolute w-full h-full opacity-0 cursor-pointer"
+                  />
+                  {previewFile !== null ? (
+                    <img src={previewFile} className="h-full w-full rounded-full object-cover" />
+                  ) : (
+                    <CameraIcon />
+                  )}
+                </button>
                 <p className="text-sm">
                   <span className="text-xl">รูปโปรไฟล์ </span>(ไม่จำเป็น)
                 </p>
@@ -276,7 +336,9 @@ export default function RegisterPage() {
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
                 {(formError[3] || telError) && (
-                  <span className="absolute mt-[72px] text-red-500 text-xs">เบอร์โทรศัพท์ควรเป็นตัวเลขและมี 10 หลัก</span>
+                  <span className="absolute mt-[72px] text-red-500 text-xs">
+                    เบอร์โทรศัพท์ควรเป็นตัวเลขและมี 10 หลัก
+                  </span>
                 )}
               </div>
               <div className="relative flex w-[45%] flex-col items-start">
@@ -465,7 +527,9 @@ export default function RegisterPage() {
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 {(formError[7] || accountNumberError) && (
-                  <span className="absolute mt-[72px] text-red-500 text-xs">เลขที่บัญชีควรเป็นตัวเลขและมี 10-15 หลัก</span>
+                  <span className="absolute mt-[72px] text-red-500 text-xs">
+                    เลขที่บัญชีควรเป็นตัวเลขและมี 10-15 หลัก
+                  </span>
                 )}
               </div>
               <div className="relative flex flex-col items-start w-[54%]">

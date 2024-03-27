@@ -85,6 +85,7 @@ export default function ConversationSidebar({
           isSelected={conversationId === selectedConversationId}
           onSelect={() => onConversationSelect(conversationId)}
           userId={userId}
+          role={selectedMode}
         />
       ))}
     </div>
