@@ -46,7 +46,7 @@ export default function AppointmentPanel({
 }) {
   const { fid, pid } = useParams()
 
-  if (fid == undefined) {
+  if (fid == undefined || fid === user_id) {
     window.location.href = environment.frontend.url + "/search"
   }
   const fortuneTellerId = fid ?? ""

@@ -12,6 +12,7 @@ import AdminApprovalApp from "../pages/AdminApprovalPage/AdminApprovalApp"
 import FortuneTellerDetailApp from "../pages/FortuneTellerDetailPage/FortuneTellerDetailApp"
 import PaymentApp from "../pages/PaymentPage/PaymentApp"
 import PaymentCompletedApp from "../pages/PaymentCompletedPage/PaymentCompletedApp"
+import PaymentHistoryApp from "../pages/PaymentHistoryPage/PaymentHistoryApp"
 import AdminLoginApp from "../pages/AdminLoginPage/AdminLoginApp"
 import ExampleApp from "../pages/ExamplePage/ExampleApp"
 import AdminReportManagementApp from "../pages/AdminReportManagementPage/AdminReportManagementApp"
@@ -96,6 +97,10 @@ export const getPagesData = (stripePromise: any) =>
     {
       path: "/payment/completed",
       element: <PaymentCompletedApp />
+    },
+    {
+      path: "/payment/history",
+      element: <PaymentHistoryApp />
     },
     {
       path: "/timetable/:id",

@@ -80,6 +80,7 @@ export const conversationService = {
     return { name: data[0].result }
   },
   createConversation: async (fortunetellerId: string, customerId: string) => {
+    if (fortunetellerId === customerId) return { isSuccess: false, data: null }
     const result = await conversationRepository.createConversation(fortunetellerId, customerId)
     return result
   },
