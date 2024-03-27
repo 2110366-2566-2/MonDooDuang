@@ -30,12 +30,13 @@ export const ConversationService = {
     return await response.json()
   },
   getUserTypeInConversation: async (conversationId: string, userId: string) => {
-    const response = await fetch(`${environment.backend.url}/conversations/user-type-in-conversation/${conversationId}/${userId}`)
+    const response = await fetch(
+      `${environment.backend.url}/conversations/user-type-in-conversation/${conversationId}/${userId}`
+    )
     const data = await response.json()
 
     // FORTUNE_TELLER by default
-    if (!data.success)
-      return "FORTUNE_TELLER"
+    if (!data.success) return "FORTUNE_TELLER"
 
     return data.userType
   },
@@ -48,7 +49,6 @@ export const ConversationService = {
       `${environment.backend.url}/conversations/recieverUserId/${conversationId}/${userId}/${role}`
     )
     const recieverUserId = await res.json()
-    if (!recieverUserId.success) return null
     const UserId = recieverUserId.recieverUserId
     const response = await fetch(`${environment.backend.url}/images/profile-picture/${UserId}`)
     const data = await response.json()
