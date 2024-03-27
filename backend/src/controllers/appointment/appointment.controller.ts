@@ -53,7 +53,7 @@ const getPackages = async (req: Request, res: Response) => {
 
 const getFortuneTellerAppointment = async (req: Request, res: Response) => {
   const appointments = await appointmentService.getFortuneTellerAppointment(
-    req.params.fortuneTellerId
+    req.params.fortuneTellerId, req.params.userId
   )
   if (appointments === null) {
     return res.status(400).json({ success: false })

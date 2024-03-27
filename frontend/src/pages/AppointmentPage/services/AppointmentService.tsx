@@ -57,10 +57,10 @@ export const AppointmentService = {
   },
 
   getFortuneTellerAppointment: async (
-    fortuneTellerId: string
+    fortuneTellerId: string,userId: string
   ): Promise<FortuneTellerAppointments[]> => {
     const res = await fetch(
-      `${environment.backend.url}/appointment/find-appointments/${fortuneTellerId}`
+      `${environment.backend.url}/appointment/find-appointments/${fortuneTellerId}/${userId}`
     )
     const data = await res.json()
     return data.data

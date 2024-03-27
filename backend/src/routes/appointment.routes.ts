@@ -7,7 +7,7 @@ router.get("/find-user/:userId", appointmentController.getUserInfo)
 router.get("/find-fortunetellers", appointmentController.getAllFortuneTeller)
 router.get("/find-fortuneteller/:fortuneTellerId", appointmentController.getFortuneTeller)
 router.get("/find-packages/:fortuneTellerId", appointmentController.getPackages)
-router.get("/find-appointments/:fortuneTellerId", appointmentController.getFortuneTellerAppointment)
+router.get("/find-appointments/:fortuneTellerId/:userId", appointmentController.getFortuneTellerAppointment)
 router.get(
   "/find-appointment-by-conversationId/:conversationId",
   appointmentController.getAppointmentByConversationId
