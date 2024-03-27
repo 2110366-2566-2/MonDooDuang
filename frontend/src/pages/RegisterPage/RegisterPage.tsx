@@ -99,19 +99,19 @@ export default function RegisterPage() {
     value: DatePickerSchema
   ) => {
     if (value) {
-      value
-      value.$d.setHours(7, 0, 0)
+      const date = value.$d
+      date.setHours(7, 0, 0)
       setFormValues({
         ...formValues,
-        birthDate: value.$d
+        birthDate: date
       })
     }
   }
 
-  const handleBankChange = (event: SelectChangeEvent) => {
+  const handleBankChange = (bankName: string) => {
     setFormValues({
       ...formValues,
-      bankName: event.target.value
+      bankName: bankName
     })
   }
 
@@ -251,7 +251,7 @@ export default function RegisterPage() {
                       }
                     }}
                     value={formValues.birthDate}
-                    onChange={() => handleDateChange}
+                    onChange={(event) => handleDateChange(event)}
                     onAccept={() => {
                       setDateError(false)
                     }}
@@ -493,7 +493,7 @@ export default function RegisterPage() {
                 <CustomizedSelect
                   name="select-bank"
                   value={formValues.bankName}
-                  onChange={() => handleBankChange}
+                  onChange={(event:SelectChangeEvent) => handleBankChange(event.target.value)}
                   inputProps={{ MenuProps: { disableScrollLock: true } }}
                   required
                   className="w-full h-10 bg-mdd-text-field"
