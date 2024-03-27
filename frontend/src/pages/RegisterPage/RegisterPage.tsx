@@ -5,8 +5,8 @@ import dayjs from "dayjs"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { styled } from "@mui/material/styles"
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { MouseEvent, useState } from "react"
-import { Gender, UserSchema } from "./types/RegisterType"
+import { useState } from "react"
+import { DatePickerSchema, Gender, UserSchema } from "./types/RegisterType"
 import FortuneTellerRegisterAlert from "./components/FortuneTellerRegisterAlert"
 import ConfirmAlert from "./components/ConfirmAlert"
 import FailedAlert from "./components/FailedAlert"
@@ -95,6 +95,19 @@ export default function RegisterPage() {
     }
   }
 
+  const handleDateChange = (
+    value: DatePickerSchema
+  ) => {
+    if (value) {
+      value
+      value.$d.setHours(7, 0, 0)
+      setFormValues({
+        ...formValues,
+        birthDate: value.$d
+      })
+    }
+  }
+
   const handleBankChange = (event: SelectChangeEvent) => {
     setFormValues({
       ...formValues,
@@ -133,7 +146,7 @@ export default function RegisterPage() {
     return newArray.reduce((sum, bool) => sum && !bool, true)
   }
 
-  const handleSubmitButton = async (event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmitButton = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
     const sum = checkAllInput()
     if (!sum || dateError || passwordError || emailError || telError || accountNumberError) {
@@ -238,13 +251,7 @@ export default function RegisterPage() {
                       }
                     }}
                     value={formValues.birthDate}
-                    onChange={(d) => {
-                      d?.$d.setHours(7, 0, 0)
-                      setFormValues({
-                        ...formValues,
-                        birthDate: d?.$d
-                      })
-                    }}
+                    onChange={() => handleDateChange}
                     onAccept={() => {
                       setDateError(false)
                     }}
@@ -276,7 +283,9 @@ export default function RegisterPage() {
                   className="px-7 py-2 w-full text-[22px] h-10 rounded-[10px] resize-none bg-mdd-text-field"
                 />
                 {(formError[3] || telError) && (
-                  <span className="absolute mt-[72px] text-red-500 text-xs">เบอร์โทรศัพท์ควรเป็นตัวเลขและมี 10 หลัก</span>
+                  <span className="absolute mt-[72px] text-red-500 text-xs">
+                    เบอร์โทรศัพท์ควรเป็นตัวเลขและมี 10 หลัก
+                  </span>
                 )}
               </div>
               <div className="relative flex w-[45%] flex-col items-start">
@@ -465,7 +474,9 @@ export default function RegisterPage() {
                   className="px-7 py-2 text-[22px] w-full h-10 rounded-[10px] resize-none bg-mdd-text-field [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 {(formError[7] || accountNumberError) && (
-                  <span className="absolute mt-[72px] text-red-500 text-xs">เลขที่บัญชีควรเป็นตัวเลขและมี 10-15 หลัก</span>
+                  <span className="absolute mt-[72px] text-red-500 text-xs">
+                    เลขที่บัญชีควรเป็นตัวเลขและมี 10-15 หลัก
+                  </span>
                 )}
               </div>
               <div className="relative flex flex-col items-start w-[54%]">
@@ -482,7 +493,7 @@ export default function RegisterPage() {
                 <CustomizedSelect
                   name="select-bank"
                   value={formValues.bankName}
-                  onChange={handleBankChange}
+                  onChange={() => handleBankChange}
                   inputProps={{ MenuProps: { disableScrollLock: true } }}
                   required
                   className="w-full h-10 bg-mdd-text-field"
@@ -512,7 +523,7 @@ export default function RegisterPage() {
             <div className="mt-8 text-center self-end w-[11%] h-10 rounded-[10px] bg-white flex justify-center">
               <button
                 type="submit"
-                onClick={(e) => handleSubmitButton(e)}
+                onClick={(event: React.MouseEvent<HTMLElement>) => handleSubmitButton(event)}
                 className="text-[#3B3B3B] text-xl font-semibold"
               >
                 เสร็จสิ้น

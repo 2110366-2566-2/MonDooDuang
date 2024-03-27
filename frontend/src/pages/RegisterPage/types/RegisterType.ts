@@ -13,3 +13,19 @@ export interface UserSchema {
   accountNumber: string
   password: string
 }
+
+export interface DatePickerSchema {
+  $D: number
+  $H: number
+  $L: string
+  $M: number
+  $W: number
+  $d: Date
+  $isDayjsObject: boolean
+  $m: number
+  $ms: number
+  $s: number
+  $u: undefined
+  $x: object
+  $y: number
+}
