@@ -31,10 +31,14 @@ export default function FortuneTellerDetails() {
   useEffect(() => {
     const fetchFortuneTellerDetail = async () => {
       const response = await FortuneTellerService.getFortuneTellerDisplayInfoById(fortuneTellerId)
+      if (response == null) {
+        window.location.href = environment.frontend.url + "/search"
+        return
+      }
       const fortuneTellerStageName = response.stageName
       const fortuneTellerDescription = response.description
       const fortuneTellerAverageStar = response.averageStar
-      const fortuneTellerProfile = response.profilePicture
+      const fortuneTellerProfile = await FortuneTellerService.getProfilePicture(fortuneTellerId)
 
       setFortuneTellerStageName(fortuneTellerStageName)
       setFortuneTellerDescription(fortuneTellerDescription)

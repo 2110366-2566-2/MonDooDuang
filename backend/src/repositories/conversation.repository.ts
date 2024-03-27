@@ -97,7 +97,8 @@ export const conversationRepository = {
         FROM 
             CONVERSATION
         WHERE conversation_id = $1
-      `, [conversationId, senderId]
+      `,
+      [conversationId, senderId]
     )
     return { otherId: result.rows[0].result }
   },
@@ -172,6 +173,31 @@ export const conversationRepository = {
       [conversationId, userId]
     )
     return result.rows[0].count
+  },
+  getReceiverUserIdByConversationId: async (
+    conversationId: string,
+    userId: string,
+    role: "CUSTOMER" | "FORTUNE_TELLER"
+  ) => {
+    const result = await db.query(
+      `
+        SELECT 
+        CASE 
+            WHEN $3 = 'CUSTOMER' THEN customer_id
+            ELSE fortune_teller_id
+        END AS receiver_user_id
+        FROM 
+            CONVERSATION
+        WHERE conversation_id = $1 AND 
+        CASE 
+            WHEN $3 = 'CUSTOMER' THEN fortune_teller_id
+            ELSE customer_id
+        END = $2
+      `,
+      [conversationId, userId, role]
+    )
+    if (result.rows.length === 0) return null
+    return result.rows[0].receiver_user_id
   },
   getUserTypeInConversation: async (conversationId: string, userId: string): Promise<null | UserType> => {
     const result = await db.query(

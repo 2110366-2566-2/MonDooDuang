@@ -5,14 +5,13 @@ import dayjs from "dayjs"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { styled } from "@mui/material/styles"
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { MouseEvent, useState } from "react"
+import { MouseEvent, SetStateAction, useEffect, useRef, useState, useContext } from "react"
 import { Gender, UserSchema } from "../RegisterPage/types/RegisterType"
 import EditIcon from "../../assets/FortuneTellerAccountAssets/EditIcon.png"
 import { AccountService } from "./services/AccountService"
 import RootLayout from "../../common/components/RootLayout/RootLayout"
 
 import { AuthContext } from "../../common/providers/AuthProvider"
-import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 const CustomizedDatePicker = styled(DatePicker)`
@@ -58,6 +57,9 @@ export default function RegisterPage() {
   const navigate = useNavigate()
   const { userId, userType } = useContext(AuthContext)
   const [fetchFormValues, setFetchFormValues] = useState<UserSchema>({} as UserSchema)
+  const [file, setFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [previewFile, setPreviewFile] = useState<string | null>(null)
   const [formValues, setFormValues] = useState<UserSchema>({} as UserSchema)
   const [formError, setFormError] = useState<boolean[]>(Array(9).fill(false))
   const [dateError, setDateError] = useState<boolean>(false)
@@ -70,6 +72,7 @@ export default function RegisterPage() {
     const fetchUserInformation = async () => {
       try {
         const response = await AccountService.getUserInformation(userId)
+        const userProfile = await AccountService.getProfilePicture(userId)
 
         setFetchFormValues({
           ...fetchFormValues,
@@ -98,6 +101,7 @@ export default function RegisterPage() {
           accountNumber: response.accountNumber,
           password: response.password
         })
+        setPreviewFile(userProfile)
       } catch (error) {
         console.error("Error fetching user information:", error)
         alert("Failed to fetch user information. Please try again.")
@@ -106,6 +110,33 @@ export default function RegisterPage() {
     }
     fetchUserInformation()
   }, [isEditing])
+
+  useEffect(() => {
+    // create the preview
+    let objectUrl: SetStateAction<string | null> = null
+    if (file) {
+      objectUrl = URL.createObjectURL(file)
+    }
+
+    setPreviewFile(objectUrl)
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [file])
+
+  const handleUploadPictureButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "" // Reset the value of the file input
+      fileInputRef.current.click()
+    }
+  }
+
+  const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files
+    if (fileList && fileList.length > 0) {
+      setFile(fileList[0])
+    }
+  }
 
   const handleTextFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -168,6 +199,11 @@ export default function RegisterPage() {
 
     try {
       await AccountService.updateUserInformation(userId, formValues)
+      if (file !== null) {
+        const formData = new FormData()
+        formData.append("image", file)
+        await AccountService.uploadProfilePicture(userId, formData)
+      }
       setIsEditing(false)
     } catch (error) {
       console.error("Error updating user information:", error)
@@ -216,9 +252,25 @@ export default function RegisterPage() {
           <form className="flex flex-col w-[80%]">
             <div className="flex mt-5">
               <div className="flex w-[46%] flex-col items-center justify-center gap-2">
-                <div className="flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]">
-                  <CameraIcon />
-                </div>
+                <button
+                  className="relative flex items-center justify-center bg-mdd-text-field rounded-full w-[146px] h-[146px]"
+                  onClick={handleUploadPictureButtonClick}
+                >
+                  <input
+                    id="fileForm"
+                    name="fileForm"
+                    type="file"
+                    disabled={isEditing ? false : true}
+                    accept="image/png, image/jpeg"
+                    onChange={handlePictureChange}
+                    className="absolute w-full h-full opacity-0 cursor-pointer"
+                  />
+                  {previewFile !== null ? (
+                    <img src={previewFile} className="h-full w-full rounded-full object-cover" />
+                  ) : (
+                    <CameraIcon />
+                  )}
+                </button>
                 <p className="text-sm">
                   <span className="text-xl">รูปโปรไฟล์ </span>(ไม่จำเป็น)
                 </p>

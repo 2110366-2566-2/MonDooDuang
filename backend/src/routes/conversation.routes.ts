@@ -8,11 +8,15 @@ router.get(
   "/name-with-lastMessage/:conversationId/:userId",
   conversationController.getNameWithLastMessage
 )
+router.get(
+  "/recieverUserId/:conversationId/:userId/:role",
+  conversationController.getRecieverUserIdByConversationId
+)
 router.get("/messages/:conversationId/:userId", conversationController.getMessagesByConversationId)
 router.get("/name/:conversationId/:userId", conversationController.getNameByConversationId)
 router.get(
   "/unread-messages/:conversationId/:userId",
-  conversationController.getUnreadMessagesConversationId
+  conversationController.getUnreadMessagesByConversationId
 )
 router.get("/user-type-in-conversation/:conversationId/:userId", conversationController.getUserTypeInConversation)
 router.post("/create/:userId/:fortunetellerId", conversationController.createConversation)
