@@ -143,6 +143,21 @@ export const conversationService = {
     }
     return { count: data }
   },
+  getRecieverUserIdByConversationId: async (
+    conversationId: string,
+    userId: string,
+    role: "CUSTOMER" | "FORTUNE_TELLER"
+  ) => {
+    const data = await conversationRepository.getReceiverUserIdByConversationId(
+      conversationId,
+      userId,
+      role
+    )
+    if (data === null) {
+      return { recieverUserId: "" }
+    }
+    return { recieverUserId: data }
+  },
   getUserTypeInConversation: async (conversationId: string, userId: string) => {
     const userType = await conversationRepository.getUserTypeInConversation(conversationId, userId)
     return userType

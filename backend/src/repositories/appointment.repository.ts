@@ -163,7 +163,7 @@ export const appointmentRepository = {
   getEventCompletedAppointments: async () => {
     const result = await db.query(
       `
-      SELECT A.appointment_id, P.price, CONCAT(C.fname,' ',C.lname) as c_full_name, CONCAT(FT.fname,' ',FT.lname) as ft_full_name, FT.profile_picture, FT.bank_name, FT.account_number, FT.phone_number
+      SELECT A.appointment_id, P.price, CONCAT(C.fname,' ',C.lname) as c_full_name, CONCAT(FT.fname,' ',FT.lname) as ft_full_name, FT.profile_picture, FT.bank_name, FT.account_number, FT.phone_number, FT.user_id
       FROM APPOINTMENT A
       JOIN PACKAGE P ON A.package_id = P.package_id
       JOIN USER_TABLE C ON A.customer_id = C.user_id
@@ -182,7 +182,8 @@ export const appointmentRepository = {
         profilePicture: row.profile_picture,
         bankName: row.bank_name,
         accountNumber: row.account_number,
-        phoneNumber: row.phone_number
+        phoneNumber: row.phone_number,
+        fortuneTellerId: row.user_id
       }
     })
   },

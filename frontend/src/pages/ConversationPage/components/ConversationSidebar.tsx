@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react"
 import ConversationList from "./ConversationList"
 import { ConversationService } from "../services/ConversationService"
+import { MessageInformation } from "../types/MessageInformation"
 
 export default function ConversationSidebar({
   onConversationSelect,
   selectedConversationId,
   userId,
-  userType
+  userType,
+  messages
 }: {
   onConversationSelect: (conversationId: string) => void
   selectedConversationId: string | null
   userId: string
   userType: "CUSTOMER" | "FORTUNE_TELLER" | "ADMIN"
+  messages: MessageInformation[]
 }) {
   const [customerConversationIds, setCustomerConversationIds] = useState<string[]>([])
   const [fortuneTellerConversationIds, setFortuneTellerConversationIds] = useState<string[]>([])
@@ -32,10 +35,11 @@ export default function ConversationSidebar({
         "FORTUNE_TELLER"
       )
       setFortuneTellerConversationIds(fortuneTellerConversationIds)
-      setFilteredConversations(fortuneTellerConversationIds)
+      if (selectedMode === "FORTUNE_TELLER") setFilteredConversations(fortuneTellerConversationIds)
+      else setFilteredConversations(customerConversationIds)
     }
     fetchConversations()
-  }, [])
+  }, [messages])
 
   useEffect(() => {
     if (selectedMode === "CUSTOMER") {
@@ -85,6 +89,7 @@ export default function ConversationSidebar({
           isSelected={conversationId === selectedConversationId}
           onSelect={() => onConversationSelect(conversationId)}
           userId={userId}
+          role={selectedMode}
         />
       ))}
     </div>
