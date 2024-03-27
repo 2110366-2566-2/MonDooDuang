@@ -148,14 +148,21 @@ export const appointmentService = {
   getEventCompletedAppointments: async () => {
     const appointments = await appointmentRepository.getEventCompletedAppointments()
     if (appointments === null) return null
-    const updatedAppointments = await Promise.all(appointments.map(async (appointment) => {
-      const fortuneTellerId = appointment.fortuneTellerId as string
-      const profilePicData = await s3Service.downloadProfilePicture(fortuneTellerId)
-      if (profilePicData && profilePicData.ContentType !== undefined && profilePicData.ContentType !== null) {
-        appointment.profilePicture = "data:image/jpg;base64," + profilePicData.Body?.toString("base64")
-      }
-      return appointment
-    }))
+    const updatedAppointments = await Promise.all(
+      appointments.map(async (appointment) => {
+        const fortuneTellerId = appointment.fortuneTellerId as string
+        const profilePicData = await s3Service.downloadProfilePicture(fortuneTellerId)
+        if (
+          profilePicData &&
+          profilePicData.ContentType !== undefined &&
+          profilePicData.ContentType !== null
+        ) {
+          appointment.profilePicture =
+            "data:image/jpg;base64," + profilePicData.Body?.toString("base64")
+        }
+        return appointment
+      })
+    )
     return updatedAppointments
   },
 
@@ -164,7 +171,7 @@ export const appointmentService = {
     appointments.forEach((appointment) => {
       appointment.appointmentDate = new Date(
         (appointment.appointmentDate as Date).setUTCHours(
-          (appointment.appointmentDate as Date).getUTCHours() - 7
+          (appointment.appointmentDate as Date).getUTCHours()
         )
       )
     })
