@@ -191,7 +191,7 @@ export default function AppointmentPanel({
   useEffect(() => {
     const fetchFortuneTellerAppointments = async () => {
       try {
-        const appointments = await AppointmentService.getFortuneTellerAppointment(fortuneTellerId)
+        const appointments = await AppointmentService.getFortuneTellerAppointment(fortuneTellerId,user_id)
         if (appointments) {
           setAppointments(groupAppointmentsByDate(appointments))
         }
@@ -199,8 +199,10 @@ export default function AppointmentPanel({
         console.log(err)
       }
     }
+
     fetchFortuneTellerAppointments()
   }, [])
+
   const CustomerInfo = () => {
     return (
       <div className="rounded-xl border border-stone-800 border-opacity-50 px-24 py-4">

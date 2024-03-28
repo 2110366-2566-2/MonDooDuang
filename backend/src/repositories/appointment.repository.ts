@@ -25,13 +25,23 @@ export const appointmentRepository = {
     }
   },
 
-  getFortuneTellerAppointment: async (fortuneTellerId: string) => {
+  getFortuneTellerAppointment: async (fortuneTellerId: string, customerId: string) => {
     const result = await db.query(
-      `SELECT A.appointment_date , P.duration
-      FROM appointment A,package P
-      WHERE A.package_id = P.package_id and A.fortune_teller_id = $1 
-      and A.status = 'WAITING_FOR_EVENT';`,
-      [fortuneTellerId]
+      `SELECT A.appointment_date, P.duration
+      FROM appointment A, package P
+      WHERE A.package_id = P.package_id
+        AND A.customer_id = $2
+        AND A.status = 'WAITING_FOR_EVENT'
+      
+      UNION
+      
+      SELECT A.appointment_date, P.duration
+      FROM appointment A, package P
+      WHERE A.package_id = P.package_id
+        AND A.fortune_teller_id = $1
+        AND A.status = 'WAITING_FOR_EVENT';
+      ;`,
+      [fortuneTellerId, customerId]
     )
     return result.rows
   },

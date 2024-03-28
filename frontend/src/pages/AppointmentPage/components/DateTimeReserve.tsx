@@ -120,14 +120,16 @@ export default function DateTimeReserve({
                   }
                 }}
                 onChange={(value) => {
-                  onTimeChange(value)
-                  setReserveTime(value)
-                  if (reserveDate && value) {
-                    const datetime = reserveDate
-                      .hour(value.hour())
-                      .minute(value.minute())
-                      .second(value.second())
-                    setDateTime(datetime)
+                  if (value && checkAvailableTime(value)) {
+                    onTimeChange(value)
+                    setReserveTime(value)
+                    if (reserveDate && value) {
+                      const datetime = reserveDate
+                        .hour(value.hour())
+                        .minute(value.minute())
+                        .second(value.second())
+                      setDateTime(datetime)
+                    }
                   }
                 }}
                 shouldDisableTime={(value, view) =>

@@ -56,8 +56,8 @@ export const appointmentService = {
     return packages
   },
 
-  getFortuneTellerAppointment: async (fortuneTellerId: string) => {
-    const appointments = await appointmentRepository.getFortuneTellerAppointment(fortuneTellerId)
+  getFortuneTellerAppointment: async (fortuneTellerId: string, customerId: string) => {
+    const appointments = await appointmentRepository.getFortuneTellerAppointment(fortuneTellerId, customerId)
     return appointments
   },
 
